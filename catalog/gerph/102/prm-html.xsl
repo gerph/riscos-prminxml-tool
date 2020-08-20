@@ -353,18 +353,18 @@
   <xsl:for-each select="parameter">
    <tr><td valign="top">
         <xsl:variable name="param">
-         <xsl:if test="@label != ''">
+         <xsl:if test="@label">
           <xsl:value-of select="@label" />
           <xsl:text> </xsl:text>
          </xsl:if>
-         <xsl:if test="@name != ''">
+         <xsl:if test="@name">
           <i>&lt;<xsl:value-of select="@name" />&gt;</i>
          </xsl:if>
         </xsl:variable>
         <xsl:choose>
-         <xsl:when test="@switch-alias = ''">
+         <xsl:when test="not(@switch-alias)">
           <code>
-           <xsl:if test="@switch != ''">
+           <xsl:if test="@switch">
             -<xsl:value-of select="@switch" />
             <xsl:text> </xsl:text>
            </xsl:if>
@@ -372,7 +372,7 @@
           </code>
          </xsl:when>
          <xsl:otherwise>
-          <xsl:if test="@switch = ''">
+          <xsl:if test="not(@switch)">
            <xsl:message>Parameter with switch-alias must be given a switch at
    <xsl:call-template name="describeposition" />.</xsl:message>
           </xsl:if>
