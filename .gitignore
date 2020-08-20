@@ -6,3 +6,6 @@
 output/
 tmp/
 logs/
+
+# RISC OS build
+riscos-build/

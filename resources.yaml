@@ -1,0 +1,9 @@
+---
+
+exports:
+  build/cross-prminxml:
+    phases: native:install
+    path: $ROTOOL_DIR
+    files:
+      - riscos-prminxml
+      - riscos-prminxml-resources/

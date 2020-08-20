@@ -3,6 +3,8 @@ COMPONENT = riscos-prminxml
 TOOL = ${ROTOOL_DIR}/riscos-prminxml
 RESOURCES = ${ROTOOL_DIR}/riscos-prminxml-resources
 
+CATALOG_SRC = ../catalog
+
 .PHONY: dirs catalog tool
 
 all: cross_install
@@ -21,11 +23,11 @@ tool_dir:
 	mkdir -p ${RESOURCES}
 
 catalog: dirs
-	cp -R catalog/* "${RESOURCES}"
+	cp -R "${CATALOG_SRC}"/* "${RESOURCES}"
 
 ${TOOL}: ../process.pl dirs catalog
 	sed "s/VERSION/$${CI_BRANCH_VERSION:-VERSION}/" ../process.pl > $@
 	chmod 755 $@
 
 clean:
-    @echo Nothing to clean.
+	@echo Nothing to clean.

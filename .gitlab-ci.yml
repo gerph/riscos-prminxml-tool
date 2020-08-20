@@ -1,0 +1,64 @@
+# Definition for CI within GitLab
+# Note:
+#    Prefix any job name with a '.' to disable.
+#
+
+
+# Enable submodules
+variables:
+  GIT_STRATEGY: clone
+  GIT_SUBMODULE_STRATEGY: none
+
+
+# Common definitions for the jobs
+.common: &common
+  before_script:
+    - git submodule sync ci
+    - git submodule update --init ci
+  artifacts: &artifacts
+    when: always
+    paths:
+      - artifacts
+      - ci-logs
+  dependencies: []
+
+
+.common-cross: &common-cross
+  <<: *common
+  artifacts:
+    <<: *artifacts
+#    reports:
+#      junit:
+#        - artifacts/results.xml
+
+
+#### Builds ####
+build-linux:
+  <<: *common-cross
+  stage: build-cross
+  script:
+    - ci/build.sh native install --upload
+  tags:
+    - linux
+
+build-macos:
+  <<: *common-cross
+  stage: build-cross
+  script:
+    - ci/build.sh native install --upload
+  tags:
+    - macos
+
+
+.build-command-riscos:
+  <<: *common
+  stage: build-riscos
+  script:
+    - ci/build.sh install
+
+
+#### Stages to execute ####
+stages:
+#  - export
+  - build-cross
+#  - build-riscos
