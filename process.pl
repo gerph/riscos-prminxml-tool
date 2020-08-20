@@ -225,7 +225,10 @@ else
 {
     if (!defined $outputdir)
     {
-        $outputdir = '.';
+        if ($riscos)
+        { $outputdir = '@'; }
+        else
+        { $outputdir = '.'; }
     }
     my $first = 1;
     for $input (@inputs) {
@@ -233,13 +236,30 @@ else
         my $out;
         if (defined($outputfile))
         {
-            $out = "$outputdir/$outputfile";
+            $out = $outfile;
+            if ($riscos)
+            {
+                if ($outputfile !~ /[:\$@%\\]/)
+                {
+                    $out = "$outputdir.$outputfile";
+                }
+            }
+            else
+            {
+                if ($outputfile !~ /^\//)
+                {
+                    $out = "$outputdir/$outputfile";
+                }
+            }
         }
         else
         {
             my $leaf = leafname($input);
             $leaf = replaceext($leaf, $extensions{$format});
-            $out = "$outputdir/" . $leaf;
+            if ($riscos)
+            { $out = "$outputdir." . $leaf; }
+            else
+            { $out = "$outputdir/" . $leaf; }
         }
         print "Processing $input -> $out\n";
         my $cmd = "$tool -output \"$out\" $xslt \"$input\"";
