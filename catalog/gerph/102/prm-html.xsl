@@ -2080,7 +2080,7 @@
 <xsl:template match="item">
 <li>
 <xsl:choose>
- <xsl:when test="count(p) = 1">
+ <xsl:when test="count(p | br | image | bnf | list | extended-example | fixme | code) = 1">
   <!-- Botch to stop tables looking shite on most browsers -->
   <xsl:apply-templates select="p/*|p/text()"/>
  </xsl:when>
