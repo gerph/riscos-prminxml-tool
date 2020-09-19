@@ -62,9 +62,9 @@
 <xsl:template match="/">
 <html>
 <xsl:comment>
-  Auto-generated using XSLT stylesheet created by Justin Fletcher.
+  Auto-generated using XSLT stylesheet created by Gerph.
 
-  This document was created with the HTML stylesheet updated 21 Apr 2004.
+  This document was created with the HTML stylesheet updated 19 Sep 2020.
 </xsl:comment>
 <xsl:apply-templates />
 <xsl:apply-templates select="riscos-prm/meta" mode="tail"/>
@@ -532,18 +532,34 @@
 
 <xsl:template match="related" mode="meta">
 <xsl:choose>
- <xsl:when test="count(reference[@type='document']) = 0">
+ <xsl:when test="count(reference[@type='document' or @type='link']) = 0">
   <xsl:text>None</xsl:text>
  </xsl:when>
 
  <xsl:otherwise>
-  <xsl:for-each select="reference[@type='document']">
+  <xsl:for-each select="reference[@type='document'] | reference[@type='link']">
    <xsl:apply-templates select="." />
    <br />
   </xsl:for-each>
  </xsl:otherwise>
 </xsl:choose>
 </xsl:template>
+
+
+<xsl:template match="declaration">
+<xsl:choose>
+ <xsl:when test="count(*) = 0">
+    <!-- No declarations, so no need to do anything -->
+ </xsl:when>
+ <xsl:otherwise>
+  <dt><h5>Declarations<!-- (<xsl:value-of select='@type'>)--></h5></dt>
+  <dd>
+      <xsl:apply-templates/>
+  </dd>
+ </xsl:otherwise>
+</xsl:choose>
+</xsl:template>
+
 
 <xsl:template match="related">
 <xsl:choose>
@@ -1083,6 +1099,7 @@
           </xsl:attribute>
           <xsl:text>Error_</xsl:text><xsl:value-of select="@name"/>
     </a>
+    <br />
     (<acronym>Error &amp;<xsl:value-of select="@number"/></acronym>
     <xsl:text>)</xsl:text>
     </h2>
@@ -1664,6 +1681,11 @@
     <xsl:value-of select="@reason" />
    </xsl:if>
   </xsl:when>
+
+  <xsl:when test="(@type = 'link' or @type = 'document') and not(@name)">
+   <xsl:value-of select="@href"/>
+  </xsl:when>
+
   <xsl:otherwise>
    <xsl:apply-templates />
   </xsl:otherwise>

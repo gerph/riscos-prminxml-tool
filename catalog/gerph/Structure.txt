@@ -250,6 +250,10 @@ sections are given in the order :
       this component. These would usually describe the entry points of
       functions registered with your component.
 
+  Error messages
+    - lists the errors, using error-definition, which are reported by this
+      component.
+
   Wimp messages
     - lists the Wimp messages, using message-definition, which are generated
       or received by this component.
@@ -435,7 +439,9 @@ Attributes: type, href, name, reason, use-description
 Contents:   <text>?
 
 type: may be one of :
-       link - an external link
+       link - an external link, given by 'href', with its description
+              as 'name'. The link will not be interpreted by the stylesheet
+              and may be any URI.
        swi  - a reference to a SWI whose name (and possibly reason code)
               is given by 'name' and 'reason'.
        sysvar - a reference to a System variable given by 'name'.

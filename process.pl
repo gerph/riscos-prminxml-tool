@@ -62,6 +62,7 @@ my %extensions = (
 
         'index' => undef, # Special value
         'lint' => undef, # Special value
+        'skeleton' => undef, # Special value
     );
 
 
@@ -148,6 +149,36 @@ while (my $f = shift)
         die "Input '$f' is not a file\n";
     }
     push @inputs, $nf;
+}
+
+if ($format eq 'skeleton')
+{
+    if (!defined $outputfile)
+    {
+        die "No output file defined for skeleton\n";
+    }
+
+    if (-f $outputfile)
+    {
+        die "Skeleton output file '$outputfile' already exists - refusing to overwrite\n";
+    }
+    if ($riscos)
+    { $skeleton = "$resourcedir.gerph.skeleton/xml"; }
+    else
+    { $skeleton = "$resourcedir/gerph/skeleton.xml"; }
+    open(IN, "< $skeleton") || die "Cannot read skeleton file '$skeleton': $!\n";
+
+    open(OUT, "> $outputfile") || die "Cannot write to skeleton file '$outputfile': $!\n";
+    while (<IN>)
+    {
+        print OUT;
+    }
+    close(OUT);
+    print "Created $outputfile\n";
+    print "To create HTML from this, use:\n";
+    my $newfile = replaceext($outputfile, "html");
+    print "    $0 -f html -o $newfile $outputfile\n";
+    exit 0;
 }
 
 if (scalar(@inputs) == 0)
@@ -479,6 +510,11 @@ Options:
                     Output file (or directory) to write to
     --outputdir <dir>, -O <dir>
                     Output directory to use
+
+The 'skeleton' format outputs a skeleton document containing examples of some
+of the structures used in the PRM-in-XML format:
+
+    $tool -f skeleton -o skel.xml
 
 The 'html' format is the most common. Usually you would use a command like:
 

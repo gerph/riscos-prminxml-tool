@@ -296,7 +296,7 @@
 <!ELEMENT code (#PCDATA | userreplace | br)*>
 <!ATTLIST code
         type (unknown | pseudo | c | basic | asm | format) "unknown">
-<!ELEMENT declaration (code)*>
+<!ELEMENT declaration (code | extended-example)*>
 <!ATTLIST declaration
         type (unknown | prototype | structure) "unknown">
 

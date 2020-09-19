@@ -1,0 +1,553 @@
+<?xml version="1.0"?>
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.02//EN"
+                            "http://gerph.org/dtd/102/prm.dtd">
+
+<riscos-prm>
+<chapter title="Chapter Title">
+<section title="Introduction">
+<p>
+This section is a brief introduction to what the component does.
+</p>
+
+<subsection title="About this skeleton">
+<p>The examples given in this example are not comprehensive -
+   consult the documentation for more details.</p>
+<p>The sections which contain '-definition' elements usually do not have an introductory
+    text section. Any explanation of how they fit together should be placed into these
+    preceding sections - mostly in the Overview and Technical Details sections.
+</p>
+</subsection>
+
+<p>Each section can have subsections in its body to split things into groups.</p>
+<subsection title="SubSection title">
+    <p />
+    <subsubsection title="SubSubSection title">
+        <p />
+        <category title="Category title">
+            <p>'category' is not a 'sub-sub-sub-section' for two reasons:
+                <list>
+                    <item>It's a bit of a mouthful</item>
+                    <item>It is used in the PRM to break up blocks of text into alternative topics (rather than to introduce new topics which is what the subsections do)</item>
+                    <item>It is horizontally aligned with the body text, which reinforces its use in not breaking into new topics, which the outdented sections do. (Presentational details may change in future presentations of these documents).
+                    </item>
+                </list>
+            </p>
+        </category>
+    </subsubsection>
+</subsection>
+
+</section>
+
+<section title="Overview">
+<p>An overview of how the component is viewed by the outside world;
+   what it does and the manner in which it does it.
+</p>
+<p>Sometimes the Introduction and the Overview are joined to make 'Introduction and
+   Overview'.</p>
+</section>
+
+
+<section title="Terminology">
+<p>
+Any terminology specific to this chapter which is assumed knowledge
+for readers. Most components do not require the terms to be defined.
+</p>
+</section>
+
+
+<section title="Technical details">
+<p>
+Technical details about how to operate the component; this is usually
+the largest section and fleshes out the summaries described above
+and in the following sections with the 'whys', the 'hows' and the
+specifics on the usage. Usually this section includes some of the
+details about data structures.
+</p>
+</section>
+
+<section title="VDU codes">
+<p>
+Lists the VDU codes, using vdu-definition, which are provided by
+this component. This is a specialised section unlikely to be needed
+by most components.
+</p>
+
+<vdu-definition name="1"
+                description="Next character to printer only"
+                >
+<syntax>VDU 1,<userreplace>character</userreplace> </syntax>
+
+<parameter name="character">to send to the printer stream</parameter>
+<use>
+<p>VDU 1 sends the next character to the printer stream only, provided that
+the printer has been enabled by VDU 2. Otherwise, the next character is
+ignored. This enables the printer ignore character, and any other character
+which is not usually passed on by the VDU printer driver, to be sent to the
+printer through the VDU.</p>
+</use>
+
+<example>
+<p>
+<code type="basic">VDU 1,10</code><br />
+Send a linefeed to the printer stream, if enabled
+</p>
+</example>
+</vdu-definition>
+</section>
+
+
+
+<section title="System variables">
+<p>
+Lists the system variables, using sysvar-definition, which are used
+by this component.
+</p>
+<sysvar-definition name="Sys$Variable"
+                   description="What the variable holds">
+<use>
+<p>What the variable holds and its purpose</p>
+</use>
+
+<related>
+<!-- <reference type="command" name="Com" /> -->
+</related>
+</sysvar-definition>
+</section>
+
+
+<section title="Service calls">
+<p>
+Lists the service calls, using service-definition, which are defined
+or used by this component.
+</p>
+
+<service-definition name="MyServiceName"
+                    number="90210"
+                    description="What the service is for">
+<entry>
+ <register-use number="0">Register purpose</register-use>
+</entry>
+
+<exit>
+ <register-use number="0">What is returned</register-use>
+ <register-use number="1" state="preserved" />
+</exit>
+
+<use>
+<p>What the service is for and how it is used.</p>
+
+</use>
+
+<related>
+<!-- <reference type="sysvar" name="Sys$Variable" /> -->
+</related>
+
+</service-definition>
+</section>
+
+
+<section title="SWI calls">
+<p>
+Lists the SWI calls, using swi-definition, which are defined or used
+by this component.
+</p>
+
+<swi-definition name="Module_SWIName"
+                number="90210"
+                description="What the SWI does"
+                irqs="undefined"
+                fiqs="enabled"
+                processor-mode="SVC"
+                re-entrant="no">
+
+<entry>
+ <register-use number="1">Register details</register-use>
+</entry>
+<exit>
+ <register-use number="0">Possible return values:
+  <value-table>
+   <value number="0">Some important value</value>
+   <value number="1">Another value</value>
+  </value-table>
+ </register-use>
+</exit>
+
+<use>
+<p>What this SWI is used for.</p>
+</use>
+
+<related>
+<!-- <reference type="vector" name="BingleV" /> -->
+</related>
+
+</swi-definition>
+</section>
+
+
+<section title="Software vectors">
+<p>
+Lists the vector calls, using vector-definition, which are defined or
+used by this component.
+</p>
+
+<vector-definition name="MyVectorV"
+                   number="99"
+                   description="What the vector is for"
+                   irqs="undefined"
+                   fiqs="enabled"
+                   processor-mode="SVC"
+                   re-entrant="no"
+                   >
+
+<entry>
+<register-use number="0">reason code:
+<p>
+<value-table>
+ <value number="1"><reference type="vector" name="MyVectorV" reason="1" use-description="yes" /></value>
+</value-table>
+</p>
+</register-use>
+</entry>
+
+<exit>
+<register-use number="0">0 (operation complete)</register-use>
+</exit>
+
+<use>
+<p>Why the vector is used, and how it functions. This example shows this vector as a multi-reason operation, for which the sub-reasons are present in other vector-definition elements; this style can be used for most of the 'definition' elements.</p>
+</use>
+
+<related>
+<!-- <reference type="vector" name="BingleV" /> -->
+</related>
+</vector-definition>
+
+<vector-definition name="MyVectorV"
+                   number="99"
+                   reason="1"
+                   reasonname="ReasonName"
+                   description="What this variant of the definition does"
+                   irqs="undefined"
+                   fiqs="enabled"
+                   processor-mode="SVC"
+                   re-entrant="no"
+                   >
+<entry>
+<register-use number="0">1 (reason code)</register-use>
+<register-use number="1">More register explanations</register-use>
+</entry>
+
+<exit>
+<register-use number="0">0 (operation complete)</register-use>
+</exit>
+
+<use>
+    <p>What this reason of the vector is for.</p>
+</use>
+
+<related>
+<reference type="vector" name="MyVectorV" />
+</related>
+</vector-definition>
+
+
+</section>
+
+
+<section title="UpCalls">
+<p>
+Lists the UpCalls, using upcall-definition, which are generated by
+this component.
+</p>
+
+<upcall-definition name="UpcallName"
+                   number="90210"
+                    description="What the upcall means">
+<entry>
+ <register-use number="0">UpCall number</register-use>
+ <register-use number="1">More register definitions</register-use>
+</entry>
+
+<exit>
+ <register-use number="0-6" state="preserved" />
+</exit>
+
+<use>
+<p>How this upcall might be used.</p>
+</use>
+
+<related>
+<reference type="swi" name="Module_MySWI" />
+</related>
+
+</upcall-definition>
+</section>
+
+
+<section title="Entry points">
+<p>
+Lists the Entry-points, using entry-definition, which are used by
+this component. These would usually describe the entry points of
+functions registered with your component.
+</p>
+
+
+<entry-definition name="EntryPointName"
+                  description="What the entry point is for"
+                  irqs="undefined"
+                  fiqs="undefined"
+                  processor-mode="undefined"
+                  re-entrant="undefined">
+<entry>
+ <register-use number="0">Register details</register-use>
+</entry>
+
+<exit>
+ <register-use number="0-6" state="preserved" />
+</exit>
+
+<use>
+<p>How this upcall might be used.</p>
+</use>
+
+<related>
+<reference type="swi" name="Module_Register" />
+</related>
+
+
+</entry-definition>
+
+</section>
+
+
+<section title="Error messages">
+<p>
+Lists the errors, using error-definition, which are reported by this
+component.
+</p>
+
+<error-definition name="MyErrorMessage"
+                  number="90210"
+                  description="Meaning of the error message"
+                  >
+
+<use>
+<p>Why the error is reported.</p>
+</use>
+
+<related>
+<reference type="swi" name="Module_Register" />
+</related>
+
+</error-definition>
+
+</section>
+
+
+
+<section title="Wimp messages">
+<p>
+Lists the Wimp messages, using message-definition, which are generated
+or received by this component.
+</p>
+
+<message-definition name="MyModuleAction"
+                    number="90210"
+                    description="What this message signifies"
+                    broadcast="never"
+                    recorded="may"
+                    source="Tasks"
+                    destination="Filer tasks">
+<message-table>
+  <message offset="20">Extra data in the message block</message>
+</message-table>
+
+<use>
+
+<p>Why this message is sent, and what it means to receive it.</p>
+</use>
+
+<related>
+  <reference type="message" name="MyModuleResponse" />
+  <reference type="command" name="MyModuleCommand" />
+</related>
+
+</message-definition>
+</section>
+
+
+
+<section title="Toolbox methods">
+<p>
+Method calls for Toolbox components, described using
+tboxmethod-definition.
+</p>
+
+<tboxmethod-definition name="Object_MethodName"
+                       number="0"
+                       description="What the method does">
+
+<entry>
+
+<register-use number="0">flags:
+  <bitfield-table>
+   <bit number="0">What bit 0 is for</bit>
+   <bit number="1" state='set'>What bit 1 does when set</bit>
+   <bit number="1" state='clear'>What bit 1 does when clear</bit>
+   <bit number="1-31" state="reserved" />
+  </bitfield-table>
+</register-use>
+<register-use number="1">Object id</register-use>
+<register-use number="2">More register definitions</register-use>
+</entry>
+
+<exit>
+<register-use number="0">Returned registers</register-use>
+</exit>
+
+<use>
+<p>How this method works on the object.</p>
+</use>
+
+<declaration type="prototype">
+<code type="c">
+extern _kernel_oserror *object_methodname ( unsigned int flags, ObjectId obj, int myparameter );
+</code>
+</declaration>
+
+<related>
+  <reference type="tboxmessage" name="Object_DoneSomething" />
+</related>
+
+</tboxmethod-definition>
+</section>
+
+
+<section title="Toolbox events">
+<p>
+Events generated by Toolbox components, described using
+tboxmessage-definition. The element name reflects the derivation (both
+in implementation and documentation from the message-definition block,
+rather than the more usually documented term 'event'.
+</p>
+
+<tboxmessage-definition name="Object_DoneSomething"
+                         number="90210"
+                         description="What this event signifies to the application"
+                >
+
+<message-table>
+<message offset="8">&hex;90210</message>
+<message offset="12">Other data as necessary</message>
+</message-table>
+
+<use>
+
+<p>Why this event is sent to the application</p>
+
+</use>
+
+<declaration type="structure">
+<extended-example type="c">
+typedef struct
+{
+  ToolboxEventHeader hdr;
+  int extra_data;
+} ObjectDoneSomethingEvent;
+</extended-example>
+</declaration>
+
+<related>
+  <reference type="tboxmethod" name="Object_MethodName" />
+</related>
+</tboxmessage-definition>
+
+</section>
+
+
+<section title="*Commands">
+<p>
+Lists the CLI commands, using command-definition, which are provided
+by this component.
+</p>
+
+<command-definition name="CommandName"
+                    description="What the command does">
+
+<syntax>
+  <optional>
+    <switch name="d" />
+  </optional>
+  <userreplace>parameter</userreplace>
+</syntax>
+
+<parameter switch="d">
+ what this switch does.
+</parameter>
+
+<parameter name="parameter">
+ what the parameter means.
+</parameter>
+
+<use>
+<p>What the command is used for.</p>
+</use>
+
+<example>
+<command>*CommandName -d HelloThere!</command>
+</example>
+
+
+<related>
+<reference type="command" name="AnotherCommand" />
+</related>
+
+</command-definition>
+
+</section>
+
+
+<section title="Examples">
+<p>
+Any long examples which describe the overall use of the component's
+APIs.
+</p>
+
+<extended-example type='pseudo'>
+/* Pseudo code doing something or other */
+your_data = <userreplace>get data from user</userreplace>;
+my_buffer = <userreplace>buffer allocation</userreplace>;
+
+ok = copy_buffer(my_buffer, your_data);
+if not ok
+    return None;
+transform(my_buffer);
+return my_buffer;
+</extended-example>
+
+</section>
+
+</chapter>
+
+<!-- MetaData -->
+<meta>
+ <maintainer>
+  <email name="Person's name" address="email@nowhere.com" />
+ </maintainer>
+ <disclaimer>
+    <p>
+        &copy; Your name, the year. Whatever you need to say.
+    </p>
+ </disclaimer>
+
+ <history>
+  <revision number="1" author="Who changed it" date="dd mmm yyyy" title="Initial version">
+    <change>What you did</change>
+  </revision>
+ </history>
+
+ <related>
+    <reference type='link' href="http://some.site/moredocs.html" />
+ </related>
+</meta>
+</riscos-prm>
