@@ -236,7 +236,7 @@ else
         my $out;
         if (defined($outputfile))
         {
-            $out = $outfile;
+            $out = $outputfile;
             if ($riscos)
             {
                 if ($outputfile !~ /[:\$@%\\]/)
