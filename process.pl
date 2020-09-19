@@ -56,6 +56,7 @@ my $index = undef;
 # Extensions to use for each format
 my %extensions = (
         'html' => 'html',
+        'html+xml' => 'html',
         'header' => 'h',
         'command' => 'txt',
         'stronghelp' => undef,
@@ -166,14 +167,8 @@ if ($format eq 'skeleton')
     { $skeleton = "$resourcedir.gerph.skeleton/xml"; }
     else
     { $skeleton = "$resourcedir/gerph/skeleton.xml"; }
-    open(IN, "< $skeleton") || die "Cannot read skeleton file '$skeleton': $!\n";
 
-    open(OUT, "> $outputfile") || die "Cannot write to skeleton file '$outputfile': $!\n";
-    while (<IN>)
-    {
-        print OUT;
-    }
-    close(OUT);
+    copyfile($skeleton, $outputfile, 'skeleton source', 'skeleton output');
     print "Created $outputfile\n";
     print "To create HTML from this, use:\n";
     my $newfile = replaceext($outputfile, "html");
@@ -280,7 +275,12 @@ else
         else
         { $outputdir = '.'; }
     }
+    my $copy_xml = 0;
     my $first = 1;
+    if ($format =~ s/\+xml$//)
+    {
+        $copy_xml = 1;
+    }
     for $input (@inputs) {
         my $xslt = "$catalog_base/$catalog_version/prm-$format.xsl";
         my $out;
@@ -358,6 +358,16 @@ else
             # Any type of failure means that we'll return a failure.
             $rc =1;
         }
+        else
+        {
+            # Success, so see copy the XML, if we need to.
+            if ($copy_xml)
+            {
+                my $outxml = replaceext($out, 'xml');
+                print "  Copying -> $outxml\n";
+                copyfile($input, $outxml);
+            }
+        }
         $first = 0;
     }
 }
@@ -400,18 +410,51 @@ sub replaceext
     if ($riscos)
     {
         if (! $ext)
-        { $f =~ s/^([^\.]+)\/[^\.]+$/$1/; }
+        { $f =~ s/(^|\.)([^\.]+)\/[^\.]+$/$1$2/; }
         else
-        { $f =~ s/^([^\.]+)\/[^\.]+$/$1\/$ext/; }
+        { $f =~ s/(^|\.)([^\.]+)\/[^\.]+$/$1$2\/$ext/; }
     }
     else
     {
         if (! $ext)
-        { $f =~ s/^([^\/]+)\.[^\/]+$/$1/; }
+        { $f =~ s/(^|\/)([^\/]+)\.[^\/]+$/$1$2/; }
         else
-        { $f =~ s/^([^\/]+)\.[^\/]+$/$1.$ext/; }
+        { $f =~ s/(^|\/)([^\/]+)\.[^\/]+$/$1$2.$ext/; }
     }
     return $f;
+}
+
+
+##
+# Copy a file to a new location.
+sub copyfile
+{
+    my ($src, $dst, $srcname, $dstname) = @_;
+    open(IN, "< $src") || die "Cannot read $srcname file '$src': $!\n";
+
+    open(OUT, "> $dst") || die "Cannot write to $dstname file '$dst': $!\n";
+    while (<IN>)
+    {
+        print OUT;
+    }
+    close(OUT);
+    close(IN);
+}
+
+
+##
+# Expand a RISC OS variable on non-RISC OS system.
+sub expand_variable
+{
+    my ($var) = @_;
+    my $uvar = $var;
+    $uvar = uc $uvar;
+    $uvar =~ tr/$/_/;
+    if (defined $ENV{$uvar})
+    {
+        return $ENV{$uvar};
+    }
+    return "<$var>";
 }
 
 
@@ -431,9 +474,14 @@ sub native_filename
 
     if (!$riscos)
     {
-        # We're not on RISC OS so let's see if we can swap the convention to native style
+        # We're not on RISC OS.
         my $rof = $f;
+        # Let's see if we can swap the convention to native style
         $rof =~ tr!./!/.!;
+
+        # And replace any variable expansions.
+        $rof =~ s/<([A-Za-z0-9_\$]+)>/expand_variable($1)/ge;
+
         if (($type eq 'f' && -f $rof) ||
             ($type eq 'd' && -d $rof))
         {
@@ -516,9 +564,15 @@ of the structures used in the PRM-in-XML format:
 
     $tool -f skeleton -o skel.xml
 
-The 'html' format is the most common. Usually you would use a command like:
+The 'html' format is the most common. Usually you would use a command like
+(the '-f html' is actually the default, but is used for completeness):
 
-    $tool -O outputdir mydocs.xml
+    $tool -f html -O outputdir mydocs.xml
+
+The 'html+xml' format is exactly the same but copies the XML file alongside
+the HTML:
+
+    $tool -f html+xml -O outputdir mydocs.xml
 
 The 'header' format outputs a C header file for the constants from the file:
 
