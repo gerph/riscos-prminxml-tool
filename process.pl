@@ -133,16 +133,18 @@ while (my $arg = shift)
     }
 }
 
+
 # See if we can read what the input files are.
 my @inputs = ();
 while (my $f = shift)
 {
-    if (! -f $f)
+    my $nf = native_filename($f);
+    if (!$nf)
     {
         # FIXME: Should we allow non-local file resources? (eg http resources?)
         die "Input '$f' is not a file\n";
     }
-    push @inputs, $f;
+    push @inputs, $nf;
 }
 
 if (scalar(@inputs) == 0)
@@ -154,11 +156,25 @@ if (scalar(@inputs) > 1 && defined($outputfile))
     die "Cannot process multiple outputs to a single output file\n";
 }
 
-if (defined $logdir && ! -d $logdir)
+if (defined $logdir)
 {
-    die "Log directory '$logdir' does not exist\n";
+    my $nlogdir = native_filename($logdir, 'd');
+    if (!$nlogdir)
+    {
+        die "Log directory '$logdir' does not exist\n";
+    }
+    $logdir = $nlogdir;
 }
 
+if (defined $outputdir)
+{
+    my $noutput = native_filename($outputdir, 'd');
+    if (!$noutput)
+    {
+        die "Output directory '$outputdir' does not exist\n";
+    }
+    $outputdir = $noutput;
+}
 
 my $rc = 0;
 
@@ -354,6 +370,51 @@ sub replaceext
         { $f =~ s/^([^\/]+)\.[^\/]+$/$1.$ext/; }
     }
     return $f;
+}
+
+
+##
+# Convert a filename supplied into a native format.
+sub native_filename
+{
+    my ($f, $type) = @_;
+    $type ||= 'f';
+
+    if (($type eq 'f' && -f $f) ||
+        ($type eq 'd' && -d $f))
+    {
+        # Already a native filename; that's fine.
+        return $f;
+    }
+
+    if (!$riscos)
+    {
+        # We're not on RISC OS so let's see if we can swap the convention to native style
+        my $rof = $f;
+        $rof =~ tr!./!/.!;
+        if (($type eq 'f' && -f $rof) ||
+            ($type eq 'd' && -d $rof))
+        {
+            # Just swapping the directory and extensions around appeared to work
+            return $rof;
+        }
+        if ($rof =~ m!/xml$!)
+        {
+            # It ends in .xml so it could have been given a filetype.
+            if (($type eq 'f' && -f "$rof,f80") ||
+                ($type eq 'd' && -d "$rof,f80"))
+            {
+                # Gotcha
+                return "$rof,f80";
+            }
+        }
+    }
+    else
+    {
+        # We're on RISC OS, we might have been given a unix style filename.
+        # FIXME: Not implemented.
+    }
+    return undef;
 }
 
 
