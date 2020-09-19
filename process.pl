@@ -12,6 +12,7 @@
 #
 # Requires:
 #   Native xsltproc (when processing individual files)
+#   Native xmllint (when linting individual files)
 #   Native make (when generating multiple indexed files)
 #
 
@@ -45,6 +46,7 @@ my $format = 'html';
 my $outputdir = undef;
 my $outputfile = undef;
 my $tool = 'xsltproc';
+my $toollint = 'xmllint';
 my $catalog_base = 'http://www.movspclr.co.uk/dtd';
 my $catalog_version = '102';
 my $logdir = undef;
@@ -59,6 +61,7 @@ my %extensions = (
         'stronghelp' => undef,
 
         'index' => undef, # Special value
+        'lint' => undef, # Special value
     );
 
 
@@ -278,7 +281,15 @@ else
             { $out = "$outputdir/" . $leaf; }
         }
         print "Processing $input -> $out\n";
-        my $cmd = "$tool -output \"$out\" $xslt \"$input\"";
+        my $cmd;
+        if ($format eq 'lint')
+        {
+            $cmd = "$toollint --noout --valid \"$input\"";
+        }
+        else
+        {
+            $cmd = "$tool -output \"$out\" $xslt \"$input\"";
+        }
 
         if ($logfile or $logdir)
         {
@@ -485,6 +496,13 @@ through VTranslate:
 The 'stronghelp' format outputs a skeleton StrongHelp directory structure:
 
     $tool -f stronghelp -O outputdir mydocs.xml
+
+The 'lint' format checks that the files supplied follow the DTD defined for
+the files. Whilst the HTML might be generated adequately, it is very useful
+to stick to the intended definition of the format to ensure that it will
+work with future iterations of the conversion.
+
+    $tool -f lint mydocs.xml
 
 The 'index' format is more complex; it can take an 'index.xml' file which
 describes many documents to be included in the structured output documentation:
