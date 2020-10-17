@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 
 <!-- BNF stylesheet
-     
+
      Converts XML BNF descriptions to HTML.
      (c) Justin Fletcher, distribution unlimited.
      Version 1.00 development.
@@ -10,7 +10,7 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/TR/xhtml1/strict"
-                xmlns:bnf="http://www.movspclr.co.uk/dtd/bnf/100/bnf.dtd"
+                xmlns:bnf="http://gerph.org/dtd/bnf/100/bnf.dtd"
                 xmlns:saxon = "http://icl.com/saxon">
 <xsl:output method="html" indent="no"/>
 <xsl:variable name="bnf-italic-names">yes</xsl:variable>
@@ -20,7 +20,7 @@
 <html>
 <xsl:comment>
   Auto-generated using XSLT stylesheet created by Justin Fletcher.
-  
+
   This document was created with the BNF HTML stylesheet updated 21 Apr 2004.
 </xsl:comment>
 <head>
@@ -108,11 +108,11 @@
          <rule-use name="thing" />
         </group>
      Which should effectively be displayed as :
-     
+
        stuff  =  thing / thing
-     
+
      rather than
-       
+
        stuff  =  ( thing / thing )
   -->
  <!-- Note on this magic... we use <prefix>-<suffix> to describe the ends
@@ -123,8 +123,8 @@
     <xsl:text>[ -]</xsl:text>
    </xsl:when>
    <xsl:when test="@repeat != 'true' and
-                   @repeat-min = '' and
-                   @repeat-max = '' and
+                   not(@repeat-min) and
+                   not(@repeat-max) and
                    name(..) = 'rule-def'">
     <!-- Omit any prefix or suffix -->
     <xsl:text>-</xsl:text>
@@ -134,7 +134,7 @@
    </xsl:otherwise>
   </xsl:choose>
  </xsl:variable>
-     
+
  <xsl:value-of select="substring-before($ends, '-')" />
  <xsl:for-each select="saxon:evaluate($bnf-elements)">
   <xsl:apply-templates select="." />
@@ -191,18 +191,18 @@
                   @repeat-min = @repeat-max">
    <xsl:value-of select="@repeat-min" />
   </xsl:when>
-  
+
   <xsl:otherwise>
    <xsl:if test="@repeat-min != ''">
     <xsl:value-of select="@repeat-min" />
    </xsl:if>
-   
+
    <xsl:text>*</xsl:text>
-   
+
    <xsl:if test="@repeat-max != ''">
     <xsl:value-of select="@repeat-max" />
    </xsl:if>
-   
+
   </xsl:otherwise>
  </xsl:choose>
 </xsl:if>

@@ -9,4 +9,10 @@ file.
 Under linux, you should set XML_CATALOG_FILES to point to the root.xml
 file.
 
-The PRM-in-XML format is documented in gerph/Structure.txt.
+Documentation can be found in the docs directory:
+
+    - docs/PRMinXML.txt - documents the elements and usage of the PRM-in-XML format.
+    - docs/BNF.txt - documents the BNF elements which can be used by PRM-in-XML.
+    - docs/HowTo.md - describes how you can use the tool and build documentation.
+
+A skeleton PRM-in-XML document can be found in gerph/skeleton.xml.

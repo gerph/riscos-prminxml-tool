@@ -1,8 +1,6 @@
                       Structure of PRM documentation (1.02)
                       =====================================
 
-(draft document, updated 19 Aug 2020)
-
 Introduction
 ------------
 

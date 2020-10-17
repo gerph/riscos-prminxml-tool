@@ -1,11 +1,10 @@
 <?xml version="1.0" standalone="yes"?>
 
-<!-- RISC OS PRM stylesheet - written by hand; apologies for errors in
-     style.
+<!-- RISC OS PRM stylesheet for HTML.
 
      Converts XML descriptions to HTML.
      (c) Justin Fletcher, distribution unlimited.
-     Version 1.02 development.
+     Version 1.02.
 
      Notes on use:
 
@@ -1080,6 +1079,26 @@
   <dd><xsl:value-of select="@description"/></dd>
 
   <xsl:apply-templates select="use" />
+
+  <xsl:choose>
+   <xsl:when test="count(example) > 0">
+    <!-- I've probably missed an easier way to do this... -->
+    <xsl:choose>
+     <xsl:when test="count(example) = 1">
+      <dt><h5>Example</h5></dt>
+     </xsl:when>
+     <xsl:otherwise>
+      <dt><h5>Examples</h5></dt>
+     </xsl:otherwise>
+    </xsl:choose>
+
+    <xsl:for-each select="example">
+     <dd>
+      <xsl:apply-templates />
+     </dd>
+    </xsl:for-each>
+   </xsl:when>
+  </xsl:choose>
 
   <xsl:apply-templates select="related" />
 

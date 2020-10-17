@@ -4,7 +4,7 @@
      style.
 
      Generates textual command descriptions from documentation
-     (c) RISCOS Ltd, distribution unlimited.
+     (c) Justin Fletcher, distribution unlimited.
      -->
 
 <xsl:stylesheet version="1.0"

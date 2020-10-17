@@ -3,7 +3,7 @@
      Public identifier :
         -//Gerph//DTD BNF syntax 1.00//EN
      System identifier :
-        http://www.movspclr.co.uk/dtd/bnf/100/bnf.dtd
+        http://gerph.org/dtd/bnf/100/bnf.dtd
 
      A DTD for describing BNF syntax specifications for my PRM
      documentation project. Refer to RFC2234 for more details.
@@ -11,6 +11,7 @@
      Written and designed by Justin Fletcher.
 
      Updated 19 Apr 2004.
+     Updated 17 Oct 2020 (new system identifier).
   -->
 
 <!-- Note that NO entities are defined as part of this DTD - they
@@ -24,7 +25,7 @@
 <!-- Some real DTD stuff -->
 <!ELEMENT bnf (rule-def | comment)*>
 <!ATTLIST bnf
-    xmlns CDATA #FIXED "http://www.movspclr.co.uk/dtd/bnf/100/bnf.dtd"
+    xmlns CDATA #FIXED "http://gerph.org/dtd/bnf/100/bnf.dtd"
     caption CDATA #REQUIRED
 >
 

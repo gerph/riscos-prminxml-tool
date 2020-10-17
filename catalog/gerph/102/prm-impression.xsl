@@ -20,7 +20,7 @@
        Content and Index identifiers on styles
        Remove all HTML markup.
      
-     Things that seemt to be impossible:
+     Things that seem to be impossible:
        Indenting based on the current level - you can't just say 'indent
        by 1cm', AFAICT; this affects any of the tables.
 

@@ -1,8 +1,6 @@
                       Structure of BNF syntax description
                       ===================================
 
-(draft document, updated 21 Apr 2004)
-
 Introduction
 ------------
 
@@ -56,7 +54,7 @@ framework upon which the rest of the information exists.
 
 Structurally, the document consists of :
 
- <bnf xmlns="http://www.movspclr.co.uk/dtd/bnf/100/bnf.dtd"
+ <bnf xmlns="http://gerph.org/dtd/bnf/100/bnf.dtd"
       caption="Syntax for files processed by SomethingOrOther">
 
   <rule-def name="Thing">
