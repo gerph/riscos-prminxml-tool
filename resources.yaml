@@ -1,7 +1,7 @@
 ---
 
 exports:
-  build/cross-prminxml:
+  build/cross/prminxml:
     phases: native:install
     path: $ROTOOL_DIR
     files:
