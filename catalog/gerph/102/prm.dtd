@@ -283,7 +283,7 @@
     alias CDATA #IMPLIED
 >
 <!-- Examples -->
-<!ELEMENT example (p | command | br)*>
+<!ELEMENT example (p | command | systemoutput | br)*>
 <!-- An 'extended example' is one which the entire section is the
      example - I'm not at all sure that it's sane -->
 <!ELEMENT extended-example (#PCDATA | %parameters; | %inline; | %link;)*>
