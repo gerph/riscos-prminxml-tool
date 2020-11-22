@@ -270,7 +270,7 @@ if ($format eq 'index')
     # Validate
     print "Validating source\n";
     $logfile = "$logdir/$step-validate.log";
-    build_with_log("make -f \"$makefile\" validate", $logfile, "validate documentation");
+    build_with_log("make -f \"$makefile\" validate", $logfile, "validate documentation", 1);
     $step += 1;
 
     # Report on the validity errors
@@ -616,14 +616,21 @@ sub runcommand
 # @param $cmd       The command to run
 # @param $logfile   Where the logfile should go
 # @param $type      The build type, as a readable string
+# @param $always_print  Always output the logs
 sub build_with_log
 {
-    my ($cmd, $logfile, $type) = @_;
+    my ($cmd, $logfile, $type, $always_print) = @_;
     $cmd = "$cmd > \"$logfile\"";
     $cmd .= " 2>&1" if (!$riscos);
-    if (runcommand($cmd))
+    my $rc = runcommand($cmd);
+    if ($rc || $always_print)
     {
-        print "Failed to $type; log follows:\n";
+        if ($rc) {
+            print "Failed to $type; log follows:\n";
+        }
+        else {
+            print "  Log for $type:\n";
+        }
         if (! open(LOG, "< $logfile"))
         {
             print "ERROR: Cannot read log '$logfile': $!\n";
@@ -643,6 +650,9 @@ sub build_with_log
                 }
             }
         }
+    }
+    if ($rc)
+    {
         die "Unable to $type with: $cmd\n";
     }
 }
