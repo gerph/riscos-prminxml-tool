@@ -72,7 +72,7 @@ my %extensions = (
 while (my $arg = shift)
 {
     #print "Arg = $arg\n";
-    if ($arg =~ /^-(-?)([a-zA-Z]+)/)
+    if ($arg =~ /^-(-?)([a-zA-Z\-]+)/)
     {
         my ($double, $arg) = ($1, $2);
         my @args = ();
@@ -102,6 +102,12 @@ while (my $arg = shift)
             elsif ($arg eq 'debug' or $arg eq 'd')
             {
                 $debug = 1;
+            }
+            elsif ($arg eq 'help-tag')
+            {
+                $helptag = shift;
+                help_tag($helptag);
+                exit(0);
             }
             elsif ($arg eq 'lint')
             {
@@ -712,6 +718,114 @@ sub version
 
 
 ##
+# Print help message for a specific tag (or which ones are supported).
+sub help_tag
+{
+    my ($helptag) = @_;
+    my $dochelp;
+    if ($riscos)
+    {
+        $dochelp = "$resourcedir.docs.PRMinXML/txt";
+    }
+    else
+    {
+        $dochelp = "$resourcedir/docs/PRMinXML.txt";
+    }
+
+    open(IN, "< $dochelp") || die "Cannot find documentation file '$dochelp': $!\n";
+
+    if (!$helptag)
+    {
+        print("Supported tags (with attributes, and child elements):\n");
+    }
+
+    my $show_element = 0;
+    my $current_tag = undef;
+    my $current_attributes = undef;
+    my $current_children = undef;
+    my $last = "\n";
+    while (<IN>)
+    {
+        my $line = $_;
+        if ($last eq "\n" && $_ eq "\n")
+        {
+            $show_element = 0;
+        }
+        elsif (/^Element: +(.*)\n/)
+        {
+            # We've found an element
+            my $tag = $1;
+            my $namespace = undef;
+            if ($tag =~ s/ \(namespace: (.*)\)//)
+            {
+                $namespace = $1;
+            }
+            if ($tag eq $helptag)
+            {
+                $show_element = 1;
+                print;
+            }
+            elsif (!$helptag)
+            {
+                # We're showing all elements
+                $current_tag = $tag;
+                $current_attributes = '<none>';
+                $current_children = '<none>';
+            }
+        }
+        elsif (/^Attributes: +(.*)\n/)
+        {
+            if ($show_element) {
+                print;
+            }
+            elsif (!$helptag)
+            {
+                $current_attributes = $1;
+            }
+        }
+        elsif (/^Children: +(.*)\n/)
+        {
+            if ($show_element) {
+                print;
+            }
+            elsif (!$helptag)
+            {
+                $current_children = $1;
+            }
+        }
+        elsif (/^ *\n/)
+        {
+            if ($show_element) {
+                print;
+            }
+            elsif (!$helptag && $current_tag)
+            {
+                my $attr = join(', ', map { "\@$_" } split(/, */, $current_attributes));
+                $attr =~ s/@<none>/<none>/;
+                printf "  %-24s  %s\n", $current_tag, $attr;
+                if (!$current_children)
+                {
+                    $current_children = '<none>';
+                }
+                #if ($current_children ne '<none>') {
+                    printf "  %24s  %s\n", '', $current_children;
+                #}
+                $current_tag = undef;
+            }
+        }
+        else
+        {
+            if ($show_element) {
+                print;
+            }
+        }
+        $last = $line;
+    }
+    close(IN);
+}
+
+
+##
 # Print help messages.
 sub help
 {
@@ -725,6 +839,7 @@ Options:
 
     --help, -h      This help message
     --version, -V   Show version of this tool
+    --help-tag <tag>    Print help for a specific tag (or list the supported tags)
     --debug, -d     Enable debug
     --lint          Lint files as well as formatting them
     --format <format>, -f <format>
