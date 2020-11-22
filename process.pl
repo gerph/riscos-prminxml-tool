@@ -251,17 +251,45 @@ if ($format eq 'index')
 
     # Build
     print "Building documentation\n";
-    $cmd = "make -f \"$makefile\" > \"$logdir/$step-build.log\"";
-    $cmd .= " 2>&1" if (!$riscos);
-    runcommand($cmd) && die "Unable to build documentation with: $cmd\n";
+    my $logfile;
+    $logfile = "$logdir/$step-build.log";
+    build_with_log("make -f \"$makefile\"", $logfile, "build documentation");
     $step += 1;
 
     # Validate
     print "Validating source\n";
-    $cmd = "make -f \"$makefile\" validate > \"$logdir/$step-validate.log\"";
-    $cmd .= " 2>&1" if (!$riscos);
-    runcommand($cmd) && die "Unable to validating documentation with: $cmd\n";
+    $logfile = "$logdir/$step-validate.log";
+    build_with_log("make -f \"$makefile\" validate", $logfile, "validate documentation");
     $step += 1;
+
+    # Report on the validity errors
+    open(LOG, "< $logfile") || die "Could not read validation log file '$logfile': $!\n";
+    my $nfails = 0;
+    my $infile;
+    my %badfiles;
+    while (<LOG>)
+    {
+        if (/^xmllint.* (\S*)\n?$/)
+        {
+            my $cmd = $_;
+            $infile = $1;
+        }
+        if (/validity error/)
+        {
+            $nfails++;
+            $badfiles{$infile} = ($badfiles{$infile} || 0) + 1;
+        }
+    }
+    close(LOG);
+    if ($nfails > 0)
+    {
+        print "  Validation failures: $nfails\n";
+        print "  Failure breakdown:\n";
+        for $file (sort(keys %badfiles))
+        {
+            printf "  %4i : %s\n", $badfiles{$file}, $file;
+        }
+    }
 
     # If we get to here, we'll clear away the file.
     unlink($tempbase);
@@ -530,6 +558,46 @@ sub runcommand
         delete $ENV{'XML_CATALOG_FILES'};
     }
     return $rc;
+}
+
+
+##
+# Build using a command, with a log which we report on failure.
+#
+# Note: Will die if there is a failure.
+#
+# @param $cmd       The command to run
+# @param $logfile   Where the logfile should go
+# @param $type      The build type, as a readable string
+sub build_with_log
+{
+    my ($cmd, $logfile, $type) = @_;
+    $cmd = "$cmd > \"$logfile\"";
+    $cmd .= " 2>&1" if (!$riscos);
+    if (runcommand($cmd))
+    {
+        print "Failed to $type; log follows:\n";
+        if (! open(LOG, "< $logfile"))
+        {
+            print "ERROR: Cannot read log '$logfile': $!\n";
+        }
+        else
+        {
+            while (<LOG>)
+            {
+                if (/^Processing|xsltproc/)
+                {
+                    # This is a heading block.
+                    print "  $_";
+                }
+                else
+                {
+                    print "    $_";
+                }
+            }
+        }
+        die "Unable to $type with: $cmd\n";
+    }
 }
 
 
