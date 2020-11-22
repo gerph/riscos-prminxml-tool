@@ -41,7 +41,9 @@ else
     }
 }
 
+my $version = 'VERSION';
 my $debug = 0;
+my $lint = 0;
 my $format = 'html';
 my $outputdir = undef;
 my $outputfile = undef;
@@ -92,9 +94,18 @@ while (my $arg = shift)
                 help();
                 exit(0);
             }
+            elsif ($arg eq 'version' or $arg eq 'V')
+            {
+                version();
+                exit(0);
+            }
             elsif ($arg eq 'debug' or $arg eq 'd')
             {
                 $debug = 1;
+            }
+            elsif ($arg eq 'lint')
+            {
+                $lint = 1;
             }
             elsif ($arg eq 'format' or $arg eq 'f')
             {
@@ -216,7 +227,7 @@ if ($format eq 'index')
         die "For 'index' format, only a single file, the index.xml file, should be supplied\n";
     }
 
-    if ($^O eq 'riscos')
+    if ($riscos)
     { $tempbase = "<Wimp\$ScrapDir>.prmlxml-$$"; }
     else
     { $tempbase = "/tmp/prmxml-$$"; }
@@ -263,32 +274,9 @@ if ($format eq 'index')
     $step += 1;
 
     # Report on the validity errors
-    open(LOG, "< $logfile") || die "Could not read validation log file '$logfile': $!\n";
-    my $nfails = 0;
-    my $infile;
-    my %badfiles;
-    while (<LOG>)
+    if (check_lint_log($logfile) && $lint)
     {
-        if (/^xmllint.* (\S*)\n?$/)
-        {
-            my $cmd = $_;
-            $infile = $1;
-        }
-        if (/validity error/)
-        {
-            $nfails++;
-            $badfiles{$infile} = ($badfiles{$infile} || 0) + 1;
-        }
-    }
-    close(LOG);
-    if ($nfails > 0)
-    {
-        print "  Validation failures: $nfails\n";
-        print "  Failure breakdown:\n";
-        for $file (sort(keys %badfiles))
-        {
-            printf "  %4i : %s\n", $badfiles{$file}, $file;
-        }
+        $rc  = 1;
     }
 
     # If we get to here, we'll clear away the file.
@@ -304,14 +292,20 @@ else
         { $outputdir = '.'; }
     }
     my $copy_xml = 0;
-    my $first = 1;
     if ($format =~ s/\+xml$//)
     {
         $copy_xml = 1;
     }
+
+    if ($riscos)
+    { $tempbase = "<Wimp\$ScrapDir>.prmlxml-$$"; }
+    else
+    { $tempbase = "/tmp/prmxml-$$"; }
+
     for $input (@inputs) {
         my $xslt = "$catalog_base/$catalog_version/prm-$format.xsl";
         my $out;
+        my $cmd;
         if (defined($outputfile))
         {
             $out = $outputfile;
@@ -340,20 +334,12 @@ else
             { $out = "$outputdir/" . $leaf; }
         }
         print "Processing $input -> $out\n";
-        my $cmd;
-        if ($format eq 'lint')
-        {
-            $cmd = "$toollint --noout --valid \"$input\"";
-        }
-        else
-        {
-            $cmd = "$tool -output \"$out\" $xslt \"$input\"";
-        }
 
+        my $logtail = '';
+        my $log;
         if ($logfile or $logdir)
         {
             # They want a log file writing out.
-            my $log;
             if ($logfile)
             {
                 $log = $logdir ? "$logdir/$logfile" : "$logfile";
@@ -372,19 +358,78 @@ else
             }
             if ($riscos)
             {
-                $cmd .= " > $log";
+                $logtail = " > $log";
             }
             else
             {
-                $cmd .= " > \"$log\" 2>&1";
+                $logtail = " > \"$log\" 2>&1";
             }
         }
+
+        if ($lint)
+        {
+            # They requested linting first; so we need to check the file
+            $cmd = "$toollint --noout --valid \"$input\"";
+            if ($riscos)
+            {
+                $cmd .= " > $tempbase";
+            }
+            else
+            {
+                $cmd .= " > \"$tempbase\" 2>&1";
+            }
+            my $cmdrc = runcommand($cmd);
+            if ($cmdrc != 0)
+            {
+                # Any lint failure, when requested, is an overall failure
+                $rc = 1;
+                print "  Linting failed with rc=".($cmdrc>>8)."\n";
+            }
+            # Copy the file to any log we have
+            open(IN, "< $tempbase") || die "Cannot read temporary log file '$tempbase': $!\n";
+            if ($log)
+            {
+                # If they specified a log, then everything should go to the log
+                open(OUT, ">> $log") || die "Cannot update log file '$log': $!\n";;
+                while (<IN>)
+                {
+                    print OUT;
+                }
+                close(OUT)
+            }
+            else
+            {
+                # No log supplied, so we should write to the display
+                while (<IN>)
+                {
+                    print;
+                }
+            }
+            close(IN);
+
+            # Report on the validity errors
+            if (check_lint_log($tempbase, $input))
+            {
+                # There were failures, so that means we return a failure from this command
+                $rc = 1;
+            }
+        }
+
+        if ($format eq 'lint')
+        {
+            $cmd = "$toollint --noout --valid \"$input\"";
+        }
+        else
+        {
+            $cmd = "$tool -output \"$out\" $xslt \"$input\"";
+        }
+        $cmd .= $logtail;
 
         my $cmdrc = runcommand($cmd);
         if ($cmdrc != 0)
         {
             # Any type of failure means that we'll return a failure.
-            $rc =1;
+            $rc = 1;
         }
         else
         {
@@ -396,8 +441,10 @@ else
                 copyfile($input, $outxml);
             }
         }
-        $first = 0;
     }
+
+    # If we get to here, we'll clear away the file.
+    unlink($tempbase);
 }
 
 
@@ -602,11 +649,63 @@ sub build_with_log
 
 
 ##
+# Check a log containing lint information.
+#
+# @param $logfile       The file holding the lint information
+# @param $infile        The initial file we are parsing, or undef if none
+#
+# @return:      Number of failures seen
+sub check_lint_log
+{
+    my ($logfile, $infile) = @_;
+    open(LOG, "< $logfile") || die "Could not read validation log file '$logfile': $!\n";
+    my $onefile = defined($infile);
+    my $nfails = 0;
+    my %badfiles;
+    while (<LOG>)
+    {
+        if (/^xmllint.* (\S*)\n?$/)
+        {
+            my $cmd = $_;
+            $infile = $1;
+        }
+        if (/validity error/)
+        {
+            $nfails++;
+            $badfiles{$infile} = ($badfiles{$infile} || 0) + 1;
+        }
+    }
+    close(LOG);
+    if ($nfails > 0)
+    {
+        print "  Validation failures: $nfails\n";
+        if (!$onefile)
+        {
+            print "  Failure breakdown:\n";
+            for $file (sort(keys %badfiles))
+            {
+                printf "  %4i : %s\n", $badfiles{$file}, $file;
+            }
+        }
+    }
+    return $nfails;
+}
+
+
+##
+# Print version messages.
+sub version
+{
+    my $tool = $riscos ? 'prminxml' : 'riscos-prminxml';
+    print "$tool $version\n";
+}
+
+
+##
 # Print help messages.
 sub help
 {
     my $tool = $riscos ? 'prminxml' : 'riscos-prminxml';
-    my $version = 'VERSION';
     print "$tool $version - converts structured documentation to presentation formats\n";
     print "Syntax: $tool <options> <input-files>\n";
 
@@ -615,7 +714,9 @@ sub help
 Options:
 
     --help, -h      This help message
+    --version, -V   Show version of this tool
     --debug, -d     Enable debug
+    --lint          Lint files as well as formatting them
     --format <format>, -f <format>
                     Format to render into ($formats)
     --logfile <file>, -l <file>
@@ -655,12 +756,15 @@ The 'stronghelp' format outputs a skeleton StrongHelp directory structure:
 
     $tool -f stronghelp -O outputdir mydocs.xml
 
-The 'lint' format checks that the files supplied follow the DTD defined for
+The 'lint' format just checks that the files supplied follow the DTD defined for
 the files. Whilst the HTML might be generated adequately, it is very useful
 to stick to the intended definition of the format to ensure that it will
 work with future iterations of the conversion.
 
     $tool -f lint mydocs.xml
+
+Linting can be used as a check in addition to any of the other formatting
+operations by specifying the --lint option.
 
 The 'index' format is more complex; it can take an 'index.xml' file which
 describes many documents to be included in the structured output documentation:
