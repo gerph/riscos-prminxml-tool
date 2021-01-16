@@ -6,7 +6,7 @@ provided here.
 
 Under RISC OS, you should set XML$CatalogFiles to point to the root/xml
 file.
-Under linux, you should set XML_CATALOG_FILES to point to the root.xml
+Under Linux, you should set XML_CATALOG_FILES to point to the root.xml
 file.
 
 Documentation can be found in the docs directory:

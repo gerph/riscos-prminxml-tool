@@ -106,7 +106,7 @@ habit of updating it with details of the changes when the document is released. 
 
 ## Splitting up documentation
 
-In general the RISC OS PRMs are organised into chapters which document an individual module, or a conceptual area. For example, the Window Manager is documented in a single chapter. This is actually quite unweildy, and may be better handled in multiple chapters. Most of the time, though, it will make sense to document a module, command or resource in a single chapter.
+In general the RISC OS PRMs are organised into chapters which document an individual module, or a conceptual area. For example, the Window Manager is documented in a single chapter. This is actually quite unwieldy, and may be better handled in multiple chapters. Most of the time, though, it will make sense to document a module, command or resource in a single chapter.
 
 When it comes to deciding how to separate out documentation, it is useful to consider the sections of the documentation that you will be creating. For example, the 'Technical details' section will be where the concepts and structures will be explained. If this section will cover many different areas, then it may be more appropriate to split the documentation into separate chapters.
 

@@ -102,14 +102,14 @@ Some of the entities that can be used are :
    &nbsp;    no-breaking space, for keeping words together.
    &times;   multiplication symbol. Do not use 'x'.
    &ne;      not equal. Do not use '!=' or '<>'
-   &equiv;   equivilence. Try to get the difference between equality and
-             equivilence corrent.
+   &equiv;   equivalence. Try to get the difference between equality and
+             equivalence correct.
    &le;      less than, or equal to. Do not use '<='.
    &ge;      greater than, or equal to. Do not use '>='.
    &micro;   micro symbol (u with a stick). Do not use 'u'.
    &implies; implies symbol (rightward arrow, generally). Try to avoid if
              possible. Symbols are less obvious than words.
-   &hex;     hex value follows. Try not to use &amp; to preceed hex symbols
+   &hex;     hex value follows. Try not to use &amp; to precede hex symbols
              as this ties the output to RISC OS. Changing the definition
              of &hex; should be all that is required to change the indicator
              of a hex constant from & to 0x, or 16_ or some similar prefix.
@@ -120,7 +120,7 @@ Some of the entities that can be used are :
    &asr;     arithmetic shift right (bitwise, sign extending)
 
 If you require some other entities, please contact me and I'll decide
-whether it might be better to represent things with a differnt form
+whether it might be better to represent things with a different form
 or to accept the entity. Most of the time text is sufficient, but for
 certain applications this will be impossible.
 
@@ -170,9 +170,9 @@ Element:    riscos-prm
 Attributes: doc-group
 Children:   (chapter*), meta
 
-The riscos-prm element is the top level element, within which everthing else
-is contained. 'doc-group' mau be set to some prefix that declares the
-category of the documentation. By default this is set to "RISC OS
+The riscos-prm element is the top level element, within which other PRM
+elements are contained. 'doc-group' may be set to some prefix that declares
+the category of the documentation. By default this is set to "RISC OS
 Programmers Reference Manuals". Because of the diversity of the
 documentation that may be produced, this value can be modified to suit
 the class being documented. Examples of documentation groups might be :
@@ -295,7 +295,7 @@ Children:   (p | category)*
 
 The subsubsection equates to the 'half indented headings' in the PRMs. Like
 the subsection within a section, these describe something within a
-subsection, breaking it into smaller chunks. An SExample of a subsubsection
+subsection, breaking it into smaller chunks. An example of a subsubsection
 might be individual data block descriptions within a 'Data formats'
 subsection.
 
@@ -305,11 +305,11 @@ Attributes: title
 Children:   (p)*
 
 The category equates to the 'text level heading' in the PRMs. A category
-does not truely equate to a subsubsubsection, but is intended to be use to
-provide a destinction between different descriptions within the body of
+does not truly equate to a subsubsubsection, but is intended to be use to
+provide a distinction between different descriptions within the body of
 the text. Categories tend to be used to describe alternate operation under
 different circumstances, or to further describe a particular features
-which it would be clumbersome to explain in the middle of a body of text;
+which it would be cumbersome to explain in the middle of a body of text;
 for example, to define a term and provide examples - this allows it to be
 found more easily via the contents page.
 
@@ -403,11 +403,11 @@ changes might be 'Updates Toaster_Heat API to include a flags word' or
 'Removed restriction in the section documenting buffers that users of the
 buffer hold their breath whilst the operations are performed. This was
 resulting in the death of too many programmers during development'. Both API
-and documentational changes should be noted within the change element.
+and documentation changes should be noted within the change element.
 
 Remember, the only indication of how things have developed is this record.
 If something important is modified, and users of the document must be very
-aware of the change, then drawing attention to it within the change elemnt
+aware of the change, then drawing attention to it within the change element
 is vital.
 
 
@@ -472,7 +472,7 @@ href: should point to the document referenced, if the reference is external
       If the reference is external, but no external document is known to
       exist for it to point to, the href '?' should be used as the first
       character to allow easy searching for these - this will be relied on
-      in the xslt for providing warnings.
+      in the XSLT for providing warnings.
 
 References may have content if they wish to override the default link
 text associated with the element type being referenced. Where possible,
@@ -545,7 +545,7 @@ Technical elements
 
 There are a number of elements that may be used within a normal body of
 text to indicate a technical feature or instance. Examples of these are
-filenames, replacable text, and system variables.
+file names, replaceable text, and system variables.
 
 
 Element:    userinput
@@ -561,7 +561,7 @@ Attributes: <none>
 Children:   <text>
 
 The userreplace is represented in the PRMs by italic text. This element
-describes something that the user is exected to replace with something else,
+describes something that the user is expected to replace with something else,
 or is variable.
 Example: <userreplace>FileSystem</userreplace>_DiscOp
 
@@ -655,7 +655,7 @@ of typewriter text which may be a code fragment.
 This element describes a section of code which can be used to provide
 a particular function either as an example or as a means of describing
 file formats. This element is recommended for example code sections
-for mulit-line examples, where pre-formatted text is expected.
+for multi-line examples, where pre-formatted text is expected.
 
 
 Element:    sysvar
@@ -679,7 +679,7 @@ These are grouped into table/value pairs :
   offset-table & offset
   message-table & message
 
-message-tables are solely for use withing descriptions of Wimp message
+message-tables are solely for use within descriptions of Wimp message
 blocks.
 
 
@@ -774,7 +774,7 @@ An offset is an element of a offset-table, describing the meaning of one or
 more offsets into a structure. Usually it is represented as a component of a
 table comprising the structure offsets. The meaning of the offset is
 described by the content of the element. In the translated version, offsets
-will always be described preceeded by a '+' symbol to indicate that they
+will always be described preceded by a '+' symbol to indicate that they
 are offsets.
 
 
@@ -798,7 +798,7 @@ A message is an element of a message-table, describing the meaning of one or
 more offsets into a message block. Usually it is represented as a component
 of a table comprising the message block. The meaning of the offset is
 described by the content of the element. In the translated version, offsets
-will always be described preceeded by 'R1+' to indicate that they are from
+will always be described preceded by 'R1+' to indicate that they are from
 the message block pointer in register 1 (as supplied to
 Wimp_SendMessage/Wimp_Poll[Idle])
 
@@ -838,8 +838,8 @@ number: (optional) the number of this SWI in hex
 offset: (optional) the offset of this SWI from a given base
 offset-base: (optional) the name of base for this SWI offset
 reason: (optional) the reason code for this SWI, eg 7
-reasonname: (optional) the name of this reason code as an unspaced
-            capitalised name, eg FreeBlock
+reasonname: (optional) the name of this reason code as a capitalised name,
+       without spaces, eg FreeBlock
 description: one sentence description of the function provided by this
              SWI
 internal: 'yes' if this is an internal SWI (all other content will be
@@ -863,8 +863,8 @@ given (for example in index or content pages). The reason and reasonname
 allow the definition to be split into multiple entries, each describing a
 particular reason code of a call. It is expected that reasonname and the swi
 name should be usable as symbol names in a language, so their use is
-restricted to unspaced names, usually capitalised to indicate word breaks,
-and succinctly named to provide a simple to remember and type symbol.
+restricted to names without spaces, usually capitalised to indicate word
+breaks, and succinctly named to provide a simple to remember and type symbol.
 
 The SWI definition may be given as an offset, and an offset-base. This is
 useful when a collection of SWIs are defined which have a common base,
@@ -962,8 +962,8 @@ Children:   (entry?, exit?, use, related?)
 name: the full name of this vector, eg ColourV
 number: the number of this vector in hex
 reason: (optional) the reason code for this vector, eg 2
-reasonname: (optional) the name of this reason code as an unspaced
-            capitalised name, eg FreeBlock
+reasonname: (optional) the name of this reason code as a capitalised name
+      without spaces, eg FreeBlock
 description: one sentence description of the function provided by this
              vector
 internal: 'yes' if this is an internal vector (all other content will be
@@ -989,8 +989,8 @@ Children:   (entry?, exit?, use, related)
 name: the full name of this code, eg FileEntry_MiscOp
 number: the number of this entry, if applicable, in hex
 reason: (optional) the reason code for this entry point, eg 23
-reasonname: (optional) the name of this reason code as an unspaced
-            capitalised name, eg MountAlienSpaceship
+reasonname: (optional) the name of this reason code as a capitalised name
+      without spaces, eg MountAlienSpaceship
 description: one sentence description of the function provided by this
              code
 internal: 'yes' if this is an internal entry (all other content will be
@@ -1017,8 +1017,8 @@ Children:   (entry, exit, use, related)
 name: the name of this service, eg ShutDown
 number: the number of this entry, if applicable, in hex
 reason: (optional) the reason code for this entry point, eg 2
-reasonname: (optional) the name of this reason code as an unspaced
-            capitalised name, eg Intialising
+reasonname: (optional) the name of this reason code as a capitalised name
+            without spaces, eg Intialising
 description: one sentence description of the function provided by this
              service
 internal: 'yes' if this is an internal service (all other content will be
@@ -1038,8 +1038,8 @@ Children:   (entry, exit, use, related)
 name: the name of this UpCall, eg FileModified
 number: the number of this entry, if applicable, in hex
 reason: (optional) the reason code for this entry point, eg 257
-reasonname: (optional) the name of this reason code as an unspaced
-            capitalised name, eg Renaming
+reasonname: (optional) the name of this reason code as a capitalised name
+            without spaces, eg Renaming
 description: one sentence description of the function provided by this
              upcall
 internal: 'yes' if this is an internal upcall (all other content will be
@@ -1128,8 +1128,8 @@ Children:   (entry, exit, use, related)
 name: the name of this service, eg ColourMenu_SetTitle
 number: the number of this entry, if applicable, in hex
 reason: (optional) the reason code for this entry point, eg 2
-reasonname: (optional) the name of this reason code as an unspaced
-            capitalised name, eg Intialising
+reasonname: (optional) the name of this reason code as a capitalised name
+            without spaces, eg Intialising
 description: one sentence description of the function provided by this
              service
 internal: 'yes' if this is an internal service (all other content will be
@@ -1210,8 +1210,8 @@ switch-alias: (optional) alias for the primary switch; usually an
 label: (optional) label name associated with this parameter
 
 The parameter element provides an explanation of the use of a particular
-paramter to a command. A parameter element should be given for each of the
-parameters to a command. Whereas switches are preceeded by a - character,
+parameter to a command. A parameter element should be given for each of the
+parameters to a command. Whereas switches are preceded by a - character,
 labels are not. Labels are discouraged but certain commands may require the
 use of labels rather than switches (for example, IFConfig).
 
@@ -1228,7 +1228,7 @@ Element:    br
 Attributes: <none>
 Children:   <none>
 
-The br element is equivilent to that in HTML. It provides an immediate line
+The br element is equivalent to that in HTML. It provides an immediate line
 break. Unlike a paragraph break, this can be used to divide information
 which is not strictly part of an ordered list, but needs to be separated.
 
@@ -1247,7 +1247,7 @@ caption: a caption describing the image
 The image element refers to a graphical file which cannot be represented
 using the current markup. If a particular image type cannot be represented,
 it the next image form in will be used instead. This allows for the
-possibility of fallback graphic types. All nested image elements should
+possibility of fall back graphic types. All nested image elements should
 represent the same information.
 
 

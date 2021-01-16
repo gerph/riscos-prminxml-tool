@@ -74,8 +74,8 @@ Contents:   (rule-def | comment)*
 
 caption: gives a description to display with the BNF grammar
 
-The bnf element is the top level element, within which everthing else
-is contained. 'caption' should be set to some description of the format
+The bnf element is the top level element, within which other BNF elements
+are contained. 'caption' should be set to some description of the format
 which the BNF defines. This may be used in indexing in the future.
 
 
@@ -87,7 +87,7 @@ name: names the rule which is being defined
 
 The rule-def holds all the information about a rule within the BNF grammar.
 Each rule definition can contain a number of different types of description,
-each of which corresponds to the equivilent structure type in the ABNF
+each of which corresponds to the equivalent structure type in the ABNF
 document (RFC2234). Whilst ABNF defines that rule names are
 case-insensitive, we strongly recommend that lower case names be used for
 rules which are not an implicit part of the ABNF (eg LF, ALPHA, etc).
@@ -137,9 +137,9 @@ Attributes: alternates, optional, <repetition attributes>
 Contents:   (rule-use | group | literal | character)*
 
 optional: may be 'true' or 'false' to indicate that the entire group
-          is optional (equivilent to "repeat-min='0' repeat-max='1'").
+          is optional (equivalent to "repeat-min='0' repeat-max='1'").
 alternates: may be 'true' or 'false' to indicate that all the elements
-          within this group are alternative, rather than sequencial
+          within this group are alternative, rather than sequential
           elements
 
 The group element is used to provide a means for introducing alternative
