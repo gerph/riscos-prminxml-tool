@@ -2227,17 +2227,17 @@
 <!-- EMail -->
 <xsl:template match="email">
 <xsl:if test="@name != ''">
-<xsl:value-of select="@name" />
+<span class='email-name'><xsl:value-of select="@name" /></span>
 <xsl:text> </xsl:text>
 </xsl:if>
 <xsl:text>&lt;</xsl:text>
-<a>
+<span class='email-address'><a>
 <xsl:attribute name="href">
 <xsl:text>mailto:</xsl:text>
 <xsl:value-of select="@address" />
 </xsl:attribute>
 <xsl:value-of select="@address" />
-</a>
+</a></span>
 <xsl:text>&gt;</xsl:text>
 </xsl:template>
 
@@ -2293,49 +2293,48 @@
 
 <!-- Meta Data section -->
 <xsl:template match="meta" mode="tail">
-<dl>
- <dt><h2><a name="metadata">Document information</a></h2></dt>
- <dd>
-  <table summary="Meta information table">
+<footer>
+ <section class='meta'>
+  <h2 name="metadata" id="metadata">Document information</h2>
+  <table class='meta' summary="Meta information table">
    <xsl:if test="count(maintainer) &gt; 0">
-    <tr>
+    <tr class='maintainer'>
      <th align="right" valign="top">Maintainer(s):</th>
      <td><xsl:apply-templates select="maintainer"/></td>
     </tr>
    </xsl:if>
    <xsl:if test="count(history) &gt; 0">
-    <tr>
-     <th align="right" valign="top">History:</th>
+    <tr class='history'>
+     <th>History:</th>
      <td><xsl:apply-templates select="history"/></td>
     </tr>
    </xsl:if>
    <xsl:if test="count(related) &gt; 0">
     <tr>
-     <th align="right" valign="top">Related:</th>
+     <th class='related'>Related:</th>
      <td><xsl:apply-templates select="related" mode="meta" /></td>
     </tr>
    </xsl:if>
    <xsl:if test="count(disclaimer) &gt; 0">
-    <tr>
-     <th align="right" valign="top">Disclaimer:</th>
-     <td align="left"  valign="top">
+    <tr class='disclaimer'>
+     <th>Disclaimer:</th>
+     <td>
       <xsl:apply-templates select="disclaimer"/>
      </td>
     </tr>
    </xsl:if>
   </table>
- </dd>
-</dl>
-<hr />
+  </section>
+ </footer>
 </xsl:template>
 
 <xsl:template match="history">
 <table border="0" summary="Document history">
 <tr>
- <th align="left">Revision</th>
- <th align="left">Date</th>
- <th align="left">Author</th>
- <th align="left">Changes</th>
+ <th>Revision</th>
+ <th>Date</th>
+ <th>Author</th>
+ <th>Changes</th>
 </tr>
 <xsl:apply-templates />
 </table>
@@ -2343,13 +2342,12 @@
 
 <xsl:template match="revision">
 <tr>
- <td valign="top"><xsl:value-of select="@number" /></td>
- <td valign="top" style='white-space: nowrap;'><xsl:value-of select="@date" /></td>
- <td valign="top"><xsl:value-of select="@author" /></td>
- <td valign="top">
+ <td class='revision-number'><xsl:value-of select="@number" /></td>
+ <td class='revision-date'><xsl:value-of select="@date" /></td>
+ <td class='revision-author'><xsl:value-of select="@author" /></td>
+ <td class='revision-detail'>
   <xsl:if test="@title != ''">
-   <strong> <xsl:value-of select="@title" /> </strong>
-   <br />
+   <h5 class='revision-title'> <xsl:value-of select="@title" /> </h5>
   </xsl:if>
   <xsl:if test="count(change) &gt; 0">
    <ul>
