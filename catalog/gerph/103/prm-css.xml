@@ -1,0 +1,187 @@
+<?xml version="1.0" standalone="yes"?>
+<css><![CDATA[
+h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+/* Markers for bad content */
+dd {
+    background-color: pink;
+}
+dl {
+    background-color: lightblue;
+}
+dt {
+    background-color: lightgreen;
+}
+
+header {
+}
+header h1 {
+  margin-top: 0em;
+  padding-top: 0.67em;
+  padding-bottom: 0.67em;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+nav {
+  border-bottom: 2px solid black;
+}
+nav h2 {
+}
+nav > ul {
+  padding-left: 5em;
+}
+
+section.section {
+  border-bottom: 2px solid black;
+}
+section.section > * {
+  margin-left: 5em;
+}
+section.section h2 {
+  margin-left: 0em;
+}
+
+.service-definition, .swi-definition, .command-definition {
+  border-top: 2px solid black;
+}
+.definition-title {
+  margin-top: .75em;
+  margin-bottom: .75em;
+  font-weight: bold;
+  font-size: 1.5em;
+  text-align: right;
+}
+.definition-name {
+  display: block;
+}
+.definition-reason {
+}
+.definition-number {
+  xfont-variant: small-caps;
+}
+.definition-number::before {
+  content: '(';
+}
+.definition-number::after {
+  content: ')';
+}
+.definition-description {
+}
+section.definition {
+  margin-left: 0em;
+  margin-bottom: 1em;
+}
+section.definition::before {
+  display: block;
+  font-weight: bold;
+  font-size: 0.825em;
+  margin-left: -2.5em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+.definition-internal {
+}
+.definition-entry::before {
+  content: 'On entry';
+}
+.definition-exit::before {
+  content: 'On exit';
+}
+.definition-use::before {
+  content: 'Use';
+}
+.definition-syntax::before {
+  content: 'Syntax';
+}
+.definition-parameters::before {
+  content: 'Parameters';
+}
+.definition-examples::before {
+  content: 'Examples';
+}
+.definition-related-apis::before {
+  content: 'Related APIs';
+}
+.definition-related-commands::before {
+  content: 'Related * commandss';
+}
+.definition-related-swis::before {
+  content: 'Related SWIs';
+}
+.definition-related-services::before {
+  content: 'Related services';
+}
+.definition-related-tboxmethods::before {
+  content: 'Related Toolbox methods';
+}
+.definition-related-tboxmessages::before {
+  content: 'Related Toolbox messages';
+}
+.definition-related-vectors::before {
+  content: 'Related vectors';
+}
+.definition-related-upcalls::before {
+  content: 'Related upcalls';
+}
+.definition-related-errors::before {
+  content: 'Related error messages';
+}
+.definition-related-sysvars::before {
+  content: 'Related system variables';
+}
+.definition-related-entries::before {
+  content: 'Related entry points';
+}
+.definition-related-messages::before {
+  content: 'Related messages';
+}
+.definition-related-vdus::before {
+  content: 'Related VDU codes';
+}
+.definition-register {
+ text-align: right;
+}
+
+th, td {
+  vertical-align: top;
+}
+
+footer {
+  padding-bottom: 1em;
+  border-bottom: 2px solid black;
+}
+section.meta > * {
+  margin-left: 2.5em;
+}
+section.meta h2 {
+  margin-left: 0em;
+}
+table.meta tr th {
+  text-align: right;
+}
+table.meta tr.history table th {
+  text-align: left;
+}
+.revision-date {
+  white-space: nowrap;
+}
+h5.revision-title {
+  font-size: 1em;
+  font-weight: bold;
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
+table.meta tr.history ul {
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
+table.meta p {
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
+]]>
+</css>
