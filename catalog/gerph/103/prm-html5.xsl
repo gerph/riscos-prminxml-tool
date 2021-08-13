@@ -48,6 +48,8 @@
 <localdb:definition-names type="vdu"                       prefix="VDU " />
 <localdb:definition-names type="vector" singular="Vector"  prefix="Vector " />
 <localdb:definition-names type="command"                   prefix="*" />
+<localdb:definition-names type="entry"                     prefix="entry-point " />
+<localdb:definition-names type="sysvar"                    prefix="system variable " />
 
 <xsl:output method="xml" indent="no" encoding="utf-8"/>
 
@@ -723,12 +725,10 @@
 <!--     </xsl:if> -->
      </span>
           </div>
+
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
-    <section class='definition definition-internal'>
- <p>This <xsl:value-of select="$defsingular" /> call is for internal
-        use only. You must not use it in your own code.</p>
-    </section>
+  <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
   <dd><xsl:value-of select="@description"/></dd>
@@ -841,8 +841,8 @@
     </h2>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
- <dd><p>This entry-point is for internal use only. You must not use it in
-        your own code.</p></dd></xsl:when>
+  <xsl:call-template name='definition-internal'/>
+ </xsl:when>
  <xsl:otherwise>
   <dd><xsl:value-of select="@description"/></dd>
 
@@ -955,8 +955,8 @@
     </h2>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
- <dd><p>This Message is for internal use only. You must not use it in
-        your own code.</p></dd></xsl:when>
+  <xsl:call-template name='definition-internal'/>
+ </xsl:when>
  <xsl:otherwise>
   <dd><xsl:value-of select="@description"/></dd>
 
@@ -1053,8 +1053,8 @@
     </h2>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
- <dd><p>This System Variable is for internal use only. You must not use it in
-        your own code.</p></dd></xsl:when>
+  <xsl:call-template name="definition-internal"/>
+ </xsl:when>
  <xsl:otherwise>
   <dd><xsl:value-of select="@description"/></dd>
 
@@ -1106,8 +1106,8 @@
  <xsl:when test="@internal = 'yes'">
  <!-- huh ? this message should never come up, 'cos /any/ error might
       occur, so it's best to document 'em. But for consistencies sake... -->
- <dd><p>This Error is for internal use only. You should never see it.
-        </p></dd></xsl:when>
+   <xsl:call-template name='definition-internal'/>
+ </xsl:when>
  <xsl:otherwise>
   <dd><xsl:value-of select="@description"/></dd>
 
@@ -1156,8 +1156,8 @@
     </div>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
- <dd><p>This Service call is for internal use only. You must not use it in
-        your own code.</p></dd></xsl:when>
+  <xsl:call-template name='definition-internal'/>
+ </xsl:when>
  <xsl:otherwise>
   <div class='definition-description'><xsl:value-of select="@description"/></div>
 
@@ -1236,8 +1236,8 @@
     <xsl:text>)</xsl:text></h2>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
- <dd><p>This Method call is for internal use only. You must not use it in
-        your own code.</p></dd></xsl:when>
+  <xsl:call-template name='definition-internal'/>
+ </xsl:when>
  <xsl:otherwise>
   <dd><xsl:value-of select="@description"/></dd>
 
@@ -1325,8 +1325,8 @@
     <xsl:text>)</xsl:text></h2>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
- <dd><p>This UpCall is for internal use only. You must not use it in your
-        own code.</p></dd></xsl:when>
+   <xsl:call-template name='definition-internal'/>
+ </xsl:when>
  <xsl:otherwise>
   <dd><xsl:value-of select="@description"/></dd>
 
@@ -1361,6 +1361,15 @@
  </xsl:otherwise>
 </xsl:choose>
 
+</xsl:template>
+
+<xsl:template name="definition-internal">
+<xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
+<xsl:variable name="defprefix" select="document('')//localdb:definition-names[@type=$deftype]/@prefix" />
+   <section class='definition definition-internal'>
+ <p>This <xsl:value-of select="$defprefix" /> call is for internal
+        use only. You must not use it in your own code.</p>
+    </section>
 </xsl:template>
 
 <xsl:template match="use">
