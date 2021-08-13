@@ -418,18 +418,20 @@
 
 <!-- VDU definitions ? -->
 <xsl:template match="vdu-definition">
-<hr />
-<h2 align="right"><a>
+ <section class='vdu-definition'>
           <xsl:attribute name="name">
            <xsl:text>vdu_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
-          <xsl:text>VDU </xsl:text><xsl:value-of select="@name"/>
-         </a></h2>
-<dd><xsl:value-of select="@description"/></dd>
+        <div class='definition-title'>
+          <span class='definition-name'><xsl:text>VDU </xsl:text><xsl:value-of select="@name"/></span>
+        </div>
 
-<dt><h5>Syntax</h5></dt>
-<dd>
+  <div class='definition-description'>
+    <xsl:value-of select="@description"/>
+  </div>
+
+<section class='definition definition-syntax'>
 <xsl:choose>
  <xsl:when test="count(syntax)=0">
   <code>VDU <xsl:value-of select="@name"/></code>
@@ -445,10 +447,9 @@
   </xsl:for-each>
  </xsl:otherwise>
 </xsl:choose>
-</dd>
+</section>
 
-<dt><h5>Parameters</h5></dt>
-<dd>
+<section class='definition definition-parameters'>
 <xsl:choose>
  <xsl:when test="count(parameter)=0">None</xsl:when>
  <xsl:otherwise>
@@ -482,7 +483,7 @@
   </table>
  </xsl:otherwise>
 </xsl:choose>
-</dd>
+</section>
 
 <xsl:apply-templates select="use" />
 
@@ -491,6 +492,7 @@
 </xsl:call-template>
 
 <xsl:apply-templates select="related" />
+</section>
 
 </xsl:template>
 
