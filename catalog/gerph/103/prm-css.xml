@@ -44,6 +44,12 @@ section.section > * {
 section.section h2 {
   margin-left: 0em;
 }
+section.subsection h4 {
+  margin-left: -5em;
+}
+section.subsubsection h4 {
+  margin-left: -2.5em;
+}
 
 .service-definition, .swi-definition, .command-definition {
   border-top: 2px solid black;

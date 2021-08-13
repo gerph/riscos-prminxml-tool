@@ -259,43 +259,39 @@
 
 <!-- Sub-Sections -->
 <xsl:template match="subsection">
-<dt><h4><a>
+ <section class='subsection'>
+    <h4 class='subsection'>
           <xsl:attribute name="name">
            <xsl:text>subsection_</xsl:text>
            <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
           <xsl:value-of select="@title" />
-         </a></h4></dt>
-<dd>
- <dl>
+         </h4>
   <xsl:for-each select="*">
    <xsl:choose>
     <xsl:when test="local-name(.)='subsubsection'">
      <xsl:apply-templates select="."/>
     </xsl:when>
     <xsl:otherwise>
-     <dd>
       <xsl:apply-templates select="."/>
-     </dd>
     </xsl:otherwise>
    </xsl:choose>
   </xsl:for-each>
- </dl>
-</dd>
+ </section>
 </xsl:template>
 
 <!-- Sub-Sub-Sections -->
 <xsl:template match="subsubsection">
-<dt><h4><a>
+ <section class='subsubsection'>
+    <h4 class='subsubsection'>
           <xsl:attribute name="name">
            <xsl:text>subsubsection_</xsl:text>
            <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
           <xsl:value-of select="@title" />
-         </a></h4></dt>
-<dd>
+         </h4>
  <xsl:apply-templates />
-</dd>
+ </section>
 </xsl:template>
 
 <!-- Category -->
@@ -312,18 +308,17 @@
 
 <!-- command definitions ? -->
 <xsl:template match="command-definition">
-<hr />
-<h2 align="right"><a>
+  <section class='command-definition'>
           <xsl:attribute name="name">
            <xsl:text>command_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
+    <div class='definition-title'>
           <xsl:text>*</xsl:text><xsl:value-of select="@name"/>
-         </a></h2>
-<dd><xsl:value-of select="@description"/></dd>
+    </div>
+    <div class='definition-description'><xsl:value-of select="@description"/></div>
 
-<dt><h5>Syntax</h5></dt>
-<dd>
+    <section class='definition definition-syntax'>
 <xsl:choose>
  <xsl:when test="count(syntax)=0">
   <code>*<xsl:value-of select="@name"/></code>
@@ -339,10 +334,9 @@
   </xsl:for-each>
  </xsl:otherwise>
 </xsl:choose>
-</dd>
+    </section>
 
-<dt><h5>Parameters</h5></dt>
-<dd>
+    <section class='definition definition-parameters'>
 <xsl:choose>
  <xsl:when test="count(parameter)=0">None</xsl:when>
  <xsl:otherwise>
@@ -405,31 +399,22 @@
   </table>
  </xsl:otherwise>
 </xsl:choose>
-</dd>
+    </section>
 
 <xsl:apply-templates select="use" />
 
 <xsl:choose>
  <xsl:when test="count(example) > 0">
-  <!-- I've probably missed an easier way to do this... -->
-  <xsl:choose>
-   <xsl:when test="count(example) = 1">
-    <dt><h5>Example</h5></dt>
-   </xsl:when>
-   <xsl:otherwise>
-    <dt><h5>Examples</h5></dt>
-   </xsl:otherwise>
-  </xsl:choose>
-
+  <section class='definition definition-examples'>
   <xsl:for-each select="example">
-   <dd>
-    <xsl:apply-templates />
-   </dd>
+   <xsl:apply-templates />
   </xsl:for-each>
+  </section>
  </xsl:when>
 </xsl:choose>
 
 <xsl:apply-templates select="related" />
+</section>
 
 </xsl:template>
 
@@ -692,8 +677,11 @@
 <xsl:template match="swi-definition|vector-definition">
 <xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
 <xsl:variable name="defsingular" select="document('')//localdb:definition-names[@type=$deftype]/@singular" />
-<hr />
-<h2 align="right"><a>
+  <section>
+          <xsl:attribute name="class">
+           <xsl:value-of select="$deftype" />
+           <xsl:text>-definition</xsl:text>
+          </xsl:attribute>
           <xsl:attribute name="name">
            <xsl:value-of select="$deftype" />
            <xsl:text>_</xsl:text>
@@ -703,7 +691,9 @@
             <xsl:value-of select="translate(@reason,$title-to-id-src,$title-to-id-map)" />
            </xsl:if>
           </xsl:attribute>
-          <xsl:value-of select="@name"/>
+          <div class='definition-title'>
+            <span class='definition-name'>
+                <xsl:value-of select="@name"/>
 <!--     <xsl:if test="(@reason != '') and (@reasonname != '')"> -->
 <!--      <xsl:text> </xsl:text> -->
 <!--      <xsl:value-of select="@reasonname"/> -->
@@ -712,9 +702,8 @@
      <xsl:text> </xsl:text>
      <xsl:value-of select="@reason"/>
     </xsl:if>
-    </a>
-    <br />
-    (<acronym>
+            </span>
+    <span class='definition-number'>
      <xsl:value-of select="$defsingular" />
      <xsl:choose>
       <xsl:when test="@offset != ''">
@@ -728,16 +717,19 @@
        <xsl:value-of select="@number"/>
       </xsl:otherwise>
      </xsl:choose>
-     </acronym>
 <!--     <xsl:if test="@reason != ''"> -->
 <!--      <xsl:text> reason </xsl:text> -->
 <!--      <xsl:value-of select="@reason"/> -->
 <!--     </xsl:if> -->
-    <xsl:text>)</xsl:text></h2>
+     </span>
+          </div>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
- <dd><p>This <xsl:value-of select="$defsingular" /> call is for internal
-        use only. You must not use it in your own code.</p></dd></xsl:when>
+    <section class='definition definition-internal'>
+ <p>This <xsl:value-of select="$defsingular" /> call is for internal
+        use only. You must not use it in your own code.</p>
+    </section>
+ </xsl:when>
  <xsl:otherwise>
   <dd><xsl:value-of select="@description"/></dd>
 
@@ -811,6 +803,7 @@
 
  </xsl:otherwise>
 </xsl:choose>
+</section>
 
 </xsl:template>
 
@@ -1130,7 +1123,7 @@
 
 <!-- Service definition -->
 <xsl:template match="service-definition">
-  <section class='service-definition' name="service_screenblanked" id="service_screenblanked">
+  <section class='service-definition'>
           <xsl:attribute name="name">
            <xsl:text>service_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
