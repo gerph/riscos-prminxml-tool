@@ -1018,18 +1018,16 @@
 
 <!-- Error definition -->
 <xsl:template match="error-definition">
-<hr />
-<h2 align="right"><a>
+  <section class='error-definition'>
           <xsl:attribute name="name">
            <xsl:text>error_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
-          <xsl:text>Error_</xsl:text><xsl:value-of select="@name"/>
-    </a>
-    <br />
-    (<acronym>Error &amp;<xsl:value-of select="@number"/></acronym>
-    <xsl:text>)</xsl:text>
-    </h2>
+        <div class='definition-title'>
+          <span class='definition-name'><xsl:text>Error_</xsl:text><xsl:value-of select="@name"/></span>
+          <span class='definition-number'>Error &amp;<xsl:value-of select="@number"/></span>
+        </div>
+
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
  <!-- huh ? this message should never come up, 'cos /any/ error might
@@ -1037,7 +1035,9 @@
    <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <dd><xsl:value-of select="@description"/></dd>
+  <div class='definition-description'>
+  <xsl:value-of select="@description"/>
+  </div>
 
   <xsl:apply-templates select="use" />
 
@@ -1045,6 +1045,7 @@
 
  </xsl:otherwise>
 </xsl:choose>
+</section>
 
 </xsl:template>
 
