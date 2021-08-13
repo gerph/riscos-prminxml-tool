@@ -407,15 +407,9 @@
 
 <xsl:apply-templates select="use" />
 
-<xsl:choose>
- <xsl:when test="count(example) > 0">
-  <section class='definition definition-examples'>
-  <xsl:for-each select="example">
-   <xsl:apply-templates />
-  </xsl:for-each>
-  </section>
- </xsl:when>
-</xsl:choose>
+  <xsl:call-template name="examples-block">
+   <xsl:with-param name="where" select="." />
+  </xsl:call-template>
 
 <xsl:apply-templates select="related" />
 </section>
@@ -492,25 +486,9 @@
 
 <xsl:apply-templates select="use" />
 
-<xsl:choose>
- <xsl:when test="count(example) > 0">
-  <!-- I've probably missed an easier way to do this... -->
-  <xsl:choose>
-   <xsl:when test="count(example) = 1">
-    <dt><h5>Example</h5></dt>
-   </xsl:when>
-   <xsl:otherwise>
-    <dt><h5>Examples</h5></dt>
-   </xsl:otherwise>
-  </xsl:choose>
-
-  <xsl:for-each select="example">
-   <dd>
-    <xsl:apply-templates />
-   </dd>
-  </xsl:for-each>
- </xsl:when>
-</xsl:choose>
+<xsl:call-template name="examples-block">
+ <xsl:with-param name="where" select="." />
+</xsl:call-template>
 
 <xsl:apply-templates select="related" />
 
@@ -779,25 +757,9 @@
 
   <xsl:apply-templates select="use" />
 
-  <xsl:choose>
-   <xsl:when test="count(example) > 0">
-    <!-- I've probably missed an easier way to do this... -->
-    <xsl:choose>
-     <xsl:when test="count(example) = 1">
-      <dt><h5>Example</h5></dt>
-     </xsl:when>
-     <xsl:otherwise>
-      <dt><h5>Examples</h5></dt>
-     </xsl:otherwise>
-    </xsl:choose>
-
-    <xsl:for-each select="example">
-     <dd>
-      <xsl:apply-templates />
-     </dd>
-    </xsl:for-each>
-   </xsl:when>
-  </xsl:choose>
+  <xsl:call-template name="examples-block">
+   <xsl:with-param name="where" select="." />
+  </xsl:call-template>
 
   <xsl:apply-templates select="declaration" />
 
@@ -892,25 +854,9 @@
 
   <xsl:apply-templates select="use" />
 
-  <xsl:choose>
-   <xsl:when test="count(example) > 0">
-    <!-- I've probably missed an easier way to do this... -->
-    <xsl:choose>
-     <xsl:when test="count(example) = 1">
-      <dt><h5>Example</h5></dt>
-     </xsl:when>
-     <xsl:otherwise>
-      <dt><h5>Examples</h5></dt>
-     </xsl:otherwise>
-    </xsl:choose>
-
-    <xsl:for-each select="example">
-     <dd>
-      <xsl:apply-templates />
-     </dd>
-    </xsl:for-each>
-   </xsl:when>
-  </xsl:choose>
+  <xsl:call-template name="examples-block">
+   <xsl:with-param name="where" select="." />
+  </xsl:call-template>
 
   <xsl:apply-templates select="related" />
 
@@ -1062,25 +1008,9 @@
 
   <xsl:apply-templates select="use" />
 
-  <xsl:choose>
-   <xsl:when test="count(example) > 0">
-    <!-- I've probably missed an easier way to do this... -->
-    <xsl:choose>
-     <xsl:when test="count(example) = 1">
-      <dt><h5>Example</h5></dt>
-     </xsl:when>
-     <xsl:otherwise>
-      <dt><h5>Examples</h5></dt>
-     </xsl:otherwise>
-    </xsl:choose>
-
-    <xsl:for-each select="example">
-     <dd>
-      <xsl:apply-templates />
-     </dd>
-    </xsl:for-each>
-   </xsl:when>
-  </xsl:choose>
+  <xsl:call-template name="examples-block">
+   <xsl:with-param name="where" select="." />
+  </xsl:call-template>
 
   <xsl:apply-templates select="related" />
 
@@ -1187,16 +1117,9 @@
 
   <xsl:apply-templates select="use" />
 
-  <xsl:choose>
-   <xsl:when test="count(example) > 0">
-    <section class='definition definition-examples'>
-
-    <xsl:for-each select="example">
-     <xsl:apply-templates />
-    </xsl:for-each>
-    </section>
-   </xsl:when>
-  </xsl:choose>
+  <xsl:call-template name="examples-block">
+   <xsl:with-param name="where" select="." />
+  </xsl:call-template>
 
   <xsl:apply-templates select="related" />
 
@@ -1269,25 +1192,9 @@
 
   <xsl:apply-templates select="use" />
 
-  <xsl:choose>
-   <xsl:when test="count(example) > 0">
-    <!-- I've probably missed an easier way to do this... -->
-    <xsl:choose>
-     <xsl:when test="count(example) = 1">
-      <dt><h5>Example</h5></dt>
-     </xsl:when>
-     <xsl:otherwise>
-      <dt><h5>Examples</h5></dt>
-     </xsl:otherwise>
-    </xsl:choose>
-
-    <xsl:for-each select="example">
-     <dd>
-      <xsl:apply-templates />
-     </dd>
-    </xsl:for-each>
-   </xsl:when>
-  </xsl:choose>
+  <xsl:call-template name="examples-block">
+   <xsl:with-param name="where" select="." />
+  </xsl:call-template>
 
   <xsl:apply-templates select="related" />
 
@@ -1378,6 +1285,19 @@
 <section class='definition definition-use'>
  <xsl:apply-templates />
 </section>
+</xsl:template>
+
+<xsl:template name="examples-block">
+ <xsl:param name="where" />
+ <xsl:choose>
+  <xsl:when test="count(example) > 0">
+   <section class='definition definition-examples'>
+    <xsl:for-each select="example">
+     <xsl:apply-templates />
+    </xsl:for-each>
+   </section>
+  </xsl:when>
+ </xsl:choose>
 </xsl:template>
 
 <!-- Register -->
