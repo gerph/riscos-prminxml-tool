@@ -986,21 +986,22 @@
 
 <!-- System Variable definition -->
 <xsl:template match="sysvar-definition">
-<hr />
-<h2 align="right"><a>
+  <section class='sysvar-definition'>
           <xsl:attribute name="name">
            <xsl:text>sysvar_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
-          <xsl:value-of select="@name"/>
-    </a>
-    </h2>
+        <div class='definition-title'>
+          <span class='definition-name'><xsl:value-of select="@name"/></span>
+        </div>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
   <xsl:call-template name="definition-internal"/>
  </xsl:when>
  <xsl:otherwise>
-  <dd><xsl:value-of select="@description"/></dd>
+  <div class='definition-description'>
+  <xsl:value-of select="@description"/>
+  </div>
 
   <xsl:apply-templates select="use" />
 
@@ -1012,7 +1013,7 @@
 
  </xsl:otherwise>
 </xsl:choose>
-
+</section>
 </xsl:template>
 
 
