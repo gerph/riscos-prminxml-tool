@@ -645,12 +645,6 @@
 </xsl:choose>
 </xsl:template>
 
-<xsl:template match="use">
-<dt><h5>Use</h5></dt>
-<dd>
- <xsl:apply-templates />
-</dd>
-</xsl:template>
 
 <!-- SWI definition -->
 <!-- A SWI definition can have an offset defined, instead of a number, which is used for those cases
