@@ -298,14 +298,16 @@
 
 <!-- Category -->
 <xsl:template match="category">
-<h5><b><a>
+<section class='category'>
+<h5>
           <xsl:attribute name="name">
            <xsl:text>category_</xsl:text>
            <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
           <xsl:value-of select="@title" />
-         </a></b></h5>
+         </h5>
 <xsl:apply-templates />
+</section>
 </xsl:template>
 
 <!-- command definitions ? -->
