@@ -46,18 +46,18 @@
      'separator' is used when describing the syntax of the definition.
      'name' is used when describing what the definition is.
   -->
-<localdb:definition-names type="swi" singular="SWI"        prefix="SWI "    name="SWI"/>
-<localdb:definition-names type="vdu"                       prefix="VDU "    name="VDU code"         separator=","/>
-<localdb:definition-names type="vector" singular="Vector"  prefix="Vector " name="vector"/>
-<localdb:definition-names type="command"                   prefix="*"       name="* command" />
-<localdb:definition-names type="entry"                     prefix=""        name="entry-point " />
-<localdb:definition-names type="sysvar"                    prefix=""        name="system variable " />
-<localdb:definition-names type="service"                   prefix=""        name="service call" />
-<localdb:definition-names type="upcall"                    prefix=""        name="upcall" />
-<localdb:definition-names type="error"                     prefix=""        name="error message" />
-<localdb:definition-names type="message"                   prefix=""        name="message" />
-<localdb:definition-names type="tboxmessage"               prefix=""        name="Toolbox message" />
-<localdb:definition-names type="tboxmethod"                prefix=""        name="Toolbox method" />
+<localdb:definition-names type="swi" singular="SWI"             prefix="SWI "    name="SWI"/>
+<localdb:definition-names type="vdu"                            prefix="VDU "    name="VDU code"         separator=","/>
+<localdb:definition-names type="vector" singular="Vector"       prefix="Vector " name="vector"/>
+<localdb:definition-names type="command"                        prefix="*"       name="* command" />
+<localdb:definition-names type="entry" singular="Entry point"   prefix=""        name="entry-point " />
+<localdb:definition-names type="sysvar"                         prefix=""        name="system variable " />
+<localdb:definition-names type="service"                        prefix=""        name="service call" />
+<localdb:definition-names type="upcall"                         prefix=""        name="upcall" />
+<localdb:definition-names type="error"                          prefix=""        name="error message" />
+<localdb:definition-names type="message"                        prefix=""        name="message" />
+<localdb:definition-names type="tboxmessage"                    prefix=""        name="Toolbox message" />
+<localdb:definition-names type="tboxmethod"                     prefix=""        name="Toolbox method" />
 
 <xsl:output method="xml" indent="no" encoding="utf-8"/>
 
@@ -610,8 +610,7 @@
 
 <!-- Entry-point definition -->
 <xsl:template match="entry-definition">
-<hr />
-<h2 align="right"><a>
+    <section class='entry-definition'>
           <xsl:attribute name="id">
            <xsl:text>entry_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
@@ -620,6 +619,8 @@
             <xsl:value-of select="translate(@reason,$title-to-id-src,$title-to-id-map)" />
            </xsl:if>
           </xsl:attribute>
+          <div class='definition-title'>
+          <span class='definition-name'>
           <xsl:value-of select="@name"/>
 <!--     <xsl:if test="(@reason != '') and (@reasonname != '')"> -->
 <!--      <xsl:text> </xsl:text> -->
@@ -664,6 +665,7 @@
 
  </xsl:otherwise>
 </xsl:choose>
+</section>
 
 </xsl:template>
 

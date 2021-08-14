@@ -51,7 +51,7 @@ section.subsubsection h4 {
   margin-left: -2.5em;
 }
 
-.service-definition, .swi-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition {
+.service-definition, .swi-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
   border-top: 2px solid black;
 }
 .definition-title {
