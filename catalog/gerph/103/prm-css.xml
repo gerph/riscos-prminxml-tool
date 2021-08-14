@@ -127,6 +127,9 @@ section.definition::before {
 .definition-message-delivery::before {
   content: 'Delivery';
 }
+.definition-declarations::before {
+  content: 'Declarations';
+}
 .definition-examples::before {
   content: 'Examples';
 }
@@ -170,7 +173,7 @@ section.definition::before {
   content: 'Related VDU codes';
 }
 .definition-register {
-text-align: right;
+  text-align: right;
 }
 .definition-syntax-line {
   font-family: monospace;

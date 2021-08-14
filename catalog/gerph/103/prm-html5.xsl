@@ -394,10 +394,10 @@
     <!-- No declarations, so no need to do anything -->
  </xsl:when>
  <xsl:otherwise>
-  <dt><h5>Declarations<!-- (<xsl:value-of select='@type'>)--></h5></dt>
-  <dd>
-      <xsl:apply-templates/>
-  </dd>
+  <section class='definition definition-declarations'>
+    <!-- (<xsl:value-of select='@type'>)-->
+    <xsl:apply-templates/>
+  </section>
  </xsl:otherwise>
 </xsl:choose>
 </xsl:template>
