@@ -43,13 +43,20 @@
 <!-- 'singular' is used to prefix the *-definition element (only applied
      to certain elements at present).
      'prefix' is used on prefix titles and references.
+     'name' is used when describing what the definition is.
   -->
-<localdb:definition-names type="swi" singular="SWI"        prefix="SWI " />
-<localdb:definition-names type="vdu"                       prefix="VDU " />
-<localdb:definition-names type="vector" singular="Vector"  prefix="Vector " />
-<localdb:definition-names type="command"                   prefix="*" />
-<localdb:definition-names type="entry"                     prefix="entry-point " />
-<localdb:definition-names type="sysvar"                    prefix="system variable " />
+<localdb:definition-names type="swi" singular="SWI"        prefix="SWI "    name="SWI"/>
+<localdb:definition-names type="vdu"                       prefix="VDU "    name="VDU code"/>
+<localdb:definition-names type="vector" singular="Vector"  prefix="Vector " name="vector"/>
+<localdb:definition-names type="command"                   prefix="*"       name="* command" />
+<localdb:definition-names type="entry"                     prefix=""        name="entry-point " />
+<localdb:definition-names type="sysvar"                    prefix=""        name="system variable " />
+<localdb:definition-names type="service"                   prefix=""        name="service call" />
+<localdb:definition-names type="upcall"                    prefix=""        name="upcall" />
+<localdb:definition-names type="error"                     prefix=""        name="error message" />
+<localdb:definition-names type="message"                   prefix=""        name="message" />
+<localdb:definition-names type="tboxmessage"               prefix=""        name="Toolbox message" />
+<localdb:definition-names type="tboxmethod"                prefix=""        name="Toolbox method" />
 
 <xsl:output method="xml" indent="no" encoding="utf-8"/>
 
@@ -240,7 +247,7 @@
 <xsl:template match="section">
  <section class='section'>
     <h2 class='section'>
-          <xsl:attribute name="name">
+          <xsl:attribute name="id">
            <xsl:text>section_</xsl:text>
            <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
@@ -263,7 +270,7 @@
 <xsl:template match="subsection">
  <section class='subsection'>
     <h4 class='subsection'>
-          <xsl:attribute name="name">
+          <xsl:attribute name="id">
            <xsl:text>subsection_</xsl:text>
            <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
@@ -286,7 +293,7 @@
 <xsl:template match="subsubsection">
  <section class='subsubsection'>
     <h4 class='subsubsection'>
-          <xsl:attribute name="name">
+          <xsl:attribute name="id">
            <xsl:text>subsubsection_</xsl:text>
            <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
@@ -300,7 +307,7 @@
 <xsl:template match="category">
 <section class='category'>
 <h5>
-          <xsl:attribute name="name">
+          <xsl:attribute name="id">
            <xsl:text>category_</xsl:text>
            <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
@@ -313,7 +320,7 @@
 <!-- command definitions ? -->
 <xsl:template match="command-definition">
   <section class='command-definition'>
-          <xsl:attribute name="name">
+          <xsl:attribute name="id">
            <xsl:text>command_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
@@ -419,7 +426,7 @@
 <!-- VDU definitions ? -->
 <xsl:template match="vdu-definition">
  <section class='vdu-definition'>
-          <xsl:attribute name="name">
+          <xsl:attribute name="id">
            <xsl:text>vdu_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
@@ -660,7 +667,7 @@
            <xsl:value-of select="$deftype" />
            <xsl:text>-definition</xsl:text>
           </xsl:attribute>
-          <xsl:attribute name="name">
+          <xsl:attribute name="id">
            <xsl:value-of select="$deftype" />
            <xsl:text>_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
@@ -771,7 +778,7 @@
 <xsl:template match="entry-definition">
 <hr />
 <h2 align="right"><a>
-          <xsl:attribute name="name">
+          <xsl:attribute name="id">
            <xsl:text>entry_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
            <xsl:if test="@reason!=''">
@@ -868,7 +875,7 @@
 <xsl:variable name="defsingular" select="document('')//localdb:definition-names[@type=$deftype]/@singular" />
 <hr />
 <h2 align="right"><a>
-          <xsl:attribute name="name">
+          <xsl:attribute name="id">
            <xsl:value-of select="$deftype" />
            <xsl:text>_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
@@ -987,7 +994,7 @@
 <!-- System Variable definition -->
 <xsl:template match="sysvar-definition">
   <section class='sysvar-definition'>
-          <xsl:attribute name="name">
+          <xsl:attribute name="id">
            <xsl:text>sysvar_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
@@ -1020,7 +1027,7 @@
 <!-- Error definition -->
 <xsl:template match="error-definition">
   <section class='error-definition'>
-          <xsl:attribute name="name">
+          <xsl:attribute name="id">
            <xsl:text>error_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
@@ -1054,7 +1061,7 @@
 <!-- Service definition -->
 <xsl:template match="service-definition">
   <section class='service-definition'>
-          <xsl:attribute name="name">
+          <xsl:attribute name="id">
            <xsl:text>service_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
            <xsl:if test="@reason!=''">
@@ -1132,7 +1139,7 @@
 <xsl:template match="tboxmethod-definition">
 <hr />
 <h2 align="right"><a>
-          <xsl:attribute name="name">
+          <xsl:attribute name="id">
            <xsl:text>tboxmethod_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
            <xsl:if test="@reason!=''">
@@ -1272,9 +1279,9 @@
 
 <xsl:template name="definition-internal">
 <xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
-<xsl:variable name="defprefix" select="document('')//localdb:definition-names[@type=$deftype]/@prefix" />
+<xsl:variable name="defname" select="document('')//localdb:definition-names[@type=$deftype]/@name" />
    <section class='definition definition-internal'>
- <p>This <xsl:value-of select="$defprefix" /> call is for internal
+ <p>This <xsl:value-of select="$defname" /> call is for internal
         use only. You must not use it in your own code.</p>
     </section>
 </xsl:template>
