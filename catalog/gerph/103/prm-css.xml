@@ -97,6 +97,15 @@ section.definition::before {
 .definition-exit::before {
   content: 'On exit';
 }
+.definition-interrupts::before {
+  content: 'Interrupts';
+}
+.definition-processor::before {
+  content: 'Processor mode';
+}
+.definition-reentrancy::before {
+  content: 'Re-entrancy';
+}
 .definition-use::before {
   content: 'Use';
 }

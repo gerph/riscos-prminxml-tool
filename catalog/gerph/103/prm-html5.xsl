@@ -588,23 +588,9 @@
   <xsl:call-template name='definition-entry'/>
   <xsl:call-template name='definition-exit'/>
 
-  <dt><h5>Interrupts</h5></dt>
-  <dd>Interrupts are <xsl:value-of select="@irqs" /><br />
-      Fast interrupts are <xsl:value-of select="@fiqs"/></dd>
-
-  <dt><h5>Processor mode</h5></dt>
-  <dd>Processor is in <xsl:value-of select="@processor-mode"/> mode
-  </dd>
-
-  <dt><h5>Re-entrancy</h5></dt>
-  <dd>
-  <xsl:choose>
-    <xsl:when test='@re-entrant="yes"'><xsl:value-of select="$defsingular" /> is re-entrant</xsl:when>
-    <xsl:when test='@re-entrant="undefined"'>Not defined</xsl:when>
-    <xsl:when test='@re-entrant="no"'><xsl:value-of select="$defsingular" /> is not re-entrant</xsl:when>
-    <xsl:otherwise><xsl:value-of select="@re-entrant"/></xsl:otherwise>
-  </xsl:choose>
-  </dd>
+  <xsl:call-template name='definition-interrupts'/>
+  <xsl:call-template name='definition-processor'/>
+  <xsl:call-template name='definition-reentrancy'/>
 
   <xsl:apply-templates select="use" />
 
@@ -664,23 +650,9 @@
   <xsl:call-template name='definition-entry'/>
   <xsl:call-template name='definition-exit'/>
 
-  <dt><h5>Interrupts</h5></dt>
-  <dd>Interrupts are <xsl:value-of select="@irqs" /><br />
-      Fast interrupts are <xsl:value-of select="@fiqs"/></dd>
-
-  <dt><h5>Processor mode</h5></dt>
-  <dd>Processor is in <xsl:value-of select="@processor-mode"/> mode
-  </dd>
-
-  <dt><h5>Re-entrancy</h5></dt>
-  <dd>
-  <xsl:choose>
-    <xsl:when test='@re-entrant="yes"'>Entry-point is re-entrant</xsl:when>
-    <xsl:when test='@re-entrant="undefined"'>Not defined</xsl:when>
-    <xsl:when test='@re-entrant="no"'>Entry-point is not re-entrant</xsl:when>
-    <xsl:otherwise><xsl:value-of select="@re-entrant"/></xsl:otherwise>
-  </xsl:choose>
-  </dd>
+  <xsl:call-template name='definition-interrupts'/>
+  <xsl:call-template name='definition-processor'/>
+  <xsl:call-template name='definition-reentrancy'/>
 
   <xsl:apply-templates select="use" />
 
@@ -1084,6 +1056,36 @@
     <xsl:apply-templates select="exit"/>
     </table>
    </xsl:otherwise>
+  </xsl:choose>
+  </section>
+</xsl:template>
+
+<xsl:template name="definition-interrupts">
+  <section class="definition definition-interrupts">
+   <div class="definition-interrupts-irqs">
+    Interrupts are <xsl:value-of select="@irqs" />
+   </div>
+   <div class="definition-interrupts-fiqs">
+      Fast interrupts are <xsl:value-of select="@fiqs"/>
+   </div>
+  </section>
+</xsl:template>
+
+<xsl:template name="definition-processor">
+  <section class="definition definition-processor">
+    Processor is in <xsl:value-of select="@processor-mode"/> mode
+  </section>
+</xsl:template>
+
+<xsl:template name="definition-reentrancy">
+<xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
+<xsl:variable name="defsingular" select="document('')//localdb:definition-names[@type=$deftype]/@singular" />
+  <section class="definition definition-reentrancy">
+  <xsl:choose>
+    <xsl:when test='@re-entrant="yes"'><xsl:value-of select="$defsingular" /> is re-entrant</xsl:when>
+    <xsl:when test='@re-entrant="undefined"'>Not defined</xsl:when>
+    <xsl:when test='@re-entrant="no"'><xsl:value-of select="$defsingular" /> is not re-entrant</xsl:when>
+    <xsl:otherwise><xsl:value-of select="@re-entrant"/></xsl:otherwise>
   </xsl:choose>
   </section>
 </xsl:template>
