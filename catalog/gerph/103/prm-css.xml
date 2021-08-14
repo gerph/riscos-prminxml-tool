@@ -149,7 +149,10 @@ section.definition::before {
   content: 'Related VDU codes';
 }
 .definition-register {
- text-align: right;
+text-align: right;
+}
+.definition-syntax-line {
+  font-family: monospace;
 }
 
 th, td {

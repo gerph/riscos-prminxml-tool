@@ -456,6 +456,7 @@
  <xsl:otherwise>
   <xsl:for-each select="syntax">
    <code>
+    VDU <xsl:value-of select="../@name"/><xsl:if test="count(*)!=0">,</xsl:if>
     <xsl:apply-templates/>
    </code>
    <xsl:if test="position() != last()">

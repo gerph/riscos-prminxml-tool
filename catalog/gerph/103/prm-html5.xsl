@@ -42,11 +42,12 @@
 
 <!-- 'singular' is used to prefix the *-definition element (only applied
      to certain elements at present).
-     'prefix' is used on prefix titles and references.
+     'prefix' is used on heading titles, syntaxes and references.
+     'separator' is used when describing the syntax of the definition.
      'name' is used when describing what the definition is.
   -->
 <localdb:definition-names type="swi" singular="SWI"        prefix="SWI "    name="SWI"/>
-<localdb:definition-names type="vdu"                       prefix="VDU "    name="VDU code"/>
+<localdb:definition-names type="vdu"                       prefix="VDU "    name="VDU code"         separator=","/>
 <localdb:definition-names type="vector" singular="Vector"  prefix="Vector " name="vector"/>
 <localdb:definition-names type="command"                   prefix="*"       name="* command" />
 <localdb:definition-names type="entry"                     prefix=""        name="entry-point " />
@@ -330,88 +331,8 @@
 
   <xsl:call-template name="definition-description"/>
 
-    <section class='definition definition-syntax'>
-<xsl:choose>
- <xsl:when test="count(syntax)=0">
-  <code>*<xsl:value-of select="@name"/></code>
- </xsl:when>
- <xsl:otherwise>
-  <xsl:for-each select="syntax">
-   <code>*<xsl:value-of select="../@name"/>
-    <xsl:apply-templates/>
-   </code>
-   <xsl:if test="position() != last()">
-    <br />
-   </xsl:if>
-  </xsl:for-each>
- </xsl:otherwise>
-</xsl:choose>
-    </section>
-
-    <section class='definition definition-parameters'>
-<xsl:choose>
- <xsl:when test="count(parameter)=0">None</xsl:when>
- <xsl:otherwise>
-  <table summary="Command parameters" border="0">
-  <xsl:for-each select="parameter">
-   <tr><td valign="top">
-        <xsl:variable name="param">
-         <xsl:if test="@label">
-          <xsl:value-of select="@label" />
-          <xsl:text> </xsl:text>
-         </xsl:if>
-         <xsl:if test="@name">
-          <i>&lt;<xsl:value-of select="@name" />&gt;</i>
-         </xsl:if>
-        </xsl:variable>
-        <xsl:choose>
-         <xsl:when test="not(@switch-alias)">
-          <code>
-           <xsl:if test="@switch">
-            -<xsl:value-of select="@switch" />
-            <xsl:text> </xsl:text>
-           </xsl:if>
-           <xsl:copy-of select="$param" />
-          </code>
-         </xsl:when>
-         <xsl:otherwise>
-          <xsl:if test="not(@switch)">
-           <xsl:message>Parameter with switch-alias must be given a switch at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-          </xsl:if>
-          <table summary="Switch aliases">
-           <tr><td>&#160;</td>
-            <td valign="top" align="left">
-             <code>
-              <xsl:text>-</xsl:text>
-              <xsl:value-of select="@switch" />
-              <xsl:text> </xsl:text>
-              <xsl:copy-of select="$param" />
-             </code>
-            </td>
-           </tr>
-           <tr><td><i>or</i></td>
-            <td valign="top" align="left">
-             <code>
-              <xsl:text>-</xsl:text>
-              <xsl:value-of select="@switch-alias" />
-              <xsl:text> </xsl:text>
-              <xsl:copy-of select="$param" />
-             </code>
-            </td>
-           </tr>
-          </table>
-         </xsl:otherwise>
-        </xsl:choose>
-       </td>
-       <td valign="top">-</td>
-       <td valign="top"><xsl:apply-templates /></td>
-   </tr>
-  </xsl:for-each>
-  </table>
- </xsl:otherwise>
-</xsl:choose>
-    </section>
+  <xsl:call-template name="definition-syntax"/>
+  <xsl:call-template name="definition-parameters"/>
 
 <xsl:apply-templates select="use" />
 
@@ -437,59 +358,8 @@
 
   <xsl:call-template name="definition-description"/>
 
-<section class='definition definition-syntax'>
-<xsl:choose>
- <xsl:when test="count(syntax)=0">
-  <code>VDU <xsl:value-of select="@name"/></code>
- </xsl:when>
- <xsl:otherwise>
-  <xsl:for-each select="syntax">
-   <code>
-    <xsl:apply-templates/>
-   </code>
-   <xsl:if test="position() != last()">
-    <br />
-   </xsl:if>
-  </xsl:for-each>
- </xsl:otherwise>
-</xsl:choose>
-</section>
-
-<section class='definition definition-parameters'>
-<xsl:choose>
- <xsl:when test="count(parameter)=0">None</xsl:when>
- <xsl:otherwise>
-  <table summary="Command parameters" border="0">
-  <xsl:for-each select="parameter">
-   <tr><td valign="top">
-        <xsl:variable name="param">
-         <xsl:if test="@name != ''">
-          <i>&lt;<xsl:value-of select="@name" />&gt;</i>
-         </xsl:if>
-        </xsl:variable>
-        <xsl:copy-of select="$param" />
-        <!-- some warnings for bits that don't make sense -->
-        <xsl:if test="@switch != ''">
-         <xsl:message>VDU parameter should not have a switch at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-        </xsl:if>
-        <xsl:if test="@switch-alias != ''">
-         <xsl:message>VDU parameter should not have a switch-alias at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-        </xsl:if>
-        <xsl:if test="@label != ''">
-         <xsl:message>VDU parameter should not have a label at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-        </xsl:if>
-       </td>
-       <td valign="top">-</td>
-       <td valign="top"><xsl:apply-templates /></td>
-   </tr>
-  </xsl:for-each>
-  </table>
- </xsl:otherwise>
-</xsl:choose>
-</section>
+  <xsl:call-template name="definition-syntax"/>
+  <xsl:call-template name="definition-parameters"/>
 
 <xsl:apply-templates select="use" />
 
@@ -1216,6 +1086,97 @@
    </xsl:otherwise>
   </xsl:choose>
   </section>
+</xsl:template>
+
+<xsl:template name='definition-syntax'>
+<xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
+<xsl:variable name="defprefix" select="document('')//localdb:definition-names[@type=$deftype]/@prefix" />
+<xsl:variable name="defseparator" select="document('')//localdb:definition-names[@type=$deftype]/@separator" />
+ <section class='definition definition-syntax'>
+  <xsl:choose>
+   <xsl:when test="count(syntax)=0">
+    <div class='definition-syntax-line'>
+     <xsl:value-of select="$defprefix"/><xsl:value-of select="@name"/>
+    </div>
+   </xsl:when>
+   <xsl:otherwise>
+    <xsl:for-each select="syntax">
+     <div class='definition-syntax-line'>
+      <xsl:value-of select="$defprefix"/><xsl:value-of select="../@name"/>
+      <xsl:if test="count(*)!=0"><xsl:value-of select="$defseparator"/></xsl:if>
+      <xsl:apply-templates select='.'/>
+     </div>
+    </xsl:for-each>
+   </xsl:otherwise>
+  </xsl:choose>
+ </section>
+</xsl:template>
+
+<xsl:template name='definition-parameters'>
+ <section class='definition definition-parameters'>
+  <xsl:choose>
+   <xsl:when test="count(parameter)=0">None</xsl:when>
+   <xsl:otherwise>
+    <table summary="Command parameters" border="0">
+    <xsl:for-each select="parameter">
+     <tr><td valign="top">
+          <xsl:variable name="param">
+           <xsl:if test="@label">
+            <xsl:value-of select="@label" />
+            <xsl:text> </xsl:text>
+           </xsl:if>
+           <xsl:if test="@name">
+            <i>&lt;<xsl:value-of select="@name" />&gt;</i>
+           </xsl:if>
+          </xsl:variable>
+          <xsl:choose>
+           <xsl:when test="not(@switch-alias)">
+            <code>
+             <xsl:if test="@switch">
+              -<xsl:value-of select="@switch" />
+              <xsl:text> </xsl:text>
+             </xsl:if>
+             <xsl:copy-of select="$param" />
+            </code>
+           </xsl:when>
+           <xsl:otherwise>
+            <xsl:if test="not(@switch)">
+             <xsl:message>Parameter with switch-alias must be given a switch at
+     <xsl:call-template name="describeposition" />.</xsl:message>
+            </xsl:if>
+            <table summary="Switch aliases">
+             <tr><td>&#160;</td>
+              <td valign="top" align="left">
+               <code>
+                <xsl:text>-</xsl:text>
+                <xsl:value-of select="@switch" />
+                <xsl:text> </xsl:text>
+                <xsl:copy-of select="$param" />
+               </code>
+              </td>
+             </tr>
+             <tr><td><i>or</i></td>
+              <td valign="top" align="left">
+               <code>
+                <xsl:text>-</xsl:text>
+                <xsl:value-of select="@switch-alias" />
+                <xsl:text> </xsl:text>
+                <xsl:copy-of select="$param" />
+               </code>
+              </td>
+             </tr>
+            </table>
+           </xsl:otherwise>
+          </xsl:choose>
+         </td>
+         <td valign="top">-</td>
+         <td valign="top"><xsl:apply-templates /></td>
+     </tr>
+    </xsl:for-each>
+    </table>
+   </xsl:otherwise>
+  </xsl:choose>
+ </section>
 </xsl:template>
 
 <xsl:template name="examples-block">

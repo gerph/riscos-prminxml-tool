@@ -1,4 +1,4 @@
-                      Structure of PRM documentation (1.02)
+                      Structure of PRM documentation (1.03)
                       =====================================
 
 Introduction
@@ -13,25 +13,30 @@ used by myself and others. The aims of the documentation format are simple :
   * To provide cross-referencing facilities
 
 These aims have been, for the most part, met by the current DTD and reference
-translation (HTML).
+transformation (HTML).
 
-Within the document, descriptions of elements are made with pseudo-SGML
+Within this document, descriptions of elements are made with pseudo-SGML
 entity description notation. This is mostly to simplify description. Where
 the DTD and the descriptions in this document differ, the DTD should be
 regarded as correct, with this document merely giving guidance on the use
 of elements.
 
 
-HTML translation
-----------------
-The major translation which is performed at present is that of XML to HTML
-using XSLT. The translation provided by the HTML is intended to be as close
-to that of the PRMs themselves. It should also be degradable to HTML 3. The
-major restriction that prevents degradation to HTML 2 is the use of tables
-for laying out structural tables.
+HTML transformation
+-------------------
+There are two major HTML transformations present in this release of the
+PRM-in-XML stylesheets - the HTML 3.2 transformation ('prm-html') and
+the HTML 5/CSS transformation ('prm-html5').
 
-Whilst the HTML translation is the current reference translation, there is
-no reason why other translations, such as StrongHelp or Impression DDF could
+The transformation provided by the HTML stylesheets is intended to be as close
+to that of the PRMs themselves. The HTML 3.2 is intended for use on legacy
+browsers where stylesheets are not available. The HTML 5 layout, however, is
+able to be used with modern browsers and takes advantage of many CSS features
+as part of its layout. As such it is much more flexible than the original
+transformation.
+
+Whilst the HTML transformations are the current reference transformations,
+there is no reason why others, such as StrongHelp or Impression DDF could
 not be created.
 
 
@@ -49,16 +54,16 @@ For the document to be translated, they need only be well-formed. However,
 we strongly encourage all authors to ensure that their documents are both
 well-formed and valid to reduce the likelihood of problems in the future.
 
-In addition to this, the HTML translation will apply a number of checks
+In addition to this, the HTML transformation will apply a number of checks
 itself on the document content. Where a problem is encountered, a message
 will be displayed to indicate the issue which has been identified. Some
 issues may not be a problem for the author - for example a reference to
 an external document whose name has not been given (href="?...") which is
 purely a place holder until the document exists. Some messages will indicate
 more serious problems. Authors should read the messages that are presented
-to ensure they understand any issues that the translation has raised.
+to ensure they understand any issues that the transformation has raised.
 
-When locating faults, the translation will display an XPath like description
+When locating faults, the transformation will display an XPath like description
 of the fault location. This can take one of two forms (depending on the
 configuration of the stylesheet). The first of these forms is the simple
 index form, eg :
@@ -428,7 +433,7 @@ They can exist between local and external sections of documents. Because
 the references need to refer to particular instances within the document
 regularly, a 'type' is provided to indicate the object being referred to.
 This will usually modify the manner in which the reference is presented,
-although the methods used by the HTML translation are preferred for
+although the methods used by the HTML transformation are preferred for
 consistency.
 
 
@@ -580,7 +585,7 @@ Attributes: <none>
 Children:   (<text> | userreplace)*
 
 The menuoption is not represented in the PRMs. This element describes a
-menu option. Its representation in a translation is undefined; it may be
+menu option. Its representation in a transformation is undefined; it may be
 used only as an indexing entry.
 
 
@@ -1173,6 +1178,9 @@ The syntax element describes the syntax of the *Command, giving a breakdown
 of the syntax. If the syntax cannot be described in a single example,
 multiple syntax blocks may be supplied.
 
+In 1.02, the syntax for vdu-definitions had to be prefixed by the VDU number.
+In 1.03, the syntax for vdu-definitions only documents the additional parameters.
+
 
 Element:    switch
 Attributes: name
@@ -1348,3 +1356,12 @@ useful :
    should be able to work out that title is a valid attribute, and that a "
    would be expected after the equals sign, so in that context the likeliest
    fault is a missing = sign.
+
+
+Changes from 1.02 to 1.03
+-------------------------
+* prm-html5 style sheet now exists, which uses HTML 5 features and CSS for the
+  presentation of elements.
+* syntax elements on vdu-definition are now expected to document the parameters
+  to the definition, not the whole definition. This is in line with the use of
+  syntax within the command-definition.
