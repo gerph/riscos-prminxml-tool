@@ -1210,9 +1210,8 @@
 
 <!-- Upcall definition -->
 <xsl:template match="upcall-definition">
-<hr />
-<h2 align="right"><a>
-          <xsl:attribute name="name">
+  <section class='upcall-definition'>
+          <xsl:attribute name="id">
            <xsl:text>upcall_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
            <xsl:if test="@reason!=''">
@@ -1220,6 +1219,8 @@
             <xsl:value-of select="translate(@reason,$title-to-id-src,$title-to-id-map)" />
            </xsl:if>
           </xsl:attribute>
+    <div class='definition-title'>
+     <span class='definition-name'>
           <xsl:text>UpCall_</xsl:text><xsl:value-of select="@name"/>
 <!--     <xsl:if test="(@reason != '') and (@reasonname != '')"> -->
 <!--      <xsl:text> </xsl:text> -->
@@ -1229,23 +1230,24 @@
      <xsl:text> </xsl:text>
      <xsl:value-of select="@reason"/>
     </xsl:if>
-    </a>
-    <br />
-    (<acronym>UpCall &amp;<xsl:value-of select="@number"/></acronym>
+    </span>
+    <span class='definition-number'>UpCall &amp;<xsl:value-of select="@number"/>
 <!--     <xsl:if test="@reason != ''"> -->
 <!--      <xsl:text> reason </xsl:text> -->
 <!--      <xsl:value-of select="@reason"/> -->
 <!--     </xsl:if> -->
-    <xsl:text>)</xsl:text></h2>
+    </span>
+    </div>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
    <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <dd><xsl:value-of select="@description"/></dd>
+  <div class='definition-description'>
+  <xsl:value-of select="@description"/>
+  </div>
 
-  <dt><h5>On entry</h5></dt>
-  <dd>
+  <section class='definition definition-entry'>
   <xsl:choose>
    <xsl:when test="count(entry/*)=0">None</xsl:when>
    <xsl:otherwise>
@@ -1254,10 +1256,9 @@
     </table>
    </xsl:otherwise>
   </xsl:choose>
-  </dd>
+  </section>
 
-  <dt><h5>On exit</h5></dt>
-  <dd>
+  <section class='definition definition-exit'>
   <xsl:choose>
    <xsl:when test="count(exit/*)=0">None</xsl:when>
    <xsl:otherwise>
@@ -1266,7 +1267,7 @@
     </table>
    </xsl:otherwise>
   </xsl:choose>
-  </dd>
+  </section>
 
   <xsl:apply-templates select="use" />
 
@@ -1274,6 +1275,7 @@
 
  </xsl:otherwise>
 </xsl:choose>
+</section>
 
 </xsl:template>
 
