@@ -716,29 +716,8 @@
  <xsl:otherwise>
   <dd><xsl:value-of select="@description"/></dd>
 
-  <dt><h5>On entry</h5></dt>
-  <dd>
-  <xsl:choose>
-   <xsl:when test="count(entry/*)=0">None</xsl:when>
-   <xsl:otherwise>
-    <table summary="{concat('Conditions on entry to ',$defsingular)}" border="0">
-    <xsl:apply-templates select="entry"/>
-    </table>
-   </xsl:otherwise>
-  </xsl:choose>
-  </dd>
-
-  <dt><h5>On exit</h5></dt>
-  <dd>
-  <xsl:choose>
-   <xsl:when test="count(exit/*)=0">None</xsl:when>
-   <xsl:otherwise>
-    <table summary="{concat('Conditions on exit from ',$defsingular)}" border="0">
-    <xsl:apply-templates select="exit"/>
-    </table>
-   </xsl:otherwise>
-  </xsl:choose>
-  </dd>
+  <xsl:call-template name='definition-entry'/>
+  <xsl:call-template name='definition-exit'/>
 
   <dt><h5>Interrupts</h5></dt>
   <dd>Interrupts are <xsl:value-of select="@irqs" /><br />
@@ -813,29 +792,8 @@
  <xsl:otherwise>
   <dd><xsl:value-of select="@description"/></dd>
 
-  <dt><h5>On entry</h5></dt>
-  <dd>
-  <xsl:choose>
-   <xsl:when test="count(entry/*)=0">None</xsl:when>
-   <xsl:otherwise>
-    <table summary="Conditions on entry to entry-point" border="0">
-    <xsl:apply-templates select="entry"/>
-    </table>
-   </xsl:otherwise>
-  </xsl:choose>
-  </dd>
-
-  <dt><h5>On exit</h5></dt>
-  <dd>
-  <xsl:choose>
-   <xsl:when test="count(exit/*)=0">None</xsl:when>
-   <xsl:otherwise>
-    <table summary="Conditions on exit from entry-point" border="0">
-    <xsl:apply-templates select="exit"/>
-    </table>
-   </xsl:otherwise>
-  </xsl:choose>
-  </dd>
+  <xsl:call-template name='definition-entry'/>
+  <xsl:call-template name='definition-exit'/>
 
   <dt><h5>Interrupts</h5></dt>
   <dd>Interrupts are <xsl:value-of select="@irqs" /><br />
@@ -1098,27 +1056,8 @@
  <xsl:otherwise>
   <div class='definition-description'><xsl:value-of select="@description"/></div>
 
-  <section class='definition definition-entry'>
-  <xsl:choose>
-   <xsl:when test="count(entry/*)=0">None</xsl:when>
-   <xsl:otherwise>
-    <table summary="Conditions on entry to Service call" border="0">
-    <xsl:apply-templates select="entry"/>
-    </table>
-   </xsl:otherwise>
-  </xsl:choose>
-  </section>
-
-  <section class='definition definition-exit'>
-  <xsl:choose>
-   <xsl:when test="count(exit/*)=0">None</xsl:when>
-   <xsl:otherwise>
-    <table summary="Conditions on exit from Service call" border="0">
-    <xsl:apply-templates select="exit"/>
-    </table>
-   </xsl:otherwise>
-  </xsl:choose>
-  </section>
+  <xsl:call-template name='definition-entry'/>
+  <xsl:call-template name='definition-exit'/>
 
   <xsl:apply-templates select="use" />
 
@@ -1171,29 +1110,8 @@
  <xsl:otherwise>
   <dd><xsl:value-of select="@description"/></dd>
 
-  <dt><h5>On entry</h5></dt>
-  <dd>
-  <xsl:choose>
-   <xsl:when test="count(entry/*)=0">None</xsl:when>
-   <xsl:otherwise>
-    <table summary="Conditions on entry to Method call" border="0">
-    <xsl:apply-templates select="entry"/>
-    </table>
-   </xsl:otherwise>
-  </xsl:choose>
-  </dd>
-
-  <dt><h5>On exit</h5></dt>
-  <dd>
-  <xsl:choose>
-   <xsl:when test="count(exit/*)=0">None</xsl:when>
-   <xsl:otherwise>
-    <table summary="Conditions on exit from Method call" border="0">
-    <xsl:apply-templates select="exit"/>
-    </table>
-   </xsl:otherwise>
-  </xsl:choose>
-  </dd>
+  <xsl:call-template name='definition-entry'/>
+  <xsl:call-template name='definition-exit'/>
 
   <xsl:apply-templates select="use" />
 
@@ -1247,27 +1165,8 @@
   <xsl:value-of select="@description"/>
   </div>
 
-  <section class='definition definition-entry'>
-  <xsl:choose>
-   <xsl:when test="count(entry/*)=0">None</xsl:when>
-   <xsl:otherwise>
-    <table summary="Conditions on entry to UpCall" border="0">
-    <xsl:apply-templates select="entry"/>
-    </table>
-   </xsl:otherwise>
-  </xsl:choose>
-  </section>
-
-  <section class='definition definition-exit'>
-  <xsl:choose>
-   <xsl:when test="count(exit/*)=0">None</xsl:when>
-   <xsl:otherwise>
-    <table summary="Conditions on exit from UpCall" border="0">
-    <xsl:apply-templates select="exit"/>
-    </table>
-   </xsl:otherwise>
-  </xsl:choose>
-  </section>
+  <xsl:call-template name='definition-entry'/>
+  <xsl:call-template name='definition-exit'/>
 
   <xsl:apply-templates select="use" />
 
@@ -1292,6 +1191,32 @@
 <section class='definition definition-use'>
  <xsl:apply-templates />
 </section>
+</xsl:template>
+
+<xsl:template name='definition-entry'>
+  <section class='definition definition-entry'>
+  <xsl:choose>
+   <xsl:when test="count(entry/*)=0">None</xsl:when>
+   <xsl:otherwise>
+    <table>
+    <xsl:apply-templates select="entry"/>
+    </table>
+   </xsl:otherwise>
+  </xsl:choose>
+  </section>
+</xsl:template>
+
+<xsl:template name='definition-exit'>
+  <section class='definition definition-exit'>
+  <xsl:choose>
+   <xsl:when test="count(entry/*)=0">None</xsl:when>
+   <xsl:otherwise>
+    <table>
+    <xsl:apply-templates select="exit"/>
+    </table>
+   </xsl:otherwise>
+  </xsl:choose>
+  </section>
 </xsl:template>
 
 <xsl:template name="examples-block">
