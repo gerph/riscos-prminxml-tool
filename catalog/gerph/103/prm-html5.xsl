@@ -327,7 +327,8 @@
     <div class='definition-title'>
           <xsl:text>*</xsl:text><xsl:value-of select="@name"/>
     </div>
-    <div class='definition-description'><xsl:value-of select="@description"/></div>
+
+  <xsl:call-template name="definition-description"/>
 
     <section class='definition definition-syntax'>
 <xsl:choose>
@@ -434,9 +435,7 @@
           <span class='definition-name'><xsl:text>VDU </xsl:text><xsl:value-of select="@name"/></span>
         </div>
 
-  <div class='definition-description'>
-    <xsl:value-of select="@description"/>
-  </div>
+  <xsl:call-template name="definition-description"/>
 
 <section class='definition definition-syntax'>
 <xsl:choose>
@@ -714,7 +713,7 @@
   <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <dd><xsl:value-of select="@description"/></dd>
+  <xsl:call-template name="definition-description"/>
 
   <xsl:call-template name='definition-entry'/>
   <xsl:call-template name='definition-exit'/>
@@ -790,7 +789,7 @@
   <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <dd><xsl:value-of select="@description"/></dd>
+  <xsl:call-template name="definition-description"/>
 
   <xsl:call-template name='definition-entry'/>
   <xsl:call-template name='definition-exit'/>
@@ -867,7 +866,7 @@
   <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <dd><xsl:value-of select="@description"/></dd>
+  <xsl:call-template name="definition-description"/>
 
   <dt><h5>Message</h5></dt>
   <dd>
@@ -964,9 +963,7 @@
   <xsl:call-template name="definition-internal"/>
  </xsl:when>
  <xsl:otherwise>
-  <div class='definition-description'>
-  <xsl:value-of select="@description"/>
-  </div>
+  <xsl:call-template name="definition-description"/>
 
   <xsl:apply-templates select="use" />
 
@@ -1001,9 +998,7 @@
    <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <div class='definition-description'>
-  <xsl:value-of select="@description"/>
-  </div>
+  <xsl:call-template name="definition-description"/>
 
   <xsl:apply-templates select="use" />
 
@@ -1054,7 +1049,7 @@
   <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <div class='definition-description'><xsl:value-of select="@description"/></div>
+  <xsl:call-template name="definition-description"/>
 
   <xsl:call-template name='definition-entry'/>
   <xsl:call-template name='definition-exit'/>
@@ -1108,7 +1103,7 @@
   <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <dd><xsl:value-of select="@description"/></dd>
+  <xsl:call-template name="definition-description"/>
 
   <xsl:call-template name='definition-entry'/>
   <xsl:call-template name='definition-exit'/>
@@ -1161,9 +1156,7 @@
    <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <div class='definition-description'>
-  <xsl:value-of select="@description"/>
-  </div>
+  <xsl:call-template name='definition-description'/>
 
   <xsl:call-template name='definition-entry'/>
   <xsl:call-template name='definition-exit'/>
@@ -1191,6 +1184,12 @@
 <section class='definition definition-use'>
  <xsl:apply-templates />
 </section>
+</xsl:template>
+
+<xsl:template name='definition-description'>
+ <div class='definition-description'>
+  <xsl:value-of select="@description"/>
+ </div>
 </xsl:template>
 
 <xsl:template name='definition-entry'>
