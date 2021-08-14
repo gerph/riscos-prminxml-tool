@@ -179,6 +179,20 @@ section.definition::before {
   font-family: monospace;
 }
 
+.userreplace {
+  font-style: italic;
+}
+.userreplace::before {
+  content: "<";
+}
+.userreplace::after {
+  content: ">";
+}
+.userinput {
+  font-family: monospace;
+  font-weight: bold;
+}
+
 th, td {
   vertical-align: top;
 }

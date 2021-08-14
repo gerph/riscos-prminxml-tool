@@ -1942,12 +1942,12 @@
 
 <!-- User replacement - something the user must replace with a value -->
 <xsl:template match="userreplace">
-<i>&lt;<xsl:apply-templates />&gt;</i>
+<span class='userreplace'><xsl:apply-templates /></span>
 </xsl:template>
 
 <!-- User input - something the user could have typed -->
 <xsl:template match="userinput">
-<tt><b><xsl:apply-templates /></b></tt>
+<span class='userinput'><xsl:apply-templates /></span>
 </xsl:template>
 
 <!-- System output - something the system could have displayed -->
