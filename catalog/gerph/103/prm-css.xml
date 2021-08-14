@@ -115,6 +115,18 @@ section.definition::before {
 .definition-parameters::before {
   content: 'Parameters';
 }
+.definition-message::before {
+  content: 'Message';
+}
+.definition-message-source::before {
+  content: 'Source';
+}
+.definition-message-destination::before {
+  content: 'Destination';
+}
+.definition-message-delivery::before {
+  content: 'Delivery';
+}
 .definition-examples::before {
   content: 'Examples';
 }

@@ -629,17 +629,17 @@
      <xsl:text> </xsl:text>
      <xsl:value-of select="@reason"/>
     </xsl:if>
-    </a>
+    </span>
     <xsl:if test="@number != ''">
-     <br />
-     (<acronym>&amp;<xsl:value-of select="@number"/></acronym>
+     <span class='definition-number'>
+     <xsl:value-of select="@number"/>
 <!--      <xsl:if test="@reason != ''"> -->
 <!--       <xsl:text> reason </xsl:text> -->
 <!--       <xsl:value-of select="@reason"/> -->
 <!--      </xsl:if> -->
-     <xsl:text>)</xsl:text>
+    </span>
     </xsl:if>
-    </h2>
+     </div>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
   <xsl:call-template name='definition-internal'/>
@@ -672,8 +672,11 @@
 <xsl:template match="message-definition|tboxmessage-definition">
 <xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
 <xsl:variable name="defsingular" select="document('')//localdb:definition-names[@type=$deftype]/@singular" />
-<hr />
-<h2 align="right"><a>
+<section>
+          <xsl:attribute name="class">
+           <xsl:value-of select="$deftype" />
+           <xsl:text>-definition</xsl:text>
+          </xsl:attribute>
           <xsl:attribute name="id">
            <xsl:value-of select="$deftype" />
            <xsl:text>_</xsl:text>
@@ -683,6 +686,8 @@
             <xsl:value-of select="translate(@reason,$title-to-id-src,$title-to-id-map)" />
            </xsl:if>
           </xsl:attribute>
+          <div class='definition-title'>
+            <span class="definition-name">
           <xsl:choose>
            <xsl:when test="$deftype = 'message'">
             <xsl:text>Message_</xsl:text><xsl:value-of select="@name"/>
@@ -699,10 +704,9 @@
      <xsl:text> </xsl:text>
      <xsl:value-of select="@reason"/>
     </xsl:if>
-    </a>
-    <br />
-    (<acronym>&amp;<xsl:value-of select="@number"/></acronym>)
-    </h2>
+    </span>
+    <span class="definition-number">&amp;<xsl:value-of select="@number"/></span>
+    </div>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
   <xsl:call-template name='definition-internal'/>
@@ -710,8 +714,7 @@
  <xsl:otherwise>
   <xsl:call-template name="definition-description"/>
 
-  <dt><h5>Message</h5></dt>
-  <dd>
+  <section class='definition definition-message'>
   <xsl:choose>
    <xsl:when test="count(message-table)>0">
     <xsl:apply-templates select="message-table" />
@@ -729,32 +732,29 @@
     <xsl:text>No additional data</xsl:text>
    </xsl:otherwise>
   </xsl:choose>
-  </dd>
+  </section>
 
   <xsl:if test="$deftype = 'message'">
    <!-- Source and destination only apply to messages -->
    <xsl:if test="@source!=''">
-    <dt><h5>Source</h5></dt>
-    <dd>
+    <section class='definition definition-message-source'>
     <xsl:choose>
      <xsl:when test="@source='*'">Any application</xsl:when>
      <xsl:otherwise><xsl:value-of select="@source" /></xsl:otherwise>
     </xsl:choose>
-    </dd>
+    </section>
    </xsl:if>
 
    <xsl:if test="@destination!=''">
-    <dt><h5>Destination</h5></dt>
-    <dd>
+    <section class='definition definition-message-destination'>
     <xsl:choose>
      <xsl:when test="@destination='*'">Any application</xsl:when>
      <xsl:otherwise><xsl:value-of select="@destination" /></xsl:otherwise>
     </xsl:choose>
-    </dd>
+    </section>
    </xsl:if>
 
-   <dt><h5>Delivery</h5></dt>
-   <dd>
+   <section class='definition definition-message-delivery'>
    <xsl:choose>
     <xsl:when test="@broadcast='never'">Message must be sent directly to task</xsl:when>
     <xsl:when test="@broadcast='may'">Message may sent directly to task, or by broadcast (destination 0)</xsl:when>
@@ -775,7 +775,7 @@
    <xsl:call-template name="describeposition" />.</xsl:message>
     </xsl:otherwise>
    </xsl:choose>
-   </dd>
+   </section>
   </xsl:if>
 
   <xsl:apply-templates select="use" />
@@ -786,6 +786,7 @@
 
  </xsl:otherwise>
 </xsl:choose>
+</section>
 
 </xsl:template>
 
@@ -913,8 +914,7 @@
 
 <!-- Toolbox Method definition -->
 <xsl:template match="tboxmethod-definition">
-<hr />
-<h2 align="right"><a>
+    <section class='tboxmethod-definition'>
           <xsl:attribute name="id">
            <xsl:text>tboxmethod_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
@@ -923,6 +923,8 @@
             <xsl:value-of select="translate(@reason,$title-to-id-src,$title-to-id-map)" />
            </xsl:if>
           </xsl:attribute>
+          <div class='definition-title'>
+            <span class='definition-name'>
           <xsl:value-of select="@name"/>
 <!--     <xsl:if test="(@reason != '') and (@reasonname != '')"> -->
 <!--      <xsl:text> </xsl:text> -->
@@ -932,14 +934,14 @@
      <xsl:text> </xsl:text>
      <xsl:value-of select="@reason"/>
     </xsl:if>
-    </a>
-    <br />
-    (<acronym>Method &amp;<xsl:value-of select="@number"/></acronym>
+    </span>
+    <span class='definition-number'>Method &amp;<xsl:value-of select="@number"/>
 <!--     <xsl:if test="@reason != ''"> -->
 <!--      <xsl:text> reason </xsl:text> -->
 <!--      <xsl:value-of select="@reason"/> -->
 <!--     </xsl:if> -->
-    <xsl:text>)</xsl:text></h2>
+    </span>
+    </div>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
   <xsl:call-template name='definition-internal'/>
@@ -960,6 +962,7 @@
 
  </xsl:otherwise>
 </xsl:choose>
+</section>
 
 </xsl:template>
 
