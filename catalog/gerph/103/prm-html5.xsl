@@ -1787,7 +1787,6 @@
 
  <!-- SysVar reference -->
  <xsl:when test="@type='sysvar'">
-<!--   <tt> -->
   <xsl:if test="(not(@href)) and
                  not (//sysvar-definition[@name=$refname and
                         (string(@reason)=$refreason)])">
@@ -1806,7 +1805,6 @@
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
-<!--   </tt> -->
  </xsl:when>
 
  <!-- Section type reference -->
@@ -1952,37 +1950,37 @@
 
 <!-- System output - something the system could have displayed -->
 <xsl:template match="systemoutput">
-<br /><tt><xsl:apply-templates /></tt>
+<div class='systemoutput'><xsl:apply-templates /></div>
 </xsl:template>
 
 <!-- Menu option - an option that the user might chose for a menu -->
 <xsl:template match="menuoption">
-<em><xsl:apply-templates /></em>
+<span class='menuoption'><xsl:apply-templates /></span>
 </xsl:template>
 
 <!-- Variable -->
 <xsl:template match="variable">
-<tt><xsl:apply-templates /></tt>
+<span class='variable'><xsl:apply-templates /></span>
 </xsl:template>
 
 <!-- Command example -->
 <xsl:template match="command">
-<code><xsl:apply-templates /></code>
+<span class='command'><xsl:apply-templates /></span>
 </xsl:template>
 
 <!-- Function-like routine -->
 <xsl:template match="function">
-<code><xsl:apply-templates /></code>
+<span class='function'><xsl:apply-templates /></span>
 </xsl:template>
 
 <!-- a filename -->
 <xsl:template match="filename">
-<code><xsl:apply-templates /></code>
+<span class='filename'><xsl:apply-templates /></span>
 </xsl:template>
 
 <!-- a system variable -->
 <xsl:template match="sysvar">
-<code><xsl:apply-templates /></code>
+<span class='sysvar'><xsl:apply-templates /></span>
 </xsl:template>
 
 <!-- User replacement -->
@@ -2014,6 +2012,10 @@
 </xsl:if>
 
 <pre>
+ <xsl:attribute name='class'>
+  <xsl:text>extended-example extended-example-</xsl:text>
+  <xsl:value-of select='@type'/>
+ </xsl:attribute>
 <xsl:apply-templates />
 </pre>
 </xsl:template>
@@ -2026,6 +2028,10 @@
 </xsl:if>
 
 <code>
+ <xsl:attribute name='class'>
+  <xsl:text>code code-</xsl:text>
+  <xsl:value-of select='@type'/>
+ </xsl:attribute>
 <xsl:apply-templates />
 </code>
 </xsl:template>
@@ -2033,14 +2039,14 @@
 <!-- Stylistic changes -->
 <!-- These should really be removed ASAP and replaced with more content-based
      elements, such as warning, important or note -->
-<xsl:template match="strong">
-<strong><xsl:apply-templates /></strong>
-</xsl:template>
-<xsl:template match="sup"><sup><xsl:apply-templates /></sup></xsl:template>
-<xsl:template match="sub"><sub><xsl:apply-templates /></sub></xsl:template>
+<xsl:template match="strong"><strong><xsl:apply-templates /></strong></xsl:template>
 <xsl:template match="em"><em><xsl:apply-templates /></em></xsl:template>
 <!-- I'm not at all sure I like the concept of having a break element -->
 <xsl:template match="br"><br /></xsl:template>
+
+<!-- These are keepable, as they're required for expressing some maths -->
+<xsl:template match="sup"><sup><xsl:apply-templates /></sup></xsl:template>
+<xsl:template match="sub"><sub><xsl:apply-templates /></sub></xsl:template>
 
 <!-- Document import -->
 <xsl:template match="import">
