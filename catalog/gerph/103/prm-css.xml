@@ -51,29 +51,33 @@ section.subsubsection h4 {
   margin-left: -2.5rem;
 }
 
-.service-definition, .swi-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
+.service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
   border-top: 2px solid black;
 }
-.definition-title {
-  margin-top: .75em;
-  margin-bottom: .75em;
+.definition-header {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
   font-weight: bold;
   font-size: 1.5em;
   text-align: right;
 }
-.definition-name {
+.definition-title {
   display: block;
+}
+.definition-name {
 }
 .definition-reason {
 }
-.definition-number {
+.definition-subtitle {
   xfont-variant: small-caps;
 }
-.definition-number::before {
+.definition-subtitle::before {
   content: '(';
 }
-.definition-number::after {
+.definition-subtitle::after {
   content: ')';
+}
+.definition-number {
 }
 .definition-description {
 }
