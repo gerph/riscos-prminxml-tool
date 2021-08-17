@@ -40,24 +40,24 @@
 
 <xsl:include href="http://gerph.org/dtd/bnf/100/html.xsl" />
 
-<!-- 'singular' is used to prefix the *-definition element (only applied
-     to certain elements at present).
-     'prefix' is used on heading titles, syntaxes and references.
+<!-- 'prefix-name' is used on heading titles, syntaxes and references for the name.
+     'prefix-number' is used on heading titles for the number.
      'separator' is used when describing the syntax of the definition.
      'name' is used when describing what the definition is.
+     'Name' is used when describing what the definition is (but capitalised)
   -->
-<localdb:definition-titles type="swi" singular="SWI"             prefix="SWI "    name="SWI"/>
-<localdb:definition-titles type="vdu"                            prefix="VDU "    name="VDU code"         separator=","/>
-<localdb:definition-titles type="vector" singular="Vector"       prefix="Vector " name="vector"/>
-<localdb:definition-titles type="command"                        prefix="*"       name="* command" />
-<localdb:definition-titles type="entry" singular="Entry point"   prefix=""        name="entry-point " />
-<localdb:definition-titles type="sysvar"                         prefix=""        name="system variable " />
-<localdb:definition-titles type="service"                        prefix=""        name="service call" />
-<localdb:definition-titles type="upcall"                         prefix=""        name="upcall" />
-<localdb:definition-titles type="error"                          prefix=""        name="error message" />
-<localdb:definition-titles type="message"                        prefix=""        name="message" />
-<localdb:definition-titles type="tboxmessage"                    prefix=""        name="Toolbox message" />
-<localdb:definition-titles type="tboxmethod"                     prefix=""        name="Toolbox method" />
+<localdb:definition-titles type="swi"          prefix-name=""         prefix-number="SWI "     number-base="&amp;" name="SWI"              Name="SWI"                />
+<localdb:definition-titles type="vdu"          prefix-name="VDU "     prefix-number=""         number-base=""      name="VDU code"         Name="VDU code"           separator=","/>
+<localdb:definition-titles type="vector"       prefix-name=""         prefix-number="Vector "  number-base=""      name="vector"           Name="Vector"             />
+<localdb:definition-titles type="command"      prefix-name="*"        prefix-number=""         number-base=""      name="* command"        Name="* command"          />
+<localdb:definition-titles type="entry"        prefix-name=""         prefix-number=""         number-base=""      name="entry point "     Name="Entry point "       />
+<localdb:definition-titles type="sysvar"       prefix-name=""         prefix-number=""         number-base=""      name="system variable " Name="System variable "   />
+<localdb:definition-titles type="service"      prefix-name="Service_" prefix-number="Service " number-base="&amp;" name="service call"     Name="Service call"       />
+<localdb:definition-titles type="upcall"       prefix-name="UpCall_"  prefix-number="UpCall "  number-base="&amp;" name="upcall"           Name="Upcall"             />
+<localdb:definition-titles type="error"        prefix-name="Error_"   prefix-number="Error "   number-base="&amp;" name="error message"    Name="Error message"      />
+<localdb:definition-titles type="message"      prefix-name="Message_" prefix-number=""         number-base="&amp;" name="message"          Name="Message"            />
+<localdb:definition-titles type="tboxmessage"  prefix-name=""         prefix-number=""         number-base="&amp;" name="Toolbox message"  Name="Toolbox message"    />
+<localdb:definition-titles type="tboxmethod"   prefix-name=""         prefix-number="Method "  number-base="&amp;" name="Toolbox method"   Name="Toolbox method"     />
 
 <xsl:output method="xml" indent="no" encoding="utf-8"/>
 
@@ -325,9 +325,7 @@
            <xsl:text>command_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
-    <div class='definition-header'>
-          <xsl:text>*</xsl:text><xsl:value-of select="@name"/>
-    </div>
+  <xsl:call-template name="definition-header"/>
 
   <xsl:call-template name="definition-description"/>
 
@@ -352,12 +350,8 @@
            <xsl:text>vdu_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
-        <div class='definition-header'>
-          <span class='definition-title'><xsl:text>VDU </xsl:text><xsl:value-of select="@name"/></span>
-        </div>
-
+  <xsl:call-template name="definition-header"/>
   <xsl:call-template name="definition-description"/>
-
   <xsl:call-template name="definition-syntax"/>
   <xsl:call-template name="definition-parameters"/>
 
@@ -530,7 +524,6 @@
  -->
 <xsl:template match="swi-definition|vector-definition">
 <xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
-<xsl:variable name="defsingular" select="document('')//localdb:definition-titles[@type=$deftype]/@singular" />
   <section>
           <xsl:attribute name="class">
            <xsl:value-of select="$deftype" />
@@ -589,28 +582,9 @@
             <xsl:value-of select="translate(@reason,$title-to-id-src,$title-to-id-map)" />
            </xsl:if>
           </xsl:attribute>
-          <div class='definition-header'>
-          <span class='definition-title'>
-          <xsl:value-of select="@name"/>
-<!--     <xsl:if test="(@reason != '') and (@reasonname != '')"> -->
-<!--      <xsl:text> </xsl:text> -->
-<!--      <xsl:value-of select="@reasonname"/> -->
-<!--     </xsl:if> -->
-    <xsl:if test="@reason != ''">
-     <xsl:text> </xsl:text>
-     <xsl:value-of select="@reason"/>
-    </xsl:if>
-    </span>
-    <xsl:if test="@number != ''">
-     <span class='definition-subtitle'>
-     <xsl:value-of select="@number"/>
-<!--      <xsl:if test="@reason != ''"> -->
-<!--       <xsl:text> reason </xsl:text> -->
-<!--       <xsl:value-of select="@reason"/> -->
-<!--      </xsl:if> -->
-    </span>
-    </xsl:if>
-     </div>
+
+  <xsl:call-template name='definition-header'/>
+
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
   <xsl:call-template name='definition-internal'/>
@@ -643,7 +617,6 @@
 <!-- Wimp Message definition -->
 <xsl:template match="message-definition|tboxmessage-definition">
 <xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
-<xsl:variable name="defsingular" select="document('')//localdb:definition-titles[@type=$deftype]/@singular" />
 <section>
           <xsl:attribute name="class">
            <xsl:value-of select="$deftype" />
@@ -658,27 +631,8 @@
             <xsl:value-of select="translate(@reason,$title-to-id-src,$title-to-id-map)" />
            </xsl:if>
           </xsl:attribute>
-          <div class='definition-header'>
-            <span class="definition-title">
-          <xsl:choose>
-           <xsl:when test="$deftype = 'message'">
-            <xsl:text>Message_</xsl:text><xsl:value-of select="@name"/>
-           </xsl:when>
-           <xsl:when test="$deftype = 'tboxmessage'">
-            <xsl:value-of select="@name"/>
-           </xsl:when>
-          </xsl:choose>
-<!--     <xsl:if test="(@reason != '') and (@reasonname != '')"> -->
-<!--      <xsl:text> </xsl:text> -->
-<!--      <xsl:value-of select="@reasonname"/> -->
-<!--     </xsl:if> -->
-    <xsl:if test="@reason != ''">
-     <xsl:text> </xsl:text>
-     <xsl:value-of select="@reason"/>
-    </xsl:if>
-    </span>
-    <span class="definition-subtitle">&amp;<xsl:value-of select="@number"/></span>
-    </div>
+  <xsl:call-template name='definition-header'/>
+
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
   <xsl:call-template name='definition-internal'/>
@@ -770,9 +724,7 @@
            <xsl:text>sysvar_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
-        <div class='definition-header'>
-          <span class='definition-title'><xsl:value-of select="@name"/></span>
-        </div>
+  <xsl:call-template name="definition-header"/>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
   <xsl:call-template name="definition-internal"/>
@@ -801,10 +753,8 @@
            <xsl:text>error_</xsl:text>
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
-        <div class='definition-header'>
-          <span class='definition-title'><xsl:text>Error_</xsl:text><xsl:value-of select="@name"/></span>
-          <span class='definition-subtitle'>Error &amp;<xsl:value-of select="@number"/></span>
-        </div>
+
+  <xsl:call-template name="definition-header"/>
 
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
@@ -837,28 +787,7 @@
             <xsl:value-of select="translate(@reason,$title-to-id-src,$title-to-id-map)" />
            </xsl:if>
           </xsl:attribute>
-    <div class='definition-header'>
-        <span class='definition-title'>
-          <xsl:text>Service_</xsl:text><xsl:value-of select="@name"/>
-<!--     <xsl:if test="(@reason != '') and (@reasonname != '')"> -->
-<!--      <xsl:text> </xsl:text> -->
-<!--      <xsl:value-of select="@reasonname"/> -->
-<!--     </xsl:if> -->
-    <xsl:if test="@reason != ''">
-     <xsl:text> </xsl:text>
-     <span class='definition-reason'>
-     <xsl:value-of select="@reason"/>
-     </span>
-    </xsl:if>
-    </span>
-
-    <span class='definition-subtitle'>Service &amp;<xsl:value-of select="@number"/>
-<!--     <xsl:if test="@reason != ''"> -->
-<!--      <xsl:text> reason </xsl:text> -->
-<!--      <xsl:value-of select="@reason"/> -->
-<!--     </xsl:if> -->
-    </span>
-    </div>
+   <xsl:call-template name='definition-header'/>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
   <xsl:call-template name='definition-internal'/>
@@ -895,25 +824,7 @@
             <xsl:value-of select="translate(@reason,$title-to-id-src,$title-to-id-map)" />
            </xsl:if>
           </xsl:attribute>
-          <div class='definition-header'>
-            <span class='definition-title'>
-          <xsl:value-of select="@name"/>
-<!--     <xsl:if test="(@reason != '') and (@reasonname != '')"> -->
-<!--      <xsl:text> </xsl:text> -->
-<!--      <xsl:value-of select="@reasonname"/> -->
-<!--     </xsl:if> -->
-    <xsl:if test="@reason != ''">
-     <xsl:text> </xsl:text>
-     <xsl:value-of select="@reason"/>
-    </xsl:if>
-    </span>
-    <span class='definition-subtitle'>Method &amp;<xsl:value-of select="@number"/>
-<!--     <xsl:if test="@reason != ''"> -->
-<!--      <xsl:text> reason </xsl:text> -->
-<!--      <xsl:value-of select="@reason"/> -->
-<!--     </xsl:if> -->
-    </span>
-    </div>
+  <xsl:call-template name='definition-header'/>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
   <xsl:call-template name='definition-internal'/>
@@ -949,25 +860,7 @@
             <xsl:value-of select="translate(@reason,$title-to-id-src,$title-to-id-map)" />
            </xsl:if>
           </xsl:attribute>
-    <div class='definition-header'>
-     <span class='definition-title'>
-          <xsl:text>UpCall_</xsl:text><xsl:value-of select="@name"/>
-<!--     <xsl:if test="(@reason != '') and (@reasonname != '')"> -->
-<!--      <xsl:text> </xsl:text> -->
-<!--      <xsl:value-of select="@reasonname"/> -->
-<!--     </xsl:if> -->
-    <xsl:if test="@reason != ''">
-     <xsl:text> </xsl:text>
-     <xsl:value-of select="@reason"/>
-    </xsl:if>
-    </span>
-    <span class='definition-subtitle'>UpCall &amp;<xsl:value-of select="@number"/>
-<!--     <xsl:if test="@reason != ''"> -->
-<!--      <xsl:text> reason </xsl:text> -->
-<!--      <xsl:value-of select="@reason"/> -->
-<!--     </xsl:if> -->
-    </span>
-    </div>
+   <xsl:call-template name='definition-header'/>
 <xsl:choose>
  <xsl:when test="@internal = 'yes'">
    <xsl:call-template name='definition-internal'/>
@@ -1006,11 +899,17 @@
 <!-- Helpers for the definition blocks which are common -->
 <xsl:template name='definition-header'>
   <xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
-  <xsl:variable name="defsingular" select="document('')//localdb:definition-titles[@type=$deftype]/@singular" />
+  <xsl:variable name="defprefixname" select="document('')//localdb:definition-titles[@type=$deftype]/@prefix-name" />
+  <xsl:variable name="defprefixnumber" select="document('')//localdb:definition-titles[@type=$deftype]/@prefix-number" />
+  <xsl:variable name="defnumberbase" select="document('')//localdb:definition-titles[@type=$deftype]/@number-base" />
 
   <div class='definition-header'>
    <span class='definition-title'>
+    <xsl:if test="$defprefixname != ''">
+     <span class='definition-name-prefix'><xsl:value-of select="$defprefixname"/></span>
+    </xsl:if>
     <span class='definition-name'><xsl:value-of select="@name"/></span>
+
 <!--     <xsl:if test="(@reason != '') and (@reasonname != '')"> -->
 <!--      <xsl:text> </xsl:text> -->
 <!--      <xsl:value-of select="@reasonname"/> -->
@@ -1020,23 +919,31 @@
      <span class='definition-reason'><xsl:value-of select="@reason"/></span>
     </xsl:if>
    </span>
+   <xsl:if test="(@offset != '') or (@number != '')">
     <span class='definition-subtitle'>
-     <xsl:value-of select="$defsingular" />
+     <span class='definition-number-prefix'><xsl:value-of select="$defprefixnumber"/></span>
      <span class='definition-number'>
       <xsl:choose>
        <xsl:when test="@offset != ''">
         <xsl:text> </xsl:text>
         <xsl:value-of select="@offset-base"/>
-        <xsl:text>+&amp;</xsl:text>
+        <xsl:text>+</xsl:text>
+        <xsl:value-of select="$defnumberbase"/>
         <xsl:value-of select="@offset"/>
        </xsl:when>
        <xsl:otherwise>
-        <xsl:text> &amp;</xsl:text>
+        <xsl:if test="$defnumberbase != ''">
+         <xsl:if test="$defprefixnumber != ''">
+          <xsl:text> </xsl:text>
+         </xsl:if>
+         <xsl:value-of select="$defnumberbase"/>
+        </xsl:if>
         <xsl:value-of select="@number"/>
        </xsl:otherwise>
       </xsl:choose>
      </span>
     </span>
+   </xsl:if>
   </div>
 </xsl:template>
 
@@ -1091,12 +998,12 @@
 
 <xsl:template name="definition-reentrancy">
 <xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
-<xsl:variable name="defsingular" select="document('')//localdb:definition-titles[@type=$deftype]/@singular" />
+<xsl:variable name="defName" select="document('')//localdb:definition-titles[@type=$deftype]/@Name" />
   <section class="definition definition-reentrancy">
   <xsl:choose>
-    <xsl:when test='@re-entrant="yes"'><xsl:value-of select="$defsingular" /> is re-entrant</xsl:when>
+    <xsl:when test='@re-entrant="yes"'><xsl:value-of select="$defName" /> is re-entrant</xsl:when>
     <xsl:when test='@re-entrant="undefined"'>Not defined</xsl:when>
-    <xsl:when test='@re-entrant="no"'><xsl:value-of select="$defsingular" /> is not re-entrant</xsl:when>
+    <xsl:when test='@re-entrant="no"'><xsl:value-of select="$defName" /> is not re-entrant</xsl:when>
     <xsl:otherwise><xsl:value-of select="@re-entrant"/></xsl:otherwise>
   </xsl:choose>
   </section>
@@ -1104,7 +1011,7 @@
 
 <xsl:template name='definition-syntax'>
 <xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
-<xsl:variable name="defprefix" select="document('')//localdb:definition-titles[@type=$deftype]/@prefix" />
+<xsl:variable name="defprefix" select="document('')//localdb:definition-titles[@type=$deftype]/@prefix-name" />
 <xsl:variable name="defseparator" select="document('')//localdb:definition-titles[@type=$deftype]/@separator" />
  <section class='definition definition-syntax'>
   <xsl:choose>

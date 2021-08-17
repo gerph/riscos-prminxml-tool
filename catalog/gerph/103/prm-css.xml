@@ -64,6 +64,8 @@ section.subsubsection h4 {
 .definition-title {
   display: block;
 }
+.definition-name-prefix {
+}
 .definition-name {
 }
 .definition-reason {
@@ -78,6 +80,8 @@ section.subsubsection h4 {
   content: ')';
 }
 .definition-number {
+}
+.definition-number-prefix {
 }
 .definition-description {
 }
