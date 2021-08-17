@@ -841,6 +841,8 @@
    <xsl:with-param name="where" select="." />
   </xsl:call-template>
 
+  <xsl:apply-templates select="declaration" />
+
   <xsl:apply-templates select="related" />
 
  </xsl:otherwise>
