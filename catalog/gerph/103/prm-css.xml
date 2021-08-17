@@ -37,6 +37,7 @@ nav > ul {
 
 section.section {
   border-bottom: 2px solid black;
+  padding-bottom: 1rem;
 }
 section.section {
   padding-left: 5rem;
@@ -185,6 +186,34 @@ section.definition::before {
 }
 .definition-syntax-line {
   font-family: monospace;
+}
+
+.value-table {
+    border: 0;
+}
+.value-table-head {
+    vertical-align: bottom;
+}
+.value-table-head .value-table-number {
+    text-align: right;
+}
+.value-table-head .value-table-name {
+    text-align: left;
+}
+.value-table-head .value-table-value {
+    text-align: left;
+}
+.value-table-body {
+    vertical-align: top;
+}
+.value-table-body .value-table-number {
+    text-align: right;
+}
+.value-table-body .value-table-name {
+    text-align: left;
+}
+.value-table-body .value-table-value {
+    text-align: left;
 }
 
 .userreplace {

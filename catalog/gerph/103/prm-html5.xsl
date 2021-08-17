@@ -1259,25 +1259,29 @@
     <xsl:when test="count(value/@name)>0"><xsl:text>Name</xsl:text></xsl:when>
   </xsl:choose>
 </xsl:variable>
-<table summary="Opaque table of values" border="0">
- <tr>
-  <th align="right" valign="bottom"><xsl:value-of select="@head-number" /></th>
-  <xsl:if test="$head-name != ''">
-   <th align="left" valign="bottom"><xsl:value-of select="$head-name" /></th>
-  </xsl:if>
-  <th align="left" valign="bottom"><xsl:value-of select="@head-value" /></th>
+<table classs='value-table'>
+ <thead class='value-table-head'>
+  <tr>
+   <th class='value-table-number'><xsl:value-of select="@head-number" /></th>
+   <xsl:if test="$head-name != ''">
+    <th class='value-table-name'><xsl:value-of select="$head-name" /></th>
+   </xsl:if>
+   <th class='value-table-value'><xsl:value-of select="@head-value" /></th>
  </tr>
- <xsl:apply-templates/>
+ </thead>
+ <tbody class='value-table-body'>
+  <xsl:apply-templates/>
+ </tbody>
 </table>
 </xsl:template>
 
 <xsl:template match="value">
 <tr>
- <td valign="top" align="right"><xsl:value-of select="@number"/></td>
+ <td class='value-table-number'><xsl:value-of select="@number"/></td>
  <xsl:if test="../*/@name != ''">
-  <td valign="top" align="left"><xsl:value-of select="@name"/></td>
+  <td class='value-table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
- <td valign="top" align="left">
+ <td class='value-table-value'>
   <xsl:choose>
    <xsl:when test="count(p) = 1">
     <!-- Botch to stop tables looking shite on most browsers -->

@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.02//EN"
+                            "http://gerph.org/dtd/102/prm.dtd">
+
+<riscos-prm>
+<chapter title="PRM-in-XML tables">
+<section title="Value table examples">
+
+<category title="Simple table">
+<value-table>
+ <value number="0">Some important value</value>
+ <value number="1">Another value</value>
+</value-table>
+</category>
+
+<category title="Named values">
+<value-table>
+ <value number="0" name='VALUE0'>Some important value</value>
+ <value number="1" name='VALUE1'>Another value</value>
+</value-table>
+</category>
+
+<category title="Partial named values">
+<value-table>
+ <value number="0">Some important value</value>
+ <value number="1" name='VALUE1'>Another value</value>
+</value-table>
+</category>
+
+<category title="Labelled headings">
+<value-table head-number='Number' head-value='Meaning'>
+ <value number="0">Some important value</value>
+ <value number="1">Another value</value>
+</value-table>
+</category>
+
+<category title="Labelled headings with name">
+<value-table head-number='Number' head-name="Symbol" head-value='Meaning'>
+ <value number="0" name='VALUE0'>Some important value</value>
+ <value number="1" name='VALUE1'>Another value</value>
+</value-table>
+</category>
+
+</section>
+
+</chapter>
+
+<!-- MetaData -->
+<meta>
+ <maintainer>
+  <email name="Gerph" address="gerph@gerph.org" />
+ </maintainer>
+ <disclaimer>
+    <p>
+        &copy; Gerph, 2021.
+    </p>
+ </disclaimer>
+
+ <history>
+  <revision number="1" author="Gerph" date="17 Aug 2021" title="Initial version">
+    <change>Some examples of table forms</change>
+  </revision>
+ </history>
+</meta>
+</riscos-prm>
