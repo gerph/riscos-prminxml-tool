@@ -1313,6 +1313,8 @@
    </xsl:when>
   </xsl:choose>
 
+  <xsl:apply-templates select="declaration" />
+
   <xsl:apply-templates select="related" />
 
  </xsl:otherwise>
