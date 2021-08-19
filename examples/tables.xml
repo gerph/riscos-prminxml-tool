@@ -7,38 +7,48 @@
 <section title="Value table examples">
 
 <category title="Simple table">
+<p>
 <value-table>
  <value number="0">Some important value</value>
  <value number="1">Another value</value>
 </value-table>
+</p>
 </category>
 
 <category title="Named values">
+<p>
 <value-table>
  <value number="0" name='VALUE0'>Some important value</value>
  <value number="1" name='VALUE1'>Another value</value>
 </value-table>
+</p>
 </category>
 
 <category title="Partial named values">
+<p>
 <value-table>
  <value number="0">Some important value</value>
  <value number="1" name='VALUE1'>Another value</value>
 </value-table>
+</p>
 </category>
 
 <category title="Labelled headings">
+<p>
 <value-table head-number='Number' head-value='What it means'>
  <value number="0">Some important value</value>
  <value number="1">Another value</value>
 </value-table>
+</p>
 </category>
 
 <category title="Labelled headings with name">
+<p>
 <value-table head-number='Number' head-name="Symbol" head-value='What it means'>
  <value number="0" name='VALUE0'>Some important value</value>
  <value number="1" name='VALUE1'>Another value</value>
 </value-table>
+</p>
 </category>
 
 </section>
@@ -46,38 +56,48 @@
 <section title="Offset table examples">
 
 <category title="Simple table">
+<p>
 <offset-table>
  <offset number="0">Some important offset</offset>
  <offset number="4">Another offset</offset>
 </offset-table>
+</p>
 </category>
 
 <category title="Named offsets">
+<p>
 <offset-table>
  <offset number="0" name='OFFSET0'>Some important offset</offset>
  <offset number="4" name='OFFSET4'>Another offset</offset>
 </offset-table>
+</p>
 </category>
 
 <category title="Partial named offsets">
+<p>
 <offset-table>
  <offset number="0">Some important offset</offset>
  <offset number="4" name='OFFSET4'>Another offset</offset>
 </offset-table>
+</p>
 </category>
 
 <category title="Labelled headings">
+<p>
 <offset-table head-number='Byte offset' head-value='What it means'>
  <offset number="0">Some important offset</offset>
  <offset number="4">Another offset</offset>
 </offset-table>
+</p>
 </category>
 
 <category title="Labelled headings with name">
+<p>
 <offset-table head-number='Byte offset' head-name="Symbol" head-value='What it means'>
  <offset number="0" name='OFFSET0'>Some important offset</offset>
  <offset number="4" name='OFFSET4'>Another offset</offset>
 </offset-table>
+</p>
 </category>
 
 </section>
@@ -85,44 +105,54 @@
 <section title="Bit field table examples">
 
 <category title="Simple table">
+<p>
 <bitfield-table>
  <bit number="0">Some important bit</bit>
  <bit number="1">Another bit</bit>
  <bit number="4-7">A range</bit>
  <bit number="31" state="reserved"/>
 </bitfield-table>
+</p>
 </category>
 
 <category title="Named bits">
+<p>
 <bitfield-table>
  <bit number="0" name='FLAG0'>Some important bit</bit>
  <bit number="1" name='FLAG1'>Another bit</bit>
  <bit number="4-7" name='TYPE'>A range</bit>
  <bit number="31" name='MAGIC' state="reserved"/>
 </bitfield-table>
+</p>
 </category>
 
 <category title="Partial named bits">
+<p>
 <bitfield-table>
  <bit number="0" name='FLAG0'>Some important bit</bit>
  <bit number="1" >Another bit</bit>
  <bit number="4-7" name='TYPE'>A range</bit>
  <bit number="31" name='MAGIC' state="reserved"/>
 </bitfield-table>
+</p>
 </category>
 
 <category title="State bits (1- set/clear)">
+<p>
 <bitfield-table>
  <bit number="0" state='set'>Thing should happen</bit>
  <bit number="0" state='clear'>Thing never happens</bit>
 </bitfield-table>
+</p>
 </category>
 
 <category title="State bits (2- clear/set)">
+<p>
 <bitfield-table>
  <bit number="0" state='clear'>Thing never happens</bit>
  <bit number="0" state='set'>Thing should happen</bit>
 </bitfield-table>
+</p>
 </category>
 
 </section>
