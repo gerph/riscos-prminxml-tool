@@ -20,27 +20,40 @@ my $riscos = ($^O eq '') || ($^O eq 'riscos');
 my $script = "$0";
 my $scriptdir = $script;
 my $resourcedir;
+my $dirsep = $riscos ? '.' : '/';
+my $extsep = $riscos ? '/' : '.';
+my $envvar;
 if ($riscos)
 {
-    $scriptdir =~ s/\.[^\.]+$//;
-    $resourcedir = "$scriptdir/riscos-prminxml-resources";
-    if (!-d $resourcedir)
+    if (! ($scriptdir =~ s/\.[^\.]+$//))
     {
-        # Not yet installed
-        $resourcedir = "$scriptdir.catalog";
+        $scriptdir = "@";
     }
+    $resourcedir = "$scriptdir${dirsep}riscos-prminxml-resources";
+    if (!-d $resourcedir) {
+        # May have been installed into the XMLCatalog resource
+        if (-d '<XMLCatalog$Dir>.gerph') {
+            $resourcedir = '<XMLCatalog$Dir>';
+        }
+    }
+    $envvar_catalog = 'XML$CatalogFiles';
 }
 else
 {
-    $scriptdir =~ s/\/[^\/]+$//;
-    $resourcedir = "$scriptdir/riscos-prminxml-resources";
-    if (!-d $resourcedir)
+    if (! ($scriptdir =~ s/\/[^\/]+$//))
     {
-        # Not yet installed
-        $resourcedir = "$scriptdir/catalog";
+        $scriptdir = ".";
     }
+    $resourcedir = "$scriptdir${dirsep}riscos-prminxml-resources";
+    $envvar_catalog = 'XML_CATALOG_FILES';
+}
+if (!-d $resourcedir)
+{
+    # Not yet installed
+    $resourcedir = "$scriptdir${dirsep}catalog";
 }
 
+my $toolname = $riscos ? 'prminxml' : 'riscos-prminxml';
 my $version = 'VERSION';
 my $debug = 0;
 my $lint = 0;
@@ -50,7 +63,7 @@ my $outputfile = undef;
 my $tool = 'xsltproc';
 my $toollint = 'xmllint';
 my $catalog_base = 'http://gerph.org/dtd';
-my $catalog_version = '102';
+my $catalog_version = '103';
 my $logdir = undef;
 my $logfile = undef;
 my $index = undef;
@@ -70,8 +83,8 @@ my %extensions = (
         'skeleton' => undef, # Special value
     );
 
-
-while (my $arg = shift)
+my $arg;
+while ($arg = shift)
 {
     #print "Arg = $arg\n";
     if ($arg =~ /^-(-?)([a-zA-Z\-]+)/)
@@ -156,6 +169,8 @@ while (my $arg = shift)
     }
     else
     {
+        #print "Push back $arg\n";
+        print ""; # Some bug in the perl interpreter causes the unshift to be ignored without this?!
         unshift @ARGV, $arg;
         last;
     }
@@ -164,8 +179,10 @@ while (my $arg = shift)
 
 # See if we can read what the input files are.
 my @inputs = ();
-while (my $f = shift)
+my $f;
+while ($f = shift)
 {
+    #print "Arg: Bare filename $f\n";
     my $nf = native_filename($f);
     if (!$nf)
     {
@@ -186,10 +203,7 @@ if ($format eq 'skeleton')
     {
         die "Skeleton output file '$outputfile' already exists - refusing to overwrite\n";
     }
-    if ($riscos)
-    { $skeleton = "$resourcedir.gerph.skeleton/xml"; }
-    else
-    { $skeleton = "$resourcedir/gerph/skeleton.xml"; }
+    $skeleton = "$resourcedir${dirsep}gerph${dirsep}skeleton${extsep}xml";
 
     copyfile($skeleton, $outputfile, 'skeleton source', 'skeleton output');
     print "Created $outputfile\n";
@@ -267,7 +281,7 @@ if ($format eq 'index')
 
     # Clean
     print "Cleaning target\n";
-    $cmd = "make -f \"$makefile\" clean > \"$logdir/$step-clean.log\"";
+    $cmd = "make -f \"$makefile\" clean > \"$logdir${dirsep}$step-clean${extsep}log\"";
     $cmd .= " 2>&1" if (!$riscos);
     runcommand($cmd) && die "Unable to clean directories with: $cmd\n";
     $step += 1;
@@ -275,13 +289,13 @@ if ($format eq 'index')
     # Build
     print "Building documentation\n";
     my $logfile;
-    $logfile = "$logdir/$step-build.log";
+    $logfile = "$logdir${dirsep}$step-build${extsep}log";
     build_with_log("make -f \"$makefile\"", $logfile, "build documentation");
     $step += 1;
 
     # Validate
     print "Validating source\n";
-    $logfile = "$logdir/$step-validate.log";
+    $logfile = "$logdir${dirsep}$step-validate${extsep}log";
     build_with_log("make -f \"$makefile\" validate", $logfile, "validate documentation", 1);
     $step += 1;
 
@@ -340,10 +354,7 @@ else
         {
             my $leaf = leafname($input);
             $leaf = replaceext($leaf, $extensions{$format});
-            if ($riscos)
-            { $out = "$outputdir." . $leaf; }
-            else
-            { $out = "$outputdir/" . $leaf; }
+            $out = "$outputdir${dirsep}$leaf";
         }
         print "Processing $input -> $out\n";
 
@@ -354,7 +365,7 @@ else
             # They want a log file writing out.
             if ($logfile)
             {
-                $log = $logdir ? "$logdir/$logfile" : "$logfile";
+                $log = $logdir ? "$logdir${dirsep}$logfile" : "$logfile";
 
                 # They wanted just one log file.
                 open(OUT, ">> $log") || die "Cannot access log file '$log': $!\n";
@@ -366,7 +377,7 @@ else
                 # They gave a log directory, so we want to create one file per input
                 my $leaf = leafname($input);
                 $leaf = replaceext($leaf, 'log');
-                $log = "$logdir/" . $leaf;
+                $log = "$logdir${dirsep}$leaf";
             }
             if ($riscos)
             {
@@ -429,11 +440,13 @@ else
 
         if ($format eq 'lint')
         {
-            $cmd = "$toollint --noout --valid \"$input\"";
+            my $native = $riscos ? '--native' : '';
+            $cmd = "$toollint $native --noout --valid \"$input\"";
         }
         else
         {
-            $cmd = "$tool -output \"$out\" $xslt \"$input\"";
+            my $native = $riscos ? '--native' : '';
+            $cmd = "$tool $native --output \"$out\" $xslt \"$input\"";
         }
         $cmd .= $logtail;
 
@@ -601,20 +614,29 @@ sub runcommand
 {
     my ($cmd) = @_;
 
-    my $oldenv = $ENV{'XML_CATALOG_FILES'};
+    my $oldenv = $ENV{$envvar_catalog};
     # Use the catalog files that we supplied.
-    $ENV{'XML_CATALOG_FILES'} = "$resourcedir/root.xml";
+    my $need_restore = 0;
+    my $catalog = "${resourcedir}${dirsep}root${extsep}xml";
+    if (-f "$catalog") {
+        # Only use the resource catalog if one is present; otherwise we'll fall back to the
+        # system catalogs or fetching from the network if possible.
+        $need_restore = 1;
+        $ENV{$envvar_catalog} = $catalog;
+    }
 
     print "Command: $cmd\n" if ($debug);
     my $rc = system "$cmd";
     print "RC is $rc\n" if ($debug);
 
     # Restore the old environment variable on RISC OS
-    if (defined $oldenv) {
-        $ENV{'XML_CATALOG_FILES'} = $oldenv;
-    }
-    else {
-        delete $ENV{'XML_CATALOG_FILES'};
+    if ($need_restore) {
+        if (defined $oldenv) {
+            $ENV{$envvar_catalog} = $oldenv;
+        }
+        else {
+            delete $ENV{$envvar_catalog};
+        }
     }
     return $rc;
 }
@@ -718,8 +740,7 @@ sub check_lint_log
 # Print version messages.
 sub version
 {
-    my $tool = $riscos ? 'prminxml' : 'riscos-prminxml';
-    print "$tool $version\n";
+    print "$toolname $version\n";
 }
 
 
@@ -729,14 +750,7 @@ sub help_tag
 {
     my ($helptag) = @_;
     my $dochelp;
-    if ($riscos)
-    {
-        $dochelp = "$resourcedir.docs.PRMinXML/txt";
-    }
-    else
-    {
-        $dochelp = "$resourcedir/docs/PRMinXML.txt";
-    }
+    $dochelp = "$resourcedir${dirsep}docs${dirsep}PRMinXML${extsep}txt";
 
     open(IN, "< $dochelp") || die "Cannot find documentation file '$dochelp': $!\n";
 
@@ -835,9 +849,8 @@ sub help_tag
 # Print help messages.
 sub help
 {
-    my $tool = $riscos ? 'prminxml' : 'riscos-prminxml';
-    print "$tool $version - converts structured documentation to presentation formats\n";
-    print "Syntax: $tool <options> <input-files>\n";
+    print "$toolname $version - converts structured documentation to presentation formats\n";
+    print "Syntax: $toolname <options> <input-files>\n";
 
     my $formats = join ', ', sort keys %extensions;
     print <<EOM;
