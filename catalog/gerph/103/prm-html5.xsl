@@ -68,15 +68,14 @@
 <xsl:param name="create-contents-target"></xsl:param>
 <xsl:param name="position-with-names">yes</xsl:param>
 
-<xsl:param name="css-content" select="document('prm-css.xml')/prm-css/css[@type='traditional']" />
+<xsl:param name="css-base">traditional</xsl:param>
+<xsl:param name="css-variant">none</xsl:param>
 
 
 <xsl:template match="/">
 <html>
 <xsl:comment>
   Auto-generated using XSLT stylesheet created by Gerph.
-
-  This document was created with the HTML stylesheet updated 12 Aug 2021.
 </xsl:comment>
 <xsl:apply-templates />
 <xsl:apply-templates select="riscos-prm/meta" mode="tail"/>
@@ -94,9 +93,7 @@
   <xsl:text> : </xsl:text>
   <xsl:value-of select="@title"/>
  </title>
- <style type='text/css'>
-  <xsl:value-of disable-output-escaping='yes' select="$css-content"/>
- </style>
+ <xsl:call-template name='head-css'/>
 </head>
 
 <body>
@@ -132,6 +129,19 @@
 
 </body>
 
+</xsl:template>
+
+<xsl:template name='head-css'>
+<xsl:if test="$css-base != 'none'">
+ <style type='text/css'>
+  <xsl:value-of disable-output-escaping='yes' select="document('prm-css.xml')/prm-css/css[@type=$css-base and not(@variant)]"/>
+ </style>
+ <xsl:if test="$css-variant != 'none'">
+  <style type='text/css'>
+   <xsl:value-of disable-output-escaping='yes' select="document('prm-css.xml')/prm-css/css[@type=$css-base and @variant=$css-variant]"/>
+  </style>
+ </xsl:if>
+</xsl:if>
 </xsl:template>
 
 <!-- Content definitions -->
@@ -327,8 +337,6 @@
           </xsl:attribute>
   <xsl:call-template name="definition-header"/>
 
-  <xsl:call-template name="definition-description"/>
-
   <xsl:call-template name="definition-syntax"/>
   <xsl:call-template name="definition-parameters"/>
 
@@ -351,7 +359,6 @@
            <xsl:value-of select="translate(@name,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
   <xsl:call-template name="definition-header"/>
-  <xsl:call-template name="definition-description"/>
   <xsl:call-template name="definition-syntax"/>
   <xsl:call-template name="definition-parameters"/>
 
@@ -401,7 +408,7 @@
 <xsl:choose>
  <xsl:when test="count(*) = 0">
   <section class='definition definition-related-apis'>
-      None
+    <span class='related-apis-none'>None</span>
   </section>
  </xsl:when>
 
@@ -497,7 +504,7 @@
   </xsl:if>
 
   <xsl:if test="count(reference[@type='message']) > 0">
-   <section class='definition definition-messages'>
+   <section class='definition definition-related-messages'>
    <xsl:for-each select="reference[@type='message']">
    <xsl:if test="position() > 1">, </xsl:if>
     <xsl:apply-templates select="." />
@@ -506,7 +513,7 @@
   </xsl:if>
 
   <xsl:if test="count(reference[@type='vdu']) > 0">
-   <section class='definition definition-vdus'>
+   <section class='definition definition-related-vdus'>
    <xsl:for-each select="reference[@type='vdu']">
    <xsl:if test="position() > 1">, </xsl:if>
     <xsl:apply-templates select="." />
@@ -546,7 +553,6 @@
   <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <xsl:call-template name="definition-description"/>
 
   <xsl:call-template name='definition-entry'/>
   <xsl:call-template name='definition-exit'/>
@@ -590,7 +596,6 @@
   <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <xsl:call-template name="definition-description"/>
 
   <xsl:call-template name='definition-entry'/>
   <xsl:call-template name='definition-exit'/>
@@ -638,9 +643,9 @@
   <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <xsl:call-template name="definition-description"/>
 
   <section class='definition definition-message'>
+  <div class="definition-message-data">
   <xsl:choose>
    <xsl:when test="count(message-table)>0">
     <xsl:apply-templates select="message-table" />
@@ -658,29 +663,35 @@
     <xsl:text>No additional data</xsl:text>
    </xsl:otherwise>
   </xsl:choose>
+  </div>
   </section>
 
   <xsl:if test="$deftype = 'message'">
    <!-- Source and destination only apply to messages -->
    <xsl:if test="@source!=''">
     <section class='definition definition-message-source'>
+    <div class="definition-message-tasks">
     <xsl:choose>
      <xsl:when test="@source='*'">Any application</xsl:when>
      <xsl:otherwise><xsl:value-of select="@source" /></xsl:otherwise>
     </xsl:choose>
+    </div>
     </section>
    </xsl:if>
 
    <xsl:if test="@destination!=''">
     <section class='definition definition-message-destination'>
+    <div class="definition-message-tasks">
     <xsl:choose>
      <xsl:when test="@destination='*'">Any application</xsl:when>
      <xsl:otherwise><xsl:value-of select="@destination" /></xsl:otherwise>
     </xsl:choose>
+    </div>
     </section>
    </xsl:if>
 
    <section class='definition definition-message-delivery'>
+   <div class='definition-message-delivery-mode'>
    <xsl:choose>
     <xsl:when test="@broadcast='never'">Message must be sent directly to task</xsl:when>
     <xsl:when test="@broadcast='may'">Message may sent directly to task, or by broadcast (destination 0)</xsl:when>
@@ -690,7 +701,7 @@
    <xsl:call-template name="describeposition" />.</xsl:message>
     </xsl:otherwise>
    </xsl:choose>
-   <br />
+   <br/>
 
    <xsl:choose>
     <xsl:when test="@recorded='never'">Message may only be sent normally (reason code 17)</xsl:when>
@@ -701,6 +712,7 @@
    <xsl:call-template name="describeposition" />.</xsl:message>
     </xsl:otherwise>
    </xsl:choose>
+   </div>
    </section>
   </xsl:if>
 
@@ -730,7 +742,6 @@
   <xsl:call-template name="definition-internal"/>
  </xsl:when>
  <xsl:otherwise>
-  <xsl:call-template name="definition-description"/>
 
   <xsl:apply-templates select="use" />
 
@@ -763,7 +774,6 @@
    <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <xsl:call-template name="definition-description"/>
 
   <xsl:apply-templates select="use" />
 
@@ -793,7 +803,6 @@
   <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <xsl:call-template name="definition-description"/>
 
   <xsl:call-template name='definition-entry'/>
   <xsl:call-template name='definition-exit'/>
@@ -830,7 +839,6 @@
   <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <xsl:call-template name="definition-description"/>
 
   <xsl:call-template name='definition-entry'/>
   <xsl:call-template name='definition-exit'/>
@@ -868,7 +876,6 @@
    <xsl:call-template name='definition-internal'/>
  </xsl:when>
  <xsl:otherwise>
-  <xsl:call-template name='definition-description'/>
 
   <xsl:call-template name='definition-entry'/>
   <xsl:call-template name='definition-exit'/>
@@ -947,6 +954,9 @@
     </span>
    </xsl:if>
   </div>
+  <xsl:if test="not(@internal) or @internal != 'yes'">
+   <xsl:call-template name='definition-description'/>
+  </xsl:if>
 </xsl:template>
 
 <xsl:template name='definition-description'>
@@ -994,7 +1004,9 @@
 
 <xsl:template name="definition-processor">
   <section class="definition definition-processor">
+    <div class="definition-processor-mode">
     Processor is in <xsl:value-of select="@processor-mode"/> mode
+    </div>
   </section>
 </xsl:template>
 
@@ -1002,12 +1014,14 @@
 <xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
 <xsl:variable name="defName" select="document('')//localdb:definition-titles[@type=$deftype]/@Name" />
   <section class="definition definition-reentrancy">
+  <div class="definition-reentrancy-mode">
   <xsl:choose>
     <xsl:when test='@re-entrant="yes"'><xsl:value-of select="$defName" /> is re-entrant</xsl:when>
     <xsl:when test='@re-entrant="undefined"'>Not defined</xsl:when>
     <xsl:when test='@re-entrant="no"'><xsl:value-of select="$defName" /> is not re-entrant</xsl:when>
     <xsl:otherwise><xsl:value-of select="@re-entrant"/></xsl:otherwise>
   </xsl:choose>
+  </div>
   </section>
 </xsl:template>
 
@@ -1165,26 +1179,30 @@
 
 <!-- A bitfield-table turns into a regular XHTML table, with header -->
 <xsl:template match="bitfield-table">
-<table summary="A bitfield" border="0">
- <tr>
- <xsl:choose>
-  <xsl:when test="count(*/@state)=0">
-   <th align="right" valign="bottom">Bit</th>
-   <xsl:if test="count(*/@name)>0">
-    <th align="left" valign="bottom">Name</th>
-   </xsl:if>
-   <th align="left" valign="bottom">Meaning if set</th>
-  </xsl:when>
-  <xsl:otherwise>
-   <th align="right" valign="bottom">Bit(s)</th>
-   <xsl:if test="count(*/@name)>0">
-    <th align="left" valign="bottom">Name</th>
-   </xsl:if>
-   <th align="left" valign="bottom">Meaning</th>
-  </xsl:otherwise>
- </xsl:choose>
- </tr>
- <xsl:apply-templates/>
+<table class='user-table bitfield-table'>
+ <thead class='table-head'>
+  <tr>
+   <xsl:choose>
+    <xsl:when test="count(*/@state)=0">
+     <th class='table-number'>Bit</th>
+     <xsl:if test="count(*/@name)>0">
+      <th class='table-name'>Name</th>
+     </xsl:if>
+     <th class='table-value' colspan='2'>Meaning if set</th>
+    </xsl:when>
+    <xsl:otherwise>
+     <th class='table-number'>Bit(s)</th>
+     <xsl:if test="count(*/@name)>0">
+      <th class='table-name'>Name</th>
+     </xsl:if>
+     <th class='table-value' colspan='2'>Meaning</th>
+    </xsl:otherwise>
+   </xsl:choose>
+  </tr>
+ </thead>
+ <tbody class='table-body'>
+  <xsl:apply-templates/>
+ </tbody>
 </table>
 </xsl:template>
 
@@ -1198,26 +1216,26 @@
                    ($lastelement/@state != '') )">
  <!-- We only want to process the first of any sets of rows -->
  <tr>
-  <td valign="top" align="right"><xsl:value-of select="@number"/></td>
+  <td class='table-number'><xsl:value-of select="@number"/></td>
   <xsl:if test="count(../*/@name)>0">
-   <td valign="top"><xsl:value-of select="@name"/></td>
+   <td class='table-name'><xsl:value-of select="@name"/></td>
   </xsl:if>
 
   <xsl:choose>
    <xsl:when test="@state = 'reserved'">
-    <td valign="top" align="left" colspan="2">
+    <td class='table-value' colspan='2'>
      <xsl:text>Reserved, must be zero</xsl:text>
     </td>
    </xsl:when>
 
    <xsl:when test="(@state = 'set') or (@state = 'clear')">
-    <td valign="top" align="right">
+    <td class='table-value table-value-bitstate'>
      <xsl:choose>
       <xsl:when test="@state='set'"><xsl:text>Set:</xsl:text></xsl:when>
       <xsl:otherwise><xsl:text>Clear:</xsl:text></xsl:otherwise>
      </xsl:choose>
     </td>
-    <td valign="top" align="left">
+    <td class='table-value table-value-bitmeaning'>
      <xsl:apply-templates/>
     </td>
 
@@ -1227,16 +1245,16 @@
      <tr>
       <td></td>
       <xsl:if test="count(../*/@name)>0">
-       <td valign="top"><xsl:value-of select="$nextelement/@name"/></td>
+       <td class='table-name'><xsl:value-of select="$nextelement/@name"/></td>
       </xsl:if>
 
-      <td valign="top" align="right">
+      <td class='table-value table-value-bitstate'>
        <xsl:choose>
         <xsl:when test="$nextelement/@state='set'"><xsl:text>Set:</xsl:text></xsl:when>
         <xsl:otherwise><xsl:text>Clear:</xsl:text></xsl:otherwise>
        </xsl:choose>
       </td>
-      <td valign="top" align="left">
+      <td class='table-value table-value-bitmeaning'>
        <xsl:apply-templates select="$nextelement/node()"/>
       </td>
      </tr>
@@ -1244,7 +1262,7 @@
    </xsl:when>
 
    <xsl:otherwise>
-    <td valign="top" align="left" colspan="2">
+    <td class='table-value' colspan='2'>
      <xsl:apply-templates/>
     </td>
    </xsl:otherwise>
@@ -1261,17 +1279,17 @@
     <xsl:when test="count(value/@name)>0"><xsl:text>Name</xsl:text></xsl:when>
   </xsl:choose>
 </xsl:variable>
-<table classs='value-table'>
- <thead class='value-table-head'>
+<table class='user-table value-table'>
+ <thead class='table-head'>
   <tr>
-   <th class='value-table-number'><xsl:value-of select="@head-number" /></th>
+   <th class='table-number'><xsl:value-of select="@head-number" /></th>
    <xsl:if test="$head-name != ''">
-    <th class='value-table-name'><xsl:value-of select="$head-name" /></th>
+    <th class='table-name'><xsl:value-of select="$head-name" /></th>
    </xsl:if>
-   <th class='value-table-value'><xsl:value-of select="@head-value" /></th>
+   <th class='table-value'><xsl:value-of select="@head-value" /></th>
  </tr>
  </thead>
- <tbody class='value-table-body'>
+ <tbody class='table-body'>
   <xsl:apply-templates/>
  </tbody>
 </table>
@@ -1279,11 +1297,11 @@
 
 <xsl:template match="value">
 <tr>
- <td class='value-table-number'><xsl:value-of select="@number"/></td>
+ <td class='table-number'><xsl:value-of select="@number"/></td>
  <xsl:if test="../*/@name != ''">
-  <td class='value-table-name'><xsl:value-of select="@name"/></td>
+  <td class='table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
- <td class='value-table-value'>
+ <td class='table-value'>
   <xsl:choose>
    <xsl:when test="count(p) = 1">
     <!-- Botch to stop tables looking shite on most browsers -->
@@ -1305,25 +1323,31 @@
     <xsl:when test="count(offset/@name)>0"><xsl:text>Name</xsl:text></xsl:when>
   </xsl:choose>
 </xsl:variable>
-<table summary="Opaque table of offset/contents" border="0">
- <tr>
-  <th align="right" valign="bottom"><xsl:value-of select="@head-number" /></th>
-  <xsl:if test="$head-name != ''">
-   <th align="left" valign="bottom"><xsl:value-of select="$head-name" /></th>
-  </xsl:if>
-  <th align="left" valign="bottom"><xsl:value-of select="@head-value" /></th>
- </tr>
- <xsl:apply-templates/>
+<table class='user-table offset-table'>
+ <thead class='table-head'>
+  <tr>
+   <th class='table-number'><xsl:value-of select="@head-number" /></th>
+   <xsl:if test="$head-name != ''">
+    <th class='table-name'><xsl:value-of select="$head-name" /></th>
+   </xsl:if>
+   <th class='table-value'><xsl:value-of select="@head-value" /></th>
+  </tr>
+ </thead>
+ <tbody class='table-body'>
+  <xsl:apply-templates/>
+ </tbody>
 </table>
 </xsl:template>
 
 <xsl:template match="offset">
 <tr>
- <td valign="top" align="right">+<xsl:value-of select="@number"/></td>
+ <td class='table-number'><xsl:value-of select="@number"/></td>
  <xsl:if test="../*/@name != ''">
-  <td valign="top" align="left"><xsl:value-of select="@name"/></td>
+  <td class='table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
- <td valign="top" align="left"><xsl:apply-templates/></td>
+ <td class='table-value'>
+  <xsl:apply-templates/>
+ </td>
 </tr>
 </xsl:template>
 
@@ -1331,25 +1355,29 @@
 
 <!-- An message table is similar to the offset-table -->
 <xsl:template match="message-table">
-<table summary="Opaque table for a wimp message block" border="0">
- <tr>
-  <th align="right" valign="bottom">Offset</th>
-  <xsl:if test="count(message/@name) > 0">
-   <th align="left" valign="bottom">Name</th>
-  </xsl:if>
-  <th align="left" valign="bottom">Contents</th>
- </tr>
- <xsl:apply-templates/>
+<table class='user-table message-table'>
+ <thead class='table-head'>
+  <tr>
+   <th class='table-number'>Offset</th>
+   <xsl:if test="count(message/@name) > 0">
+    <th class='table-name'>Name</th>
+   </xsl:if>
+   <th class='table-value'>Contents</th>
+  </tr>
+ </thead>
+ <tbody class='table-body'>
+  <xsl:apply-templates/>
+ </tbody>
 </table>
 </xsl:template>
 
 <xsl:template match="message">
 <tr>
- <td valign="top" align="right">R1+<xsl:value-of select="@offset"/></td>
+ <td class='table-number'>R1+<xsl:value-of select="@offset"/></td>
  <xsl:if test="../*/@name != ''">
-  <td valign="top" align="left"><xsl:value-of select="@name"/></td>
+  <td class='table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
- <td valign="top" align="left"><xsl:apply-templates/></td>
+ <td class='table-value'><xsl:apply-templates/></td>
 </tr>
 </xsl:template>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" standalone="yes"?>
 <prm-css>
+    <css type="none"/>
     <css type="traditional"><![CDATA[
 h1 {
   font-size: 2em;
@@ -77,12 +78,12 @@ section.category h5 {
 .definition-header {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
-  font-weight: bold;
-  font-size: 1.5em;
-  text-align: right;
 }
 .definition-title {
   display: block;
+  font-weight: bold;
+  font-size: 1.5em;
+  text-align: right;
 }
 .definition-name-prefix {
 }
@@ -91,7 +92,11 @@ section.category h5 {
 .definition-reason {
 }
 .definition-subtitle {
+  display: block;
   xfont-variant: small-caps;
+  font-weight: bold;
+  font-size: 1.5em;
+  text-align: right;
 }
 .definition-subtitle::before {
   content: '(';
@@ -104,6 +109,7 @@ section.category h5 {
 .definition-number-prefix {
 }
 .definition-description {
+    display: block;
 }
 section.definition {
   margin-left: 0em;
@@ -112,10 +118,10 @@ section.definition {
 section.definition::before {
   display: block;
   font-weight: bold;
-  font-size: 0.825em;
-  margin-left: -2.5em;
-  margin-top: 2em;
-  margin-bottom: 2em;
+  font-size: 0.825rem;
+  margin-left: -2.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 .definition-internal {
 }
@@ -207,32 +213,35 @@ section.definition::before {
   font-family: monospace;
 }
 
-.value-table {
+.user-table {
     border: 0;
 }
-.value-table-head {
+.table-head {
     vertical-align: bottom;
 }
-.value-table-head .value-table-number {
+.table-head .table-number {
     text-align: right;
 }
-.value-table-head .value-table-name {
+.table-head .table-name {
     text-align: left;
 }
-.value-table-head .value-table-value {
+.table-head .table-value {
     text-align: left;
 }
-.value-table-body {
+.table-body {
     vertical-align: top;
 }
-.value-table-body .value-table-number {
+.table-body .table-number {
     text-align: right;
 }
-.value-table-body .value-table-name {
+.table-body .table-name {
     text-align: left;
 }
-.value-table-body .value-table-value {
+.table-body .table-value {
     text-align: left;
+}
+.table-body .table-value.table-value-bitstate {
+    text-align: right;
 }
 
 .userreplace {
@@ -315,4 +324,179 @@ table.meta p {
   margin-bottom: 0em;
 }
 ]]></css>
+
+<!-- 'traditional' variant 'acornfs' is based on the Acorn Functional Specification style that was used
+     for many later NC, Ursula and Browse related specifications.
+     It shares many features with the PRM so is appropriate for a lot of the uses, but...
+        * It doesn't have the common indented text format that was used in the paper manuals.
+        * Tables are bordered and given header dividers.
+        * The highlight colour for links is green.
+        * Background colouring is used for the definition header title, to separate sections.
+
+     This style varies from the original Acorn style in that:
+        * The sections/subsections/subsubsections/categories are indented slightly, to make it clearer
+          what level they are at
+        * Green dividers are used between sections to ensure that the content is divided up in a
+          more clear way.
+-->
+    <css type="traditional" variant="acornfs"><![CDATA[
+/* Green borders, centred heading */
+header h1 {
+    border-color: #008000;
+    border-top-width: 0.25rem;
+    border-bottom-width: 0.25rem;
+    text-align: center;
+}
+footer {
+  border-bottom: 0.25rem solid #008000;
+}
+nav {
+  border-bottom: 0.25rem solid #008000;
+}
+
+/* Links are green */
+a:link {
+    color: #007000;
+}
+a:visited {
+    color: #90a090;
+}
+a:active {
+    color: #a0a070;
+}
+
+/* Numbering beside each section */
+/* Note: I'm not at all sure I like this; it seems unreliable in Firefox when multiple counters are used.
+   DISABLED FOR NOW.
+ */
+
+/*
+article {
+  counter-reset: countersection;
+}
+
+article section h2 {
+  counter-reset: countersubsection;
+}
+article section h2::before {
+  counter-increment: countersection;
+  content: counter(countersection) ". ";
+}
+
+article section h3 {
+  counter-reset: countersubsubsection;
+}
+article section h3::before {
+  counter-increment: countersubsection;
+  content: counter(countersection) "." counter(countersubsection) " ";
+}
+
+article section h4 {
+  counter-reset: countercategory;
+}
+article section h4::before {
+  counter-increment: countersubsubsection;
+  content: counter(countersection) "." counter(countersubsection) "." counter(countersubsubsection) " ";
+}
+
+article section h5::before {
+  counter-increment: countercategory;
+  content: counter(countersection) "." counter(countersubsection) "." counter(countersubsubsection) "." counter(countercategory) " ";
+}
+/* End numbering */
+
+/* Centred headings */
+article section h2 {
+    text-align: center;
+    padding-left: 0;
+}
+h2.contents {
+    text-align: center;
+}
+
+/* Make the divider between sections green */
+section.section {
+  border-bottom: 0.25rem solid #008000;
+}
+
+/* Remove all the text indentations, leave the headings with some indentation (not sure about this) */
+section.section {
+  padding-left: 0;
+}
+section.section h2 {
+  margin-left: 0;
+}
+section.subsection h3 {
+  margin-left: 0em;
+}
+section.subsubsection h4 {
+  margin-left: 0.5rem;
+}
+section.category h5 {
+  margin-left: 1.0rem;
+}
+
+section.definition::before {
+  margin-left: 0;
+}
+section.definition > * {
+  margin-left: 2.5rem;
+}
+
+/* Background heading line for the definitions */
+span.definition-title {
+    background-color: #e5e5e5;
+    padding: 0.125em 0em 0.125em 0em;
+    font-size: 1.25em;
+}
+span.definition-subtitle {
+    font-weight: normal;
+    font-size: 1em;
+}
+div.definition-description {
+    text-align: right;
+    font-style: italic;
+}
+
+/* Remove the border at the top of the definitions */
+.service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
+  border-top: 2px none #008000;
+}
+
+/* Tables are bordered and have background colours */
+table.user-table {
+    border: 1px inset black;
+    border-collapse: separate;
+    border-spacing: 1px;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+table.user-table td {
+    padding: 2px 4px 2px 4px;
+    border: 1px inset #888888;
+}
+
+table.user-table th {
+    padding: 2px;
+    border: 1px inset #888888;
+    background-color: #dddddd;
+}
+.table-head .table-value {
+    text-align: center;
+}
+
+/* Metadata at the bottom should be centred */
+footer section.meta {
+    text-align: center;
+}
+footer section.meta table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+]]></css>
+
+    <css type="traditional" variant="paged"><![CDATA[
+]]></css>
+
 </prm-css>
