@@ -1,7 +1,24 @@
 <?xml version="1.0" standalone="yes"?>
-<css><![CDATA[
+<prm-css>
+    <css type="traditional"><![CDATA[
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+}
 h2 {
   font-size: 1.5em;
+  font-weight: bold;
+}
+h3 {
+  font-size: 1em;
+  font-weight: bold;
+}
+h4 {
+  font-size: 1em;
+  font-weight: bold;
+}
+h5 {
+  font-size: 1em;
   font-weight: bold;
 }
 
@@ -45,11 +62,13 @@ section.section {
 section.section h2 {
   margin-left: -5rem;
 }
-section.subsection h4 {
+section.subsection h3 {
   margin-left: -5rem;
 }
 section.subsubsection h4 {
   margin-left: -2.5rem;
+}
+section.category h5 {
 }
 
 .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
@@ -295,5 +314,5 @@ table.meta p {
   margin-top: 0em;
   margin-bottom: 0em;
 }
-]]>
-</css>
+]]></css>
+</prm-css>

@@ -68,7 +68,7 @@
 <xsl:param name="create-contents-target"></xsl:param>
 <xsl:param name="position-with-names">yes</xsl:param>
 
-<xsl:param name="css-content" select="document('prm-css.xml')/css" />
+<xsl:param name="css-content" select="document('prm-css.xml')/prm-css/css[@type='traditional']" />
 
 
 <xsl:template match="/">
@@ -270,13 +270,13 @@
 <!-- Sub-Sections -->
 <xsl:template match="subsection">
  <section class='subsection'>
-    <h4 class='subsection'>
+    <h3 class='subsection'>
           <xsl:attribute name="id">
            <xsl:text>subsection_</xsl:text>
            <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
           </xsl:attribute>
           <xsl:value-of select="@title" />
-         </h4>
+         </h3>
   <xsl:for-each select="*">
    <xsl:choose>
     <xsl:when test="local-name(.)='subsubsection'">
@@ -307,7 +307,7 @@
 <!-- Category -->
 <xsl:template match="category">
 <section class='category'>
-<h5>
+<h5 class='category'>
           <xsl:attribute name="id">
            <xsl:text>category_</xsl:text>
            <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />

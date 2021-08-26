@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.02//EN"
+                            "http://gerph.org/dtd/102/prm.dtd">
+
+<riscos-prm>
+<chapter title="PRM-in-XML tables">
+<section title="Section">
+
+    <subsection title="Subsection">
+        <subsubsection title="Subsubsection">
+            <category title="Category">
+            </category>
+        </subsubsection>
+    </subsection>
+
+</section>
+
+<section title="Section with text in">
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh. Porta nibh venenatis cras sed felis. Nulla facilisi morbi tempus iaculis urna id. Dui accumsan sit amet nulla facilisi. Vitae elementum curabitur vitae nunc sed.</p>
+
+    <subsection title="Subsection">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh. Porta nibh venenatis cras sed felis. Nulla facilisi morbi tempus iaculis urna id. Dui accumsan sit amet nulla facilisi. Vitae elementum curabitur vitae nunc sed.</p>
+
+        <subsubsection title="Subsubsection">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh. Porta nibh venenatis cras sed felis. Nulla facilisi morbi tempus iaculis urna id. Dui accumsan sit amet nulla facilisi. Vitae elementum curabitur vitae nunc sed.</p>
+
+            <category title="Category">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh. Porta nibh venenatis cras sed felis. Nulla facilisi morbi tempus iaculis urna id. Dui accumsan sit amet nulla facilisi. Vitae elementum curabitur vitae nunc sed.</p>
+            </category>
+            <p>(after category) Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh. Porta nibh venenatis cras sed felis. Nulla facilisi morbi tempus iaculis urna id. Dui accumsan sit amet nulla facilisi. Vitae elementum curabitur vitae nunc sed.</p>
+        </subsubsection>
+        <p>(after subsubsection) Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh. Porta nibh venenatis cras sed felis. Nulla facilisi morbi tempus iaculis urna id. Dui accumsan sit amet nulla facilisi. Vitae elementum curabitur vitae nunc sed.</p>
+    </subsection>
+
+    <p>(after subsection) Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh. Porta nibh venenatis cras sed felis. Nulla facilisi morbi tempus iaculis urna id. Dui accumsan sit amet nulla facilisi. Vitae elementum curabitur vitae nunc sed.</p>
+
+</section>
+
+</chapter>
+
+<!-- MetaData -->
+<meta>
+ <maintainer>
+  <email name="Gerph" address="gerph@gerph.org" />
+ </maintainer>
+ <disclaimer>
+    <p>
+        &copy; Gerph, 2021.
+    </p>
+ </disclaimer>
+
+ <history>
+  <revision number="1" author="Gerph" date="26 Aug 2021" title="Initial version">
+    <change>Some examples of section/category forms</change>
+  </revision>
+ </history>
+</meta>
+</riscos-prm>
