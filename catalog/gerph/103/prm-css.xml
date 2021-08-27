@@ -580,13 +580,30 @@ article .definition-related a:active {
     font-style: normal;
 }
 
-/* Some paged media features */
+/* Styling specific to the printing */
+@media print {
+
+    /* Avoid multiple dividers at the top of the page (the header bar + the definition border) */
+    .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
+        border-top: none;
+    }
+
+    /* The contents of the chapter makes little sense */
+    header nav {
+        display: none;
+    }
+}
+
+
+/* Some paged media page breaks */
 .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
     break-before: page;
-    border-top: none;
 }
 section.section {
     break-before: page;
+}
+section.section:first-of-type {
+    break-before: avoid;
 }
 section.section .service-definition:first-of-type,
 section.section .swi-definition:first-of-type,
@@ -610,15 +627,6 @@ section.section .entry-definition:first-of-type {
     margin-top: 2cm;
     margin-bottom: 2cm;
     margin-inside: 3.5cm;
-}
-
-@page:first {
-  @top-left {
-    content: normal;
-  }
-  @top-right {
-    content: normal;
-  }
 }
 
 @page:left {
@@ -681,6 +689,17 @@ section.section .entry-definition:first-of-type {
         color: white;
         background-color: #dddddd;
     }
+}
+
+@page:first {
+  @top-left {
+    content: normal;
+    border-bottom: 0px none;
+  }
+  @top-right {
+    content: normal;
+    border-bottom: 0px none;
+  }
 }
 
 /* Stop the border of the top of the sections being repeated on subsequent pages */
