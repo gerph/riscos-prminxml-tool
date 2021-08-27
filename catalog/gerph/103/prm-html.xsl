@@ -546,6 +546,12 @@
 </xsl:choose>
 </xsl:template>
 
+<xsl:template match="maintainer">
+<xsl:for-each select="email">
+  <div><xsl:apply-templates select="." /></div>
+</xsl:for-each>
+</xsl:template>
+
 
 <xsl:template match="declaration">
 <xsl:choose>

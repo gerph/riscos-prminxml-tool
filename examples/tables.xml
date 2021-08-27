@@ -4,6 +4,8 @@
 
 <riscos-prm>
 <chapter title="PRM-in-XML tables">
+
+<!-- Value table -->
 <section title="Value table examples">
 
 <category title="Simple table">
@@ -53,6 +55,8 @@
 
 </section>
 
+
+<!-- Offset table -->
 <section title="Offset table examples">
 
 <category title="Simple table">
@@ -102,6 +106,33 @@
 
 </section>
 
+
+<!-- Message table -->
+<section title="Message table examples">
+
+<category title="Simple table">
+<p>
+<message-table>
+ <message offset="0">Some important data</message>
+ <message offset="4">Another data</message>
+</message-table>
+</p>
+</category>
+
+<category title="Named offsets">
+<p>
+<message-table>
+ <message offset="0" name='OFFSET0'>Some important daat</message>
+ <message offset="4" name='OFFSET4'>Another data</message>
+</message-table>
+</p>
+</category>
+
+<!-- message doesn't have any heading fields -->
+</section>
+
+
+<!-- Bit field table -->
 <section title="Bit field table examples">
 
 <category title="Simple table">

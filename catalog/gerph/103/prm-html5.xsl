@@ -407,13 +407,12 @@
 <xsl:template match="related" mode="meta">
 <xsl:choose>
  <xsl:when test="count(reference[@type='document' or @type='link']) = 0">
-  <xsl:text>None</xsl:text>
+  <div class='meta-reference'><xsl:text>None</xsl:text></div>
  </xsl:when>
 
  <xsl:otherwise>
   <xsl:for-each select="reference[@type='document'] | reference[@type='link']">
-   <xsl:apply-templates select="." />
-   <br />
+   <div class='meta-reference'><xsl:apply-templates select="." /></div>
   </xsl:for-each>
  </xsl:otherwise>
 </xsl:choose>
@@ -1087,7 +1086,7 @@
   <xsl:choose>
    <xsl:when test="count(parameter)=0">None</xsl:when>
    <xsl:otherwise>
-    <table summary="Command parameters" border="0">
+    <table class='definition-parameters-list'>
     <xsl:for-each select="parameter">
      <tr><td valign="top">
           <xsl:variable name="param">
@@ -1114,7 +1113,7 @@
              <xsl:message>Parameter with switch-alias must be given a switch at
      <xsl:call-template name="describeposition" />.</xsl:message>
             </xsl:if>
-            <table summary="Switch aliases">
+            <table class='definition-parameter-aliases'>
              <tr><td>&#160;</td>
               <td valign="top" align="left">
                <code>
@@ -2036,6 +2035,7 @@
 
 <!-- EMail -->
 <xsl:template match="email">
+<span class='email'>
 <xsl:if test="@name != ''">
 <span class='email-name'><xsl:value-of select="@name" /></span>
 <xsl:text> </xsl:text>
@@ -2049,6 +2049,7 @@
 <xsl:value-of select="@address" />
 </a></span>
 <xsl:text>&gt;</xsl:text>
+</span>
 </xsl:template>
 
 <!-- Image -->
@@ -2110,25 +2111,25 @@
    <xsl:if test="count(maintainer) &gt; 0">
     <tr class='maintainer'>
      <th align="right" valign="top">Maintainer(s):</th>
-     <td><xsl:apply-templates select="maintainer"/></td>
+     <td class='maintainers'><xsl:apply-templates select="maintainer"/></td>
     </tr>
    </xsl:if>
    <xsl:if test="count(history) &gt; 0">
     <tr class='history'>
      <th>History:</th>
-     <td><xsl:apply-templates select="history"/></td>
+     <td class='history'><xsl:apply-templates select="history"/></td>
     </tr>
    </xsl:if>
    <xsl:if test="count(related) &gt; 0">
     <tr>
      <th class='related'>Related:</th>
-     <td><xsl:apply-templates select="related" mode="meta" /></td>
+     <td class='related'><xsl:apply-templates select="related" mode="meta" /></td>
     </tr>
    </xsl:if>
    <xsl:if test="count(disclaimer) &gt; 0">
     <tr class='disclaimer'>
      <th>Disclaimer:</th>
-     <td>
+     <td class='disclaimer'>
       <xsl:apply-templates select="disclaimer"/>
      </td>
     </tr>
@@ -2139,12 +2140,12 @@
 </xsl:template>
 
 <xsl:template match="history">
-<table border="0" summary="Document history">
+<table class='history'>
 <tr>
- <th>Revision</th>
- <th>Date</th>
- <th>Author</th>
- <th>Changes</th>
+ <th class='revision-number'>Revision</th>
+ <th class='revision-date'>Date</th>
+ <th class='revision-author'>Author</th>
+ <th class='revision-detail'>Changes</th>
 </tr>
 <xsl:apply-templates />
 </table>
@@ -2160,7 +2161,7 @@
    <h5 class='revision-title'> <xsl:value-of select="@title" /> </h5>
   </xsl:if>
   <xsl:if test="count(change) &gt; 0">
-   <ul>
+   <ul class='revision-changes'>
     <xsl:apply-templates />
    </ul>
   </xsl:if>
@@ -2169,7 +2170,7 @@
 </xsl:template>
 
 <xsl:template match="change">
-<li><xsl:apply-templates /></li>
+<li class='revision-change'><xsl:apply-templates /></li>
 </xsl:template>
 
 </xsl:stylesheet>

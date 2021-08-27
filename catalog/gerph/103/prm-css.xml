@@ -109,7 +109,6 @@ section.category h5 {
 }
 .definition-subtitle {
   display: block;
-  xfont-variant: small-caps;
   font-family: sans-serif;
   font-weight: bold;
   font-size: 1.5em;
@@ -230,6 +229,15 @@ section.definition::before {
 .definition-syntax-line {
   font-family: monospace;
 }
+.definition-parameter-aliases {
+    padding-bottom: 0.25em;
+}
+.definition-parameter-aliases td {
+    padding-top: 0px;
+}
+table {
+    border-spacing: 2px 0px;
+}
 
 .user-table {
     border: 0;
@@ -238,7 +246,7 @@ section.definition::before {
     padding-left: 0.5em;
 }
 .user-table td {
-    padding-top: 0.25em;
+    padding-top: 0.375em;
 }
 .user-table .table-number {
     min-width: 3em;
@@ -333,8 +341,19 @@ table.meta tr th {
 table.meta tr.history table th {
   text-align: left;
 }
+table.meta table.history {
+  border: none;
+  border-spacing: 0.375rem 0px;
+}
+table.meta table.history th {
+  padding-top: 0px;
+}
 .revision-date {
   white-space: nowrap;
+}
+ul.revision-changes {
+  padding-left: 1em;
+  margin-left: 0.5em;
 }
 h5.revision-title {
   font-size: 1em;
@@ -350,6 +369,10 @@ table.meta tr.history ul {
 table.meta p {
   margin-top: 0em;
   margin-bottom: 0em;
+}
+
+.maintainer .email {
+    display: block;
 }
 ]]></css>
 
