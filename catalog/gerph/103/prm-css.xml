@@ -23,6 +23,10 @@ h5 {
   font-weight: bold;
 }
 
+h1, h2, h3, h4, h5 {
+  font-family: sans-serif;
+}
+
 /* Markers for bad content */
 dd {
     background-color: pink;
@@ -42,6 +46,17 @@ header h1 {
   padding-bottom: 0.67em;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
+}
+
+
+header h1 .chapter-docgroup {
+  display: none
+}
+header h1 .chapter-number {
+  display: inline-block;
+}
+header h1 .chapter-name {
+  display: inline-block;
 }
 
 nav {
@@ -81,6 +96,7 @@ section.category h5 {
 }
 .definition-title {
   display: block;
+  font-family: sans-serif;
   font-weight: bold;
   font-size: 1.5em;
   text-align: right;
@@ -94,6 +110,7 @@ section.category h5 {
 .definition-subtitle {
   display: block;
   xfont-variant: small-caps;
+  font-family: sans-serif;
   font-weight: bold;
   font-size: 1.5em;
   text-align: right;
@@ -118,6 +135,7 @@ section.definition {
 section.definition::before {
   display: block;
   font-weight: bold;
+  font-family: sans-serif;
   font-size: 0.825rem;
   margin-left: -2.5rem;
   margin-top: 2rem;
@@ -312,6 +330,7 @@ table.meta tr.history table th {
 h5.revision-title {
   font-size: 1em;
   font-weight: bold;
+  font-family: serif;
   margin-top: 0em;
   margin-bottom: 0em;
 }
@@ -496,7 +515,182 @@ footer section.meta table {
 
 ]]></css>
 
-    <css type="traditional" variant="paged"><![CDATA[
-]]></css>
+<!-- This variant is closer to the PRM than the standard style -->
+    <css type="traditional" variant="prm"><![CDATA[
+/* Grey divider lines */
+header h1 {
+  border-top: 0.375rem solid lightgray;
+  border-bottom: 0.375rem solid lightgray;
+}
 
+nav {
+  border-bottom: 0.375rem solid lightgray;
+}
+section.section {
+  border-bottom: 0.375rem solid lightgray;
+}
+
+.service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
+  border-top: 0.375rem solid lightgray;
+}
+footer {
+  border-bottom: 0.375rem solid lightgray;
+}
+
+
+/* Indent the chapter name like the PRM did (might not be right - wrapping may look odd) */
+header h1 .chapter-number {
+  display: inline-block;
+  width: 5rem;
+}
+header h1 .chapter-name {
+  display: inline-block;
+}
+
+/* Lists are bulleted in line with the left text */
+article ol, article ul {
+    padding-left: 1.5em;
+}
+article li {
+    padding-left: 1em;
+}
+/* All lists are just plain bullets; they don't vary */
+ul {
+    list-style-type: disc;
+}
+
+/* Links are always in italic (in the article - not in the contents) */
+article a:link, article a:visited, article a:hover, article a:active {
+    font-style: italic;
+}
+/* (and not in the 'related' sections) */
+article .definition-related a:link,
+article .definition-related a:visited,
+article .definition-related a:hover,
+article .definition-related a:active {
+    font-style: normal;
+}
+
+/* Some paged media features */
+.service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
+    break-before: page;
+    border-top: none;
+}
+section.section {
+    break-before: page;
+}
+section.section .service-definition:first-of-type,
+section.section .swi-definition:first-of-type,
+section.section .vector-definition:first-of-type,
+section.section .upcall-definition:first-of-type,
+section.section .command-definition:first-of-type,
+section.section .vdu-definition:first-of-type,
+section.section .error-definition:first-of-type,
+section.section .sysvar-definition:first-of-type,
+section.section .message-definition:first-of-type,
+section.section .tboxmessage-definition:first-of-type,
+section.section .tboxmethod-definition:first-of-type,
+section.section .entry-definition:first-of-type {
+    break-before: avoid;
+}
+
+@page {
+
+    size: a4 portrait;
+
+    margin-top: 2cm;
+    margin-bottom: 2cm;
+    margin-inside: 3.5cm;
+}
+
+@page:first {
+  @top-left {
+    content: normal;
+  }
+  @top-right {
+    content: normal;
+  }
+}
+
+@page:left {
+    margin-left: 2cm;
+
+    @top-left {
+        content: string(section-name);
+        font-style: italic;
+        font-family: sans-serif;
+        vertical-align: bottom;
+        padding-bottom: 0.25rem;
+        border-bottom: 0.375rem solid #dddddd;
+        margin-bottom: 1em;
+    }
+
+    @bottom-left {
+        content: counter(page);
+        font-family: sans-serif;
+        vertical-align: top;
+        padding-top: 0.25rem;
+        /* border-top: 0.375rem solid #dddddd; */
+        margin-top: 1em;
+    }
+}
+
+@page:right {
+    margin-right: 2cm;
+
+    @top-right {
+        content: string(chapter-name);
+        font-style: italic;
+        font-family: sans-serif;
+        vertical-align: bottom;
+        padding-bottom: 0.25rem;
+        border-bottom: 0.375rem solid #dddddd;
+        margin-bottom: 1em;
+    }
+
+    @bottom-right {
+        content: counter(page);
+        font-family: sans-serif;
+        vertical-align: top;
+        padding-top: 0.25rem;
+        /* border-top: 0.375rem solid #dddddd; */
+        margin-top: 1em;
+    }
+
+    @right-top {
+        display: inline;
+        margin-left: 1em;
+        margin-top: 1rem;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        writing-mode: vertical-rl;
+        width: 4em;
+        padding-left: 0.5em;
+        margin-bottom: 60%;
+        font-family: sans-serif;
+        content: string(docgroup-name);
+        color: white;
+        background-color: #dddddd;
+    }
+}
+
+/* Stop the border of the top of the sections being repeated on subsequent pages */
+section {
+    box-decoration-break: slice;
+}
+
+pre {
+    font-size: 0.66rem;
+    white-space: pre-wrap !important;
+}
+
+.chapter-docgroup { string-set: docgroup-name content() }
+.chapter-name { string-set: chapter-name content() }
+section.section h2,
+section.meta h2,
+header nav h2 {
+    string-set: section-name content()
+}
+
+]]></css>
 </prm-css>

@@ -52,14 +52,14 @@
 <localdb:definition-titles type="command"      prefix-name="*"        prefix-number=""         number-base=""      name="* command"        Name="* command"          />
 <localdb:definition-titles type="entry"        prefix-name=""         prefix-number=""         number-base=""      name="entry point "     Name="Entry point "       />
 <localdb:definition-titles type="sysvar"       prefix-name=""         prefix-number=""         number-base=""      name="system variable " Name="System variable "   />
-<localdb:definition-titles type="service"      prefix-name="Service_" prefix-number="Service " number-base="&amp;" name="service call"     Name="Service call"       />
+<localdb:definition-titles type="service"      prefix-name="Service_" prefix-number="Service Call " number-base="&amp;" name="service call"     Name="Service call"       />
 <localdb:definition-titles type="upcall"       prefix-name="UpCall_"  prefix-number="UpCall "  number-base="&amp;" name="upcall"           Name="Upcall"             />
 <localdb:definition-titles type="error"        prefix-name="Error_"   prefix-number="Error "   number-base="&amp;" name="error message"    Name="Error message"      />
 <localdb:definition-titles type="message"      prefix-name="Message_" prefix-number=""         number-base="&amp;" name="message"          Name="Message"            />
 <localdb:definition-titles type="tboxmessage"  prefix-name=""         prefix-number=""         number-base="&amp;" name="Toolbox message"  Name="Toolbox message"    />
 <localdb:definition-titles type="tboxmethod"   prefix-name=""         prefix-number="Method "  number-base="&amp;" name="Toolbox method"   Name="Toolbox method"     />
 
-<xsl:output method="xml" indent="no" encoding="utf-8"/>
+<xsl:output method="html" indent="no" encoding="utf-8"/>
 
 <xsl:variable name="title-to-id-src">ABCDEFGHIJKLMNOPQRSTUVWXYZ ,$:()-*?</xsl:variable>
 <xsl:variable name="title-to-id-map">abcdefghijklmnopqrstuvwxyz_-_-</xsl:variable>
@@ -73,6 +73,7 @@
 
 
 <xsl:template match="/">
+<xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
 <html>
 <xsl:comment>
   Auto-generated using XSLT stylesheet created by Gerph.
@@ -99,8 +100,11 @@
 <body>
 
 <header>
-<h1 class='chapter-title'><xsl:value-of select="@title"/></h1>
-
+<h1 class='chapter-title'>
+    <span class='chapter-number'><!-- NYI --></span>
+    <span class='chapter-docgroup'><xsl:value-of select="../@doc-group"/></span>
+    <span class='chapter-name'><xsl:value-of select="@title"/></span>
+</h1>
 <xsl:choose>
  <xsl:when test="$create-contents-target = ''">
   <xsl:if test="$create-contents = 'yes'">
@@ -405,6 +409,7 @@
 
 
 <xsl:template match="related">
+<div class='definition-related'>
 <xsl:choose>
  <xsl:when test="count(*) = 0">
   <section class='definition definition-related-apis'>
@@ -522,6 +527,7 @@
   </xsl:if>
  </xsl:otherwise>
 </xsl:choose>
+</div>
 </xsl:template>
 
 
