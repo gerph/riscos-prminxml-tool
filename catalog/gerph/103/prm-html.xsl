@@ -5,38 +5,14 @@
      Converts XML descriptions to HTML.
      (c) Justin Fletcher, distribution unlimited.
      Version 1.02.
-
-     Notes on use:
-
-       if you use this stylesheet with an xml document, you may set a
-       number of parameters to configure the page generation :
-
-          create-contents : yes|no
-                            Determines whether the contents part of the
-                            page will be generated.
-          create-body     : yes|no
-                            Determines whether the main body of the page
-                            will be generated.
-          create-contents-target : yes|no
-                            Determines whether the page is being
-                            generated as part of a frameset; if set to
-                            a target name, it is assumed that a frame
-                            of that name exists and that the page
-                            (target)-right.html lives there.
-                            When used with prm-html-frameset.xsl, this
-                            can be used to generate a frameset suitable
-                            for use as a quick reference pair.
-          position-with-names : yes|no
-                            Determines whether a long description of the
-                            path to areas with problems is given, or the
-                            shorter index-based form.
   -->
 
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/TR/xhtml1/strict"
                 xmlns:localdb="local-file-database"
-                xmlns:saxon = "http://icl.com/saxon">
+                xmlns:saxon = "http://icl.com/saxon"
+                xmlns:pixparams="http://gerph.org/dtd/prminxml-params">
 
 <xsl:include href="http://gerph.org/dtd/bnf/100/html.xsl" />
 
@@ -53,6 +29,31 @@
 
 <xsl:variable name="title-to-id-src">ABCDEFGHIJKLMNOPQRSTUVWXYZ ,$:()-*?</xsl:variable>
 <xsl:variable name="title-to-id-map">abcdefghijklmnopqrstuvwxyz_-_-</xsl:variable>
+
+<pixparams:param name="create-contents" values="'yes' | 'no'" default="yes">
+    Determines whether the contents part of the
+    page will be generated.
+</pixparams:param>
+<pixparams:param name="create-body" values="'yes' | 'no'" default="yes">
+    Determines whether the main body of the page
+    will be generated.
+</pixparams:param>
+<pixparams:param name="create-contents-target" values="'yes' | 'no'" default="yes">
+    Determines whether the page is being
+    generated as part of a frameset; if set to
+    a target name, it is assumed that a frame
+    of that name exists and that the page
+    (target)-right.html lives there.
+    When used with prm-html-frameset.xsl, this
+    can be used to generate a frameset suitable
+    for use as a quick reference pair.
+</pixparams:param>
+<pixparams:param name="position-with-names" values="'yes' | 'no'" default="yes">
+    Determines whether a long description of the
+    path to areas with problems is given, or the
+    shorter index-based form.
+</pixparams:param>
+
 <xsl:param name="create-contents">yes</xsl:param>
 <xsl:param name="create-body">yes</xsl:param>
 <xsl:param name="create-contents-target"></xsl:param>

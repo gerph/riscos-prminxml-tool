@@ -69,6 +69,8 @@ my $logfile = undef;
 my $index = undef;
 my $params = {};
 
+my $tempbase = $riscos ? "<Wimp\$ScrapDir>.prmlxml-$$" : "/tmp/prmxml-$$";
+
 # Extensions to use for each format
 my %extensions = (
         'html' => 'html',
@@ -82,6 +84,13 @@ my %extensions = (
         'index' => undef, # Special value
         'lint' => undef, # Special value
         'skeleton' => undef, # Special value
+    );
+my @valid_formats = (
+        'header',
+        'command',
+        'stronghelp',
+        'html',
+        'html5',
     );
 
 my $arg;
@@ -113,6 +122,11 @@ while ($arg = shift)
             elsif ($arg eq 'help-indexed')
             {
                 help_indexed();
+                exit(0);
+            }
+            elsif ($arg eq 'help-params')
+            {
+                help_params();
                 exit(0);
             }
             elsif ($arg eq 'version' or $arg eq 'V')
@@ -269,11 +283,6 @@ if ($format eq 'index')
         die "For 'index' format, only a single file, the index.xml file, should be supplied\n";
     }
 
-    if ($riscos)
-    { $tempbase = "<Wimp\$ScrapDir>.prmlxml-$$"; }
-    else
-    { $tempbase = "/tmp/prmxml-$$"; }
-
     if (defined $outputdir)
     {
         die "For 'index' format, the output directory should be supplied in the index.xml file\n";
@@ -320,9 +329,6 @@ if ($format eq 'index')
     {
         $rc  = 1;
     }
-
-    # If we get to here, we'll clear away the file.
-    unlink($tempbase);
 }
 else
 {
@@ -338,11 +344,6 @@ else
     {
         $copy_xml = 1;
     }
-
-    if ($riscos)
-    { $tempbase = "<Wimp\$ScrapDir>.prmlxml-$$"; }
-    else
-    { $tempbase = "/tmp/prmxml-$$"; }
 
     for $input (@inputs) {
         my $xslt = "$catalog_base/$catalog_version/prm-$format.xsl";
@@ -485,10 +486,10 @@ else
         }
     }
 
-    # If we get to here, we'll clear away the file.
-    unlink($tempbase);
 }
 
+# If we get to here, we'll clear away the file.
+unlink($tempbase);
 
 exit($rc);
 
@@ -875,6 +876,7 @@ Options:
 
     --help, -h      This help message
     --help-indexed  Help on creating indexed collections of documents
+    --help-params   Help on parameters for stylesheets
     --help-tag <tag>    Print help for a specific tag (or list the supported tags)
     --version, -V   Show version of this tool
     --catalog <version>, -C <version>
@@ -1035,4 +1037,59 @@ will be generated and linked. If a 'href' attribute is not given,
 the page will be unlinked (or omitted if 'hide-empty' is 'yes').
 
 EOM
+}
+
+
+##
+# Print help message about parameters.
+sub help_params
+{
+    print <<EOM;
+The parameters supplied to each of the stylesheets are variable - not
+all stylesheets support the same parameters.
+
+EOM
+
+    for $format (@valid_formats)
+    {
+        $xpath_part = "//*[local-name()='param' and namespace-uri()='${catalog_base}/prminxml-params']";
+        if ($riscos)
+        {
+            $xpath_part = "\"$xpath_part\"";
+        }
+        else
+        {
+            # FIXME: Other shell escaping?
+            $xpath_part = "\"$xpath_part\"";
+        }
+        $cmd = "$toollint --xpath $xpath_part ${catalog_base}/${catalog_version}/prm-$format.xsl";
+        $cmd .= " > $tempbase 2>&1";
+        runcommand($cmd);
+
+        # Although it could all be extracted with xmllint, I'm going to just parse the output to make it
+        # easier (and faster on RISC OS).
+        open(IN, "< $tempbase") || die "Could not read information about format '$format'\n";
+        print "Format: $format\n";
+        my $content = '';
+        while (<IN>)
+        { $content .= $_; }
+        my @elements = ($content =~ /(<[^>]*?:param[^>]*?>.*?<\/[^>]*?:param>)/gs);
+        my $element;
+        for $element (@elements)
+        {
+            my ($attrstr, $body) = ($element =~ /<[^>]*?:param([^>]*?)>(.*?)<\/[^>]*?:param>/s);
+            my %attrs = ($attrstr =~ /([a-zA-Z0-9\-]+)="(.*?)"/g);
+            printf "    %-24s : %s\n", $attrs{'name'}, $attrs{'values'};
+            printf "    %-24s   Default: %s\n", '', $attrs{'default'};
+            $body =~ s/\n +/\n/g;
+            $body =~ s/^\n//;
+            for $line (split /\n/, $body)
+            {
+                printf "    %-24s   %s\n", '', $line;
+            }
+            print "\n";
+        }
+    }
+
+    unlink($tempbase);
 }
