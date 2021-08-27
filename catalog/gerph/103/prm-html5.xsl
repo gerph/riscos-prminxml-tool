@@ -94,7 +94,7 @@
 
 <xsl:template match="/">
 <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
-<html>
+<html lang='en'>
 <xsl:comment>
   Auto-generated using XSLT stylesheet created by Gerph.
 </xsl:comment>
@@ -109,6 +109,21 @@
 <xsl:template match="chapter">
 <head>
   <meta charset="utf-8"/>
+
+  <meta name='author'>
+    <xsl:attribute name='content'>
+     <xsl:for-each select='//meta/maintainer/email'>
+      <xsl:if test='position() > 1'>, </xsl:if>
+      <xsl:value-of select='@name'/>
+     </xsl:for-each>
+    </xsl:attribute>
+  </meta>
+  <meta name='subject'>
+   <xsl:attribute name='content'>
+    <xsl:value-of select='@title'/>
+   </xsl:attribute>
+  </meta>
+
   <title>
   <xsl:value-of select="../@doc-group"/>
   <xsl:text> : </xsl:text>
@@ -447,7 +462,7 @@
   <xsl:if test="count(reference[@type='command']) > 0">
    <section class='definition definition-related-commands'>
    <xsl:for-each select="reference[@type='command']">
-   <xsl:if test="position() > 1">, </xsl:if>
+   <xsl:if test="position() > 1"><span class='definition-related-divider'>, </span></xsl:if>
     <xsl:apply-templates select="." />
    </xsl:for-each>
    </section>
@@ -456,7 +471,7 @@
   <xsl:if test="count(reference[@type='swi']) > 0">
    <section class='definition definition-related-swis'>
    <xsl:for-each select="reference[@type='swi']">
-   <xsl:if test="position() > 1">, </xsl:if>
+   <xsl:if test="position() > 1"><span class='definition-related-divider'>, </span></xsl:if>
     <xsl:apply-templates select="." />
    </xsl:for-each>
    </section>
@@ -465,7 +480,7 @@
   <xsl:if test="count(reference[@type='service']) > 0">
    <section class='definition definition-related-services'>
    <xsl:for-each select="reference[@type='service']">
-   <xsl:if test="position() > 1">, </xsl:if>
+   <xsl:if test="position() > 1"><span class='definition-related-divider'>, </span></xsl:if>
     <xsl:apply-templates select="." />
    </xsl:for-each>
    </section>
@@ -474,7 +489,7 @@
   <xsl:if test="count(reference[@type='tboxmethod']) > 0">
    <section class='definition definition-related-tboxmethods'>
    <xsl:for-each select="reference[@type='tboxmethod']">
-   <xsl:if test="position() > 1">, </xsl:if>
+   <xsl:if test="position() > 1"><span class='definition-related-divider'>, </span></xsl:if>
     <xsl:apply-templates select="." />
    </xsl:for-each>
    </section>
@@ -483,7 +498,7 @@
   <xsl:if test="count(reference[@type='tboxmessage']) > 0">
    <section class='definition definition-related-tboxmessages'>
    <xsl:for-each select="reference[@type='tboxmessage']">
-   <xsl:if test="position() > 1">, </xsl:if>
+   <xsl:if test="position() > 1"><span class='definition-related-divider'>, </span></xsl:if>
     <xsl:apply-templates select="." />
    </xsl:for-each>
    </section>
@@ -492,7 +507,7 @@
   <xsl:if test="count(reference[@type='vector']) > 0">
    <section class='definition definition-related-vectors'>
    <xsl:for-each select="reference[@type='vector']">
-   <xsl:if test="position() > 1">, </xsl:if>
+   <xsl:if test="position() > 1"><span class='definition-related-divider'>, </span></xsl:if>
     <xsl:apply-templates select="." />
    </xsl:for-each>
    </section>
@@ -501,7 +516,7 @@
   <xsl:if test="count(reference[@type='upcall']) > 0">
    <section class='definition definition-related-upcalls'>
    <xsl:for-each select="reference[@type='upcall']">
-   <xsl:if test="position() > 1">, </xsl:if>
+   <xsl:if test="position() > 1"><span class='definition-related-divider'>, </span></xsl:if>
     <xsl:apply-templates select="." />
    </xsl:for-each>
    </section>
@@ -510,7 +525,7 @@
   <xsl:if test="count(reference[@type='error']) > 0">
    <section class='definition definition-related-errors'>
    <xsl:for-each select="reference[@type='error']">
-   <xsl:if test="position() > 1">, </xsl:if>
+   <xsl:if test="position() > 1"><span class='definition-related-divider'>, </span></xsl:if>
     <xsl:apply-templates select="." />
    </xsl:for-each>
    </section>
@@ -519,7 +534,7 @@
   <xsl:if test="count(reference[@type='sysvar']) > 0">
    <section class='definition definition-related-sysvars'>
    <xsl:for-each select="reference[@type='sysvar']">
-   <xsl:if test="position() > 1">, </xsl:if>
+   <xsl:if test="position() > 1"><span class='definition-related-divider'>, </span></xsl:if>
     <xsl:apply-templates select="." />
    </xsl:for-each>
    </section>
@@ -528,7 +543,7 @@
   <xsl:if test="count(reference[@type='entry']) > 0">
    <section class='definition definition-related-entries'>
    <xsl:for-each select="reference[@type='entry']">
-   <xsl:if test="position() > 1">, </xsl:if>
+   <xsl:if test="position() > 1"><span class='definition-related-divider'>, </span></xsl:if>
     <xsl:apply-templates select="." />
    </xsl:for-each>
    </section>
@@ -537,7 +552,7 @@
   <xsl:if test="count(reference[@type='message']) > 0">
    <section class='definition definition-related-messages'>
    <xsl:for-each select="reference[@type='message']">
-   <xsl:if test="position() > 1">, </xsl:if>
+   <xsl:if test="position() > 1"><span class='definition-related-divider'>, </span></xsl:if>
     <xsl:apply-templates select="." />
    </xsl:for-each>
    </section>
@@ -546,7 +561,7 @@
   <xsl:if test="count(reference[@type='vdu']) > 0">
    <section class='definition definition-related-vdus'>
    <xsl:for-each select="reference[@type='vdu']">
-   <xsl:if test="position() > 1">, </xsl:if>
+   <xsl:if test="position() > 1"><span class='definition-related-divider'>, </span></xsl:if>
     <xsl:apply-templates select="." />
    </xsl:for-each>
    </section>
@@ -1088,7 +1103,8 @@
    <xsl:otherwise>
     <table class='definition-parameters-list'>
     <xsl:for-each select="parameter">
-     <tr><td valign="top">
+     <tr class='definition-parameter'>
+         <td>
           <xsl:variable name="param">
            <xsl:if test="@label">
             <xsl:value-of select="@label" />
@@ -1115,7 +1131,7 @@
             </xsl:if>
             <table class='definition-parameter-aliases'>
              <tr><td>&#160;</td>
-              <td valign="top" align="left">
+              <td>
                <code>
                 <xsl:text>-</xsl:text>
                 <xsl:value-of select="@switch" />
@@ -1125,7 +1141,7 @@
               </td>
              </tr>
              <tr><td><i>or</i></td>
-              <td valign="top" align="left">
+              <td>
                <code>
                 <xsl:text>-</xsl:text>
                 <xsl:value-of select="@switch-alias" />
@@ -1138,8 +1154,8 @@
            </xsl:otherwise>
           </xsl:choose>
          </td>
-         <td valign="top">-</td>
-         <td valign="top"><xsl:apply-templates /></td>
+         <td>-</td>
+         <td><xsl:apply-templates /></td>
      </tr>
     </xsl:for-each>
     </table>
@@ -1849,8 +1865,11 @@
 <xsl:choose>
  <xsl:when test="(substring(@href,1,1)!='?')">
   <a>
+  <xsl:attribute name="class">
+   <xsl:text>reference reference-</xsl:text><xsl:value-of select="@type" />
+  </xsl:attribute>
   <xsl:attribute name="href">
-  <xsl:copy-of select="$hrefto" />
+   <xsl:copy-of select="$hrefto" />
   </xsl:attribute>
   <xsl:copy-of select="$linktext" />
   </a>

@@ -229,8 +229,16 @@ section.definition::before {
 .definition-syntax-line {
   font-family: monospace;
 }
+.definition-parameters-list {
+    border-spacing: 0.375rem 0px;
+}
+.definition-parameters-list td {
+    vertical-align: top;
+}
+.definition-parameter > td {
+    padding-bottom: 0.5em;
+}
 .definition-parameter-aliases {
-    padding-bottom: 0.25em;
 }
 .definition-parameter-aliases td {
     padding-top: 0px;
@@ -656,6 +664,32 @@ article .definition-related a:active {
 
     /* The contents of the chapter makes little sense */
     header nav {
+        display: none;
+    }
+
+    /* Add on the page that the reference exists on */
+    a[href]::after {
+        content: " (on page " target-counter(attr(href), page) ")";
+    }
+    a.reference-link[href]::after {
+        content: none;
+    }
+    a[href^="mailto:"]::after, a[href^="http:"]::after, a[href^="https:"]::after {
+        content: none;
+    }
+    a[href] {
+        text-decoration: underline;
+        text-underline-style: dashed;
+        text-underline-color: gray;
+        color: black;
+    }
+
+    /* In the regular version these are a comma separated list;
+       instead make them one per line as they'll be longer and the links will be irrelevant */
+    .definition-related .reference {
+        display: block;
+    }
+    .definition-related-divider {
         display: none;
     }
 }
