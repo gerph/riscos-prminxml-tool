@@ -234,6 +234,15 @@ section.definition::before {
 .user-table {
     border: 0;
 }
+.user-table td, .user-table th {
+    padding-left: 0.5em;
+}
+.user-table td {
+    padding-top: 0.25em;
+}
+.user-table .table-number {
+    min-width: 3em;
+}
 .table-head {
     vertical-align: bottom;
 }

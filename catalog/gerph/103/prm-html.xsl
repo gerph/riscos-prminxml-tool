@@ -1449,7 +1449,7 @@
 
 <!-- A bitfield-table turns into a regular XHTML table, with header -->
 <xsl:template match="bitfield-table">
-<table summary="A bitfield" border="0">
+<table summary="A bitfield" border="0" cellspacing="8">
  <tr>
  <xsl:choose>
   <xsl:when test="count(*/@state)=0">
@@ -1545,7 +1545,7 @@
     <xsl:when test="count(value/@name)>0"><xsl:text>Name</xsl:text></xsl:when>
   </xsl:choose>
 </xsl:variable>
-<table summary="Opaque table of values" border="0">
+<table summary="Opaque table of values" border="0" cellspacing="8">
  <tr>
   <th align="right" valign="bottom"><xsl:value-of select="@head-number" /></th>
   <xsl:if test="$head-name != ''">
@@ -1585,7 +1585,7 @@
     <xsl:when test="count(offset/@name)>0"><xsl:text>Name</xsl:text></xsl:when>
   </xsl:choose>
 </xsl:variable>
-<table summary="Opaque table of offset/contents" border="0">
+<table summary="Opaque table of offset/contents" border="0" cellspacing="8">
  <tr>
   <th align="right" valign="bottom"><xsl:value-of select="@head-number" /></th>
   <xsl:if test="$head-name != ''">
@@ -1611,7 +1611,7 @@
 
 <!-- An message table is similar to the offset-table -->
 <xsl:template match="message-table">
-<table summary="Opaque table for a wimp message block" border="0">
+<table summary="Opaque table for a wimp message block" border="0" cellspacing="8">
  <tr>
   <th align="right" valign="bottom">Offset</th>
   <xsl:if test="count(message/@name) > 0">
