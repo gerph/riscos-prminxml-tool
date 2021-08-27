@@ -30,6 +30,20 @@
                             Determines whether a long description of the
                             path to areas with problems is given, or the
                             shorter index-based form.
+          css-base : <name of the CSS style> | none
+                            Determines the CSS style that will be used
+                            from the 'prm-css.xml' file. By default this
+                            is 'traditional' which sets up the styling
+                            very like the original PRM, but better suited
+                            for on screen viewing.
+                            Use 'none' to disable the built in style.
+          css-variant : <variant of the CSS style>
+                            Applies additional styling variant on top of
+                            the css-base, for specific uses.
+          css-file : <filename>
+                            Defines the relative name of the CSS
+                            stylesheet file to use.
+
   -->
 
 <xsl:stylesheet version="1.0"
@@ -70,6 +84,7 @@
 
 <xsl:param name="css-base">traditional</xsl:param>
 <xsl:param name="css-variant">none</xsl:param>
+<xsl:param name="css-file">none</xsl:param>
 
 
 <xsl:template match="/">
@@ -145,6 +160,13 @@
    <xsl:value-of disable-output-escaping='yes' select="document('prm-css.xml')/prm-css/css[@type=$css-base and @variant=$css-variant]"/>
   </style>
  </xsl:if>
+</xsl:if>
+<xsl:if test="$css-file != 'none'">
+ <link rel="stylesheet">
+  <xsl:attribute name='href'>
+   <xsl:value-of select="$css-file"/>
+  </xsl:attribute>
+ </link>
 </xsl:if>
 </xsl:template>
 
