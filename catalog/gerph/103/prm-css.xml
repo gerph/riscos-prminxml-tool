@@ -1,7 +1,11 @@
 <?xml version="1.0" standalone="yes"?>
 <prm-css>
     <css type="none"/>
-    <css type="traditional"><![CDATA[
+
+<!-- A style which looks similar to the original PRM, but which is more suited for use on
+     the screen. It should print out with useful breaks, and should look reasonable if used
+     on tablet devices. -->
+    <css type="standard"><![CDATA[
 body {
   font-family: serif;
 }
@@ -383,6 +387,93 @@ div.meta td.disclaimer > p {
 .maintainer .email {
     display: block;
 }
+
+
+
+
+
+/* Styling specific to the print */
+@media print {
+
+    /* Avoid multiple dividers at the top of the page (the header bar + the definition border) */
+    .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
+        border-top: none;
+    }
+
+    /* The contents of the chapter makes little sense */
+    header nav {
+        display: none;
+    }
+
+    /* Add on the page that the reference exists on */
+    a[href]::after {
+        content: " (on page " target-counter(attr(href), page) ")";
+    }
+    a.reference-link[href]::after {
+        content: none;
+    }
+    a[href^="mailto:"]::after, a[href^="http:"]::after, a[href^="https:"]::after {
+        content: none;
+    }
+
+    /* In the regular version these are a comma separated list;
+       instead make them one per line as they'll be longer and the links will be irrelevant */
+    .definition-related .reference {
+        display: block;
+    }
+    .definition-related-divider {
+        display: none;
+    }
+
+    /* Stop the border of the top of the sections being repeated on subsequent pages */
+    section {
+        box-decoration-break: slice;
+    }
+}
+
+/* Paged media page breaks */
+.service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
+    break-before: page;
+}
+section.section {
+    break-before: page;
+}
+section.section:first-of-type {
+    break-before: avoid;
+}
+section.section .service-definition:first-of-type,
+section.section .swi-definition:first-of-type,
+section.section .vector-definition:first-of-type,
+section.section .upcall-definition:first-of-type,
+section.section .command-definition:first-of-type,
+section.section .vdu-definition:first-of-type,
+section.section .error-definition:first-of-type,
+section.section .sysvar-definition:first-of-type,
+section.section .message-definition:first-of-type,
+section.section .tboxmessage-definition:first-of-type,
+section.section .tboxmethod-definition:first-of-type,
+section.section .entry-definition:first-of-type {
+    break-before: avoid;
+}
+
+section.meta h2 {
+    break-before: page;
+}
+
+section.definition {
+    page-break-inside: avoid;
+}
+
+
+.chapter-docgroup { string-set: docgroup-name content() }
+.chapter-name { string-set: chapter-name content() }
+section.section h2,
+section.meta h2,
+header nav h2 {
+    string-set: section-name content()
+}
+
+
 ]]></css>
 
 
@@ -541,13 +632,14 @@ section.section {
   border-bottom: 0.375rem solid lightgray;
 }
 
-.service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
-  border-top: 0.375rem solid lightgray;
+@media screen {
+    .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
+      border-top: 0.375rem solid lightgray;
+    }
+    footer {
+      border-bottom: 0.375rem solid lightgray;
+    }
 }
-footer {
-  border-bottom: 0.375rem solid lightgray;
-}
-
 
 /* Indent the chapter name like the PRM did */
 header h1 {
@@ -628,75 +720,16 @@ article .definition-related a:active {
     font-style: normal;
 }
 
-/* Styling specific to the printing */
+/* Styling specific to the print */
 @media print {
-
-    /* Avoid multiple dividers at the top of the page (the header bar + the definition border) */
-    .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
-        border-top: none;
-    }
-
-    /* The contents of the chapter makes little sense */
-    header nav {
-        display: none;
-    }
-
-    /* Add on the page that the reference exists on */
-    a[href]::after {
-        content: " (on page " target-counter(attr(href), page) ")";
-    }
-    a.reference-link[href]::after {
-        content: none;
-    }
-    a[href^="mailto:"]::after, a[href^="http:"]::after, a[href^="https:"]::after {
-        content: none;
-    }
     a[href] {
         text-decoration: underline;
         text-underline-style: dashed;
         text-underline-color: gray;
         color: black;
     }
-
-    /* In the regular version these are a comma separated list;
-       instead make them one per line as they'll be longer and the links will be irrelevant */
-    .definition-related .reference {
-        display: block;
-    }
-    .definition-related-divider {
-        display: none;
-    }
 }
 
-
-/* Some paged media page breaks */
-.service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
-    break-before: page;
-}
-section.section {
-    break-before: page;
-}
-section.section:first-of-type {
-    break-before: avoid;
-}
-section.section .service-definition:first-of-type,
-section.section .swi-definition:first-of-type,
-section.section .vector-definition:first-of-type,
-section.section .upcall-definition:first-of-type,
-section.section .command-definition:first-of-type,
-section.section .vdu-definition:first-of-type,
-section.section .error-definition:first-of-type,
-section.section .sysvar-definition:first-of-type,
-section.section .message-definition:first-of-type,
-section.section .tboxmessage-definition:first-of-type,
-section.section .tboxmethod-definition:first-of-type,
-section.section .entry-definition:first-of-type {
-    break-before: avoid;
-}
-
-section.definition {
-    page-break-inside: avoid;
-}
 
 @page {
     size: 17.5cm 25.0cm portrait;
@@ -782,22 +815,9 @@ section.definition {
   }
 }
 
-/* Stop the border of the top of the sections being repeated on subsequent pages */
-section {
-    box-decoration-break: slice;
-}
-
 pre {
     font-size: 0.66rem;
     white-space: pre-wrap !important;
-}
-
-.chapter-docgroup { string-set: docgroup-name content() }
-.chapter-name { string-set: chapter-name content() }
-section.section h2,
-section.meta h2,
-header nav h2 {
-    string-set: section-name content()
 }
 
 ]]></css>

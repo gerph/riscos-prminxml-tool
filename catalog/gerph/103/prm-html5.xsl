@@ -64,13 +64,14 @@
     path to areas with problems is given, or the
     shorter index-based form.
 </pixparams:param>
-<pixparams:param name="css-base" values="style-name | 'none'" default="traditional">
+<pixparams:param name="css-base" values="style-name | 'none'" default="standard">
     Determines the CSS style that will be used
     from the 'prm-css.xml' file. By default this
-    is 'traditional' which sets up the styling
-    very like the original PRM, but better suited
-    for on screen viewing.
-    Use 'none' to disable the built in style.
+    is 'standard' which sets up the styling
+    to look similar to the original PRM, but
+    better suited for on screen viewing.
+    Use 'none' to disable all the built in
+    styles.
 </pixparams:param>
 <pixparams:param name="css-variant" values="style-variant-name" default="none">
     Applies additional styling variants on top of
@@ -90,7 +91,7 @@
 <xsl:param name="create-contents-target"></xsl:param>
 <xsl:param name="position-with-names">yes</xsl:param>
 
-<xsl:param name="css-base">traditional</xsl:param>
+<xsl:param name="css-base">standard</xsl:param>
 <xsl:param name="css-variant">none</xsl:param>
 <xsl:param name="css-file">none</xsl:param>
 
