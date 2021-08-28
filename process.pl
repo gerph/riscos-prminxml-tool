@@ -58,7 +58,9 @@ my $index = undef;
 # Extensions to use for each format
 my %extensions = (
         'html' => 'html',
+        'html5' => 'html',
         'html+xml' => 'html',
+        'html5+xml' => 'html',
         'header' => 'h',
         'command' => 'txt',
         'stronghelp' => undef,
@@ -98,6 +100,10 @@ while (my $arg = shift)
             {
                 version();
                 exit(0);
+            }
+            elsif ($arg eq 'catalog' or $arg eq 'C')
+            {
+                $catalog_version = shift;
             }
             elsif ($arg eq 'debug' or $arg eq 'd')
             {
@@ -189,7 +195,7 @@ if ($format eq 'skeleton')
     print "Created $outputfile\n";
     print "To create HTML from this, use:\n";
     my $newfile = replaceext($outputfile, "html");
-    print "    $0 -f html -o $newfile $outputfile\n";
+    print "    $0 -f html5 -o $newfile $outputfile\n";
     exit 0;
 }
 
