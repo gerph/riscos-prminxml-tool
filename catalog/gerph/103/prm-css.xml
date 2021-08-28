@@ -6,23 +6,22 @@ body {
   font-family: serif;
 }
 h1 {
-  font-size: 2em;
-  font-weight: bold;
+  font-size: 2rem;
 }
 h2 {
-  font-size: 1.5em;
-  font-weight: bold;
+  font-size: 1.5rem;
 }
 h3 {
-  font-size: 1em;
-  font-weight: bold;
+  font-size: 1rem;
 }
 h4 {
-  font-size: 1em;
-  font-weight: bold;
+  font-size: 1rem;
 }
 h5 {
-  font-size: 1em;
+  font-size: 1rem;
+}
+h1, h2, h3, h4, h5 {
+  font-family: sans-serif;
   font-weight: bold;
 }
 
@@ -97,7 +96,7 @@ section.category h5 {
   display: block;
   font-family: sans-serif;
   font-weight: bold;
-  font-size: 1.5em;
+  font-size: 1.5rem;
   text-align: right;
 }
 .definition-name-prefix {
@@ -187,7 +186,7 @@ section.definition::before {
   content: 'Related APIs';
 }
 .definition-related-commands::before {
-  content: 'Related * commandss';
+  content: 'Related * commands';
 }
 .definition-related-swis::before {
   content: 'Related SWIs';
@@ -525,6 +524,10 @@ footer section.meta table th {
 
 <!-- This variant is closer to the PRM than the standard style -->
     <css variant="prm"><![CDATA[
+/* Specify the text size */
+:root {
+  font-size: 10pt;
+}
 /* Grey divider lines */
 header h1 {
   border-top: 0.375rem solid lightgray;
@@ -561,8 +564,8 @@ header h1 .chapter-name {
 
 /* Heading sizes are much bigger, and not always bold */
 h1 {
-  font-size: 2.4em;
-  font-weight: bold;
+  font-size: 2em;
+  font-weight: normal;
 }
 h2 {
   font-size: 1.8em;
@@ -696,11 +699,12 @@ section.definition {
 }
 
 @page {
-    size: a4 portrait;
+    size: 17.5cm 25.0cm portrait;
 
     margin-top: 2cm;
     margin-bottom: 2cm;
-    margin-inside: 3.5cm;
+    margin-inside: 2.5cm;
+    margin-outside: 1.75cm;
 }
 
 @page:left {
@@ -750,15 +754,17 @@ section.definition {
 
     @right-top {
         display: inline;
-        margin-left: 1em;
-        margin-top: 1rem;
-        padding-top: 3rem;
-        padding-bottom: 3rem;
+        margin-left: 1.5rem;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
         writing-mode: vertical-rl;
-        width: 4em;
-        padding-left: 0.5em;
+        xtext-align: center;
+        padding-left: 0.5rem;
         margin-bottom: 60%;
         font-family: sans-serif;
+        font-weight: bold;
+        font-size: 0.75rem;
         content: string(docgroup-name);
         color: white;
         background-color: #dddddd;
@@ -856,7 +862,7 @@ article section.subsection section.subsubsection section.category h5::before {
   -->
     <css variant='body-novarese'><![CDATA[
 body {
-  font-family: "ITC Novarese Std", monospace; /* Fall back to monospace to show we're failing */
+  font-family: "ITC Novarese Std", "ITC Novarese", monospace; /* Fall back to monospace to show we're failing */
   font-feature-settings: 'ss01' 1;
   font-variant: prince-opentype(ss01(1));
 }
@@ -890,17 +896,17 @@ table.history h5 {
   -->
     <css variant='heading-raleway'><![CDATA[
 h1, h2, h3, h4, h5 {
-  font-family: "Raleway", sans-serif;
+  font-family: "Raleway", monospace;
   font-variant-numeric: lining-nums;
   font-variant: prince-opentype(lnum(1));
 }
 .definition-title, .definition-subtitle {
-  font-family: "Raleway", monospace, sans-serif;
+  font-family: "Raleway", monospace;
   font-variant-numeric: lining-nums;
   font-variant: prince-opentype(lnum(1));
 }
 section.definition::before {
-  font-family: "Raleway", monospace, sans-serif;
+  font-family: "Raleway", monospace;
   font-variant-numeric: lining-nums;
   font-variant: prince-opentype(lnum(1));
 }
@@ -944,6 +950,20 @@ ul > li::marker {
 ul > li {
     padding-left: 0.375em;
 }
+ul {
+    padding-left: 0.25em;
+}
 ]]></css>
 
+
+<!-- Drop letter at the start of a paragraph - only on the first letter of the
+     first paragraph of the first section -->
+    <css variant='drop-character'><![CDATA[
+section.section:first-of-type p:first-of-type::first-letter {
+    font-size: 2.75rem;
+    line-height: 2.75rem;
+    font-weight: bold;
+    float: left;
+}
+]]></css>
 </prm-css>
