@@ -935,4 +935,15 @@ section.definition::before {
 
 ]]></css>
 
+
+<!-- Increase the size of the bullets -->
+    <css variant='large-bullets'><![CDATA[
+ul > li::marker {
+    content: '\25CF';
+}
+ul > li {
+    padding-left: 0.375em;
+}
+]]></css>
+
 </prm-css>
