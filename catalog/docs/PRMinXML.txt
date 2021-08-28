@@ -287,7 +287,7 @@ Element:    subsection
 Attributes: title
 Children:   (p | subsubsection | category)*
 
-The section equates to the 'left of the page heading' in the PRMs. The
+The subsection equates to the 'left of the page heading' in the PRMs. The
 'title' attribute should be set to the title of the subsection. A subsection
 describes something within the section, breaking it down into smaller
 chunks. Examples of subsections (given for the 'Technical details' section)
@@ -310,11 +310,11 @@ Attributes: title
 Children:   (p)*
 
 The category equates to the 'text level heading' in the PRMs. A category
-does not truly equate to a subsubsubsection, but is intended to be use to
+does not truly equate to a subsubsubsection, but is intended to be used to
 provide a distinction between different descriptions within the body of
 the text. Categories tend to be used to describe alternate operation under
-different circumstances, or to further describe a particular features
-which it would be cumbersome to explain in the middle of a body of text;
+different circumstances, or to further describe particular features
+which would be cumbersome to explain in the middle of a body of text;
 for example, to define a term and provide examples - this allows it to be
 found more easily via the contents page.
 
@@ -473,7 +473,7 @@ use-description: may be one of :
        yes  - If the referenced element exists locally, then the link text
               will be the description as given in the definition. This does
               not apply to 'link' type references.
-href: should point to the document referenced, if the reference is external
+href: should point to the document referenced, if the reference is external.
       If the reference is external, but no external document is known to
       exist for it to point to, the href '?' should be used as the first
       character to allow easy searching for these - this will be relied on
@@ -602,8 +602,8 @@ Element:    variable
 Attributes: <none>
 Children:   (<text> | userreplace)*
 
-The filename is usually represented in the PRMs by typewriter text. This
-element describes a filename which should be, or can be, supplied to the
+The variable is usually represented in the PRMs by typewriter text. This
+element describes a variable which should be, or can be, supplied to the
 system.
 
 
@@ -881,7 +881,7 @@ within a call marked as internal is actually available to all, it is very
 important that such calls are correctly marked. Internal calls are not
 to be relied on; they can and will change without notice and may even
 change in their purpose. The internal marker explicitly declares this fact
-to the world. Anyone using them runs the same risk they would use of
+to the world. Anyone using them runs the same risk they would using
 undocumented calls, even though the API might actually be documented.
 
 If a call takes a number of different reason codes it is usual to give each
@@ -915,8 +915,8 @@ state: (optional) describes the state of the register, for exit contexts
        'content' is used, the content of this element is used.
 
 The register-use element is used to describe a register (or group of
-registers). Where a register may take a number of values it is conventional
-to provided a value-table, or a bitfield-table. Where a structure is used,
+registers). Where a register may take a number of values, it is conventional
+to provide a value-table, or a bitfield-table. Where a structure is used,
 it is conventional to refer back to a table described in the Technical
 Details section.
 
@@ -949,7 +949,7 @@ Element:    related
 Attributes: <none>
 Children:   (reference)*
 
-The reference element generally lives at the bottom of the page of a
+The related element generally lives at the bottom of the page of a
 definition, providing links to other APIs which may help in the
 understanding or use of this element.
 
@@ -1120,7 +1120,7 @@ name: the name of this message, eg ColourMenu_HasBeenHidden
 description: one sentence description of the function provided by this
              message
 
-The tbox-message-definition is an restricted form of the message-definition.
+The tbox-message-definition is a restricted form of the message-definition.
 The source and destination make no sense and have been removed - the source
 is always the Toolbox and the destination is always your task.
 
@@ -1219,7 +1219,7 @@ label: (optional) label name associated with this parameter
 
 The parameter element provides an explanation of the use of a particular
 parameter to a command. A parameter element should be given for each of the
-parameters to a command. Whereas switches are preceded by a - character,
+parameters to a command. Whereas switches are preceded by a '-' character,
 labels are not. Labels are discouraged but certain commands may require the
 use of labels rather than switches (for example, IFConfig).
 
@@ -1254,7 +1254,7 @@ caption: a caption describing the image
 
 The image element refers to a graphical file which cannot be represented
 using the current markup. If a particular image type cannot be represented,
-it the next image form in will be used instead. This allows for the
+the next image type will be used instead. This allows for the
 possibility of fall back graphic types. All nested image elements should
 represent the same information.
 
