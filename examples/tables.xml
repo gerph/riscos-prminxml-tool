@@ -28,17 +28,101 @@
 </category>
 
 <category title="Labelled headings">
-<value-table head-number='Number' head-value='Meaning'>
+<value-table head-number='Number' head-value='What it means'>
  <value number="0">Some important value</value>
  <value number="1">Another value</value>
 </value-table>
 </category>
 
 <category title="Labelled headings with name">
-<value-table head-number='Number' head-name="Symbol" head-value='Meaning'>
+<value-table head-number='Number' head-name="Symbol" head-value='What it means'>
  <value number="0" name='VALUE0'>Some important value</value>
  <value number="1" name='VALUE1'>Another value</value>
 </value-table>
+</category>
+
+</section>
+
+<section title="Offset table examples">
+
+<category title="Simple table">
+<offset-table>
+ <offset number="0">Some important offset</offset>
+ <offset number="4">Another offset</offset>
+</offset-table>
+</category>
+
+<category title="Named offsets">
+<offset-table>
+ <offset number="0" name='OFFSET0'>Some important offset</offset>
+ <offset number="4" name='OFFSET4'>Another offset</offset>
+</offset-table>
+</category>
+
+<category title="Partial named offsets">
+<offset-table>
+ <offset number="0">Some important offset</offset>
+ <offset number="4" name='OFFSET4'>Another offset</offset>
+</offset-table>
+</category>
+
+<category title="Labelled headings">
+<offset-table head-number='Byte offset' head-value='What it means'>
+ <offset number="0">Some important offset</offset>
+ <offset number="4">Another offset</offset>
+</offset-table>
+</category>
+
+<category title="Labelled headings with name">
+<offset-table head-number='Byte offset' head-name="Symbol" head-value='What it means'>
+ <offset number="0" name='OFFSET0'>Some important offset</offset>
+ <offset number="4" name='OFFSET4'>Another offset</offset>
+</offset-table>
+</category>
+
+</section>
+
+<section title="Bit field table examples">
+
+<category title="Simple table">
+<bitfield-table>
+ <bit number="0">Some important bit</bit>
+ <bit number="1">Another bit</bit>
+ <bit number="4-7">A range</bit>
+ <bit number="31" state="reserved"/>
+</bitfield-table>
+</category>
+
+<category title="Named bits">
+<bitfield-table>
+ <bit number="0" name='FLAG0'>Some important bit</bit>
+ <bit number="1" name='FLAG1'>Another bit</bit>
+ <bit number="4-7" name='TYPE'>A range</bit>
+ <bit number="31" name='MAGIC' state="reserved"/>
+</bitfield-table>
+</category>
+
+<category title="Partial named bits">
+<bitfield-table>
+ <bit number="0" name='FLAG0'>Some important bit</bit>
+ <bit number="1" >Another bit</bit>
+ <bit number="4-7" name='TYPE'>A range</bit>
+ <bit number="31" name='MAGIC' state="reserved"/>
+</bitfield-table>
+</category>
+
+<category title="State bits (1- set/clear)">
+<bitfield-table>
+ <bit number="0" state='set'>Thing should happen</bit>
+ <bit number="0" state='clear'>Thing never happens</bit>
+</bitfield-table>
+</category>
+
+<category title="State bits (2- clear/set)">
+<bitfield-table>
+ <bit number="0" state='clear'>Thing never happens</bit>
+ <bit number="0" state='set'>Thing should happen</bit>
+</bitfield-table>
 </category>
 
 </section>
