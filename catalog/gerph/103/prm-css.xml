@@ -225,8 +225,10 @@ section.definition::before {
 .definition-related-vdus::before {
   content: 'Related VDU codes';
 }
-.definition-register {
+.register-use-register {
   text-align: right;
+}
+.register-name {
 }
 .definition-syntax-line {
   font-family: monospace;

@@ -36,7 +36,7 @@
 <localdb:definition-titles type="tboxmessage"  prefix-name=""         prefix-number=""         number-base="&amp;" name="Toolbox message"  Name="Toolbox message"    />
 <localdb:definition-titles type="tboxmethod"   prefix-name=""         prefix-number="Method "  number-base="&amp;" name="Toolbox method"   Name="Toolbox method"     />
 
-<xsl:output method="html" indent="no" encoding="utf-8"/>
+<xsl:output method="xml" indent="no" encoding="utf-8"/>
 
 <xsl:variable name="title-to-id-src">ABCDEFGHIJKLMNOPQRSTUVWXYZ ,$:()-*?</xsl:variable>
 <xsl:variable name="title-to-id-map">abcdefghijklmnopqrstuvwxyz_-_-</xsl:variable>
@@ -1200,23 +1200,43 @@
 <!-- Register -->
 <xsl:template match="register-use">
 <tr>
- <td valign="top" align="right">R<xsl:value-of select="@number"/></td>
+ <td class='register-use-register'>
+  <xsl:choose>
+   <xsl:when test="contains(@number, '-')">
+    <span class='register-name register-range-start'>
+     <xsl:text>R</xsl:text><xsl:value-of select="substring-before(@number, '-')"/>
+    </span>
+    <span class='register-range-divider'>
+     <xsl:text>&#160;-&#160;</xsl:text>
+    </span>
+    <span class='register-name register-range-end'>
+     <xsl:text>R</xsl:text><xsl:value-of select="substring-after(@number, '-')"/>
+    </span>
+   </xsl:when>
+   <xsl:otherwise>
+    <span class='register-name'>
+     <xsl:text>R</xsl:text><xsl:value-of select="@number"/>
+    </span>
+   </xsl:otherwise>
+  </xsl:choose>
+ </td>
+
   <xsl:choose>
    <xsl:when test="@state='preserved'">
     <!-- preserved is used on output registers -->
-    <td valign="top" align="left" colspan="2">preserved</td>
+    <td class='register-use-state register-use-preserved' colspan="2">preserved</td>
    </xsl:when>
    <xsl:when test="@state='corrupted'">
     <!-- corrupted is used on output registers -->
-    <td valign="top" align="left" colspan="2">corrupted</td>
+    <td class='register-use-state register-use-corrupted' colspan="2">corrupted</td>
    </xsl:when>
    <xsl:when test="@state='undefined'">
     <!-- undefined is used on input registers -->
-    <td valign="top" align="left" colspan="2">undefined</td>
+    <td class='register-use-state register-use-undefined' colspan="2">undefined</td>
    </xsl:when>
    <xsl:otherwise>
-    <td valign="top">=</td>
-    <td valign="top" align="left">
+    <td class='register-use-divider'>=</td>
+    <td class='register-use-value'>
      <xsl:apply-templates/>
     </td>
    </xsl:otherwise>
@@ -2145,9 +2165,9 @@
 <xsl:template match="meta" mode="tail">
 <footer>
  <section class='meta'>
-  <h2 name="metadata" id="metadata">Document information</h2>
+  <h2 id="metadata">Document information</h2>
   <div class='meta'>
-   <table summary="Meta information table">
+   <table>
     <xsl:if test="count(maintainer) &gt; 0">
      <tr class='maintainer'>
       <th>Maintainer(s):</th>
