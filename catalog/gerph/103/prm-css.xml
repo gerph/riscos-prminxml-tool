@@ -2,6 +2,20 @@
 <prm-css>
     <css type="none"/>
     <css type="traditional"><![CDATA[
+/* ITC Novarese Std is a paid for font, which we'll use if it's there, but will fall back to
+ * Fraunces if not (which is free), and then to regular serif fonts.
+ * See: https://fonts.google.com/specimen/Fraunces
+ *
+ * For the headings we use Raleway, which is also free, falling back to sans-serif if not
+ * available.
+ * See: https://fonts.google.com/specimen/Raleway
+ */
+body {
+  font-family: "ITC Novarese Std", "Fraunces 28pt", "Fraunces", serif;
+  font-weight: lighter;
+  font-feature-settings: 'ss01' 1;
+  font-variant: prince-opentype(ss01(1));
+}
 h1 {
   font-size: 2em;
   font-weight: bold;
@@ -24,7 +38,7 @@ h5 {
 }
 
 h1, h2, h3, h4, h5 {
-  font-family: sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 
 /* Markers for bad content */
@@ -96,7 +110,9 @@ section.category h5 {
 }
 .definition-title {
   display: block;
-  font-family: sans-serif;
+  font-family: "Raleway", monospace, sans-serif;
+  font-variant-numeric: lining-nums;
+  font-variant: prince-opentype(lnum(1));
   font-weight: bold;
   font-size: 1.5em;
   text-align: right;
@@ -109,7 +125,9 @@ section.category h5 {
 }
 .definition-subtitle {
   display: block;
-  font-family: sans-serif;
+  font-family: "Raleway", monospace, sans-serif;
+  font-variant-numeric: lining-nums;
+  font-variant: prince-opentype(lnum(1));
   font-weight: bold;
   font-size: 1.5em;
   text-align: right;
@@ -134,7 +152,7 @@ section.definition {
 section.definition::before {
   display: block;
   font-weight: bold;
-  font-family: sans-serif;
+  font-family: "Raleway", monospace, sans-serif;
   font-size: 1.1rem;
   margin-left: -2.5rem;
   margin-top: 2rem;
@@ -370,11 +388,13 @@ h5.revision-title {
   margin-top: 0em;
   margin-bottom: 0em;
 }
-table.meta tr.history ul {
+div.meta tr.history ul {
   margin-top: 0em;
   margin-bottom: 0em;
 }
-table.meta p {
+div.meta td.disclaimer > p {
+  margin-block-start: 0em;
+  padding-top: 0em;
   margin-top: 0em;
   margin-bottom: 0em;
 }
@@ -548,9 +568,13 @@ table.user-table th {
 footer section.meta {
     text-align: center;
 }
-footer section.meta table {
+footer section.meta div.meta > table {
     margin-left: auto;
     margin-right: auto;
+}
+footer section.meta table td,
+footer section.meta table th {
+    text-align: left;
 }
 
 ]]></css>
@@ -613,6 +637,9 @@ h5 {
   font-weight: bold;
 }
 
+th {
+  font-weight: bold;
+}
 
 /* Lists are bulleted in line with the left text */
 article ol {
@@ -720,8 +747,11 @@ section.section .entry-definition:first-of-type {
     break-before: avoid;
 }
 
-@page {
+section.definition {
+    page-break-inside: avoid;
+}
 
+@page {
     size: a4 portrait;
 
     margin-top: 2cm;
@@ -735,7 +765,7 @@ section.section .entry-definition:first-of-type {
     @top-left {
         content: string(section-name);
         font-style: italic;
-        font-family: sans-serif;
+        font-family: "Raleway", monospace, sans-serif;
         vertical-align: bottom;
         padding-bottom: 0.25rem;
         border-bottom: 0.375rem solid #dddddd;
@@ -744,7 +774,7 @@ section.section .entry-definition:first-of-type {
 
     @bottom-left {
         content: counter(page);
-        font-family: sans-serif;
+        font-family: "Raleway", monospace, sans-serif;
         vertical-align: top;
         padding-top: 0.25rem;
         /* border-top: 0.375rem solid #dddddd; */
@@ -758,7 +788,7 @@ section.section .entry-definition:first-of-type {
     @top-right {
         content: string(chapter-name);
         font-style: italic;
-        font-family: sans-serif;
+        font-family: "Raleway", monospace, sans-serif;
         vertical-align: bottom;
         padding-bottom: 0.25rem;
         border-bottom: 0.375rem solid #dddddd;
@@ -767,7 +797,7 @@ section.section .entry-definition:first-of-type {
 
     @bottom-right {
         content: counter(page);
-        font-family: sans-serif;
+        font-family: "Raleway", monospace, sans-serif;
         vertical-align: top;
         padding-top: 0.25rem;
         /* border-top: 0.375rem solid #dddddd; */
@@ -784,7 +814,7 @@ section.section .entry-definition:first-of-type {
         width: 4em;
         padding-left: 0.5em;
         margin-bottom: 60%;
-        font-family: sans-serif;
+        font-family: "Raleway", monospace, sans-serif;
         content: string(docgroup-name);
         color: white;
         background-color: #dddddd;

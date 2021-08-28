@@ -2126,36 +2126,38 @@
 <footer>
  <section class='meta'>
   <h2 name="metadata" id="metadata">Document information</h2>
-  <table class='meta' summary="Meta information table">
-   <xsl:if test="count(maintainer) &gt; 0">
-    <tr class='maintainer'>
-     <th align="right" valign="top">Maintainer(s):</th>
-     <td class='maintainers'><xsl:apply-templates select="maintainer"/></td>
-    </tr>
-   </xsl:if>
-   <xsl:if test="count(history) &gt; 0">
-    <tr class='history'>
-     <th>History:</th>
-     <td class='history'><xsl:apply-templates select="history"/></td>
-    </tr>
-   </xsl:if>
-   <xsl:if test="count(related) &gt; 0">
-    <tr>
-     <th class='related'>Related:</th>
-     <td class='related'><xsl:apply-templates select="related" mode="meta" /></td>
-    </tr>
-   </xsl:if>
-   <xsl:if test="count(disclaimer) &gt; 0">
-    <tr class='disclaimer'>
-     <th>Disclaimer:</th>
-     <td class='disclaimer'>
-      <xsl:apply-templates select="disclaimer"/>
-     </td>
-    </tr>
-   </xsl:if>
-  </table>
-  </section>
- </footer>
+  <div class='meta'>
+   <table summary="Meta information table">
+    <xsl:if test="count(maintainer) &gt; 0">
+     <tr class='maintainer'>
+      <th>Maintainer(s):</th>
+      <td class='maintainers'><xsl:apply-templates select="maintainer"/></td>
+     </tr>
+    </xsl:if>
+    <xsl:if test="count(history) &gt; 0">
+     <tr class='history'>
+      <th>History:</th>
+      <td class='history'><xsl:apply-templates select="history"/></td>
+     </tr>
+    </xsl:if>
+    <xsl:if test="count(related) &gt; 0">
+     <tr>
+      <th class='related'>Related:</th>
+      <td class='related'><xsl:apply-templates select="related" mode="meta" /></td>
+     </tr>
+    </xsl:if>
+    <xsl:if test="count(disclaimer) &gt; 0">
+     <tr class='disclaimer'>
+      <th>Disclaimer:</th>
+      <td class='disclaimer'>
+       <xsl:apply-templates select="disclaimer"/>
+      </td>
+     </tr>
+    </xsl:if>
+   </table>
+  </div>
+ </section>
+</footer>
 </xsl:template>
 
 <xsl:template match="history">
