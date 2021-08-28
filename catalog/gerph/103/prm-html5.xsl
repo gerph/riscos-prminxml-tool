@@ -12,6 +12,7 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict"
                 xmlns:localdb="local-file-database"
                 xmlns:saxon="http://icl.com/saxon"
+                xmlns:str="http://exslt.org/strings"
                 xmlns:pixparams="http://gerph.org/dtd/prminxml-params">
 
 <xsl:include href="http://gerph.org/dtd/bnf/100/html.xsl" />
@@ -72,8 +73,10 @@
     Use 'none' to disable the built in style.
 </pixparams:param>
 <pixparams:param name="css-variant" values="style-variant-name" default="none">
-    Applies additional styling variant on top of
-    the css-base, for specific uses.
+    Applies additional styling variants on top of
+    the css-base, for specific uses. Separate the
+    list of variants with spaces. Use 'none' when
+    no variant is required.
 </pixparams:param>
 <pixparams:param name="css-file" values="filename" default="none">
     Defines the relative name of the CSS
@@ -171,15 +174,31 @@
 </xsl:template>
 
 <xsl:template name='head-css'>
+<xsl:variable name="prm-css" select="document('prm-css.xml')/prm-css" />
 <xsl:if test="$css-base != 'none'">
  <style type='text/css'>
-  <xsl:value-of disable-output-escaping='yes' select="document('prm-css.xml')/prm-css/css[@type=$css-base and not(@variant)]"/>
+  <xsl:value-of disable-output-escaping='yes' select="$prm-css/css[@type=$css-base and not(@variant)]"/>
  </style>
- <xsl:if test="$css-variant != 'none'">
-  <style type='text/css'>
-   <xsl:value-of disable-output-escaping='yes' select="document('prm-css.xml')/prm-css/css[@type=$css-base and @variant=$css-variant]"/>
-  </style>
- </xsl:if>
+ <xsl:for-each select='str:tokenize($css-variant, " ")'>
+  <xsl:variable name="variant" select="text()" />
+  <xsl:if test="$variant != 'none'">
+   <xsl:choose>
+    <xsl:when test="$prm-css/css[@type=$css-base and @variant=$variant]">
+     <style type='text/css'>
+       <xsl:value-of disable-output-escaping='yes' select="$prm-css/css[@type=$css-base and @variant=$variant]"/>
+     </style>
+    </xsl:when>
+    <xsl:when test="$prm-css/css[@variant=$variant]">
+     <style type='text/css'>
+       <xsl:value-of disable-output-escaping='yes' select="$prm-css/css[not(@type) and @variant=$variant]"/>
+     </style>
+    </xsl:when>
+    <xsl:otherwise>
+     <xsl:message>CSS variant '<xsl:value-of select="$variant"/>' is not known.</xsl:message>
+    </xsl:otherwise>
+   </xsl:choose>
+  </xsl:if>
+ </xsl:for-each>
 </xsl:if>
 <xsl:if test="$css-file != 'none'">
  <link rel="stylesheet">

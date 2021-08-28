@@ -2,19 +2,8 @@
 <prm-css>
     <css type="none"/>
     <css type="traditional"><![CDATA[
-/* ITC Novarese Std is a paid for font, which we'll use if it's there, but will fall back to
- * Fraunces if not (which is free), and then to regular serif fonts.
- * See: https://fonts.google.com/specimen/Fraunces
- *
- * For the headings we use Raleway, which is also free, falling back to sans-serif if not
- * available.
- * See: https://fonts.google.com/specimen/Raleway
- */
 body {
-  font-family: "ITC Novarese Std", "Fraunces 28pt", "Fraunces", serif;
-  font-weight: lighter;
-  font-feature-settings: 'ss01' 1;
-  font-variant: prince-opentype(ss01(1));
+  font-family: serif;
 }
 h1 {
   font-size: 2em;
@@ -35,10 +24,6 @@ h4 {
 h5 {
   font-size: 1em;
   font-weight: bold;
-}
-
-h1, h2, h3, h4, h5 {
-  font-family: "Raleway", sans-serif;
 }
 
 /* Markers for bad content */
@@ -110,9 +95,7 @@ section.category h5 {
 }
 .definition-title {
   display: block;
-  font-family: "Raleway", monospace, sans-serif;
-  font-variant-numeric: lining-nums;
-  font-variant: prince-opentype(lnum(1));
+  font-family: sans-serif;
   font-weight: bold;
   font-size: 1.5em;
   text-align: right;
@@ -125,9 +108,7 @@ section.category h5 {
 }
 .definition-subtitle {
   display: block;
-  font-family: "Raleway", monospace, sans-serif;
-  font-variant-numeric: lining-nums;
-  font-variant: prince-opentype(lnum(1));
+  font-family: sans-serif;
   font-weight: bold;
   font-size: 1.5em;
   text-align: right;
@@ -152,7 +133,7 @@ section.definition {
 section.definition::before {
   display: block;
   font-weight: bold;
-  font-family: "Raleway", monospace, sans-serif;
+  font-family: sans-serif;
   font-size: 1.1rem;
   margin-left: -2.5rem;
   margin-top: 2rem;
@@ -361,17 +342,18 @@ section.meta > * {
 section.meta h2 {
   margin-left: 0em;
 }
-table.meta tr th {
+div.meta tr th {
   text-align: right;
 }
-table.meta tr.history table th {
+div.meta tr.history table th {
   text-align: left;
 }
-table.meta table.history {
+div.meta table.history {
   border: none;
   border-spacing: 0.375rem 0px;
 }
-table.meta table.history th {
+div.meta table.history th {
+  text-align: left;
   padding-top: 0px;
 }
 .revision-date {
@@ -404,6 +386,7 @@ div.meta td.disclaimer > p {
 }
 ]]></css>
 
+
 <!-- 'traditional' variant 'acornfs' is based on the Acorn Functional Specification style that was used
      for many later NC, Ursula and Browse related specifications.
      It shares many features with the PRM so is appropriate for a lot of the uses, but...
@@ -418,7 +401,7 @@ div.meta td.disclaimer > p {
         * Green dividers are used between sections to ensure that the content is divided up in a
           more clear way.
 -->
-    <css type="traditional" variant="acornfs"><![CDATA[
+    <css variant="acornfs"><![CDATA[
 /* Green borders, centred heading */
 header h1 {
     border-color: #008000;
@@ -443,46 +426,6 @@ a:visited {
 a:active {
     color: #a0a070;
 }
-
-/* Numbering beside each section */
-/* Note: I'm not at all sure I like this; it seems unreliable in Firefox when multiple counters are used.
-   DISABLED FOR NOW.
- */
-
-/*
-article {
-  counter-reset: countersection;
-}
-
-article section h2 {
-  counter-reset: countersubsection;
-}
-article section h2::before {
-  counter-increment: countersection;
-  content: counter(countersection) ". ";
-}
-
-article section h3 {
-  counter-reset: countersubsubsection;
-}
-article section h3::before {
-  counter-increment: countersubsection;
-  content: counter(countersection) "." counter(countersubsection) " ";
-}
-
-article section h4 {
-  counter-reset: countercategory;
-}
-article section h4::before {
-  counter-increment: countersubsubsection;
-  content: counter(countersection) "." counter(countersubsection) "." counter(countersubsubsection) " ";
-}
-
-article section h5::before {
-  counter-increment: countercategory;
-  content: counter(countersection) "." counter(countersubsection) "." counter(countersubsubsection) "." counter(countercategory) " ";
-}
-/* End numbering */
 
 /* Centred headings */
 article section h2 {
@@ -579,8 +522,9 @@ footer section.meta table th {
 
 ]]></css>
 
+
 <!-- This variant is closer to the PRM than the standard style -->
-    <css type="traditional" variant="prm"><![CDATA[
+    <css variant="prm"><![CDATA[
 /* Grey divider lines */
 header h1 {
   border-top: 0.375rem solid lightgray;
@@ -765,7 +709,7 @@ section.definition {
     @top-left {
         content: string(section-name);
         font-style: italic;
-        font-family: "Raleway", monospace, sans-serif;
+        font-family: sans-serif;
         vertical-align: bottom;
         padding-bottom: 0.25rem;
         border-bottom: 0.375rem solid #dddddd;
@@ -774,7 +718,7 @@ section.definition {
 
     @bottom-left {
         content: counter(page);
-        font-family: "Raleway", monospace, sans-serif;
+        font-family: sans-serif;
         vertical-align: top;
         padding-top: 0.25rem;
         /* border-top: 0.375rem solid #dddddd; */
@@ -788,7 +732,7 @@ section.definition {
     @top-right {
         content: string(chapter-name);
         font-style: italic;
-        font-family: "Raleway", monospace, sans-serif;
+        font-family: sans-serif;
         vertical-align: bottom;
         padding-bottom: 0.25rem;
         border-bottom: 0.375rem solid #dddddd;
@@ -797,7 +741,7 @@ section.definition {
 
     @bottom-right {
         content: counter(page);
-        font-family: "Raleway", monospace, sans-serif;
+        font-family: sans-serif;
         vertical-align: top;
         padding-top: 0.25rem;
         /* border-top: 0.375rem solid #dddddd; */
@@ -814,7 +758,7 @@ section.definition {
         width: 4em;
         padding-left: 0.5em;
         margin-bottom: 60%;
-        font-family: "Raleway", monospace, sans-serif;
+        font-family: sans-serif;
         content: string(docgroup-name);
         color: white;
         background-color: #dddddd;
@@ -851,4 +795,144 @@ header nav h2 {
 }
 
 ]]></css>
+
+
+<!-- Numbering beside each section.
+     I'm not at all sure I like this; it seems unreliable in Firefox when multiple counters are used.
+     Because we skip levels between subsection to category quite commonly, we'd end up with there
+     being a '0' in the middle of the numbers.
+  -->
+    <css variant='numbered-sections'><![CDATA[
+article {
+  counter-reset: countersection;
+}
+
+article section h2 {
+  counter-reset: countersubsection;
+}
+article section h2::before {
+  counter-increment: countersection;
+  content: counter(countersection) ". ";
+}
+
+article section h3 {
+  counter-reset: countersubsubsection;
+}
+article section h3::before {
+  counter-increment: countersubsection;
+  content: counter(countersection) "." counter(countersubsection) " ";
+}
+
+article section h4 {
+  counter-reset: countercategory;
+}
+article section.subsubsection h4::before { /* if they skipped the subsection */
+  counter-increment: countersubsubsection;
+  content: counter(countersection) "." counter(countersubsubsection) " ";
+}
+article section.subsection section.subsubsection h4::before {
+  counter-increment: countersubsubsection;
+  content: counter(countersection) "." counter(countersubsection) "." counter(countersubsubsection) " ";
+}
+
+article section.category {
+  counter-increment: countercategory;
+}
+article section.category h5::before { /* if they skipped subsubsection and subsection */
+  content: counter(countersection) "." counter(countercategory) " ";
+}
+article section.subsection section.category h5::before { /* if they skipped subsubsection */
+  content: counter(countersection) "." counter(countersubsection) "." counter(countercategory) " ";
+}
+article section.subsection section.subsubsection section.category h5::before {
+  content: counter(countersection) "." counter(countersubsection) "." counter(countersubsubsection) "." counter(countercategory) " ";
+}
+]]></css>
+
+
+<!-- ITC Novarese Std is a commercial font which was used in the original PRMs.
+     It's a little fancy, but provides a very distinctive style to the manuals.
+     It may not be appropriate for web use.
+  -->
+    <css variant='body-novarese'><![CDATA[
+body {
+  font-family: "ITC Novarese Std", monospace; /* Fall back to monospace to show we're failing */
+  font-feature-settings: 'ss01' 1;
+  font-variant: prince-opentype(ss01(1));
+}
+]]></css>
+
+<!-- Fraunces is a freely available font which is similar in style to the Novarese font.
+     However:
+       - it is a little too bold in its default configuration, so we must lighten it.
+       - it has an overly fancy & which we need to disable the stylistic set.
+     See: https://fonts.google.com/specimen/Fraunces
+  -->
+    <css variant='body-fraunces'><![CDATA[
+body {
+  font-family: "Fraunces 28pt", "Fraunces", monospace;
+  font-weight: lighter;
+  font-feature-settings: 'ss01' 1;
+  font-variant: prince-opentype(ss01(1));
+}
+th {
+  font-weight: normal;
+}
+table.history h5 {
+  font-weight: normal;
+}
+]]></css>
+
+<!-- Raleway is a freely available font which provides a good style gainst the serif body font.
+     However:
+       - has variants of the numbers which make them smaller, and this makes hex digits look odd.
+     See: https://fonts.google.com/specimen/Raleway
+  -->
+    <css variant='heading-raleway'><![CDATA[
+h1, h2, h3, h4, h5 {
+  font-family: "Raleway", sans-serif;
+  font-variant-numeric: lining-nums;
+  font-variant: prince-opentype(lnum(1));
+}
+.definition-title, .definition-subtitle {
+  font-family: "Raleway", monospace, sans-serif;
+  font-variant-numeric: lining-nums;
+  font-variant: prince-opentype(lnum(1));
+}
+section.definition::before {
+  font-family: "Raleway", monospace, sans-serif;
+  font-variant-numeric: lining-nums;
+  font-variant: prince-opentype(lnum(1));
+}
+
+/* Need to override the headers and footers if present */
+@page:left {
+
+    @top-left {
+        font-family: "Raleway", monospace;
+    }
+
+    @bottom-left {
+        font-family: "Raleway", monospace;
+    }
+}
+
+@page:right {
+    margin-right: 2cm;
+
+    @top-right {
+        font-family: "Raleway", monospace;
+    }
+
+    @bottom-right {
+        font-family: "Raleway", monospace;
+    }
+
+    @right-top {
+        font-family: "Raleway", monospace;
+    }
+}
+
+]]></css>
+
 </prm-css>
