@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.02//EN"
+                            "http://gerph.org/dtd/102/prm.dtd">
+
+<riscos-prm>
+<chapter title="PRM-in-XML metadata">
+
+<section title="Metadata tests">
+</section>
+
+
+</chapter>
+
+<!-- MetaData -->
+<meta>
+ <maintainer>
+  <email name="Gerph" address="gerph@gerph.org" />
+  <email name="Rick" address="rick@sanchez.science" />
+ </maintainer>
+ <disclaimer>
+    <p>
+        &copy; Gerph, 2021.
+    </p>
+    <p>
+        Second paragraph.
+    </p>
+ </disclaimer>
+
+ <history>
+  <revision number="1" author="Gerph" date="26 Aug 2021" title="Initial version">
+    <change>With one change</change>
+  </revision>
+
+  <revision number="2" author="Gerph" date="26 Aug 2021" title="Two changes">
+    <change>First change</change>
+    <change>Seccond change</change>
+  </revision>
+
+  <revision number="3" author="Gerph" date="26 Aug 2021" title="No changes"/>
+  <revision number="4" author="Gerph" date="26 Aug 2021" title="Also no changes"/>
+
+ </history>
+
+ <related>
+    <reference type='link' href='http://gerph.org'/>
+    <reference type='link' href='http://gerph.org/riscos/' name="Link with name"/>
+ </related>
+</meta>
+</riscos-prm>
