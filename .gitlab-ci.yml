@@ -37,7 +37,8 @@ build-linux:
   <<: *common-cross
   stage: build-cross
   script:
-    - ci/build.sh native install --upload
+    - if [ "$CI_COMMIT_BRANCH" = 'master' ] ; then upload=--upload ; else upload= ; fi
+    - ci/build.sh native install ${upload}
   tags:
     - linux
 
@@ -45,7 +46,8 @@ build-macos:
   <<: *common-cross
   stage: build-cross
   script:
-    - ci/build.sh native install --upload
+    - if [ "$CI_COMMIT_BRANCH" = 'master' ] ; then upload=--upload ; else upload= ; fi
+    - ci/build.sh native install ${upload}
   tags:
     - macos
 
