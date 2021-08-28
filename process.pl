@@ -67,6 +67,7 @@ my $catalog_version = '103';
 my $logdir = undef;
 my $logfile = undef;
 my $index = undef;
+my $params = {};
 
 # Extensions to use for each format
 my %extensions = (
@@ -107,6 +108,11 @@ while ($arg = shift)
             if ($arg eq 'help' or $arg eq 'h')
             {
                 help();
+                exit(0);
+            }
+            elsif ($arg eq 'help-indexed')
+            {
+                help_indexed();
                 exit(0);
             }
             elsif ($arg eq 'version' or $arg eq 'V')
@@ -164,6 +170,16 @@ while ($arg = shift)
                 {
                     $outputfile = $output;
                 }
+            }
+            elsif ($arg eq 'param' or $arg eq 'p')
+            {
+                my $param = shift;
+                my ($name, $value) = ($param =~ /^([a-zA-Z\-]+)=(.*)$/);
+                if (!$name)
+                {
+                    die "Parameter should be given in the form '<name>=<value>'\n";
+                }
+                $params{$name} = $value;
             }
         }
     }
@@ -446,7 +462,8 @@ else
         else
         {
             my $native = $riscos ? '--native' : '';
-            $cmd = "$tool $native --output \"$out\" $xslt \"$input\"";
+            my $cliparams = join(' ', map { "--stringparam $_ \"$params{$_}\"" } sort keys %params);
+            $cmd = "$tool $native $cliparams --output \"$out\" $xslt \"$input\"";
         }
         $cmd .= $logtail;
 
@@ -857,8 +874,11 @@ sub help
 Options:
 
     --help, -h      This help message
-    --version, -V   Show version of this tool
+    --help-indexed  Help on creating indexed collections of documents
     --help-tag <tag>    Print help for a specific tag (or list the supported tags)
+    --version, -V   Show version of this tool
+    --catalog <version>, -C <version>
+                    Select the version of the transforms to use (default $catalog_version)
     --debug, -d     Enable debug
     --lint          Lint files as well as formatting them
     --format <format>, -f <format>
@@ -871,6 +891,8 @@ Options:
                     Output file (or directory) to write to
     --outputdir <dir>, -O <dir>
                     Output directory to use
+    --param <name>=<value>, -p <name>=<value>
+                    Supply parameters to the stylesheet for the render format.
 
 The 'skeleton' format outputs a skeleton document containing examples of some
 of the structures used in the PRM-in-XML format:
@@ -886,6 +908,11 @@ The 'html+xml' format is exactly the same but copies the XML file alongside
 the HTML:
 
     $tool -f html+xml -O outputdir mydocs.xml
+
+The 'html5' format is similar to the 'html' format, but uses HTML 5 semantic
+elements and CSS to render documents:
+
+    $tool -f html5 -O outputdir mydocs.xml
 
 The 'header' format outputs a C header file for the constants from the file:
 
@@ -915,6 +942,20 @@ describes many documents to be included in the structured output documentation:
 
     $tool -f index index.xml
 
+Use the --help-indexed option for more information on indexed documents.
+
+Information about the PRM-in-XML format can be found in the directory:
+    $resourcedir/gerph
+EOM
+}
+
+
+##
+# Print help message about indexed format.
+sub help_indexed
+{
+    # FIXME: This could still be improved to give better examples.
+    print <<EOM;
 The 'index.xml' file has the following format:
 
 ----
@@ -992,9 +1033,6 @@ The 'page' element describes a page (chapter, really) which will be
 linked from the index. If a 'href' attribute is given, the document
 will be generated and linked. If a 'href' attribute is not given,
 the page will be unlinked (or omitted if 'hide-empty' is 'yes').
-
-Information about the PRM-in-XML format can be found in the directory:
-    $resourcedir/gerph
 
 EOM
 }
