@@ -165,18 +165,25 @@ DRAWFILES_DEST = $(patsubst &inputdir;/%.draw, &outputdir;/%.draw, $(DRAWFILES_S
 PNGS_SRC = $(shell find &inputdir; -type f -name '*.png')
 PNGS_DEST = $(patsubst &inputdir;/%.png, &outputdir;/%.png, $(PNGS_SRC))
 
+GIFS_SRC = $(shell find &inputdir; -type f -name '*.gif')
+GIFS_DEST = $(patsubst &inputdir;/%.gif, &outputdir;/%.gif, $(GIFS_SRC))
+
 SVGS_SRC = $(shell find &inputdir; -type f -name '*.svg')
 SVGS_DEST = $(patsubst &inputdir;/%.svg, &outputdir;/%.svg, $(SVGS_SRC))
 
-images: $(DRAWFILES_DEST) $(PNGS_DEST) $(SVGS_DEST)
+images: $(DRAWFILES_DEST) $(PNGS_DEST) $(GIFS_DEST) $(SVGS_DEST)
 clean-images:
-&indent;&remove; $(DRAWFILES_DEST) $(PNGS_DEST) $(SVGS_DEST)
+&indent;&remove; $(DRAWFILES_DEST) $(PNGS_DEST) $(GIFS_DEST) $(SVGS_DEST)
 
 &outputdir;/%.draw: &inputdir;/%.draw
 &indent;@mkdir -p "$(@D)"
 &indent;@cp "$&lt;" "$@"
 
 &outputdir;/%.png: &inputdir;/%.png
+&indent;@mkdir -p "$(@D)"
+&indent;@cp "$&lt;" "$@"
+
+&outputdir;/%.gif: &inputdir;/%.gif
 &indent;@mkdir -p "$(@D)"
 &indent;@cp "$&lt;" "$@"
 
