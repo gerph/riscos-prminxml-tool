@@ -36,7 +36,7 @@
 <localdb:definition-titles type="tboxmessage"  prefix-name=""         prefix-number=""         number-base="&amp;" name="Toolbox message"  Name="Toolbox message"    />
 <localdb:definition-titles type="tboxmethod"   prefix-name=""         prefix-number="Method "  number-base="&amp;" name="Toolbox method"   Name="Toolbox method"     />
 
-<xsl:output method="xml" indent="no" encoding="utf-8"/>
+<xsl:output method="html" indent="no" encoding="utf-8"/>
 
 <xsl:variable name="title-to-id-src">ABCDEFGHIJKLMNOPQRSTUVWXYZ ,$:()-*?</xsl:variable>
 <xsl:variable name="title-to-id-map">abcdefghijklmnopqrstuvwxyz_-_-</xsl:variable>
