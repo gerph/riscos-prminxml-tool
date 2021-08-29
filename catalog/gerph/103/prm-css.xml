@@ -822,6 +822,10 @@ h5 {
   font-weight: bold;
 }
 
+img {
+   max-width: 100%;
+}
+
 th {
   font-weight: bold;
 }
