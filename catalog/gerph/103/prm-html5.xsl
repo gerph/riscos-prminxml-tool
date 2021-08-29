@@ -203,7 +203,7 @@
   </xsl:if>
  </xsl:for-each>
 </xsl:if>
-<xsl:if test="$css-file != 'none'">
+<xsl:if test="$css-file != 'none' and $css-file != ''">
  <link rel="stylesheet">
   <xsl:attribute name='href'>
    <xsl:value-of select="$css-file"/>
