@@ -391,8 +391,88 @@ div.meta td.disclaimer > p {
 }
 
 
+ul.indexed-bar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 0em;
+    margin-left: 0rem;
+}
+ul.indexed-bar li {
+    display: inline-block;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    margin-left: 0.125rem;
+    margin-right: 0.125rem;
+    /*background-color: lightgray;*/
+    text-align: center;
+}
+ul.indexed-bar li span {
+    display: block;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+.index-bar-index-number {
+    font-size: smaller;
+}
+span.index-bar-selected {
+    background-color: lightblue;
+    font-style: italic;
+}
 
+footer.indexed-footer p {
+    margin-bottom: 0em;
+}
 
+footer.indexed-footer p + p {
+    margin-top: 0.25rem;
+}
+
+nav.indexed-bar-bottom {
+    margin-top: 0.25rem;
+    border-top: 2px solid black;
+}
+
+section.indexed-root {
+    margin-left: 3rem;
+    margin-right: 3rem;
+}
+
+section.indexed-section {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding-left: 3rem;
+}
+div.indexed-page {
+    padding-left: 3rem;
+    line-height: 1.5em;
+}
+section.indexed-definitions {
+    padding-left: 4.5rem;
+}
+h2.indexed-section-name {
+}
+
+@media screen {
+    nav.indexed-bar li.index-bar-index span.index-bar-index-number:before {
+        content: "(";
+    }
+    nav.indexed-bar li.index-bar-index span.index-bar-index-number:after {
+        content: ")";
+    }
+}
+
+section.indexed-table {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-left: 2em;
+    padding-right: 2em;
+}
+table.indexed-table th {
+    text-align: left;
+}
 
 /* Styling specific to the print */
 @media print {
@@ -418,6 +498,12 @@ div.meta td.disclaimer > p {
         content: none;
     }
 
+    /* Special style that's used on the index pages */
+    body.indexed a[href]::after {
+        content: "\A0\A0\A0" target-counter(attr(href), page);
+    }
+
+
     /* In the regular version these are a comma separated list;
        instead make them one per line as they'll be longer and the links will be irrelevant */
     .definition-related .reference {
@@ -430,6 +516,57 @@ div.meta td.disclaimer > p {
     /* Stop the border of the top of the sections being repeated on subsequent pages */
     section {
         box-decoration-break: slice;
+    }
+
+    /* The links on top of the contents page are not useful when printing */
+    nav.indexed-bar-top {
+        display: none;
+    }
+
+    /* The links on the bottom can be magiced into becoming a set of indexed links
+     * There's quite a bit of magic here, but it appears to work
+     */
+    nav.indexed-bar-bottom {
+        border-top: none !important;
+        padding-left: 6rem;
+    }
+    nav.indexed-bar-bottom ul {
+        display: block;
+        font-style: normal !important;
+        line-height: 1.5em;
+    }
+    nav.indexed-bar-bottom ul:before {
+        display: block;
+        content: "Indexes";
+        font-family: sans-serif;
+        font-size: 1.8rem;
+        padding-bottom: 0.83em;
+    }
+    nav.indexed-bar-bottom ul li {
+        display: block;
+        padding-left: 3rem;
+        text-align: left;
+    }
+    nav.indexed-bar-bottom span.index-bar-contents {
+        display: none;
+    }
+    nav.indexed-bar-bottom li.index-bar-index span {
+        display: block;
+    }
+    nav.indexed-bar-bottom li.index-bar-index span.index-bar-index-number {
+        padding-left: 1em;
+        font-size: inherit;
+    }
+    nav.indexed-bar-bottom li.index-bar-index span.index-bar-index-number a:before {
+        content: "...\0000a0by\00a0";
+    }
+
+    /* Remove the bottom nav bar entirely on non-contents pages */
+    body.indexed-index nav.indexed-bar-bottom {
+        display: none;
+    }
+    body.indexed-index footer {
+        display: none;
     }
 }
 
@@ -479,7 +616,7 @@ header nav h2 {
 ]]></css>
 
 
-<!-- 'traditional' variant 'acornfs' is based on the Acorn Functional Specification style that was used
+<!-- Variant 'acornfs' is based on the Acorn Functional Specification style that was used
      for many later NC, Ursula and Browse related specifications.
      It shares many features with the PRM so is appropriate for a lot of the uses, but...
         * It doesn't have the common indented text format that was used in the paper manuals.
@@ -630,7 +767,14 @@ header h1 {
 nav {
   border-bottom: 0.375rem solid lightgray;
 }
+nav.indexed-bar-bottom {
+  border-top: 0.375rem solid lightgray;
+}
 section.section {
+  border-bottom: 0.375rem solid lightgray;
+}
+
+footer {
   border-bottom: 0.375rem solid lightgray;
 }
 
@@ -658,23 +802,23 @@ header h1 .chapter-name {
 
 /* Heading sizes are much bigger, and not always bold */
 h1 {
-  font-size: 2em;
+  font-size: 2rem;
   font-weight: normal;
 }
 h2 {
-  font-size: 1.8em;
+  font-size: 1.8rem;
   font-weight: normal;
 }
 h3 {
-  font-size: 1.2em;
+  font-size: 1.2rem;
   font-weight: bold;
 }
 h4 {
-  font-size: 1.2em;
+  font-size: 1.2rem;
   font-weight: normal;
 }
 h5 {
-  font-size: 1em;
+  font-size: 1rem;
   font-weight: bold;
 }
 
@@ -725,9 +869,10 @@ article .definition-related a:active {
 /* Styling specific to the print */
 @media print {
     a[href] {
-        text-decoration: underline;
+        /*text-decoration: underline;
         text-underline-style: dashed;
-        text-underline-color: gray;
+        text-underline-color: gray;*/
+        text-decoration: none;
         color: black;
     }
 }
@@ -794,7 +939,6 @@ article .definition-related a:active {
         padding-top: 1rem;
         padding-bottom: 1rem;
         writing-mode: vertical-rl;
-        xtext-align: center;
         padding-left: 0.5rem;
         margin-bottom: 60%;
         font-family: sans-serif;
@@ -888,6 +1032,13 @@ body {
   font-feature-settings: 'ss01' 1;
   font-variant: prince-opentype(ss01(1));
 }
+
+@media print {
+    /* Special changes for the generated index text */
+    nav.indexed-bar-bottom ul {
+      font-family: "ITC Novarese Std", "ITC Novarese", monospace;
+    }
+}
 ]]></css>
 
 <!-- Fraunces is a freely available font which is similar in style to the Novarese font.
@@ -932,6 +1083,11 @@ section.definition::before {
   font-variant-numeric: lining-nums;
   font-variant: prince-opentype(lnum(1));
 }
+.indexed-bar {
+  font-family: "Raleway", monospace;
+  font-variant-numeric: lining-nums;
+  font-variant: prince-opentype(lnum(1));
+}
 
 /* Need to override the headers and footers if present */
 @page:left {
@@ -957,6 +1113,13 @@ section.definition::before {
     }
 
     @right-top {
+        font-family: "Raleway", monospace;
+    }
+}
+
+@media print {
+    /* Special changes for the generated index text */
+    nav.indexed-bar-bottom ul:before {
         font-family: "Raleway", monospace;
     }
 }
@@ -988,4 +1151,15 @@ section.section:first-of-type p:first-of-type::first-letter {
     float: left;
 }
 ]]></css>
+
+
+<!-- Remove the grey strip on the side of the printed pages -->
+    <css variant='no-thumb-bar'><![CDATA[
+@page:right {
+    @right-top {
+        background-color: #ffffff;
+    }
+}
+]]></css>
+
 </prm-css>

@@ -91,6 +91,27 @@ PAGE_CSS_FILE = </xsl:text>
 <xsl:text>
 </xsl:text>
 
+
+<xsl:text>
+INDEX_CSS_BASE = </xsl:text>
+<xsl:value-of select="//options/@index-css-base"/>
+<xsl:text>
+INDEX_CSS_BASE := $(if ${INDEX_CSS_BASE},${INDEX_CSS_BASE},standard)
+</xsl:text>
+
+<xsl:text>
+INDEX_CSS_VARIANT = </xsl:text>
+<xsl:value-of select="//options/@index-css-variant"/>
+<xsl:text>
+</xsl:text>
+
+<xsl:text>
+INDEX_CSS_FILE = </xsl:text>
+<xsl:value-of select="//options/@index-css-file"/>
+<xsl:text>
+</xsl:text>
+
+
 <xsl:text>
 
 all: images indices \&#10;</xsl:text>
@@ -192,7 +213,7 @@ clean-images:
 &indent;@cp "$&lt;" "$@"
 
 indices: ${INDEX_XML}
-&indent;xsltproc -stringparam base-dir "$$(pwd)" -o "${OUTPUT_DIR}/index.html" http://gerph.org/dtd/${CATALOG_VERSION}/prmindex-html.xsl "${INDEX_XML}"
+&indent;xsltproc --stringparam css-base '${INDEX_CSS_BASE}' --stringparam css-variant '${INDEX_CSS_VARIANT}' --stringparam css-file '${INDEX_CSS_FILE}' -stringparam base-dir "$$(pwd)" -o "${OUTPUT_DIR}/index.html" http://gerph.org/dtd/${CATALOG_VERSION}/prmindex-${PAGE_FORMAT}.xsl "${INDEX_XML}"
 
 </xsl:text>
 
