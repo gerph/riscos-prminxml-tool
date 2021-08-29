@@ -114,14 +114,16 @@
 <head>
   <meta charset="utf-8"/>
 
-  <meta name='author'>
-    <xsl:attribute name='content'>
-     <xsl:for-each select='//meta/maintainer/email'>
-      <xsl:if test='position() > 1'>, </xsl:if>
-      <xsl:value-of select='@name'/>
-     </xsl:for-each>
-    </xsl:attribute>
-  </meta>
+  <xsl:if test="//meta/maintainer/email">
+   <meta name='author'>
+     <xsl:attribute name='content'>
+      <xsl:for-each select='//meta/maintainer/email'>
+       <xsl:if test='position() > 1'>, </xsl:if>
+       <xsl:value-of select='@name'/>
+      </xsl:for-each>
+     </xsl:attribute>
+   </meta>
+  </xsl:if>
   <meta name='subject'>
    <xsl:attribute name='content'>
     <xsl:value-of select='@title'/>
