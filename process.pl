@@ -276,11 +276,11 @@ my $rc = 0;
 
 if ($format eq 'index')
 {
-    # Special case for the 'index' format - we take an index.xml file and we build everything
+    # Special case for the 'index' format - we take a prmindex.xml file and we build everything
     # described in it and give it a common structure.
     if (scalar(@inputs) != 1)
     {
-        die "For 'index' format, only a single file, the index.xml file, should be supplied\n";
+        die "For 'index' format, only a single file, the prmindex.xml file, should be supplied\n";
     }
 
     if (defined $outputdir)
@@ -941,10 +941,10 @@ work with future iterations of the conversion.
 Linting can be used as a check in addition to any of the other formatting
 operations by specifying the --lint option.
 
-The 'index' format is more complex; it can take an 'index.xml' file which
+The 'index' format is more complex; it can take a 'prmindex.xml' file which
 describes many documents to be included in the structured output documentation:
 
-    $tool -f index index.xml
+    $tool -f index prmindex.xml
 
 Use the --help-indexed option for more information on indexed documents.
 
@@ -1012,9 +1012,9 @@ The 'dirs' element describes where content should be read and written to:
 The 'options' element describes some settings for the index build:
 
     hide-empty:     'yes' or 'no': whether pages without a href will
-                    be omitted
+                    be omitted from the contents.
     include-source: 'yes' or 'no': whether source XML files will be
-                    linked in the index (they'll always be copied).
+                    linked in the index (they will always be copied).
     make-contents:  'yes' or 'no': whether the contents with inline
                     section details will be generated. This allows
                     you to see the indexed elements inline with the
@@ -1046,6 +1046,12 @@ linked from the index. If a 'href' attribute is given, the document
 will be generated and linked. If a 'href' attribute is not given,
 the page will be unlinked (or omitted if 'hide-empty' is 'yes').
 
+Any images supplied within the input directory will be copied into
+the output, even if they are not referenced.
+
+To convert all the files, use a command like:
+
+    $tool -f index -L logs prmindex.xml
 EOM
 }
 
