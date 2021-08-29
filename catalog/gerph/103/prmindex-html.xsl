@@ -30,7 +30,7 @@
 <localdb:sections type="tboxmethod" filename="tboxmethods" title="TBox methods" number="yes"/>
 <localdb:sections type="tboxmessage" filename="tboxmessages" title="TBox messages" number="yes"/>
 
-<xsl:output method="xml" indent="no"/>
+<xsl:output method="html" indent="no"/>
 
 <xsl:param name="include-source" select="//options/@include-source" />
 <xsl:param name="hide-empty" select="//options/@hide-empty" />
@@ -45,7 +45,8 @@
 <xsl:variable name="title-to-id-map">abcdefghijklmnopqrstuvwxyz_-_-</xsl:variable>
 
 <xsl:template match="/">
-<html>
+<xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
+<html lang='en'>
  <xsl:apply-templates />
 </html>
 </xsl:template>
