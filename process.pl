@@ -285,7 +285,7 @@ if ($format eq 'index')
 
     if (defined $outputdir)
     {
-        die "For 'index' format, the output directory should be supplied in the index.xml file\n";
+        die "For 'index' format, the output directory should be supplied in the prmindex.xml file\n";
     }
 
     if (!defined $logdir)
@@ -320,16 +320,19 @@ if ($format eq 'index')
     build_with_log("make -f \"$makefile\"", $logfile, "build documentation");
     $step += 1;
 
-    # Validate
-    print "Validating source\n";
-    $logfile = "$logdir${dirsep}$step-validate${extsep}log";
-    build_with_log("make -f \"$makefile\" validate", $logfile, "validate documentation", 1);
-    $step += 1;
-
-    # Report on the validity errors
-    if (check_lint_log($logfile) && $lint)
+    if ($lint)
     {
-        $rc  = 1;
+        # Validate
+        print "Validating source\n";
+        $logfile = "$logdir${dirsep}$step-validate${extsep}log";
+        build_with_log("make -f \"$makefile\" validate", $logfile, "validate documentation", 1);
+        $step += 1;
+
+        # Report on the validity errors
+        if (check_lint_log($logfile) && $lint)
+        {
+            $rc  = 1;
+        }
     }
 }
 else
@@ -960,7 +963,7 @@ sub help_indexed
 {
     # FIXME: This could still be improved to give better examples.
     print <<EOM;
-The 'index.xml' file has the following format:
+The 'prmindex.xml' file has the following format:
 
 ----
 <?xml version="1.0"?>
@@ -1052,6 +1055,10 @@ the output, even if they are not referenced.
 To convert all the files, use a command like:
 
     $tool -f index -L logs prmindex.xml
+
+To convert all the files and validate them, use a command like:
+
+    $tool --lint -f index -L logs prmindex.xml
 EOM
 }
 
