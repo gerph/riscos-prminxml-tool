@@ -4,7 +4,7 @@
      Based on style sheet originally created by Justin Fletcher
      for his documentation project.
 
-     For more details on this style sheet, contact developer@riscos.com.
+     For more details on this style sheet, contact gerph@gerph.org.
   -->
 
 <xsl:stylesheet version="1.0"

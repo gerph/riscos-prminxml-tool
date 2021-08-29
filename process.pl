@@ -301,7 +301,9 @@ if ($format eq 'index')
     my $makefile = "$tempbase-Makefile";
     # FIXME: Should we use the makefile-ro for RISC OS? Does that work any more?
     my $xslt = "$catalog_base/$catalog_version/prmindex-makefile.xsl";
-    my $cmd = "$tool -stringparam index-xml \"$indexxml\" $xslt \"$indexxml\" > \"$makefile\"";
+    my $cmd = "$tool";
+    $cmd .= " -stringparam index-xml \"$indexxml\"";
+    $cmd .= " $xslt \"$indexxml\" > \"$makefile\"";
     runcommand($cmd) && die "Unable to generate makefile with: $cmd\n";
 
     # Clean
@@ -1017,6 +1019,14 @@ The 'options' element describes some settings for the index build:
                     section details will be generated. This allows
                     you to see the indexed elements inline with the
                     contents. It's not especially useful in reality.
+    catalog-version: The version number of the catalog to use.
+                    Defaults to '102'.
+    page-format:    The format of the HTML content, which can be
+                    either 'html' or 'html5'.
+    page-css-base:  The base CSS stylesheet to use for the HTML
+                    content. Defaults to 'standard'.
+    page-css-variant: A list of variants to apply to the HTML
+                    content. Defaults to 'none'.
 
 The 'make-index' elements describe which parts of the indexes will
 be included in the output.
