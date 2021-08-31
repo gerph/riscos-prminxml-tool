@@ -984,6 +984,264 @@ pre {
 ]]></css>
 
 
+<!-- A style like PRMs for RISC OS 2, which is intended to be layered AFTER the prm style -->
+<css variant='prm-ro2'><![CDATA[
+/* Specify the text size */
+:root {
+  /* The font seems to be smaller for the RO 2 PRMs */
+  font-size: 9pt;
+}
+/* Grey divider lines */
+header h1 {
+  border-top: none;
+  border-bottom: none;
+  padding-bottom: 4em;
+}
+
+nav {
+  border-bottom: 0.375rem solid lightgray;
+  display: none; /* FIXME: Hide the contents for now */
+}
+nav.indexed-bar-bottom {
+  border-top: 0.375rem solid lightgray;
+}
+section.section {
+  border-bottom: 0.375rem solid lightgray;
+}
+
+footer {
+  border-bottom: 0.375rem solid lightgray;
+}
+
+.service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
+  border-top: none;
+}
+footer {
+  border-bottom: none;
+}
+
+/* Indent the chapter name like the PRM did */
+header h1 {
+  position: relative;
+}
+header h1 .chapter-number {
+  position: absolute;
+  width: 5rem;
+}
+header h1 .chapter-name {
+  padding-left: 0em;
+  display: inline-block;
+}
+
+article section.section, footer section.meta {
+    position: relative;
+    margin-left: 13rem;
+    padding-left: 1em;
+    border-left: 1px solid black;
+    margin-bottom: none;
+}
+section.section {
+    border-bottom: none;
+}
+section.section p:first-of-type {
+    margin-top: 0em;
+}
+section.section pre:first-of-type {
+    margin-top: 0em;
+}
+
+/* Heading sizes are much bigger, and not always bold */
+h1 {
+  font-size: 2.5rem;
+  font-weight: normal;
+}
+h2 {
+  font-size: 1rem;
+  font-weight: bold;
+}
+h3 {
+  font-size: 1rem;
+  font-weight: normal;
+}
+h4 {
+  font-size: 1rem;
+  font-weight: normal;
+}
+h5 {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+img {
+   max-width: 100%;
+}
+
+th {
+  font-weight: bold;
+}
+
+/* Paragraphs seem to be more dense than the later manuals */
+p {
+    margin-bottom: 0.75em;
+}
+
+section.section h2, section.meta h2 {
+    margin-top: 0em;
+    position: absolute;
+    margin-left: -14rem;
+    width: 12rem;
+}
+
+section.section h2 + section:before {
+    display: block;
+    content: "\a0";
+    padding-bottom: 0.25em;
+}
+
+section.subsection h3 {
+    margin-top: 0em;
+    position: absolute;
+    margin-left: -14rem;
+    width: 12rem;
+}
+
+section.section h3 + section:before {
+    display: block;
+    content: "\a0";
+    padding-bottom: 0.25em;
+}
+
+section.subsubsection h4 {
+    margin-top: 0em;
+    position: absolute;
+    margin-left: -12rem;
+    width: 10rem;
+}
+
+div.definition-header {
+    margin-top: 0em;
+}
+div.definition-description {
+    padding-bottom: 0.5em;
+}
+
+section.section h2 + .service-definition:before,
+section.section h2 + .swi-definition:before,
+section.section h2 + .vector-definition:before,
+section.section h2 + .upcall-definition:before,
+section.section h2 + .command-definition:before,
+section.section h2 + .vdu-definition:before,
+section.section h2 + .error-definition:before,
+section.section h2 + .sysvar-definition:before,
+section.section h2 + .message-definition:before,
+section.section h2 + .tboxmessage-definition:before,
+section.section h2 + .tboxmethod-definition:before,
+section.section h2 + .entry-definition:before {
+    content: " ";
+}
+
+section.definition {
+    padding-top: 0em;
+}
+section.definition:before {
+    margin-top: 0em;
+    position: absolute;
+    font-size: 1rem;
+    font-weight: normal;
+    margin-left: -14rem;
+    width: 12rem;
+}
+
+
+section.meta > * {
+    margin-left: 0em;
+}
+div.meta {
+    padding-top: 2rem;
+    margin-left: -11rem;
+}
+tr.maintainer > th {
+    width: 9em;
+}
+div.meta table > tbody > tr > th + td {
+    padding-left: 1.5rem;
+}
+
+strong {
+    font-style: italic;
+    font-weight: normal;
+}
+
+
+/* I think the RO 2 RPMs were more square */
+@page {
+    size: 20cm 20cm portrait;
+}
+
+/* We need to move the headings to the bottom of the page */
+@page:left {
+    margin-left: 2cm;
+
+    @top-left {
+        border: none;
+        content: "";
+    }
+
+    @bottom-right {
+        content: string(chapter-name) ":\a0" string(section-name);
+        font-style: normal;
+        font-family: sans-serif;
+        vertical-align: top;
+        padding-top: 0.25rem;
+        margin-top: 1em;
+    }
+
+    @bottom-left {
+        content: counter(page);
+        font-family: sans-serif;
+        vertical-align: top;
+        padding-top: 0.25rem;
+        /* border-top: 0.375rem solid #dddddd; */
+        margin-top: 1em;
+    }
+}
+
+@page:right {
+    margin-right: 2cm;
+
+    @top-right {
+        border: none;
+        content: "";
+    }
+
+    @bottom-left {
+        content: string(chapter-name) ":\a0" string(section-name);
+        font-style: normal;
+        font-family: sans-serif;
+        vertical-align: top;
+        padding-top: 0.25rem;
+        margin-top: 1em;
+    }
+
+    @bottom-right {
+        content: counter(page);
+        font-family: sans-serif;
+        vertical-align: top;
+        padding-top: 0.25rem;
+        /* border-top: 0.375rem solid #dddddd; */
+        margin-top: 1em;
+    }
+
+    @right-top {
+        content: "";
+        background-color: transparent;
+    }
+}
+
+
+]]></css>
+
+
 <!-- Numbering beside each section.
      I'm not at all sure I like this; it seems unreliable in Firefox when multiple counters are used.
      Because we skip levels between subsection to category quite commonly, we'd end up with there
@@ -1127,10 +1385,26 @@ section.definition::before {
     @bottom-left {
         font-family: "Raleway", monospace;
     }
+
+    @top-right {
+        font-family: "Raleway", monospace;
+    }
+
+    @bottom-right {
+        font-family: "Raleway", monospace;
+    }
 }
 
 @page:right {
     margin-right: 2cm;
+
+    @top-left {
+        font-family: "Raleway", monospace;
+    }
+
+    @bottom-left {
+        font-family: "Raleway", monospace;
+    }
 
     @top-right {
         font-family: "Raleway", monospace;
