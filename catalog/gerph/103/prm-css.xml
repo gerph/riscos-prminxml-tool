@@ -550,7 +550,7 @@ table.indexed-table th {
         content: "Indexes";
         font-family: sans-serif;
         font-size: 1.8rem;
-        padding-bottom: 0.83em;
+        padding-bottom: 0.83rem;
     }
     nav.indexed-bar-bottom ul li {
         display: block;
@@ -564,11 +564,10 @@ table.indexed-table th {
         display: block;
     }
     nav.indexed-bar-bottom li.index-bar-index span.index-bar-index-number {
-        padding-left: 1em;
         font-size: inherit;
     }
     nav.indexed-bar-bottom li.index-bar-index span.index-bar-index-number a:before {
-        content: "...\0000a0by\00a0";
+        content: "\a0\a0\a0\a0\a0...\0000a0by\a0";
     }
 
     /* Remove the bottom nav bar entirely on non-contents pages */
@@ -576,6 +575,34 @@ table.indexed-table th {
         display: none;
     }
     body.indexed-index footer {
+        display: none;
+    }
+
+    /* The index pages shouldn't need to say that they're a link or a description, I think */
+    .indexed-table-headings th {
+        display: none;
+    }
+
+    .indexed-page-section {
+        clear: right;
+    }
+    .indexed-index a[href] {
+        display: inline-block;
+        width: 100%;
+    }
+    .indexed-contents a[href]::after,
+    .indexed-index a[href]::after {
+        font-style: italic;
+    }
+    .indexed-index a[href]::after {
+        clear: right;
+        float: right;
+        margin-right: 0.5rem;
+        font-style: italic;
+    }
+
+    /* Hide the section as it's not as useful in the printed version */
+    .indexed-table-section {
         display: none;
     }
 }
@@ -998,16 +1025,18 @@ pre {
   /* The font seems to be smaller for the RO 2 PRMs */
   font-size: 9pt;
 }
-/* Grey divider lines */
+/* No divider lines */
 header h1 {
   border-top: none;
   border-bottom: none;
   padding-bottom: 4em;
 }
+.indexed-index header h1 {
+  padding-bottom: 1em;
+}
 
-nav {
-  border-bottom: 0.375rem solid lightgray;
-  display: none; /* FIXME: Hide the contents for now */
+nav.indexed-bar-top {
+  display: none;
 }
 nav.indexed-bar-bottom {
   border-top: 0.375rem solid lightgray;
@@ -1173,7 +1202,8 @@ div.meta {
     padding-top: 2rem;
     margin-left: -11rem;
 }
-tr.maintainer > th {
+tr.maintainer > th,
+tr.history > th {
     width: 9em;
 }
 div.meta table > tbody > tr > th + td {
@@ -1200,12 +1230,16 @@ section.indexed-document-section {
 
 /* PRM 2 had page numbers lined after the row (only on printed media) */
 @media print {
-    .indexed a[href] {
+    .indexed-contents a[href] {
         display: inline-block;
         width: 20em;
     }
-    a[href]::after {
+
+    .indexed-contents a[href]::after {
+        clear: right;
         float: right;
+        margin-right: 0.5rem;
+        font-style: italic;
     }
 }
 

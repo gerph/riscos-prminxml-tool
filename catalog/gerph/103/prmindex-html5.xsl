@@ -136,9 +136,10 @@
 
 <section class='indexed-table'>
 <table class='indexed-table'>
-<tr><th>Link</th>
-    <th>Description</th>
-    <th>Section</th></tr>
+<tr class='indexed-table-headings'>
+    <th class='indexed-table-heading-link'>Link</th>
+    <th class='indexed-table-heading-description'>Description</th>
+    <th class='indexed-table-heading-section'>Section</th></tr>
   <xsl:apply-templates select="$document///ref">
 <!--    <xsl:sort select="@section" order="ascending" data-type="text" case-order="upper-first" /> -->
    <xsl:sort select="@name" order="ascending" data-type="text" case-order="upper-first" />
@@ -196,9 +197,10 @@
 
 <section class='indexed-table'>
 <table class='indexed-table'>
-<tr><th align="left">Link</th>
-    <th align="left">Description</th>
-    <th align="left">Section</th></tr>
+<tr class='indexed-table-headings'>
+    <th class='indexed-table-heading-link'>Link</th>
+    <th class='indexed-table-heading-description'>Description</th>
+    <th class='indexed-table-heading-section'>Section</th></tr>
   <xsl:choose>
    <xsl:when test="$type = 'tboxmethod'">
     <xsl:apply-templates select="$document///ref">
@@ -292,13 +294,13 @@
 
 <xsl:template match="ref">
 <tr>
-<td><a>
+<td class='indexed-table-link'><a>
 <xsl:attribute name="href"><xsl:value-of select="@href" /></xsl:attribute>
 <xsl:value-of select="@name" />
 <span class='indexed-link-trailer'/>
 </a></td>
-<td><xsl:value-of select="@description" /></td>
-<td>
+<td class='indexed-table-description'><xsl:value-of select="@description" /></td>
+<td class='indexed-table-section'>
 <xsl:value-of select="@section" />
 </td>
 </tr>
