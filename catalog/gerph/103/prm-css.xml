@@ -580,6 +580,7 @@ table.indexed-table th {
     }
 }
 
+
 /* Paged media page breaks */
 .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
     break-before: page;
@@ -1050,7 +1051,7 @@ body {
 @media print {
     /* Special changes for the generated index text */
     nav.indexed-bar-bottom ul {
-      font-family: "ITC Novarese Std", "ITC Novarese", monospace;
+      font-family: "ITC Novarese Std", "ITC Novarese", monospace !important;
     }
 }
 ]]></css>
@@ -1061,6 +1062,9 @@ body {
        - it has an overly fancy & which we need to disable the stylistic set.
      See: https://fonts.google.com/specimen/Fraunces
   -->
+    <css variant='webfont-fraunces'><![CDATA[
+@import url('https://fonts.googleapis.com/css2?family=Fraunces&display=block');
+]]></css>
     <css variant='body-fraunces'><![CDATA[
 body {
   font-family: "Fraunces 28pt", "Fraunces", monospace;
@@ -1074,6 +1078,13 @@ th {
 table.history h5 {
   font-weight: normal;
 }
+
+@media print {
+    /* Special changes for the generated index text */
+    nav.indexed-bar-bottom ul {
+      font-family: "Fraunces 28pt", "Fraunces", monospace !important;
+    }
+}
 ]]></css>
 
 <!-- Raleway is a freely available font which provides a good style gainst the serif body font.
@@ -1081,6 +1092,9 @@ table.history h5 {
        - has variants of the numbers which make them smaller, and this makes hex digits look odd.
      See: https://fonts.google.com/specimen/Raleway
   -->
+    <css variant='webfont-raleway'><![CDATA[
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=block');
+]]></css>
     <css variant='heading-raleway'><![CDATA[
 h1, h2, h3, h4, h5 {
   font-family: "Raleway", monospace;
