@@ -295,6 +295,7 @@
 <td><a>
 <xsl:attribute name="href"><xsl:value-of select="@href" /></xsl:attribute>
 <xsl:value-of select="@name" />
+<span class='indexed-link-trailer'/>
 </a></td>
 <td><xsl:value-of select="@description" /></td>
 <td>
@@ -756,16 +757,20 @@
                                 <xml:text>.html</xml:text>
                                 </xsl:attribute>
      <xsl:apply-templates />
+     <span class='indexed-link-trailer'/>
     </a>
    <xsl:if test="$include-source = 'yes'">
+    <span class='indexed-xml-link'>
     <xsl:text> (</xsl:text>
     <a>
      <xsl:attribute name="href"><xsl:value-of select="$href"/>
                                 <xml:text>.xml</xml:text>
                                 </xsl:attribute>
      <xsl:text>XML source</xsl:text>
+     <span class='indexed-link-trailer'/>
     </a>
     <xsl:text>)</xsl:text>
+</span>
    </xsl:if>
   </div>
 
@@ -947,6 +952,7 @@
       </xsl:if>
      </xsl:if>
      
+     <span class='indexed-link-trailer'/>
     </a>
    </div>
   </xsl:for-each>
@@ -980,6 +986,7 @@
       </xsl:attribute>
       
       <xsl:value-of select="@title" />
+      <span class='indexed-link-trailer'/>
      </a>
      <xsl:if test="$depth &lt; $include-sections-depth">
          <xsl:call-template name="index-sections" mode="index">

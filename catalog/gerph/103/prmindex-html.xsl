@@ -35,8 +35,6 @@
 <xsl:param name="include-source" select="//options/@include-source" />
 <xsl:param name="hide-empty" select="//options/@hide-empty" />
 <xsl:param name="make-contents" select="//options/@make-contents" />
-<xsl:param name="include-sections" select="//options/@include-sections" />
-<xsl:param name="include-sections-depth" select="//options/@include-sections-depth" />
 
 <xsl:param name="base-dir" select="'.'"/>
 <xsl:param name="output-dir" select="//dirs/@output" />
@@ -51,10 +49,6 @@
 <html lang='en'>
  <xsl:apply-templates />
 </html>
-</xsl:template>
-
-<!-- hide the footer declaration when producing the index itself -->
-<xsl:template match="footer">
 </xsl:template>
 
 <xsl:template match="make-index">
@@ -485,7 +479,7 @@
 </xsl:template>
 
 <xsl:template match="index">
-<xsl:param name="index-entity"/>
+<xsl:param name="index-entity"></xsl:param>
 <head>
   <meta charset="utf-8"/>
   <title>
@@ -533,7 +527,6 @@
 </body>
 </xsl:template>
 
-<!-- ********** Index bar ********** -->
 <xsl:template name="index-bar">
 <xsl:param name="contents-for" select="''" />
 <xsl:param name="index-for" select="''" />
@@ -714,7 +707,7 @@
    </xsl:if>
    
    <xsl:choose>
-    <xsl:when test="$index-entity = '' and $include-sections = 'no'">
+    <xsl:when test="$index-entity = ''">
      <!-- nothing -->
     </xsl:when>
     <xsl:otherwise>
@@ -821,11 +814,10 @@
       </xsl:when>
       
       <!-- sections -->
-      <xsl:when test="$index-entity = '' and $include-sections = 'yes'">
+      <xsl:when test="$index-entity = 'section'">
        <xsl:call-template name="index-sections" mode="index">
         <xsl:with-param name="document" select="document(concat($base-dir, '/', $input-dir, '/', $href,'.xml'))//chapter/section" />
         <xsl:with-param name="href" select="$href" />
-        <xsl:with-param name="depth" select="1" />
        </xsl:call-template>
       </xsl:when>
      </xsl:choose>
@@ -846,8 +838,6 @@
 </xsl:choose>
 </xsl:template>
 
-
-<!-- ********** Indexed document definitions ********** -->
 <xsl:template name="content-definition">
 <xsl:param name="document" />
 <xsl:param name="href" />
@@ -899,11 +889,8 @@
 </xsl:if>
 </xsl:template>
 
-
-<!-- ********** Indexed document sections ********** -->
 <xsl:template name="index-sections" mode="index">
 <xsl:param name="document" />
-<xsl:param name="depth"/>
 <xsl:param name="href" />
 <xsl:if test="count($document) > 0">
  <dl>
@@ -921,17 +908,14 @@
       
       <xsl:value-of select="@title" />
      </a>
-     <xsl:if test="$depth &lt; $include-sections-depth">
-         <xsl:call-template name="index-sections" mode="index">
-          <xsl:with-param name="document" select="section|subsection|subsubsection|category" />
-          <xsl:with-param name="href" select="$href" />
-          <xsl:with-param name="depth" select="$depth + 1" />
-         </xsl:call-template>
-         <xsl:call-template name="content-definition" mode="index">
-          <xsl:with-param name="document" select="swi-definition|vector-definition|entry-definition|service-definition|upcall-definition|command-definition|sysvar-definition|message-definition|error-definition|vdu-definition|tboxmethod-definition|tboxmessage-definition" />
-          <xsl:with-param name="href" select="$href" />
-         </xsl:call-template>
-     </xsl:if>
+     <xsl:call-template name="index-sections" mode="index">
+      <xsl:with-param name="document" select="section|subsection|subsubsection|category" />
+      <xsl:with-param name="href" select="$href" />
+     </xsl:call-template>
+     <xsl:call-template name="content-definition" mode="index">
+      <xsl:with-param name="document" select="swi-definition|vector-definition|entry-definition|service-definition|upcall-definition|command-definition|sysvar-definition|message-definition|error-definition|vdu-definition|tboxmethod-definition|tboxmessage-definition" />
+      <xsl:with-param name="href" select="$href" />
+     </xsl:call-template>
     </dd>
    </xsl:if>
   </xsl:for-each>

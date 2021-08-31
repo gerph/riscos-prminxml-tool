@@ -614,6 +614,10 @@ section.definition {
     page-break-inside: avoid;
 }
 
+footer {
+    page-break-inside: avoid;
+}
+
 
 .chapter-docgroup { string-set: docgroup-name content() }
 .chapter-name { string-set: chapter-name content() }
@@ -648,6 +652,9 @@ header h1 {
     border-top-width: 0.25rem;
     border-bottom-width: 0.25rem;
     text-align: center;
+}
+header h1 .chapter-name {
+    padding-left: 0em;
 }
 footer {
   border-bottom: 0.25rem solid #008000;
@@ -1033,7 +1040,7 @@ header h1 .chapter-name {
   display: inline-block;
 }
 
-article section.section, footer section.meta {
+article section.section, footer section.meta, section.indexed-root {
     position: relative;
     margin-left: 13rem;
     padding-left: 1em;
@@ -1095,7 +1102,7 @@ section.section h2, section.meta h2 {
 section.section h2 + section:before {
     display: block;
     content: "\a0";
-    padding-bottom: 0.25em;
+    padding-bottom: 0.75em;
 }
 
 section.subsection h3 {
@@ -1108,7 +1115,7 @@ section.subsection h3 {
 section.section h3 + section:before {
     display: block;
     content: "\a0";
-    padding-bottom: 0.25em;
+    padding-bottom: 0.75em;
 }
 
 section.subsubsection h4 {
@@ -1116,6 +1123,12 @@ section.subsubsection h4 {
     position: absolute;
     margin-left: -12rem;
     width: 10rem;
+}
+
+section.section h2 + section.category h5,
+section.subsection h3 + section.category h5,
+section.subsubsection h4 + section.category h5 {
+    margin-top: 0em;
 }
 
 div.definition-header {
@@ -1167,6 +1180,37 @@ div.meta table > tbody > tr > th + td {
     padding-left: 1.5rem;
 }
 
+
+/* The contents page is a similar to the main sections */
+section.indexed-root > section.indexed-section h2 {
+    margin-top: 0em;
+    position: absolute;
+    margin-left: -14rem;
+    width: 12rem;
+}
+section.indexed-section {
+    padding-left: 0em;
+}
+div.indexed-page {
+    padding-left: 0em;
+}
+section.indexed-document-section {
+    padding-left: 3rem;
+}
+
+/* PRM 2 had page numbers lined after the row (only on printed media) */
+@media print {
+    .indexed a[href] {
+        display: inline-block;
+        width: 20em;
+    }
+    a[href]::after {
+        float: right;
+    }
+}
+
+
+/* Strong emphasis is in italic, not bold, it seems */
 strong {
     font-style: italic;
     font-weight: normal;
@@ -1306,6 +1350,9 @@ body {
   font-variant: prince-opentype(ss01(1));
 }
 
+table.history h5 {
+  font-family: "ITC Novarese Std", "ITC Novarese", monospace;
+}
 @media print {
     /* Special changes for the generated index text */
     nav.indexed-bar-bottom ul {
@@ -1335,6 +1382,7 @@ th {
 }
 table.history h5 {
   font-weight: normal;
+  font-family: "Fraunces 28pt", "Fraunces", monospace;
 }
 
 @media print {
