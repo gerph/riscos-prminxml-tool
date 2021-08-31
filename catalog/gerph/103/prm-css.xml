@@ -445,6 +445,16 @@ section.indexed-section {
     margin-bottom: 2rem;
     padding-left: 3rem;
 }
+section.indexed-document-section {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    padding-left: 3rem;
+}
+section.indexed-document-section-1 {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    padding-left: 6rem;
+}
 div.indexed-page {
     padding-left: 3rem;
     line-height: 1.5em;
