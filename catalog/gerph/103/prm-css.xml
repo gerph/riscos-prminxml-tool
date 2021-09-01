@@ -1575,8 +1575,11 @@ ul > li::marker {
 ul > li {
     padding-left: 0.375em;
 }
-ul {
+article ul {
     padding-left: 0.25em;
+}
+nav ul ul {
+    padding-left: 0.75em;
 }
 ]]></css>
 
