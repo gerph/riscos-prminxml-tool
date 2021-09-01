@@ -765,6 +765,15 @@ section.definition::before {
 section.definition > * {
   margin-left: 2.5rem;
 }
+div.definition-related section.definition:before {
+  margin-left: -2.5rem;
+}
+div.definition-related section.definition {
+  margin-left: 2.5rem;
+}
+div.definition-related section.definition > * {
+  margin-left: 0;
+}
 
 /* Background heading line for the definitions */
 span.definition-title {
