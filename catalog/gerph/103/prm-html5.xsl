@@ -2078,8 +2078,6 @@
 </xsl:template>
 
 <!-- Stylistic changes -->
-<!-- These should really be removed ASAP and replaced with more content-based
-     elements, such as warning, important or note -->
 <xsl:template match="strong"><strong><xsl:apply-templates /></strong></xsl:template>
 <xsl:template match="em"><em><xsl:apply-templates /></em></xsl:template>
 <!-- I'm not at all sure I like the concept of having a break element -->
@@ -2115,25 +2113,23 @@
 
 <!-- Image -->
 <xsl:template match="image">
-<xsl:if test="local-name(..) != 'image'">
- <p align="center" />
-</xsl:if>
+<figure>
 <xsl:choose>
- <xsl:when test="@type = 'png' or @type = 'svg'">
-  <img align="center">
-    <xsl:variable name="style">
-     <xsl:if test="@width != ''">
-      <xsl:text>width: </xsl:text><xsl:value-of select="@width" /><xsl:text>; </xsl:text>
-     </xsl:if>
-     <xsl:if test="@height != ''">
-      <xsl:text>height: </xsl:text><xsl:value-of select="@height" /><xsl:text>; </xsl:text>
-     </xsl:if>
-     <xsl:value-of select="string(@href)"/>
-    </xsl:variable>
-   <xsl:attribute name="src"><xsl:value-of select="@src" /></xsl:attribute>
-   <xsl:attribute name="style"><xsl:value-of select="$style" /></xsl:attribute>
-   <xsl:attribute name="alt"><xsl:value-of select="@caption" /></xsl:attribute>
-  </img>
+ <xsl:when test="@type = 'png' or @type = 'gif' or @type = 'svg'">
+    <img>
+      <xsl:variable name="style">
+       <xsl:if test="@width and @width != ''">
+        <xsl:text>width: </xsl:text><xsl:value-of select="@width" /><xsl:text>; </xsl:text>
+       </xsl:if>
+       <xsl:if test="@height and @height != ''">
+        <xsl:text>height: </xsl:text><xsl:value-of select="@height" /><xsl:text>; </xsl:text>
+       </xsl:if>
+       <xsl:value-of select="string(@href)"/>
+      </xsl:variable>
+     <xsl:attribute name="src"><xsl:value-of select="@src" /></xsl:attribute>
+     <xsl:attribute name="style"><xsl:value-of select="$style" /></xsl:attribute>
+     <xsl:attribute name="alt"><xsl:value-of select="@caption" /></xsl:attribute>
+    </img>
   <xsl:apply-templates select="image"/>
  </xsl:when>
 
@@ -2157,9 +2153,9 @@
 
 <xsl:if test="local-name(..) != 'image' and
               @caption != ''">
- <br />
- <em><xsl:value-of select="@caption" /></em>
+    <figcaption><xsl:value-of select="@caption" /></figcaption>
 </xsl:if>
+</figure>
 
 </xsl:template>
 

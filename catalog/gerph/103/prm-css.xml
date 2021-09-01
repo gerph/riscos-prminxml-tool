@@ -337,6 +337,19 @@ th, td {
   vertical-align: top;
 }
 
+figure {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    object-fit: scale-down;
+}
+figure figcaption {
+    text-align: center;
+    font-style: italic;
+}
+img {
+    max-width: 100%;
+}
+
 footer {
   padding-bottom: 1em;
   border-bottom: 2px solid black;
@@ -867,10 +880,6 @@ h5 {
   font-weight: bold;
 }
 
-img {
-   max-width: 100%;
-}
-
 th {
   font-weight: bold;
 }
@@ -1069,14 +1078,14 @@ header h1 .chapter-name {
   display: inline-block;
 }
 
-article section.section, footer section.meta, section.indexed-root {
+article section.section, footer section.meta, section.indexed-root, header nav {
     position: relative;
     margin-left: 13rem;
     padding-left: 1em;
     border-left: 1px solid black;
     margin-bottom: none;
 }
-section.section {
+section.section, header nav {
     border-bottom: none;
 }
 section.section p:first-of-type {
@@ -1106,10 +1115,6 @@ h4 {
 h5 {
   font-size: 1rem;
   font-weight: bold;
-}
-
-img {
-   max-width: 100%;
 }
 
 th {
@@ -1211,6 +1216,24 @@ div.meta table > tbody > tr > th + td {
 }
 
 
+/* Contents on the page */
+header nav > ul {
+    margin-bottom: 0em;
+    padding-bottom: 1em;
+    padding-left: 0em;
+}
+header nav > ul li {
+    list-style-type: none;
+    margin-left: 0em;
+}
+header nav h2 {
+    margin-top: 0em;
+    position: absolute;
+    margin-left: -14rem;
+    width: 12rem;
+}
+
+
 /* The contents page is a similar to the main sections */
 section.indexed-root > section.indexed-section h2 {
     margin-top: 0em;
@@ -1226,6 +1249,13 @@ div.indexed-page {
 }
 section.indexed-document-section {
     padding-left: 3rem;
+}
+
+section.indexed-section h2 + section.indexed-section {
+    padding-top: 1.5em;
+}
+section.indexed-section h2 + section.indexed-section h2 {
+    padding-left: 1em;
 }
 
 /* PRM 2 had page numbers lined after the row (only on printed media) */
