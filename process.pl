@@ -276,16 +276,16 @@ my $rc = 0;
 
 if ($format eq 'index')
 {
-    # Special case for the 'index' format - we take a prmindex.xml file and we build everything
+    # Special case for the 'index' format - we take a index.xml file and we build everything
     # described in it and give it a common structure.
     if (scalar(@inputs) != 1)
     {
-        die "For 'index' format, only a single file, the prmindex.xml file, should be supplied\n";
+        die "For 'index' format, only a single file, the index.xml file, should be supplied\n";
     }
 
     if (defined $outputdir)
     {
-        die "For 'index' format, the output directory should be supplied in the prmindex.xml file\n";
+        die "For 'index' format, the output directory should be supplied in the index.xml file\n";
     }
 
     if (!defined $logdir)
@@ -944,10 +944,10 @@ work with future iterations of the conversion.
 Linting can be used as a check in addition to any of the other formatting
 operations by specifying the --lint option.
 
-The 'index' format is more complex; it can take a 'prmindex.xml' file which
+The 'index' format is more complex; it can take a 'index.xml' file which
 describes many documents to be included in the structured output documentation:
 
-    $tool -f index prmindex.xml
+    $tool -f index index.xml
 
 Use the --help-indexed option for more information on indexed documents.
 
@@ -963,7 +963,7 @@ sub help_indexed
 {
     # FIXME: This could still be improved to give better examples.
     print <<EOM;
-The 'prmindex.xml' file has the following format:
+The 'index.xml' file has the following format:
 
 ----
 <?xml version="1.0"?>
@@ -1054,11 +1054,11 @@ the output, even if they are not referenced.
 
 To convert all the files, use a command like:
 
-    $tool -f index -L logs prmindex.xml
+    $tool -f index -L logs index.xml
 
 To convert all the files and validate them, use a command like:
 
-    $tool --lint -f index -L logs prmindex.xml
+    $tool --lint -f index -L logs index.xml
 EOM
 }
 
