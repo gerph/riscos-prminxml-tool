@@ -646,6 +646,20 @@ section.section .entry-definition:first-of-type {
     break-before: avoid;
 }
 
+/* If we have a heading which is followed by content, we would like to keep that content
+   together with the heading. This appears to be effective in PrinceXML but not in
+   Firefox or Chrome; maybe something subtle I've missed. */
+section.section > h2,
+section.subsection > h3,
+section.subsubsection > h4 {
+    page-break-after: avoid;
+}
+section.section > h2 + *,
+section.subsection > h3 + *,
+section.subsubsection > h4 + * {
+    page-break-before: avoid;
+}
+
 section.meta h2 {
     break-before: page;
 }
