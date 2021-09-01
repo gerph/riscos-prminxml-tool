@@ -230,6 +230,9 @@ section.definition::before {
 }
 .register-name {
 }
+.processor-flag-name {
+  text-align: right;
+}
 .definition-syntax-line {
   font-family: monospace;
 }

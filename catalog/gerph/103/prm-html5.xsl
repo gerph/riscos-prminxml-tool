@@ -1251,12 +1251,12 @@
 <tr>
 <xsl:choose>
  <xsl:when test="@state='content'">
-  <td valign="top" align="right"><xsl:value-of select="@name"/></td>
-  <td valign="top" align="left" colspan="2"><xsl:apply-templates/></td>
+  <td class='processor-flag-name'><xsl:value-of select="@name"/></td>
+  <td class='processor-flag-value' colspan="2"><xsl:apply-templates/></td>
  </xsl:when>
  <xsl:otherwise>
-  <td valign="top" align="right"><xsl:value-of select="@name"/></td>
-  <td valign="top" align="left" colspan="2">
+  <td class='processor-flag-name'><xsl:value-of select="@name"/></td>
+  <td class='processor-flag-state processor-flag-{@state}' colspan="2">
    <xsl:value-of select="@state"/>
    <xsl:text> </xsl:text>
    <xsl:apply-templates/>

@@ -922,10 +922,10 @@ Details section.
 
 
 Element:    processor-flag
-Attributes: flag state
+Attributes: name, state
 Children:   <text>
 
-flag: the processor flag (N, C, V or Z) being described
+name: the processor flag (N, C, V or Z) being described
 state: (optional) describes the state of the register, for exit contexts
        'preserved', 'corrupted', 'undefined' or 'content'. If unset or
        'content' is used, the content of this element is used.
