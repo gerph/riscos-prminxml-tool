@@ -1037,7 +1037,10 @@
 <xsl:template name='definition-entry'>
   <section class='definition definition-entry'>
   <xsl:choose>
-   <xsl:when test="count(entry/*)=0">None</xsl:when>
+   <xsl:when test="count(entry/*)=0">
+    <span class='definition-entry-none'>None</span>
+   </xsl:when>
+
    <xsl:otherwise>
     <table>
     <xsl:apply-templates select="entry"/>
@@ -1050,7 +1053,9 @@
 <xsl:template name='definition-exit'>
   <section class='definition definition-exit'>
   <xsl:choose>
-   <xsl:when test="count(entry/*)=0">None</xsl:when>
+   <xsl:when test="count(exit/*)=0">
+    <span class='definition-exit-none'>None</span>
+   </xsl:when>
    <xsl:otherwise>
     <table>
     <xsl:apply-templates select="exit"/>
