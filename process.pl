@@ -977,8 +977,19 @@ The 'index.xml' file has the following format:
     hide-empty="no"
     include-source="no"
     make-contents="no"
+    include-sections="no"
+    include-sections-depth="1"
+    page-format="html"
+    catalog-version="103"
+    page-css-base="standard"
+    page-css-variant="none"
+    page-css-file="none"
+    index-css-base="standard"
+    index-css-variant="none"
+    index-css-file="none"
     />
 
+<!-- Indexes that we want to generate -->
 <make-index type="swi" />
 <make-index type="command" />
 <make-index type="message" />
@@ -991,15 +1002,20 @@ The 'index.xml' file has the following format:
 <make-index type="vdu" />
 <make-index type="tboxmessage" />
 <make-index type="tboxmethod" />
-<make-index type="section" />
+
+
+<!-- Generate a text file listing all the content files -->
+<make-filelist/>
 
 <footer>
 Your Disclaimer Here.
 </footer>
 
+<!-- List of the sections and the directories that they contain, which may be nested -->
 <section title="Overview" dir="overview">
- <page href="about">About this documentation</page>
- <page href="more">More documentation</page>
+    <!-- Pages to generate and list - omit 'href' for placeholders (which are hidden with hide-empty) -->
+    <page href="about">About this documentation</page>
+    <page href="more">More documentation</page>
 </section>
 </index>
 ----
@@ -1021,15 +1037,31 @@ The 'options' element describes some settings for the index build:
     make-contents:  'yes' or 'no': whether the contents with inline
                     section details will be generated. This allows
                     you to see the indexed elements inline with the
-                    contents. It's not especially useful in reality.
+                    contents. It's not especially useful.
+    include-sections: 'yes' or 'no': Whether the main contents page
+                    will include the sections from the pages being
+                    indexed.
+    include-sections-depth: Number of nested section elements that
+                    will be included on the contents page when the
+                    sections are included. For example '1' would
+                    list only the 'section' elements, whilst '2'
+                    would list 'section' and 'subsection' elements.
     catalog-version: The version number of the catalog to use.
-                    Defaults to '102'.
+                    Defaults to '103'.
     page-format:    The format of the HTML content, which can be
                     either 'html' or 'html5'.
     page-css-base:  The base CSS stylesheet to use for the HTML
                     content. Defaults to 'standard'.
     page-css-variant: A list of variants to apply to the HTML
                     content. Defaults to 'none'.
+    page-css-file:  A CSS file to apply to the HTML content.
+                    Defaults to 'none'.
+    index-css-base:  The base CSS stylesheet to use for the index
+                    and contents pages. Defaults to 'standard'.
+    index-css-variant: A list of variants to apply to the index
+                    and contents pages. Defaults to 'none'.
+    index-css-file:  A CSS file to apply to index and contents
+                    pages. Defaults to 'none'.
 
 The 'make-index' elements describe which parts of the indexes will
 be included in the output.
