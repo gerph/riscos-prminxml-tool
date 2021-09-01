@@ -340,6 +340,10 @@ th, td {
   vertical-align: top;
 }
 
+td > p:first-of-type {
+    margin-top: 0em;
+}
+
 figure {
     margin-left: 2rem;
     margin-right: 2rem;
