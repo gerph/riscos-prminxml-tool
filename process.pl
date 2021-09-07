@@ -1064,7 +1064,7 @@ The 'options' element describes some settings for the index build:
     index-css-base:  The base CSS stylesheet to use for the index
                     and contents pages. Defaults to 'standard'.
     index-css-variant: A list of variants to apply to the index
-                    and contents pages. Defaults to 'none'.
+                    and contents pages. Defaults to 'no-edge-index'.
     index-css-file:  A CSS file to apply to index and contents
                     pages. Defaults to 'none'.
 

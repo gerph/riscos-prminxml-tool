@@ -46,7 +46,7 @@
 
 <!-- These are handled the same as in the prm-html5.xsl file -->
 <xsl:param name="css-base">standard</xsl:param>
-<xsl:param name="css-variant">no-thumb-bar</xsl:param>
+<xsl:param name="css-variant">no-edge-index</xsl:param>
 <xsl:param name="css-file">none</xsl:param>
 
 <xsl:variable name="title-to-id-src">ABCDEFGHIJKLMNOPQRSTUVWXYZ ,$:()-*?</xsl:variable>
