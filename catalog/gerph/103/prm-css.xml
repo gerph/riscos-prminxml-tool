@@ -344,6 +344,10 @@ td > p:first-of-type {
     margin-top: 0em;
 }
 
+article li > p:first-of-type {
+    margin-top: 0em;
+}
+
 figure {
     margin-left: 2rem;
     margin-right: 2rem;
@@ -1248,13 +1252,13 @@ div.meta table > tbody > tr > th + td {
 
 /* Contents on the page */
 header nav > ul {
-    margin-bottom: 0em;
-    padding-bottom: 1em;
-    padding-left: 0em;
+    margin-bottom: 0rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
 }
 header nav > ul li {
     list-style-type: none;
-    margin-left: 0em;
+    margin-left: 0rem;
 }
 header nav h2 {
     margin-top: 0em;
@@ -1576,14 +1580,12 @@ section.definition::before {
 ul > li::marker {
     content: '\25CF';
 }
-ul > li {
-    padding-left: 0.375em;
+header nav li,
+footer section.meta li {
+    padding-left: 0.5rem;
 }
-article ul {
-    padding-left: 0.25em;
-}
-nav ul ul {
-    padding-left: 0.75em;
+article ul > li {
+    padding-left: 1.5rem;
 }
 ]]></css>
 
