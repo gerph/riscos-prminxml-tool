@@ -18,6 +18,7 @@
 <!-- <!ENTITY throwback "&#45;&#45;throwback"> -->
 <!ENTITY throwback "">
 <!ENTITY outputdir "${OUTPUT_DIR}">
+<!ENTITY indexdir "${INDEX_DIR}">
 <!ENTITY helpdir "${HELP_DIR}">
 <!ENTITY headerdir "${HEADER_DIR}">
 <!ENTITY inputdir "${INPUT_DIR}">
@@ -42,6 +43,9 @@ INDEX_XML = </xsl:text>
 <xsl:text>
 OUTPUT_DIR = </xsl:text>
 <xsl:value-of select="//dirs/@output" />
+<xsl:text>
+INDEX_DIR = </xsl:text>
+<xsl:value-of select="//dirs/@index" />
 <xsl:text>
 HELP_DIR = </xsl:text>
 <xsl:value-of select="//dirs/@help" />
@@ -115,6 +119,9 @@ INDEX_CSS_FILE = </xsl:text>
 <xsl:text>
 
 all: images indices \&#10;</xsl:text>
+<xsl:if test='//make-indexdata'>
+    <xsl:text>&indent;&indexdir;&dirsep;index-data.xml \&#10;</xsl:text>
+</xsl:if>
 <xsl:apply-templates select="//page" mode="targets"/>
 <xsl:apply-templates select="//help" mode="targets"/>
 <xsl:apply-templates select="//page" mode="header-targets"/>
@@ -214,6 +221,9 @@ clean-images:
 
 indices: ${INDEX_XML}
 &indent;xsltproc --stringparam css-base '${INDEX_CSS_BASE}' --stringparam css-variant '${INDEX_CSS_VARIANT}' --stringparam css-file '${INDEX_CSS_FILE}' -stringparam base-dir "$$(pwd)" -o "${OUTPUT_DIR}/index.html" http://gerph.org/dtd/${CATALOG_VERSION}/prmindex-${PAGE_FORMAT}.xsl "${INDEX_XML}"
+
+&indexdir;&dirsep;index-data.xml: ${INDEX_XML}
+&indent;xsltproc -stringparam base-dir "$$(pwd)" -o "${INDEX_DIR}/index-data.xml" http://gerph.org/dtd/${CATALOG_VERSION}/prmindex-data.xsl "${INDEX_XML}"
 
 </xsl:text>
 

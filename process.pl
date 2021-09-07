@@ -305,6 +305,8 @@ if ($format eq 'index')
     $cmd .= " -stringparam index-xml \"$indexxml\"";
     $cmd .= " $xslt \"$indexxml\" > \"$makefile\"";
     runcommand($cmd) && die "Unable to generate makefile with: $cmd\n";
+    #print("Made makefile: $makefile\n");
+    #<STDIN>;
 
     # Clean
     print "Cleaning target\n";
@@ -969,6 +971,7 @@ The 'index.xml' file has the following format:
 <?xml version="1.0"?>
 <index>
 <dirs output="output/html"
+      index="output/index"
       help="output/help"
       header="output/header"
       input="src"
@@ -1003,6 +1006,8 @@ The 'index.xml' file has the following format:
 <make-index type="tboxmessage" />
 <make-index type="tboxmethod" />
 
+<!-- Generate an XML file containing all the referencable content -->
+<make-indexdata/>
 
 <!-- Generate a text file listing all the content files -->
 <make-filelist/>
@@ -1065,6 +1070,15 @@ The 'options' element describes some settings for the index build:
 
 The 'make-index' elements describe which parts of the indexes will
 be included in the output.
+
+The 'make-filelist' element indicates that a list of the generated
+HTML files is required. This will be placed in the HTML output
+directory with the name 'filelist.txt'.
+
+The 'make-indexdata' element indicates that an XML file containing
+the details of all the sections and definitions which are referencable
+within the generated documentation. This will be placed in the
+index directory with the name 'index-data.xml'.
 
 The 'footer' element can contain text to place at the bottom of the
 index pages (individual pages may have their own explicit disclaimer,
