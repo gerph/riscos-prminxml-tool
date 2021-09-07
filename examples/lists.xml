@@ -21,7 +21,7 @@
 
 <section title="Ordered list">
 <p>Regular text before.</p>
-<list>
+<list type='ordered'>
     <item>Item 1</item>
     <item>Item 2</item>
     <item><p>Item 3 in a paragraph</p></item>
