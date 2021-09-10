@@ -23,18 +23,18 @@
      'name' is used when describing what the definition is.
      'Name' is used when describing what the definition is (but capitalised)
   -->
-<localdb:definition-titles type="swi"          prefix-name=""         prefix-number="SWI "     number-base="&amp;" name="SWI"              Name="SWI"                />
-<localdb:definition-titles type="vdu"          prefix-name="VDU "     prefix-number=""         number-base=""      name="VDU code"         Name="VDU code"           separator=","/>
-<localdb:definition-titles type="vector"       prefix-name=""         prefix-number="Vector "  number-base=""      name="vector"           Name="Vector"             />
-<localdb:definition-titles type="command"      prefix-name="*"        prefix-number=""         number-base=""      name="* command"        Name="* command"          />
-<localdb:definition-titles type="entry"        prefix-name=""         prefix-number=""         number-base=""      name="entry point "     Name="Entry point "       />
-<localdb:definition-titles type="sysvar"       prefix-name=""         prefix-number=""         number-base=""      name="system variable " Name="System variable "   />
-<localdb:definition-titles type="service"      prefix-name="Service_" prefix-number="Service Call " number-base="&amp;" name="service call"     Name="Service call"       />
-<localdb:definition-titles type="upcall"       prefix-name="UpCall_"  prefix-number="UpCall "  number-base="&amp;" name="upcall"           Name="Upcall"             />
-<localdb:definition-titles type="error"        prefix-name="Error_"   prefix-number="Error "   number-base="&amp;" name="error message"    Name="Error message"      />
-<localdb:definition-titles type="message"      prefix-name="Message_" prefix-number=""         number-base="&amp;" name="message"          Name="Message"            />
-<localdb:definition-titles type="tboxmessage"  prefix-name=""         prefix-number=""         number-base="&amp;" name="Toolbox message"  Name="Toolbox message"    />
-<localdb:definition-titles type="tboxmethod"   prefix-name=""         prefix-number="Method "  number-base="&amp;" name="Toolbox method"   Name="Toolbox method"     />
+<localdb:definition-titles type="swi"          prefix-definition=""         prefix-name="SWI "     prefix-number="SWI "     number-base="&amp;" name="SWI"              Name="SWI"                />
+<localdb:definition-titles type="vdu"          prefix-definition="VDU "     prefix-name="VDU "     prefix-number=""         number-base=""      name="VDU code"         Name="VDU code"           separator=","/>
+<localdb:definition-titles type="vector"       prefix-definition="Vector "  prefix-name=""         prefix-number="Vector "  number-base=""      name="vector"           Name="Vector"             />
+<localdb:definition-titles type="command"      prefix-definition="*"        prefix-name="*"        prefix-number=""         number-base=""      name="* command"        Name="* command"          />
+<localdb:definition-titles type="entry"        prefix-definition=""         prefix-name=""         prefix-number=""         number-base=""      name="entry point "     Name="Entry point "       />
+<localdb:definition-titles type="sysvar"       prefix-definition=""         prefix-name=""         prefix-number=""         number-base=""      name="system variable " Name="System variable "   />
+<localdb:definition-titles type="service"      prefix-definition="Service_" prefix-name="Service_" prefix-number="Service Call " number-base="&amp;" name="service call"     Name="Service call"       />
+<localdb:definition-titles type="upcall"       prefix-definition="UpCall_"  prefix-name="UpCall_"  prefix-number="UpCall "  number-base="&amp;" name="upcall"           Name="Upcall"             />
+<localdb:definition-titles type="error"        prefix-definition="Error_"   prefix-name="Error_"   prefix-number="Error "   number-base="&amp;" name="error message"    Name="Error message"      />
+<localdb:definition-titles type="message"      prefix-definition="Message_" prefix-name="Message_" prefix-number=""         number-base="&amp;" name="message"          Name="Message"            />
+<localdb:definition-titles type="tboxmessage"  prefix-definition=""         prefix-name=""         prefix-number="Event "   number-base="&amp;" name="Toolbox message"  Name="Toolbox message"    />
+<localdb:definition-titles type="tboxmethod"   prefix-definition=""         prefix-name=""         prefix-number="Method "  number-base="&amp;" name="Toolbox method"   Name="Toolbox method"     />
 
 <xsl:output method="html" indent="no" encoding="utf-8"/>
 
@@ -273,7 +273,7 @@
         </xsl:attribute>
        </xsl:if>
        <xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
-       <xsl:value-of select="document('')//localdb:definition-titles[@type=$deftype]/@prefix" />
+       <xsl:value-of select="document('')//localdb:definition-titles[@type=$deftype]/@prefix-name" />
        <xsl:value-of select="@name" />
        <xsl:if test="((local-name(.)='message-definition') or
                       (local-name(.)='tboxmessage-definition')
@@ -977,7 +977,7 @@
 <!-- Helpers for the definition blocks which are common -->
 <xsl:template name='definition-header'>
   <xsl:variable name="deftype" select="substring-before(local-name(.),'-definition')" />
-  <xsl:variable name="defprefixname" select="document('')//localdb:definition-titles[@type=$deftype]/@prefix-name" />
+  <xsl:variable name="defprefixname" select="document('')//localdb:definition-titles[@type=$deftype]/@prefix-definition" />
   <xsl:variable name="defprefixnumber" select="document('')//localdb:definition-titles[@type=$deftype]/@prefix-number" />
   <xsl:variable name="defnumberbase" select="document('')//localdb:definition-titles[@type=$deftype]/@number-base" />
 
@@ -1535,6 +1535,7 @@
 
 <!-- References -->
 <xsl:template match="reference">
+<xsl:variable name="reftype" select="@type"/>
 <xsl:variable name="refname" select="@name"/>
 <xsl:variable name="refreason" select="string(@reason)"/>
 <xsl:variable name="link-content">
@@ -1556,6 +1557,7 @@
   </xsl:otherwise>
  </xsl:choose>
 </xsl:variable>
+<xsl:variable name="localdb" select="document('')//localdb:definition-titles[@type=$reftype]" />
 
 <!-- Remember the destination of the link -->
 <xsl:variable name="hrefto">
@@ -1588,7 +1590,7 @@
   <xsl:if test="(not(@href)) and
                  not (//swi-definition[@name=$refname and
                         (string(@reason)=$refreason)])">
-   <xsl:message>SWI definition for <xsl:value-of select="$refname" /> not found at
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:choose>
@@ -1600,6 +1602,7 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
+    <xsl:value-of select="$localdb/@prefix-name" />
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -1610,7 +1613,7 @@
   <xsl:if test="not(@href) and
                  not (//entry-definition[@name=$refname and
                         (string(@reason)=$refreason)])">
-   <xsl:message>Entry-point definition for <xsl:value-of select="$refname" /> not found at
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:choose>
@@ -1622,6 +1625,7 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
+    <xsl:value-of select="$localdb/@prefix-name" />
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -1632,7 +1636,7 @@
   <xsl:if test="(not(@href)) and
                  not (//command-definition[@name=$refname and
                         (string(@reason)=$refreason)])">
-   <xsl:message>Command definition for *<xsl:value-of select="$refname" /> not found at
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:choose>
@@ -1644,7 +1648,7 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>*</xsl:text>
+    <xsl:value-of select="$localdb/@prefix-name" />
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -1655,7 +1659,7 @@
   <xsl:if test="(not(@href)) and
                  not (//vdu-definition[@name=$refname and
                         (string(@reason)=$refreason)])">
-   <xsl:message>VDU definition for VDU <xsl:value-of select="$refname" /> not found at
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:choose>
@@ -1667,7 +1671,7 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>VDU </xsl:text>
+    <xsl:value-of select="$localdb/@prefix-name" />
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -1678,7 +1682,7 @@
   <xsl:if test="(not(@href)) and
                  not (//message-definition[@name=$refname and
                         (string(@reason)=$refreason)])">
-   <xsl:message>Message definition for <xsl:value-of select="$refname" /> not found at
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:choose>
@@ -1690,7 +1694,7 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>Message_</xsl:text>
+    <xsl:value-of select="$localdb/@prefix-name" />
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -1700,7 +1704,7 @@
  <xsl:when test="@type='error'">
   <xsl:if test="(not(@href)) and
                  not (//error-definition[@name=$refname])">
-   <xsl:message>Error definition for <xsl:value-of select="$refname" /> not found at
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:choose>
@@ -1710,7 +1714,7 @@
     <xsl:value-of select="//error-definition[@name=$refname]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>Error_</xsl:text>
+    <xsl:value-of select="$localdb/@prefix-name" />
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -1721,7 +1725,7 @@
   <xsl:if test="(not(@href)) and
                  not (//service-definition[@name=$refname and
                         (string(@reason)=$refreason)])">
-   <xsl:message>Service definition for <xsl:value-of select="$refname" /> not found at
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:choose>
@@ -1733,7 +1737,7 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>Service_</xsl:text>
+    <xsl:value-of select="$localdb/@prefix-name" />
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -1744,7 +1748,7 @@
   <xsl:if test="(not(@href)) and
                  not (//tboxmethod-definition[@name=$refname and
                         (string(@reason)=$refreason)])">
-   <xsl:message>Toolbox Method definition for <xsl:value-of select="$refname" /> not found at
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:choose>
@@ -1756,6 +1760,7 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
+    <xsl:value-of select="$localdb/@prefix-name" />
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -1766,7 +1771,7 @@
   <xsl:if test="(not(@href)) and
                  not (//tboxmessage-definition[@name=$refname and
                         (string(@reason)=$refreason)])">
-   <xsl:message>Toolbox Message definition for <xsl:value-of select="$refname" /> not found at
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:choose>
@@ -1778,6 +1783,7 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
+    <xsl:value-of select="$localdb/@prefix-name" />
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -1788,7 +1794,7 @@
   <xsl:if test="(not(@href)) and
                  not (//upcall-definition[@name=$refname and
                         (string(@reason)=$refreason)])">
-   <xsl:message>UpCall definition for <xsl:value-of select="$refname" /> not found at
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:choose>
@@ -1800,7 +1806,7 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>UpCall_</xsl:text>
+    <xsl:value-of select="$localdb/@prefix-name" />
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -1811,7 +1817,7 @@
   <xsl:if test="(not(@href)) and
                  not (//vector-definition[@name=$refname and
                         (string(@reason)=$refreason)])">
-   <xsl:message>Vector definition for <xsl:value-of select="$refname" /> not found at
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:choose>
@@ -1823,6 +1829,7 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
+    <xsl:value-of select="$localdb/@prefix-name" />
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -1833,7 +1840,7 @@
   <xsl:if test="(not(@href)) and
                  not (//sysvar-definition[@name=$refname and
                         (string(@reason)=$refreason)])">
-   <xsl:message>SystemVariable definition for <xsl:value-of select="$refname" /> not found at
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:choose>
@@ -1845,6 +1852,7 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
+    <xsl:value-of select="$localdb/@prefix-name" />
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
