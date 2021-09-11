@@ -1685,16 +1685,17 @@
 
 <!-- FixMe elements -->
 <xsl:template match="fixme">
-<font color="#DD0000">
+<span class='fixme'>
 <xsl:choose>
  <xsl:when test="(text() != '') or (count(*) > 0)">
-  <strong>FIXME:</strong> <xsl:apply-templates />
+  <span class='fixme-label'>FIXME: </span>
+  <span class='fixme-content'><xsl:apply-templates /></span>
  </xsl:when>
  <xsl:otherwise>
-  <strong>FIXME</strong>
+  <span class='fixme-label'>FIXME</span>
  </xsl:otherwise>
 </xsl:choose>
-</font>
+</span>
 </xsl:template>
 
 

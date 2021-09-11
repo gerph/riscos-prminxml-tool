@@ -361,6 +361,20 @@ img {
     max-width: 100%;
 }
 
+.fixme {
+    display: inline-block;
+    border-radius: 4px;
+    border: 2px solid red;
+    padding: 0.125em 0.5em;
+}
+
+.fixme-label::before {
+    content: "⚠";
+    color: red;
+    margin-right: 0.25em;
+    vertical-align: middle;
+}
+
 footer {
   padding-bottom: 1em;
   border-bottom: 2px solid black;
