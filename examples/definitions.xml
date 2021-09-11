@@ -1,0 +1,374 @@
+<?xml version="1.0"?>
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.02//EN"
+                            "http://gerph.org/dtd/102/prm.dtd">
+
+<riscos-prm>
+<chapter title="Definition examples">
+<section title="Introduction">
+<p>
+Examples of each of the definitions, and references to them.
+</p>
+<p>
+    <list>
+        <item>Reference: <reference type='vdu' name="1"/>.
+              Description: <reference type='vdu' name="1" use-description='yes'/>.
+        </item>
+
+        <item>Reference: <reference type='sysvar' name="Sys$Variable"/>.
+              Description: <reference type='sysvar' name="Sys$Variable" use-description='yes'/>.
+        </item>
+
+        <item>Reference: <reference type='service' name="MyServiceName"/>.
+              Description: <reference type='service' name="MyServiceName" use-description='yes'/>.
+        </item>
+
+        <item>Reference: <reference type='swi' name="Module_SWIName"/>.
+              Description: <reference type='swi' name="Module_SWIName" use-description='yes'/>.
+        </item>
+
+        <item>Reference: <reference type='vector' name="MyVectorV"/>.
+              Description: <reference type='vector' name="MyVectorV" use-description='yes'/>.
+        </item>
+
+        <item>Reference: <reference type='upcall' name="UpcallName"/>.
+              Description: <reference type='upcall' name="UpcallName" use-description='yes'/>.
+        </item>
+
+        <item>Reference: <reference type='entry' name="EntryPointName"/>.
+              Description: <reference type='entry' name="EntryPointName" use-description='yes'/>.
+        </item>
+
+        <item>Reference: <reference type='error' name="MyErrorMessage"/>.
+              Description: <reference type='error' name="MyErrorMessage" use-description='yes'/>.
+        </item>
+
+        <item>Reference: <reference type='message' name="MyModuleAction"/>.
+              Description: <reference type='message' name="MyModuleAction" use-description='yes'/>.
+        </item>
+
+        <item>Reference: <reference type='tboxmethod' name="Object_MethodName"/>.
+              Description: <reference type='tboxmethod' name="Object_MethodName" use-description='yes'/>.
+        </item>
+
+        <item>Reference: <reference type='tboxmessage' name="Object_DoneSomething"/>.
+              Description: <reference type='tboxmessage' name="Object_DoneSomething" use-description='yes'/>.
+        </item>
+
+        <item>Reference: <reference type='command' name="CommandName"/>.
+              Description: <reference type='command' name="CommandName" use-description='yes'/>.
+        </item>
+
+    </list>
+</p>
+
+<vdu-definition name="1"
+                description="Next character to printer only"
+                >
+<syntax> <userreplace>character</userreplace> </syntax>
+<parameter name="character">to send to the printer stream</parameter>
+<use>
+<p>VDU 1 sends the next character to the printer stream only.</p>
+</use>
+
+<example>
+<p>
+<code type="basic">VDU 1,10</code><br />
+Send a linefeed to the printer stream, if enabled
+</p>
+</example>
+<related>
+<reference type="vdu" name="1" />
+</related>
+</vdu-definition>
+
+<sysvar-definition name="Sys$Variable"
+                   description="What the variable holds">
+<use>
+<p>What the variable holds and its purpose</p>
+</use>
+
+<related>
+<reference type="sysvar" name="Sys$Variable" />
+</related>
+</sysvar-definition>
+
+<service-definition name="MyServiceName"
+                    number="90210"
+                    description="What the service is for">
+<entry>
+ <register-use number="0">Register purpose</register-use>
+ <register-use number="1">&hex;90210 (reason code)</register-use>
+</entry>
+
+<exit>
+ <register-use number="0">What is returned</register-use>
+ <register-use number="1" state="preserved" />
+</exit>
+
+<use>
+<p>What the service is for and how it is used.</p>
+
+</use>
+
+<related>
+ <reference type="service" name="MyServiceName" />
+</related>
+
+</service-definition>
+
+<swi-definition name="Module_SWIName"
+                number="90210"
+                description="What the SWI does"
+                irqs="undefined"
+                fiqs="enabled"
+                processor-mode="SVC"
+                re-entrant="no">
+
+<entry>
+ <register-use number="1">Register details</register-use>
+</entry>
+<exit>
+ <register-use number="0">Possible return values:
+  <value-table>
+   <value number="0">Some important value</value>
+   <value number="1">Another value</value>
+  </value-table>
+ </register-use>
+</exit>
+
+<use>
+<p>What this SWI is used for.</p>
+</use>
+
+<related>
+    <reference type="swi" name="Module_SWIName" />
+</related>
+
+</swi-definition>
+
+<vector-definition name="MyVectorV"
+                   number="99"
+                   description="What the vector is for"
+                   irqs="undefined"
+                   fiqs="enabled"
+                   processor-mode="SVC"
+                   re-entrant="no"
+                   >
+
+<entry>
+<register-use number="0">reason code</register-use>
+</entry>
+
+<exit>
+<register-use number="0">0 (operation complete)</register-use>
+</exit>
+
+<use>
+<p>Why the vector is used, and how it functions.</p>
+</use>
+
+<related>
+ <reference type="vector" name="MyVectorV" />
+</related>
+</vector-definition>
+
+<upcall-definition name="UpcallName"
+                   number="90210"
+                   description="What the upcall means">
+<entry>
+ <register-use number="0">UpCall number</register-use>
+ <register-use number="1">More register definitions</register-use>
+</entry>
+
+<exit>
+ <register-use number="0-6" state="preserved" />
+</exit>
+
+<use>
+<p>How this UpCall might be used.</p>
+</use>
+
+<related>
+<reference type="upcall" name="UpcallName" />
+</related>
+
+</upcall-definition>
+
+<entry-definition name="EntryPointName"
+                  description="What the entry point is for"
+                  irqs="undefined"
+                  fiqs="undefined"
+                  processor-mode="undefined"
+                  re-entrant="undefined">
+<entry>
+ <register-use number="0">Register details</register-use>
+</entry>
+
+<exit>
+ <register-use number="0-6" state="preserved" />
+</exit>
+
+<use>
+<p>How this entry point might be called and how it should respond.</p>
+</use>
+
+<related>
+<reference type="entry" name="EntryPointName" />
+</related>
+
+
+</entry-definition>
+
+<error-definition name="MyErrorMessage"
+                  number="90210"
+                  description="Meaning of the error message"
+                  >
+
+<use>
+<p>Why the error is reported.</p>
+</use>
+
+<related>
+<reference type="error" name="MyErrorMessage" />
+</related>
+
+</error-definition>
+
+<message-definition name="MyModuleAction"
+                    number="90210"
+                    description="What this message signifies"
+                    broadcast="never"
+                    recorded="may"
+                    source="Tasks"
+                    destination="Filer tasks">
+<message-table>
+  <message offset="20">Extra data in the message block</message>
+</message-table>
+
+<use>
+
+<p>Why this message is sent, and what it means to receive it.</p>
+</use>
+
+<related>
+  <reference type="message" name="MyModuleAction" />
+</related>
+
+</message-definition>
+
+<tboxmethod-definition name="Object_MethodName"
+                       number="0"
+                       description="What the method does">
+
+<entry>
+
+<register-use number="0">flags:
+  <bitfield-table>
+   <bit number="0">What bit 0 is for</bit>
+   <bit number="1" state='set'>What bit 1 does when set</bit>
+   <bit number="1" state='clear'>What bit 1 does when clear</bit>
+   <bit number="1-31" state="reserved" />
+  </bitfield-table>
+</register-use>
+<register-use number="1">Object id</register-use>
+<register-use number="2">More register definitions</register-use>
+</entry>
+
+<exit>
+<register-use number="0">Returned registers</register-use>
+</exit>
+
+<use>
+<p>How this method works on the object.</p>
+</use>
+
+<declaration type="prototype">
+<code type="c">
+extern _kernel_oserror *object_methodname ( unsigned int flags, ObjectId obj, int myparameter );
+</code>
+</declaration>
+
+<related>
+  <reference type="tboxmethod" name="Object_MethodName" />
+</related>
+
+</tboxmethod-definition>
+
+<tboxmessage-definition name="Object_DoneSomething"
+                         number="90210"
+                         description="What this event signifies to the application"
+                >
+
+<message-table>
+<message offset="8">&hex;90210</message>
+<message offset="12">Other data as necessary</message>
+</message-table>
+
+<use>
+<p>Why this event is sent to the application</p>
+</use>
+
+<declaration type="structure">
+<extended-example type="c">
+typedef struct
+{
+  ToolboxEventHeader hdr;
+  int extra_data;
+} ObjectDoneSomethingEvent;
+</extended-example>
+</declaration>
+
+<related>
+  <reference type="tboxmessage" name="Object_DoneSomething" />
+</related>
+</tboxmessage-definition>
+
+<command-definition name="CommandName"
+                    description="What the command does">
+
+<syntax>
+  <optional>
+    <switch name="d" />
+  </optional>
+  <userreplace>parameter</userreplace>
+</syntax>
+
+<parameter switch="d"> what this switch does.</parameter>
+<parameter name="parameter"> what the parametr means.</parameter>
+
+<use>
+<p>What the command is used for.</p>
+</use>
+
+<example>
+<command>*CommandName -d HelloThere!</command>
+</example>
+
+
+<related>
+<reference type="command" name="CommandName" />
+</related>
+
+</command-definition>
+</section>
+
+</chapter>
+
+<!-- MetaData -->
+<meta>
+ <maintainer>
+  <email name="Gerph" address="gerph@gerph.org" />
+ </maintainer>
+ <disclaimer>
+    <p>
+        &copy; Gerph, 2021.
+    </p>
+ </disclaimer>
+
+ <history>
+  <revision number="1" author="Gerph" date="08 Sep 2021" title="Initial version">
+    <change>Some examples of different types of definitions</change>
+  </revision>
+ </history>
+</meta>
+</riscos-prm>

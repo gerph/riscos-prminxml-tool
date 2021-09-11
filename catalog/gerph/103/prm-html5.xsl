@@ -13,6 +13,7 @@
                 xmlns:localdb="local-file-database"
                 xmlns:saxon="http://icl.com/saxon"
                 xmlns:str="http://exslt.org/strings"
+                xmlns:exslt="http://exslt.org/common"
                 xmlns:pixparams="http://gerph.org/dtd/prminxml-params">
 
 <xsl:include href="http://gerph.org/dtd/bnf/100/html.xsl" />
@@ -35,6 +36,12 @@
 <localdb:definition-titles type="message"      prefix-definition="Message_" prefix-name="Message_" prefix-number=""         number-base="&amp;" name="message"          Name="Message"            />
 <localdb:definition-titles type="tboxmessage"  prefix-definition=""         prefix-name=""         prefix-number="Event "   number-base="&amp;" name="Toolbox message"  Name="Toolbox message"    />
 <localdb:definition-titles type="tboxmethod"   prefix-definition=""         prefix-name=""         prefix-number="Method "  number-base="&amp;" name="Toolbox method"   Name="Toolbox method"     />
+
+<!-- Similar database for the subsections (also in the 'definition-titles' space because it's easier to lookup) -->
+<localdb:definition-titles type="section" Name='Section'/>
+<localdb:definition-titles type="subsection" Name='SubSection'/>
+<localdb:definition-titles type="subsubsection" Name='SubSubSection'/>
+<localdb:definition-titles type="category" Name='Category'/>
 
 <xsl:output method="html" indent="no" encoding="utf-8"/>
 
@@ -1581,275 +1588,36 @@
   </xsl:if>
  </xsl:if>
 </xsl:variable>
+<xsl:variable name="linknode">
+<xsl:choose>
+ <xsl:when test="$reftype='vdu' or $reftype='sysvar' or $reftype='service' or $reftype='swi' or $reftype='vector' or $reftype='upcall' or $reftype='entry' or $reftype='error' or $reftype='message' or $reftype='tboxmethod' or $reftype='tboxmessage' or $reftype='command'">
+  <xsl:copy-of select="//*[local-name()=concat($reftype, '-definition') and
+                           @name=$refname and
+                           string(@reason)=$refreason]"/>
+ </xsl:when>
+
+ <xsl:when test="$reftype='section' or $reftype='subsection' or $reftype='subsubsection' or $reftype='category'">
+  <xsl:copy-of select="//*[local-name()=$reftype and
+                           @title=$refname]"/>
+ </xsl:when>
+</xsl:choose>
+</xsl:variable>
 
 <!-- remember the text of where we're going to -->
 <xsl:variable name="linktext">
 <xsl:choose>
- <!-- SWI reference -->
- <xsl:when test="@type='swi'">
+ <!-- Definition references -->
+ <xsl:when test="$reftype='vdu' or $reftype='sysvar' or $reftype='service' or $reftype='swi' or $reftype='vector' or $reftype='upcall' or $reftype='entry' or $reftype='error' or $reftype='message' or $reftype='tboxmethod' or $reftype='tboxmessage' or $reftype='command'">
   <xsl:if test="(not(@href)) and
-                 not (//swi-definition[@name=$refname and
-                        (string(@reason)=$refreason)])">
-   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
+                 not($linknode)">
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for '<xsl:value-of select="$refname" />' not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:choose>
    <xsl:when test="not(@href) and
                    (@use-description = 'yes') and
-                   (//swi-definition[@name=$refname and
-                    (string(@reason)=$refreason)])">
-    <xsl:value-of select="//swi-definition[@name=$refname and
-                             (string(@reason)=$refreason)]/@description" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="$localdb/@prefix-name" />
-    <xsl:value-of select="$link-content" />
-   </xsl:otherwise>
-  </xsl:choose>
- </xsl:when>
-
- <!-- Entry-point reference -->
- <xsl:when test="@type='entry'">
-  <xsl:if test="not(@href) and
-                 not (//entry-definition[@name=$refname and
-                        (string(@reason)=$refreason)])">
-   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:choose>
-   <xsl:when test="(not(@href)) and
-                   (@use-description = 'yes') and
-                   (//entry-definition[@name=$refname and
-                    (string(@reason)=$refreason)])">
-    <xsl:value-of select="//entry-definition[@name=$refname and
-                             (string(@reason)=$refreason)]/@description" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="$localdb/@prefix-name" />
-    <xsl:value-of select="$link-content" />
-   </xsl:otherwise>
-  </xsl:choose>
- </xsl:when>
-
- <!-- Command reference -->
- <xsl:when test="@type='command'">
-  <xsl:if test="(not(@href)) and
-                 not (//command-definition[@name=$refname and
-                        (string(@reason)=$refreason)])">
-   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:choose>
-   <xsl:when test="(not(@href)) and
-                   (@use-description = 'yes') and
-                   (//command-definition[@name=$refname and
-                    (string(@reason)=$refreason)])">
-    <xsl:value-of select="//command-definition[@name=$refname and
-                             (string(@reason)=$refreason)]/@description" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="$localdb/@prefix-name" />
-    <xsl:value-of select="$link-content" />
-   </xsl:otherwise>
-  </xsl:choose>
- </xsl:when>
-
- <!-- VDU reference -->
- <xsl:when test="@type='vdu'">
-  <xsl:if test="(not(@href)) and
-                 not (//vdu-definition[@name=$refname and
-                        (string(@reason)=$refreason)])">
-   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:choose>
-   <xsl:when test="(not(@href)) and
-                   (@use-description = 'yes') and
-                   (//vdu-definition[@name=$refname and
-                    (string(@reason)=$refreason)])">
-    <xsl:value-of select="//vdu-definition[@name=$refname and
-                             (string(@reason)=$refreason)]/@description" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="$localdb/@prefix-name" />
-    <xsl:value-of select="$link-content" />
-   </xsl:otherwise>
-  </xsl:choose>
- </xsl:when>
-
- <!-- Message reference -->
- <xsl:when test="@type='message'">
-  <xsl:if test="(not(@href)) and
-                 not (//message-definition[@name=$refname and
-                        (string(@reason)=$refreason)])">
-   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:choose>
-   <xsl:when test="(not(@href)) and
-                   (@use-description = 'yes') and
-                   (//message-definition[@name=$refname and
-                    (string(@reason)=$refreason)])">
-    <xsl:value-of select="//message-definition[@name=$refname and
-                             (string(@reason)=$refreason)]/@description" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="$localdb/@prefix-name" />
-    <xsl:value-of select="$link-content" />
-   </xsl:otherwise>
-  </xsl:choose>
- </xsl:when>
-
- <!-- Error reference -->
- <xsl:when test="@type='error'">
-  <xsl:if test="(not(@href)) and
-                 not (//error-definition[@name=$refname])">
-   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:choose>
-   <xsl:when test="(not(@href)) and
-                   (@use-description = 'yes') and
-                   (//error-definition[@name=$refname])">
-    <xsl:value-of select="//error-definition[@name=$refname]/@description" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="$localdb/@prefix-name" />
-    <xsl:value-of select="$link-content" />
-   </xsl:otherwise>
-  </xsl:choose>
- </xsl:when>
-
- <!-- Service reference -->
- <xsl:when test="@type='service'">
-  <xsl:if test="(not(@href)) and
-                 not (//service-definition[@name=$refname and
-                        (string(@reason)=$refreason)])">
-   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:choose>
-   <xsl:when test="(not(@href)) and
-                   (@use-description = 'yes') and
-                   (//service-definition[@name=$refname and
-                    (string(@reason)=$refreason)])">
-    <xsl:value-of select="//service-definition[@name=$refname and
-                             (string(@reason)=$refreason)]/@description" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="$localdb/@prefix-name" />
-    <xsl:value-of select="$link-content" />
-   </xsl:otherwise>
-  </xsl:choose>
- </xsl:when>
-
- <!-- Toolbox method reference -->
- <xsl:when test="@type='tboxmethod'">
-  <xsl:if test="(not(@href)) and
-                 not (//tboxmethod-definition[@name=$refname and
-                        (string(@reason)=$refreason)])">
-   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:choose>
-   <xsl:when test="(not(@href)) and
-                   (@use-description = 'yes') and
-                   (//tboxmethod-definition[@name=$refname and
-                    (string(@reason)=$refreason)])">
-    <xsl:value-of select="//tboxmethod-definition[@name=$refname and
-                             (string(@reason)=$refreason)]/@description" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="$localdb/@prefix-name" />
-    <xsl:value-of select="$link-content" />
-   </xsl:otherwise>
-  </xsl:choose>
- </xsl:when>
-
- <!-- Toolbox message reference -->
- <xsl:when test="@type='tboxmessage'">
-  <xsl:if test="(not(@href)) and
-                 not (//tboxmessage-definition[@name=$refname and
-                        (string(@reason)=$refreason)])">
-   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:choose>
-   <xsl:when test="(not(@href)) and
-                   (@use-description = 'yes') and
-                   (//tboxmessage-definition[@name=$refname and
-                    (string(@reason)=$refreason)])">
-    <xsl:value-of select="//tboxmessage-definition[@name=$refname and
-                             (string(@reason)=$refreason)]/@description" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="$localdb/@prefix-name" />
-    <xsl:value-of select="$link-content" />
-   </xsl:otherwise>
-  </xsl:choose>
- </xsl:when>
-
- <!-- UpCall reference -->
- <xsl:when test="@type='upcall'">
-  <xsl:if test="(not(@href)) and
-                 not (//upcall-definition[@name=$refname and
-                        (string(@reason)=$refreason)])">
-   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:choose>
-   <xsl:when test="(not(@href)) and
-                   (@use-description = 'yes') and
-                   (//upcall-definition[@name=$refname and
-                    (string(@reason)=$refreason)])">
-    <xsl:value-of select="//upcall-definition[@name=$refname and
-                             (string(@reason)=$refreason)]/@description" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="$localdb/@prefix-name" />
-    <xsl:value-of select="$link-content" />
-   </xsl:otherwise>
-  </xsl:choose>
- </xsl:when>
-
- <!-- Vector reference -->
- <xsl:when test="@type='vector'">
-  <xsl:if test="(not(@href)) and
-                 not (//vector-definition[@name=$refname and
-                        (string(@reason)=$refreason)])">
-   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:choose>
-   <xsl:when test="(not(@href)) and
-                   (@use-description = 'yes') and
-                   (//vector-definition[@name=$refname and
-                    (string(@reason)=$refreason)])">
-    <xsl:value-of select="//vector-definition[@name=$refname and
-                             (string(@reason)=$refreason)]/@description" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="$localdb/@prefix-name" />
-    <xsl:value-of select="$link-content" />
-   </xsl:otherwise>
-  </xsl:choose>
- </xsl:when>
-
- <!-- SysVar reference -->
- <xsl:when test="@type='sysvar'">
-  <xsl:if test="(not(@href)) and
-                 not (//sysvar-definition[@name=$refname and
-                        (string(@reason)=$refreason)])">
-   <xsl:message><xsl:value-of select="$localdb/@Name" /> definition for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:choose>
-   <xsl:when test="(not(@href)) and
-                   (@use-description = 'yes') and
-                   (//sysvar-definition[@name=$refname and
-                    (string(@reason)=$refreason)])">
-    <xsl:value-of select="//sysvar-definition[@name=$refname and
-                             (string(@reason)=$refreason)]/@description" />
+                   count(exslt:node-set($linknode)/*) = 0">
+    <xsl:value-of select="exslt:node-set($linknode)/*/@description" />
    </xsl:when>
    <xsl:otherwise>
     <xsl:value-of select="$localdb/@prefix-name" />
@@ -1859,35 +1627,10 @@
  </xsl:when>
 
  <!-- Section type reference -->
-<!--  There must be an easier way to do this ? -->
- <xsl:when test="@type='section'">
-  <xsl:if test="(not(@href)) and
-                 not (//section[@title=$refname])">
-   <xsl:message>Section for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:value-of select="$link-content" />
- </xsl:when>
- <xsl:when test="@type='subsection'">
-  <xsl:if test="(not(@href)) and
-                 not (//subsection[@title=$refname])">
-   <xsl:message>SubSection for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:value-of select="$link-content" />
- </xsl:when>
- <xsl:when test="@type='subsubsection'">
-  <xsl:if test="(not(@href)) and
-                 not (//subsubsection[@title=$refname])">
-   <xsl:message>SubSubSection for <xsl:value-of select="$refname" /> not found at
-   <xsl:call-template name="describeposition" />.</xsl:message>
-  </xsl:if>
-  <xsl:value-of select="$link-content" />
- </xsl:when>
- <xsl:when test="@type='category'">
-  <xsl:if test="(not(@href)) and
-                 not (//category[@title=$refname])">
-   <xsl:message>Category for <xsl:value-of select="$refname" /> not found at
+ <xsl:when test="$reftype='section' or $reftype='subsection' or $reftype='subsubsection' or $reftype='category'">
+  <xsl:if test="not(@href) and
+                count(exslt:node-set($linknode)/*) = 0">
+   <xsl:message><xsl:value-of select="$localdb/@Name" /> for '<xsl:value-of select="$refname" />' not found at
    <xsl:call-template name="describeposition" />.</xsl:message>
   </xsl:if>
   <xsl:value-of select="$link-content" />

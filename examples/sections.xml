@@ -4,11 +4,31 @@
 
 <riscos-prm>
 <chapter title="PRM-in-XML sections">
-<section title="Section">
 
-    <subsection title="Subsection">
-        <subsubsection title="Subsubsection">
-            <category title="Category">
+<section title="Reference examples">
+
+<p>References:</p>
+<p>
+    <list>
+        <item><reference type='section' name="Section 1"/></item>
+        <item><reference type='subsection' name="Subsection 1"/></item>
+        <item><reference type='subsubsection' name="Subsubsection 1"/></item>
+        <item><reference type='category' name="Category 1"/></item>
+        <item><reference type='section' name="Section with text in"/></item>
+        <item><reference type='subsection' name="Subsection 2"/></item>
+        <item><reference type='subsubsection' name="Subsubsection 2"/></item>
+        <item><reference type='category' name="Category 2"/></item>
+        <item><reference type='section' name="Not a section"/> - will generate a warning</item>
+    </list>
+</p>
+
+</section>
+
+<section title="Section 1">
+
+    <subsection title="Subsection 1">
+        <subsubsection title="Subsubsection 1">
+            <category title="Category 1">
             </category>
         </subsubsection>
     </subsection>
@@ -19,13 +39,13 @@
 
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh. Porta nibh venenatis cras sed felis. Nulla facilisi morbi tempus iaculis urna id. Dui accumsan sit amet nulla facilisi. Vitae elementum curabitur vitae nunc sed.</p>
 
-    <subsection title="Subsection">
+    <subsection title="Subsection 2">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh. Porta nibh venenatis cras sed felis. Nulla facilisi morbi tempus iaculis urna id. Dui accumsan sit amet nulla facilisi. Vitae elementum curabitur vitae nunc sed.</p>
 
-        <subsubsection title="Subsubsection">
+        <subsubsection title="Subsubsection 2">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh. Porta nibh venenatis cras sed felis. Nulla facilisi morbi tempus iaculis urna id. Dui accumsan sit amet nulla facilisi. Vitae elementum curabitur vitae nunc sed.</p>
 
-            <category title="Category">
+            <category title="Category 2">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh. Porta nibh venenatis cras sed felis. Nulla facilisi morbi tempus iaculis urna id. Dui accumsan sit amet nulla facilisi. Vitae elementum curabitur vitae nunc sed.</p>
             </category>
             <p>(after category) Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh. Porta nibh venenatis cras sed felis. Nulla facilisi morbi tempus iaculis urna id. Dui accumsan sit amet nulla facilisi. Vitae elementum curabitur vitae nunc sed.</p>
