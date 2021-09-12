@@ -1703,13 +1703,13 @@
 <xsl:template match="list">
 <xsl:choose>
  <xsl:when test="@type = 'ordered'">
-  <ol>
+  <ol class='list list-ordered'>
    <xsl:apply-templates />
   </ol>
  </xsl:when>
 
  <xsl:otherwise>
-  <ul>
+  <ul class='list list-unordered'>
    <xsl:apply-templates />
   </ul>
  </xsl:otherwise>
@@ -1803,11 +1803,14 @@
 
 <!-- Command line switch -->
 <xsl:template match="switch">
-<xsl:text>-</xsl:text><xsl:value-of select="@name" />
-<xsl:if test="(text() != '') or (count(*) > 0)">
- <xsl:text> </xsl:text>
- <xsl:apply-templates />
-</xsl:if>
+<span class='switch'>
+    <span class='switch-leader'>-</span>
+    <span class='switch-name'><xsl:value-of select="@name" /></span>
+    <xsl:if test="(text() != '') or (count(*) > 0)">
+        <xsl:text> </xsl:text>
+        <span class='switch-parameter'><xsl:apply-templates /></span>
+    </xsl:if>
+</span>
 </xsl:template>
 
 <!-- Long example -->
