@@ -51,7 +51,8 @@ header h1 {
 }
 
 
-header h1 .chapter-docgroup {
+header h1 .chapter-docgroup-name,
+header h1 .chapter-docgroup-part {
   display: none
 }
 header h1 .chapter-number {
@@ -699,8 +700,10 @@ footer {
 }
 
 
-.chapter-docgroup { string-set: docgroup-name content() }
+.chapter-docgroup-name { string-set: docgroup-name content() }
+.chapter-docgroup-part { string-set: docgroup-part content() }
 .chapter-name { string-set: chapter-name content() }
+.chapter-number { string-set: chapter-number content() }
 section.section h2,
 section.meta h2 {
     string-set: section-name content()

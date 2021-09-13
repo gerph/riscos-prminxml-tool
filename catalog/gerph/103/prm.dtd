@@ -81,10 +81,12 @@
 <!ELEMENT riscos-prm ((chapter)*, meta)>
 <!ATTLIST riscos-prm
     doc-group CDATA "RISC OS Programmers Reference Manuals"
+    doc-group-part CDATA ""
 >
 <!ELEMENT chapter (section | import)*>
 <!ATTLIST chapter
     title CDATA #REQUIRED
+    number CDATA ""
 >
 <!ATTLIST section
     title CDATA #REQUIRED

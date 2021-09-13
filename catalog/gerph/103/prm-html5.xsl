@@ -102,6 +102,10 @@
 <xsl:param name="css-variant">none</xsl:param>
 <xsl:param name="css-file">none</xsl:param>
 
+<xsl:param name="override-chapter-number"></xsl:param>
+<xsl:param name="override-docgroup"></xsl:param>
+<xsl:param name="override-docgroup-part"></xsl:param>
+
 
 <xsl:template match="/">
 <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
@@ -131,26 +135,45 @@
      </xsl:attribute>
    </meta>
   </xsl:if>
-  <meta name='subject'>
+  <meta name='description'>
    <xsl:attribute name='content'>
     <xsl:value-of select='@title'/>
    </xsl:attribute>
   </meta>
 
   <title>
-  <xsl:value-of select="../@doc-group"/>
-  <xsl:text> : </xsl:text>
-  <xsl:value-of select="@title"/>
- </title>
- <xsl:call-template name='head-css'/>
+    <xsl:choose>
+        <xsl:when test="$override-docgroup != ''"><xsl:value-of select="$override-docgroup"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="../@doc-group"/></xsl:otherwise>
+    </xsl:choose>
+    <xsl:text> : </xsl:text>
+    <xsl:value-of select="@title"/>
+  </title>
+  <xsl:call-template name='head-css'/>
 </head>
 
 <body>
 
 <header>
 <h1 class='chapter-title'>
-    <span class='chapter-number'><!-- NYI --></span>
-    <span class='chapter-docgroup'><xsl:value-of select="../@doc-group"/></span>
+    <span class='chapter-docgroup-name'>
+        <xsl:choose>
+            <xsl:when test="$override-docgroup != ''"><xsl:value-of select="$override-docgroup"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="../@doc-group"/></xsl:otherwise>
+        </xsl:choose>
+    </span>
+    <span class='chapter-docgroup-part'>
+        <xsl:choose>
+            <xsl:when test="$override-docgroup-part != ''"><xsl:value-of select="$override-docgroup-part"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="../@doc-group-part"/></xsl:otherwise>
+        </xsl:choose>
+    </span>
+    <span class='chapter-number'>
+        <xsl:choose>
+            <xsl:when test="$override-chapter-number != ''"><xsl:value-of select="$override-chapter-number"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="@number"/></xsl:otherwise>
+        </xsl:choose>
+    </span>
     <span class='chapter-name'><xsl:value-of select="@title"/></span>
 </h1>
 <xsl:choose>
