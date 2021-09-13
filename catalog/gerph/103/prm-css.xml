@@ -702,8 +702,7 @@ footer {
 .chapter-docgroup { string-set: docgroup-name content() }
 .chapter-name { string-set: chapter-name content() }
 section.section h2,
-section.meta h2,
-header nav h2 {
+section.meta h2 {
     string-set: section-name content()
 }
 
