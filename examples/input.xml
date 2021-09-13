@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.03//EN"
+                            "http://gerph.org/dtd/103/prm.dtd">
+
+<riscos-prm>
+<chapter title="Input examples">
+<section title="Key input">
+<p>
+    <list>
+        <item><p><input><key name='W'/></input> - the W key</p></item>
+        <item><p><input><key name='ctrl'/><key name='X'/></input> - control and X (eg a cut)</p></item>
+        <item><p><input><mouse name='select' repeat='2'/></input> - double click select (eg run a file)</p></item>
+        <item><p><input><mouse name='select' action='drag'/></input> - drag select (eg making a selection)</p></item>
+        <item><p><input><key name='shift'/><mouse name='select'/></input> - shift + select click (eg adding to a selection)</p></item>
+        <item><p><input><key name='escape' repeat='2'/></input> - press escape twice (eg some special operation to get out of a system?)</p></item>
+        <item><p><input><key name='shift'/><key name='ctrl'/><key name='f12'/></input> - shift + control + F12 (eg shutdown)</p></item>
+    </list>
+</p>
+
+</section>
+
+</chapter>
+
+<!-- MetaData -->
+<meta>
+ <maintainer>
+  <email name="Gerph" address="gerph@gerph.org" />
+ </maintainer>
+ <disclaimer>
+    <p>
+        &copy; Gerph, 2021.
+    </p>
+ </disclaimer>
+
+ <history>
+  <revision number="1" author="Gerph" date="12 Sep 2021" title="Initial version">
+    <change>Some examples of different types of input, as part of prototyping.</change>
+  </revision>
+ </history>
+</meta>
+</riscos-prm>

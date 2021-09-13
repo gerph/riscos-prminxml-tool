@@ -71,7 +71,7 @@
 <!ENTITY print "&#9113;">
 
 <!ENTITY % tables "offset-table | bitfield-table | value-table | message-table">
-<!ENTITY % parameters "userinput | menuoption | systemoutput | command | function | variable | userreplace | optional | sysvar | filename | switch">
+<!ENTITY % parameters "userinput | menuoption | systemoutput | command | function | variable | userreplace | optional | sysvar | filename | switch | input">
 <!ENTITY % style "strong | sub | sup">
 <!ENTITY % link "reference | email">
 <!ENTITY % inline "br | image | bnf | list | extended-example | fixme | code  | %style;">
@@ -349,6 +349,21 @@
     name CDATA #IMPLIED
     reason CDATA #IMPLIED
     use-description (yes | no) "no"
+>
+
+<!-- Input/key/mouse elements -->
+<!ELEMENT input (key|mouse)*>
+<!ELEMENT key EMPTY>
+<!ATTLIST key
+          name CDATA #REQUIRED
+          repeat (1 | 2 | 3 | 4) "1"
+          action (click | press | release | hold) "click"
+>
+<!ELEMENT mouse EMPTY>
+<!ATTLIST mouse
+          name CDATA #REQUIRED
+          repeat (1 | 2 | 3 | 4) "1"
+          action (click | press | release | hold | drag | up | down | left | right) "click"
 >
 
 <!-- import from another document, similar to, but not xinclude -->
