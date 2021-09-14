@@ -12,6 +12,7 @@
         <item><p><input><mouse name='select' repeat='2'/></input> - double click select (eg run a file)</p></item>
         <item><p><input><mouse name='select' action='drag'/></input> - drag select (eg making a selection)</p></item>
         <item><p><input><mouse name='select' action='press'/></input> - press select (eg starting a selection)</p></item>
+        <item><p><input><mouse name='scrollwheel' action='up'/></input> - scroll wheel move up (eg moving the scroll bar)</p></item>
         <item><p><input><key name='shift'/><mouse name='select'/></input> - shift + select click (eg adding to a selection)</p></item>
         <item><p><input><key name='escape' repeat='2'/></input> - press escape twice (eg some special operation to get out of a system?)</p></item>
         <item><p><input><key name='shift'/><key name='ctrl'/><key name='f12'/></input> - shift + control + F12 (eg shutdown)</p></item>

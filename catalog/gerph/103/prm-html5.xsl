@@ -92,10 +92,10 @@
 <localdb:key-name aname='scrollwheel' label="SCROLL"/>
 <!-- action name strings -->
 <localdb:input-action aname='click' prefix="" suffix=""/>
-<localdb:input-action aname='press' prefix="" suffix=" (press)"/>
-<localdb:input-action aname='release' prefix="" suffix=" (release)"/>
-<localdb:input-action aname='hold' prefix="" suffix=" (hold)"/>
-<localdb:input-action aname='drag' prefix="" suffix=" (drag)"/>
+<localdb:input-action aname='press' prefix="Press " suffix=""/>
+<localdb:input-action aname='release' prefix="Release " suffix=""/>
+<localdb:input-action aname='hold' prefix="Hold " suffix=""/>
+<localdb:input-action aname='drag' prefix="Drag " suffix=""/>
 <localdb:input-action aname='up' prefix="" suffix=" UP"/>
 <localdb:input-action aname='down' prefix="" suffix=" DOWN"/>
 <localdb:input-action aname='left' prefix="" suffix=" LEFT"/>
@@ -1831,7 +1831,9 @@
 <xsl:template match="key|mouse">
 <kbd>
     <xsl:variable name="name" select="@name"/>
+    <xsl:variable name="action" select="@action"/>
     <xsl:variable name="key-name" select="document('')//localdb:key-name[@aname=$name]"/>
+    <xsl:variable name="input-action" select="document('')//localdb:input-action[@aname=$action]"/>
 
     <xsl:attribute name='class'>
         <xsl:value-of select="local-name(.)"/>
@@ -1861,7 +1863,19 @@
             <xsl:text>-action-</xsl:text>
             <xsl:value-of select="@action"/>
         </xsl:attribute>
-        <xsl:attribute name='title' select="@action"/>
+        <xsl:attribute name='title'>
+            <xsl:if test="$input-action/@prefix">
+                <xsl:value-of select="$input-action/@prefix"/>
+            </xsl:if>
+        </xsl:attribute>
+        <xsl:choose>
+            <xsl:when test="$input-action/@prefix">
+                <xsl:value-of select="$input-action/@prefix"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:attribute name='title' select="@action"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </span>
     <xsl:if test="@repeat != '1'">
         <span>
@@ -1886,6 +1900,20 @@
             <xsl:otherwise>
                 <xsl:value-of select="@name"/>
             </xsl:otherwise>
+        </xsl:choose>
+    </span>
+    <span>
+        <xsl:attribute name='class'>
+            <xsl:value-of select="local-name(.)"/>
+            <xsl:text>-action-suffix </xsl:text>
+            <xsl:value-of select="local-name(.)"/>
+            <xsl:text>-action-suffix-</xsl:text>
+            <xsl:value-of select="@action"/>
+        </xsl:attribute>
+        <xsl:choose>
+            <xsl:when test="$input-action/@suffix">
+                <xsl:value-of select="$input-action/@suffix"/>
+            </xsl:when>
         </xsl:choose>
     </span>
 </kbd>
