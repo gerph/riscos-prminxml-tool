@@ -73,6 +73,18 @@
 <localdb:key-name aname='scrolllock' label="SCROLL LOCK"/>
 <localdb:key-name aname='numlock' label="NUM LOCK"/>
 <localdb:key-name aname='space' label="SPACE"/>
+<localdb:key-name aname='f1' label="F1"/>
+<localdb:key-name aname='f2' label="F2"/>
+<localdb:key-name aname='f3' label="F3"/>
+<localdb:key-name aname='f4' label="F4"/>
+<localdb:key-name aname='f5' label="F5"/>
+<localdb:key-name aname='f6' label="F6"/>
+<localdb:key-name aname='f7' label="F7"/>
+<localdb:key-name aname='f8' label="F8"/>
+<localdb:key-name aname='f9' label="F9"/>
+<localdb:key-name aname='f10' label="F10"/>
+<localdb:key-name aname='f11' label="F11"/>
+<localdb:key-name aname='f12' label="F12"/>
 <!-- Similar naming for the mouse -->
 <localdb:key-name aname='select' label="SELECT"/>
 <localdb:key-name aname='menu' label="MENU"/>
@@ -1817,25 +1829,66 @@
 </xsl:template>
 
 <xsl:template match="key|mouse">
-<span>
+<kbd>
+    <xsl:variable name="name" select="@name"/>
+    <xsl:variable name="key-name" select="document('')//localdb:key-name[@aname=$name]"/>
+
     <xsl:attribute name='class'>
         <xsl:value-of select="local-name(.)"/>
         <xsl:text> </xsl:text>
         <xsl:value-of select="local-name(.)"/>
         <xsl:text>-action-</xsl:text>
         <xsl:value-of select="@action"/>
-    </xsl:attribute>
-    <xsl:variable name="name" select="@name"/>
-    <xsl:variable name="key-name" select="document('')//localdb:key-name[@aname=$name]"/>
-    <xsl:choose>
-        <xsl:when test="$key-name/@label">
-            <xsl:value-of select="$key-name/@label"/>
-        </xsl:when>
-        <xsl:otherwise>
+        <xsl:if test="@repeat != '1'">
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="local-name(.)"/>
+            <xsl:text>-repeat-</xsl:text>
+            <xsl:value-of select="@repeat"/>
+        </xsl:if>
+        <xsl:if test="$key-name/@label">
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="local-name(.)"/>
+            <xsl:text>-name-</xsl:text>
             <xsl:value-of select="@name"/>
-        </xsl:otherwise>
-    </xsl:choose>
-</span>
+        </xsl:if>
+    </xsl:attribute>
+
+    <span>
+        <xsl:attribute name='class'>
+            <xsl:value-of select="local-name(.)"/>
+            <xsl:text>-action </xsl:text>
+            <xsl:value-of select="local-name(.)"/>
+            <xsl:text>-action-</xsl:text>
+            <xsl:value-of select="@action"/>
+        </xsl:attribute>
+        <xsl:attribute name='title' select="@action"/>
+    </span>
+    <xsl:if test="@repeat != '1'">
+        <span>
+            <xsl:attribute name='class'>
+                <xsl:value-of select="local-name(.)"/>
+                <xsl:text>-repeat </xsl:text>
+                <xsl:value-of select="local-name(.)"/>
+                <xsl:text>-repeat-</xsl:text>
+                <xsl:value-of select="@repeat"/>
+            </xsl:attribute>
+        </span>
+    </xsl:if>
+    <span>
+        <xsl:attribute name='class'>
+            <xsl:value-of select="local-name(.)"/>
+            <xsl:text>-name</xsl:text>
+        </xsl:attribute>
+        <xsl:choose>
+            <xsl:when test="$key-name/@label">
+                <xsl:value-of select="$key-name/@label"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="@name"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </span>
+</kbd>
 </xsl:template>
 
 
