@@ -19,6 +19,7 @@ variables:
     when: always
     paths:
       - artifacts
+      - test-output
       - ci-logs
   dependencies: []
 
@@ -37,6 +38,9 @@ build-linux:
   <<: *common-cross
   stage: build-cross
   script:
+    # Build the examples first, as if it fails we'll then not upload the results.
+    - crosscompile/build-examples.sh
+    # Now build and upload the binary to Artifactory.
     - if [ "$CI_COMMIT_BRANCH" = 'master' ] ; then upload=--upload ; else upload= ; fi
     - ci/build.sh native install ${upload}
   tags:
