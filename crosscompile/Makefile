@@ -25,8 +25,8 @@ tool_dir:
 catalog: dirs
 	cp -R "${CATALOG_SRC}"/* "${RESOURCES}"
 
-${TOOL}: ../process.pl dirs catalog
-	sed "s/VERSION/$${CI_BRANCH_VERSION:-VERSION}/" ../process.pl > $@
+${TOOL}: ../riscos-prminxml dirs catalog
+	sed "s/VERSION/$${CI_BRANCH_VERSION:-VERSION}/" ../riscos-prminxml > $@
 	chmod 755 $@
 
 clean:

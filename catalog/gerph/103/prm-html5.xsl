@@ -2005,7 +2005,9 @@
 <xsl:template match="strong"><strong><xsl:apply-templates /></strong></xsl:template>
 <xsl:template match="em"><em><xsl:apply-templates /></em></xsl:template>
 <!-- I'm not at all sure I like the concept of having a break element -->
-<xsl:template match="br"><br /></xsl:template>
+<xsl:template match="br">
+    <xsl:text disable-output-escaping='yes'>&lt;br&gt;</xsl:text>
+</xsl:template>
 
 <!-- These are keepable, as they're required for expressing some maths -->
 <xsl:template match="sup"><sup><xsl:apply-templates /></sup></xsl:template>

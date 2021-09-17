@@ -924,4 +924,40 @@
 </xsl:template>
 <xsl:template match="text()" mode="index" />
 
+
+<xsl:template match="make-filelist">
+    <xsl:document href="filelist.txt" method="text" indent="no">
+        <xsl:text>index.html&#10;</xsl:text>
+
+        <!-- Now the actual content referenced -->
+        <xsl:apply-templates select="//page" mode="filelist"/>
+
+        <!-- Finally, all the indices -->
+        <xsl:variable name="root" select="/" />
+        <xsl:variable name="section-names" select="document('')" />
+
+        <xsl:for-each select="$section-names//localdb:sections">
+            <xsl:variable name="type" select="@type" />
+            <xsl:variable name="filename" select="@filename" />
+            <xsl:variable name="title" select="@title" />
+            <xsl:variable name="number" select="@number" />
+            <xsl:if test="$root//make-index[@type=$type]">
+
+                <xsl:value-of select="concat('index-',$filename,'.html')"/><xsl:text>&#10;</xsl:text>
+                <xsl:if test="$number='yes'">
+                    <xsl:value-of select="concat('index-',$filename,'-n.html')"/><xsl:text>&#10;</xsl:text>
+                </xsl:if>
+            </xsl:if>
+         </xsl:for-each>
+    </xsl:document>
+</xsl:template>
+
+<xsl:template match="page" mode="filelist">
+<xsl:if test="@href != ''">
+  <xsl:apply-templates mode="dir" select=".."/>
+  <xsl:value-of select="@href"/>
+  <xsl:text>.html&#10;</xsl:text>
+</xsl:if>
+</xsl:template>
+
 </xsl:stylesheet>
