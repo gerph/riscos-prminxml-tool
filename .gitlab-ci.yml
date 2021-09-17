@@ -33,22 +33,31 @@ variables:
 #        - artifacts/results.xml
 
 
-#### Builds ####
-build-linux:
+#### Test examples
+test-examples:
   <<: *common-cross
-  stage: build-cross
+  stage: test
   script:
     # Build the examples first, as if it fails we'll then not upload the results.
     - crosscompile/build-examples.sh
-    # Now build and upload the binary to Artifactory.
+  tags:
+    - linux
+
+
+#### Exports ####
+export-linux:
+  <<: *common-cross
+  stage: export-cross
+  script:
+    # Build and upload the binary to Artifactory.
     - if [ "$CI_COMMIT_BRANCH" = 'master' ] ; then upload=--upload ; else upload= ; fi
     - ci/build.sh native install ${upload}
   tags:
     - linux
 
-build-macos:
+export-macos:
   <<: *common-cross
-  stage: build-cross
+  stage: export-cross
   script:
     - if [ "$CI_COMMIT_BRANCH" = 'master' ] ; then upload=--upload ; else upload= ; fi
     - ci/build.sh native install ${upload}
@@ -65,6 +74,7 @@ build-macos:
 
 #### Stages to execute ####
 stages:
-#  - export
-  - build-cross
+# - build
+  - test
+  - export-cross
 #  - build-riscos
