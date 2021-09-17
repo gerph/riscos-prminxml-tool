@@ -1,6 +1,9 @@
 # CI generated directories
 /artifacts
 /ci-logs
+/crosscompile/prince-install-*
+/test-output
+/tmp
 
 # RISC OS build
 riscos-build/
