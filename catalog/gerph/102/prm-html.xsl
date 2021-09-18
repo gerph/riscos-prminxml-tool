@@ -2156,8 +2156,9 @@
 </xsl:template>
 
 <!-- Menu option - an option that the user might chose for a menu -->
+<!-- Style guide says this should be bold -->
 <xsl:template match="menuoption">
-<em><xsl:apply-templates /></em>
+<b><xsl:apply-templates /></b>
 </xsl:template>
 
 <!-- Variable -->
