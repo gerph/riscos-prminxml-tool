@@ -311,7 +311,7 @@ table {
   font-family: monospace;
 }
 .menuoption {
-  font-style: italic;
+  font-weight: bold;
 }
 .variable {
   font-family: monospace;
