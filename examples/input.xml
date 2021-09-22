@@ -8,10 +8,16 @@
 <p>
     <list>
         <item><p><input><key name='W'/></input> - the W key</p></item>
+        <item><p><input><key name="'"/></input> - the ' key</p></item>
+        <item><p><input><key name="@"/></input> - the @ key</p></item>
+        <item><p><input><key name="up"/></input> - cursor up key</p></item>
+        <item><p><input><key name="break"/></input> - break key</p></item>
+        <item><p><input><key name="Volume Up"/></input> - the Volume Up key (a named key on the keyboard)</p></item>
         <item><p><input><key name='ctrl'/><key name='X'/></input> - control and X (eg a cut)</p></item>
         <item><p><input><mouse name='select' repeat='2'/></input> - double click select (eg run a file)</p></item>
         <item><p><input><mouse name='select' action='drag'/></input> - drag select (eg making a selection)</p></item>
-        <item><p><input><mouse name='select' action='press'/></input> - press select (eg starting a selection)</p></item>
+        <item><p><input><mouse name='adjust' repeat='2'/></input> - double click adjust (eg opening a directory and closing the parent)</p></item>
+        <item><p><input><mouse name='menu'/></input> - press menu (eg opening a menu)</p></item>
         <item><p><input><mouse name='scrollwheel' action='up'/></input> - scroll wheel move up (eg moving the scroll bar)</p></item>
         <item><p><input><key name='shift'/><mouse name='select'/></input> - shift + select click (eg adding to a selection)</p></item>
         <item><p><input><key name='escape' repeat='2'/></input> - press escape twice (eg some special operation to get out of a system?)</p></item>
@@ -37,6 +43,9 @@
  <history>
   <revision number="1" author="Gerph" date="12 Sep 2021" title="Initial version">
     <change>Some examples of different types of input, as part of prototyping.</change>
+  </revision>
+  <revision number="2" author="Gerph" date="22 Sep 2021" title="Extra examples of literal keys">
+    <change>Literal keys like '@' and 'Volume Up' added as examples.</change>
   </revision>
  </history>
 </meta>

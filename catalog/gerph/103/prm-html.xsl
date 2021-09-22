@@ -25,6 +25,64 @@
 <localdb:definition-names type="vector" singular="Vector"  prefix="Vector " />
 <localdb:definition-names type="command"                   prefix="*" />
 
+<!-- mapping from the key name to what we show on the screen -->
+<localdb:key-name aname='shift' label="SHIFT"/>
+<localdb:key-name aname='ctrl' label="CTRL"/>
+<localdb:key-name aname='alt' label="ALT"/>
+<localdb:key-name aname='meta' label="META"/>
+<localdb:key-name aname='fn' label="FN"/>
+<!-- FIXME: Consider making these unicode arrows -->
+<localdb:key-name aname='up' label="UP"/>
+<localdb:key-name aname='down' label="DOWN"/>
+<localdb:key-name aname='left' label="LEFT"/>
+<localdb:key-name aname='right' label="RIGHT"/>
+<localdb:key-name aname='pageup' label="PAGE UP"/>
+<localdb:key-name aname='pagedown' label="PAGE DOWN"/>
+<!-- FIXME: Consider making these the symbols -->
+<localdb:key-name aname='backspace' label="BACKSPACE"/>
+<localdb:key-name aname='tab' label="TAB"/>
+<localdb:key-name aname='return' label="RETURN"/>
+<localdb:key-name aname='escape' label="ESC"/>
+<localdb:key-name aname='enter' label="ENTER"/>
+<localdb:key-name aname='insert' label="INSERT"/>
+<localdb:key-name aname='delete' label="DELETE"/>
+<localdb:key-name aname='home' label="HOME"/>
+<localdb:key-name aname='end' label="END"/>
+<localdb:key-name aname='copy' label="COPY"/>
+<localdb:key-name aname='print' label="PRINT"/>
+<localdb:key-name aname='break' label="BREAK"/>
+<localdb:key-name aname='capslock' label="CAPS LOCK"/>
+<localdb:key-name aname='scrolllock' label="SCROLL LOCK"/>
+<localdb:key-name aname='numlock' label="NUM LOCK"/>
+<localdb:key-name aname='space' label="SPACE"/>
+<localdb:key-name aname='f1' label="F1"/>
+<localdb:key-name aname='f2' label="F2"/>
+<localdb:key-name aname='f3' label="F3"/>
+<localdb:key-name aname='f4' label="F4"/>
+<localdb:key-name aname='f5' label="F5"/>
+<localdb:key-name aname='f6' label="F6"/>
+<localdb:key-name aname='f7' label="F7"/>
+<localdb:key-name aname='f8' label="F8"/>
+<localdb:key-name aname='f9' label="F9"/>
+<localdb:key-name aname='f10' label="F10"/>
+<localdb:key-name aname='f11' label="F11"/>
+<localdb:key-name aname='f12' label="F12"/>
+<!-- Similar naming for the mouse -->
+<localdb:key-name aname='select' label="SELECT"/>
+<localdb:key-name aname='menu' label="MENU"/>
+<localdb:key-name aname='adjust' label="ADJUST"/>
+<localdb:key-name aname='scrollwheel' label="SCROLL"/>
+<!-- action name strings -->
+<localdb:input-action aname='click' prefix="" suffix=""/>
+<localdb:input-action aname='press' prefix="Press " suffix=""/>
+<localdb:input-action aname='release' prefix="Release " suffix=""/>
+<localdb:input-action aname='hold' prefix="Hold " suffix=""/>
+<localdb:input-action aname='drag' prefix="Drag " suffix=""/>
+<localdb:input-action aname='up' prefix="" suffix=" UP"/>
+<localdb:input-action aname='down' prefix="" suffix=" DOWN"/>
+<localdb:input-action aname='left' prefix="" suffix=" LEFT"/>
+<localdb:input-action aname='right' prefix="" suffix=" RIGHT"/>
+
 <xsl:output method="xml" indent="no" encoding="utf-8"/>
 
 <xsl:variable name="title-to-id-src">ABCDEFGHIJKLMNOPQRSTUVWXYZ ,$:()-*?</xsl:variable>
@@ -2167,6 +2225,45 @@
 <em><xsl:apply-templates /></em>
 </xsl:template>
 
+<!-- The collection of input device operations -->
+<!-- FIXME: Enforce the keys before mouse? -->
+<xsl:template match="input">
+<xsl:apply-templates />
+</xsl:template>
+
+<xsl:template match="key|mouse">
+<!-- Using style here may be supported by old RISC OS browsers -->
+<kbd style="border-width: 1; border-style: solid; padding: 3">
+    <xsl:variable name="name" select="@name"/>
+    <xsl:variable name="action" select="@action"/>
+    <xsl:variable name="key-name" select="document('')//localdb:key-name[@aname=$name]"/>
+    <xsl:variable name="input-action" select="document('')//localdb:input-action[@aname=$action]"/>
+
+    <xsl:if test="@repeat != '1'">
+        <xsl:value-of select="@repeat"/>
+        <xsl:text>x </xsl:text>
+    </xsl:if>
+
+        <xsl:choose>
+            <xsl:when test="$input-action/@prefix">
+                <xsl:value-of select="$input-action/@prefix"/>
+            </xsl:when>
+        </xsl:choose>
+        <xsl:choose>
+            <xsl:when test="$key-name/@label">
+                <xsl:value-of select="$key-name/@label"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="@name"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:choose>
+            <xsl:when test="$input-action/@suffix">
+                <xsl:value-of select="$input-action/@suffix"/>
+            </xsl:when>
+        </xsl:choose>
+</kbd>
+</xsl:template>
 <!-- Variable -->
 <xsl:template match="variable">
 <tt><xsl:apply-templates /></tt>

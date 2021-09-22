@@ -182,6 +182,7 @@ function generate_documents() {
     local name=$2
     local css=$3
     local html=${4:-html5}
+    echo "> Building documentation in $OUTPUTDIR/$name"
     sed -e "s!artifacts/output/!${OUTPUTDIR}/$name/!g ; s!css-variant='!css-variant='$css !g ; s!page-format='.*'!page-format='$html'!" "$srcindex" > "${TMPINDEX}"
     mkdir -p "${OUTPUTDIR}/logs-$name"
     riscos-prminxml -f index -L "${OUTPUTDIR}/logs-$name" "${TMPINDEX}"
