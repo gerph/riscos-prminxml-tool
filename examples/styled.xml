@@ -13,6 +13,7 @@
     <item>User input: <userinput>I typed this</userinput></item>
     <item>System output: <systemoutput>The system responded with this</systemoutput></item>
     <item>Menu option: <menuoption>File</menuoption> <menuoption>Info</menuoption></item>
+    <item>Action button: <actionbutton>Continue</menuoption></item>
 </list>
 </p>
 </section>

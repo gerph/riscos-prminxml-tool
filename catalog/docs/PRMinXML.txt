@@ -589,6 +589,15 @@ menu option. Its representation in a transformation is undefined; it may be
 used only as an indexing entry.
 
 
+Element:    actionbutton
+Attributes: <none>
+Children:   (<text>)*
+
+The actionbutton is not represented in the PRMs. This element describes an
+button in the interface. Its representation in a transformation is undefined;
+it may be used only as an indexing entry.
+
+
 Element:    filename
 Attributes: <none>
 Children:   (<text> | userreplace)*
@@ -1365,3 +1374,4 @@ Changes from 1.02 to 1.03
 * syntax elements on vdu-definition are now expected to document the parameters
   to the definition, not the whole definition. This is in line with the use of
   syntax within the command-definition.
+* actionbutton element added to match the menuoption element.

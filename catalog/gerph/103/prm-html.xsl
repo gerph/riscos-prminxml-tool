@@ -2167,6 +2167,11 @@
 <em><xsl:apply-templates /></em>
 </xsl:template>
 
+<!-- Action button - a button in the interface that the user might interact with -->
+<xsl:template match="actionbutton">
+<em><xsl:apply-templates /></em>
+</xsl:template>
+
 <!-- Variable -->
 <xsl:template match="variable">
 <tt><xsl:apply-templates /></tt>
