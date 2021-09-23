@@ -593,7 +593,7 @@ Element:    actionbutton
 Attributes: <none>
 Children:   (<text>)*
 
-The actionbutton is not represented in the PRMs. This element describes an
+The actionbutton is not represented in the PRMs. This element describes a
 button in the interface. Its representation in a transformation is undefined;
 it may be used only as an indexing entry.
 
