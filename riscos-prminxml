@@ -649,6 +649,10 @@ sub runcommand
         $need_restore = 1;
         $ENV{$envvar_catalog} = $catalog;
     }
+    else
+    {
+        print "WARNING: Falling back to system catalog / network resources as catalog not available ('$catalog' does not exist)\n";
+    }
 
     print "Command: $cmd\n" if ($debug);
     my $rc = system "$cmd";
