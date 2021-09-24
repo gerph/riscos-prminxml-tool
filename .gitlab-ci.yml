@@ -102,6 +102,15 @@ p:centos-8:
   tags:
     - linux
 
+p:debian-10:
+  image: debian:10
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
 
 
 #### Builds ####
