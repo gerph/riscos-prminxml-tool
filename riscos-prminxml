@@ -329,6 +329,7 @@ if ($format eq 'index')
     {
         $rc  = 1;
     }
+    unlink "$makefile";
 }
 else
 {
@@ -635,12 +636,25 @@ sub runcommand
     my $oldenv = $ENV{$envvar_catalog};
     # Use the catalog files that we supplied.
     my $need_restore = 0;
+    my $tmpsymlink = undef;
     my $catalog = "${resourcedir}${dirsep}root${extsep}xml";
     if (-f "$catalog") {
         # Only use the resource catalog if one is present; otherwise we'll fall back to the
         # system catalogs or fetching from the network if possible.
         $need_restore = 1;
         $ENV{$envvar_catalog} = $catalog;
+
+        if ($catalog =~ / / && !$riscos)
+        {
+            # The catalog directory contains a space. This would make it impossible for us to reference the
+            # XML catalog because the files used would be inaccessible due to the spaces in the path.
+            # However, we can get around this. We can create a temporary symlink which points to the resources
+            # directory. This would then allow us to use /that/ as the path, which had no spaces in.
+            $tmpsymlink = "$tempbase-res";
+            symlink "$resourcedir", "$tmpsymlink";
+            $ENV{$envvar_catalog} = "${tmpsymlink}${dirsep}root${extsep}xml";
+            print "Replaced catalog with ${tmpsymlink}${dirsep}root${extsep}xml\n" if ($debug);
+        }
     }
     else
     {
@@ -659,6 +673,10 @@ sub runcommand
         else {
             delete $ENV{$envvar_catalog};
         }
+    }
+    if ($tmpsymlink)
+    {
+        unlink $tmpsymlink;
     }
     return $rc;
 }
