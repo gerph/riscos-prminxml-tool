@@ -36,7 +36,6 @@ if [[ "$SYSTEM" = 'Darwin' ]] ; then
     DISTRO_RELEASE='unknown'
 else
     if [[ -f '/etc/lsb-release' ]] ; then
-        # Probably an Ubuntu or Debian
         DISTRO=$(source /etc/lsb-release ; echo $DISTRIB_ID | tr A-Z a-z)
         DISTRO_RELEASE=$(source /etc/lsb-release ; echo $DISTRIB_RELEASE)
     elif [[ -f '/etc/os-release' ]] ; then
@@ -225,6 +224,8 @@ if ! type -p prince >/dev/null 2>&1 && [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 ]] ;
 
             if [[ "$SYSTEM" = 'Linux' ]] ; then
                 # We also seem to need some libraries to be installed (there's no binary so this will just install)
+                :
+                bash
                 install_package libtiff5
                 install_package libgif7
                 install_package libpng16-16
