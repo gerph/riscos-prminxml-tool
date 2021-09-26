@@ -686,6 +686,8 @@
    <xsl:with-param name="where" select="." />
   </xsl:call-template>
 
+  <xsl:apply-templates select="declaration" />
+
   <xsl:apply-templates select="related" />
 
  </xsl:otherwise>
@@ -889,6 +891,8 @@
    <xsl:with-param name="where" select="." />
   </xsl:call-template>
 
+  <xsl:apply-templates select="declaration" />
+
   <xsl:apply-templates select="related" />
 
  </xsl:otherwise>
@@ -957,6 +961,8 @@
   <xsl:call-template name='definition-exit'/>
 
   <xsl:apply-templates select="use" />
+
+  <xsl:apply-templates select="declaration" />
 
   <xsl:apply-templates select="related" />
 

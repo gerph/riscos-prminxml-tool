@@ -140,6 +140,12 @@ Send a linefeed to the printer stream, if enabled
 <p>What this SWI is used for.</p>
 </use>
 
+<declaration type="prototype">
+<extended-example type='c'>
+_kernel_oserror *Module_SWIName(int reason, int *return_value);
+</extended-example>
+</declaration>
+
 <related>
     <reference type="swi" name="Module_SWIName" />
 </related>
@@ -249,6 +255,21 @@ Send a linefeed to the printer stream, if enabled
 
 <p>Why this message is sent, and what it means to receive it.</p>
 </use>
+
+<declaration type="prototype">
+<extended-example type='c'>
+typedef struct {
+  wimp_msghdr hdr;
+  wimp_w w;
+  wimp_i i;
+  int x;
+  int y;
+  int estsize;
+  int type;
+  char leaf[212];
+} message_datasave;
+</extended-example>
+</declaration>
 
 <related>
   <reference type="message" name="MyModuleAction" />

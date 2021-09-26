@@ -13,9 +13,16 @@
 #
 # For example running this script with:
 #
-#   PRIMCEXML_I_HAVE_A_LICENSE=1 ./build.sh
+#   PRINCEXML_I_HAVE_A_LICENSE=1 ./build.sh
 #
 # Consult the PrinceXML documentation for license details.
+#
+# Supported operating systems:
+#
+#   macOS
+#   Ubuntu Linux (18.04-21.04)
+#   Centos (7 and 8)
+#   Debian (10)
 #
 
 set -e
@@ -23,6 +30,26 @@ set -o pipefail
 
 PRINCE_VERSION=14.2
 SYSTEM="$(uname -s)"
+
+if [[ "$SYSTEM" = 'Darwin' ]] ; then
+    DISTRO="macOS"
+    DISTRO_RELEASE='unknown'
+else
+    if [[ -f '/etc/lsb-release' ]] ; then
+        # Probably an Ubuntu or Debian
+        DISTRO=$(source /etc/lsb-release ; echo $DISTRIB_ID | tr A-Z a-z)
+        DISTRO_RELEASE=$(source /etc/lsb-release ; echo $DISTRIB_RELEASE)
+    elif [[ -f '/etc/os-release' ]] ; then
+        DISTRO=$(source /etc/os-release ; echo $ID)
+        DISTRO_RELEASE=$(source /etc/os-release ; echo $VERSION_ID)
+    else
+        echo "Unrecognised Linux version" >&2
+        exit 1
+    fi
+
+    # DISTRO = centos | ubuntu
+    # DISTRO_RELEASE = 6, 7, 8 for centos; 18.04 for ubuntu
+fi
 
 
 scriptdir="$(cd "$(dirname "$0")" && pwd -P)"
@@ -60,7 +87,12 @@ function update_packages() {
         true
     else
         if [[ "${SYSTEM}" = 'Linux' ]] ; then
-            run_root apt-get update
+            if [[ "${DISTRO}" = 'centos' ]] ; then
+                # No update for yum on centos
+                true
+            else
+                run_root apt-get update
+            fi
             package_indexed=true
         else
             echo "Cannot update packages list on ${SYSTEM}" >&2
@@ -83,7 +115,32 @@ function install_package() {
             exit 1
         elif [[ "${SYSTEM}" = 'Linux' ]] ; then
             # I'm assuming this is Ubuntu
-            update_packages && run_root apt-get install -y "$install_pkg"
+            if [[ "${DISTRO}" = 'centos' ]] ; then
+                # No update for yum on centos
+                # Translations for the packages we use:
+                if [[ "$install_pkg" = 'xsltproc' ]] ; then
+                    install_pkg=libxslt
+                elif [[ "$install_pkg" = 'libtiff5' ]] ; then
+                    install_pkg=libtiff
+                elif [[ "$install_pkg" = 'libpng16-16' ]] ; then
+                    install_pkg=libpng
+                elif [[ "$install_pkg" = 'liblcms2-2' ]] ; then
+                    install_pkg=lcms2
+                elif [[ "$install_pkg" = 'libfontconfig1' ]] ; then
+                    install_pkg=fontconfig
+                elif [[ "$install_pkg" = 'libgif7' ]] ; then
+                    install_pkg=giflib
+                elif [[ "$install_pkg" = 'libcurl4' ]] ; then
+                    if [[ "${DISTRO_RELEASE}" = 8 ]] ; then
+                        install_pkg=libcurl-minimal
+                    else
+                        install_pkg=libcurl
+                    fi
+                fi
+                update_packages && run_root yum install -y "$install_pkg"
+            else
+                update_packages && run_root env DEBIAN_FRONTEND="noninteractive" apt-get install -y "$install_pkg"
+            fi
         else
             echo "Cannot install $pkg on ${SYSTEM}" >&2
             exit 1
@@ -96,44 +153,43 @@ function install_package() {
 
 install_package wget
 install_package perl
-install_package git
 install_package xsltproc
 install_package xmllint libxml2-utils
 install_package make
 
 
 # We always want to use the tool from the parent directory.
-export PATH="${scriptdir}/..:$PATH"
+export PATH="$(dirname "${scriptdir}"):$PATH"
 
 
 if ! type -p prince >/dev/null 2>&1 && [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 ]] ; then
     # princexml isn't installed, so we need to get a version.
-    prince_install="${scriptdir}/prince-install-$PRINCE_VERSION"
+    prince_install="${scriptdir}/prince-install-$PRINCE_VERSION-$DISTRO-$DISTRO_RELEASE"
     if [[ ! -d "$prince_install" ]] ; then
-        echo +++ Obtaining prince
+        echo "+++ Obtaining prince"
         if [[ "$SYSTEM" = 'Darwin' ]] ; then
             url="https://www.princexml.com/download/prince-$PRINCE_VERSION-macos.zip"
             extract_dir="prince-${PRINCE_VERSION}-macos"
             ext="zip"
         elif [[ "$SYSTEM" = 'Linux' ]] ; then
-            if [[ -f /etc/lsb-release ]] ; then
-                source /etc/lsb-release
-                # I'm assuming this is Ubuntu and that it's amd64.
-                url="https://www.princexml.com/download/prince-$PRINCE_VERSION-ubuntu${DISTRIB_RELEASE}-amd64.tar.gz"
-                extract_dir="prince-${PRINCE_VERSION}-ubuntu${DISTRIB_RELEASE}-amd64"
-                ext="tar.gz"
-
-                # We also seem to need some libraries to be installed (there's no binary so this will just install)
-                install_package libtiff5
-                install_package libgif7
-                install_package libpng16-16
-                install_package liblcms2-2
-                install_package libcurl4
-                install_package libfontconfig1
-            else
-                echo "Unrecognised Linux version" >&2
-                exit 1
+            # I'm assuming this is amd64.
+            PRINCE_DISTRO_RELEASE=${DISTRO_RELEASE}
+            if [[ "$DISTRO" = 'ubuntu' ]] ; then
+                if [[ "$DISTRO_RELEASE" =~ 20.10|21.04|21.10 ]] ; then
+                    PRINCE_DISTRO_RELEASE=20.04
+                elif [[ "$DISTRO_RELEASE" =~ 18.10|19.04|19.10 ]] ; then
+                    PRINCE_DISTRO_RELEASE=18.04
+                fi
+                # FIXME: Determine the actual architecture
+                PRINCE_ARCH='amd64'
+            elif [[ "$DISTRO" = 'debian' ]] ; then
+                PRINCE_ARCH='amd64'
+            elif [[ "$DISTRO" = 'centos' ]] ; then
+                PRINCE_ARCH='x86_64'
             fi
+            url="https://www.princexml.com/download/prince-$PRINCE_VERSION-${DISTRO}${PRINCE_DISTRO_RELEASE}-${PRINCE_ARCH}.tar.gz"
+            extract_dir="prince-${PRINCE_VERSION}-${DISTRO}${PRINCE_DISTRO_RELEASE}-${PRINCE_ARCH}"
+            ext="tar.gz"
         else
             echo "Unrecognised OS" >&2
             exit 1
@@ -141,34 +197,59 @@ if ! type -p prince >/dev/null 2>&1 && [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 ]] ;
 
         # Download the prince installation
         archive="/tmp/prince-${PRINCE_VERSION}.${ext}"
-        wget -q -O "${archive}" "$url"
-        # Now extract it.
-        if [[ "${ext}" = 'zip' ]] ; then
-            unzip "${archive}"
+        wget -q -O "${archive}" "$url" || echo "Could not obtain Prince from $url" >&2
+        if [[ ! -f "${archive}" ]] ; then
+            echo "Cannot use PrinceXML: Disabling"
+            export PRINCEXML_I_HAVE_A_LICENSE=
         else
-            tar zxvf "${archive}"
+            # Now extract it.
+            if [[ "${ext}" = 'zip' ]] ; then
+                unzip "${archive}"
+            else
+                tar zxvf "${archive}"
+            fi
+
+            # Install it into our temporary directory
+            echo | "${extract_dir}/install.sh" "${prince_install}"
+
+            # Clean up
+            rm "$archive"
+            rm -rf "$extract_dir"
         fi
-
-        # Install it into our temporary directory
-        echo | "${extract_dir}/install.sh" "${prince_install}"
-
-        # Clean up
-        rm "$archive"
-        rm -rf "$extract_dir"
     fi
-    export PATH="${prince_install}/bin:$PATH"
+
+    if [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 ]] ; then
+        export PATH="${prince_install}/bin:$PATH"
+        # Check if we have a working prince installation
+        if ! prince --version > /dev/null 2>&1 ; then
+
+            if [[ "$SYSTEM" = 'Linux' ]] ; then
+                # We also seem to need some libraries to be installed (there's no binary so this will just install)
+                install_package libtiff5
+                install_package libgif7
+                install_package libpng16-16
+                install_package liblcms2-2
+                install_package libcurl4
+                install_package libfontconfig1
+            fi
+        fi
+    fi
 fi
 
 
-echo Environment now set up...
+echo
+echo "+++ Environment configured..."
+echo 'riscos-prminxml can be found at:' $(which riscos-prminxml)
 riscos-prminxml --version
+xmllint --version
+xsltproc --version
 
 if [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 ]] ; then
     prince --version
 fi
 
-
-echo Run the examples build...
+echo
+echo "+++ Run the examples build..."
 
 cd "${scriptdir}/.."
 OUTPUTDIR="test-output"
@@ -182,9 +263,11 @@ function generate_documents() {
     local name=$2
     local css=$3
     local html=${4:-html5}
+    local catalog=103
+    echo "- Building documents in ${OUTPUTDIR}/$name"
     sed -e "s!artifacts/output/!${OUTPUTDIR}/$name/!g ; s!css-variant='!css-variant='$css !g ; s!page-format='.*'!page-format='$html'!" "$srcindex" > "${TMPINDEX}"
     mkdir -p "${OUTPUTDIR}/logs-$name"
-    riscos-prminxml -f index -L "${OUTPUTDIR}/logs-$name" "${TMPINDEX}"
+    riscos-prminxml --catalog $catalog -f index -L "${OUTPUTDIR}/logs-$name" "${TMPINDEX}"
     if [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 ]] ; then
         ( cd "${OUTPUTDIR}/$name/html" &&
           prince --verbose -o "..//examples.pdf" -l filelist.txt )
@@ -195,3 +278,4 @@ generate_documents "examples/index.xml" examples-regular ""
 generate_documents "examples/index.xml" examples-prm "prm body-fraunces heading-raleway webfont-fraunces webfont-raleway"
 generate_documents "examples/index.xml" examples-prm-ro2 "prm prm-ro2 body-fraunces heading-raleway webfont-fraunces webfont-raleway"
 generate_documents "examples/index.xml" examples-unstyled "" "html"
+generate_documents "examples/index.xml" examples-102 "" "html" "102"
