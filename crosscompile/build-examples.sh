@@ -182,9 +182,10 @@ function generate_documents() {
     local name=$2
     local css=$3
     local html=${4:-html5}
+    local catalog=103
     sed -e "s!artifacts/output/!${OUTPUTDIR}/$name/!g ; s!css-variant='!css-variant='$css !g ; s!page-format='.*'!page-format='$html'!" "$srcindex" > "${TMPINDEX}"
     mkdir -p "${OUTPUTDIR}/logs-$name"
-    riscos-prminxml -f index -L "${OUTPUTDIR}/logs-$name" "${TMPINDEX}"
+    riscos-prminxml --catalog $catalog -f index -L "${OUTPUTDIR}/logs-$name" "${TMPINDEX}"
     if [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 ]] ; then
         ( cd "${OUTPUTDIR}/$name/html" &&
           prince --verbose -o "..//examples.pdf" -l filelist.txt )
@@ -195,3 +196,4 @@ generate_documents "examples/index.xml" examples-regular ""
 generate_documents "examples/index.xml" examples-prm "prm body-fraunces heading-raleway webfont-fraunces webfont-raleway"
 generate_documents "examples/index.xml" examples-prm-ro2 "prm prm-ro2 body-fraunces heading-raleway webfont-fraunces webfont-raleway"
 generate_documents "examples/index.xml" examples-unstyled "" "html"
+generate_documents "examples/index.xml" examples-102 "" "html" "102"

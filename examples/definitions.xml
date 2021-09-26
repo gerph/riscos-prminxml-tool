@@ -250,6 +250,13 @@ Send a linefeed to the printer stream, if enabled
 <p>Why this message is sent, and what it means to receive it.</p>
 </use>
 
+<declaration type="prototype">
+typedef struct
+{
+  ToolboxEventHeader hdr;
+} MyModuleAction;
+</declaration>
+
 <related>
   <reference type="message" name="MyModuleAction" />
 </related>
