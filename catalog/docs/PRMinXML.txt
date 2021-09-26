@@ -836,7 +836,7 @@ the PRMs provide.
 Element:    swi-definition
 Attributes: name, number, offset, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, related?)
+Children:   (entry?, exit?, use, declaration?, related?)
 
 name: the full name of this SWI, eg OS_Module
 number: (optional) the number of this SWI in hex
@@ -945,6 +945,32 @@ other details relevant to its use which are not part of the overall component
 structure as described in the Technical Details.
 
 
+Element:    example
+Attributes: <none>
+Children:   (p | command | systemoutput | br)*
+
+The example element is used to enclose code or execution examples within a
+definition. The element can be repeated within the definition to give
+multiple unrelated examples.
+
+Examples might be command line execution, or short sections of code which
+use the definition.
+
+
+Element:    declaration
+Attributes: type
+Children:   (code | extended-example)*
+
+type: usage type for the declaration, with the following types defined:
+      'unknown' - should be used when the other types do not apply
+      'prototype' - should be used for C prototypes for functions
+      'structure' - should be used for C structure declarations
+
+The declaration element is used to describe an interface to a definition
+within a common library. It should give a short example of the declaration
+as a code element, or a longer one with the extended-example element.
+
+
 Element:    related
 Attributes: <none>
 Children:   (reference)*
@@ -962,7 +988,7 @@ section to provide links.
 Element:    vector-definition
 Attributes: name, number, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, related?)
+Children:   (entry?, exit?, use, declaration?, related?)
 
 name: the full name of this vector, eg ColourV
 number: the number of this vector in hex
@@ -989,7 +1015,7 @@ is used to describe the standard RISC OS vectors.
 Element:    entry-definition
 Attributes: name, number, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, related)
+Children:   (entry?, exit?, use, declaration?, related)
 
 name: the full name of this code, eg FileEntry_MiscOp
 number: the number of this entry, if applicable, in hex
@@ -1017,7 +1043,7 @@ such as callbacks.
 Element:    service-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, related)
+Children:   (entry, exit, use, declaration?, related)
 
 name: the name of this service, eg ShutDown
 number: the number of this entry, if applicable, in hex
@@ -1038,7 +1064,7 @@ prefixed by 'Service_' to indicate its lineage.
 Element:    upcall-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, related)
+Children:   (entry, exit, use, declaration?, related)
 
 name: the name of this UpCall, eg FileModified
 number: the number of this entry, if applicable, in hex
@@ -1084,7 +1110,7 @@ errors that may be returned from a call.
 Element:    message-definition
 Attributes: name, number, description, source, destination,
             recorded, broadcast
-Children:   (message-table, use, related)
+Children:   (message-table, use, declaration?, related)
 
 name: the name of this message, eg DataOpen
 description: one sentence description of the function provided by this
@@ -1114,7 +1140,7 @@ element is described in the Data structures section.
 
 Element:    tboxmessage-definition
 Attributes: name, number, description
-Children:   (message-table, use, related)
+Children:   (message-table, use, declaration?, related)
 
 name: the name of this message, eg ColourMenu_HasBeenHidden
 description: one sentence description of the function provided by this
@@ -1128,7 +1154,7 @@ is always the Toolbox and the destination is always your task.
 Element:    tboxmethod-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, related)
+Children:   (entry, exit, use, declaration?, related)
 
 name: the name of this service, eg ColourMenu_SetTitle
 number: the number of this entry, if applicable, in hex
@@ -1365,3 +1391,7 @@ Changes from 1.02 to 1.03
 * syntax elements on vdu-definition are now expected to document the parameters
   to the definition, not the whole definition. This is in line with the use of
   syntax within the command-definition.
+* All code-like and message-like definitions now allow the use of the
+  declaration element to describe the declarations in C for that definition.
+  Declaration was introduced in 1.02 but not documented.
+
