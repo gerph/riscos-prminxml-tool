@@ -44,6 +44,63 @@ test-examples:
     - linux
 
 
+# A collection of tests for different platforms
+p:ubuntu-18.04:
+  image: ubuntu:18.04
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+p:ubuntu-21.04:
+  image: ubuntu:21.04
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+p:ubuntu-20.04:
+  image: ubuntu:20.04
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+p:centos-7:
+  image: centos:7
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+p:centos-8:
+  image: centos:8
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+p:debian-10:
+  image: debian:10
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+
+
 #### Exports ####
 export-linux:
   <<: *common-cross
@@ -76,5 +133,6 @@ export-macos:
 stages:
 # - build
   - test
+  - platforms
   - export-cross
 #  - build-riscos

@@ -133,7 +133,7 @@
     reasonname CDATA #IMPLIED
 >
 <!-- Entry-point definition is similar to SWI definition -->
-<!ELEMENT entry-definition ((entry?, exit?, use, (example)*, related)?)>
+<!ELEMENT entry-definition ((entry?, exit?, use, (example)*, declaration?, related)?)>
 <!ATTLIST entry-definition
     name CDATA #REQUIRED
     number CDATA #IMPLIED
@@ -147,7 +147,7 @@
     reasonname CDATA #IMPLIED
 >
 <!-- Service definition is similarly complex -->
-<!ELEMENT service-definition (entry, exit, use, (example)*, related)>
+<!ELEMENT service-definition (entry, exit, use, (example)*, declaration?, related)>
 <!ATTLIST service-definition
     name CDATA #REQUIRED
     number CDATA #REQUIRED
@@ -157,7 +157,7 @@
     reasonname CDATA #IMPLIED
 >
 <!-- Upcall definition is similarly complex -->
-<!ELEMENT upcall-definition (entry, exit, use, (example)*, related)>
+<!ELEMENT upcall-definition (entry, exit, use, (example)*, declaration?, related)>
 <!ATTLIST upcall-definition
     name CDATA #REQUIRED
     number CDATA #REQUIRED
@@ -191,7 +191,7 @@
     description CDATA #REQUIRED
 >
 <!-- Message definition is vaguely complex -->
-<!ELEMENT message-definition ((message-table | value-table)?, use, related?)>
+<!ELEMENT message-definition ((message-table | value-table)?, use, declaration?, related?)>
 <!ATTLIST message-definition
     name CDATA #REQUIRED
     number CDATA #REQUIRED
