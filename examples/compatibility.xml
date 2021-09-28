@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.03//EN"
+                            "http://gerph.org/dtd/103/prm.dtd">
+
+<riscos-prm>
+<chapter title="Compatibility examples">
+<section title="Introduction">
+<p>
+Examples of compatibility elements.
+</p>
+<p>
+    <fixme> Block examples </fixme>
+</p>
+</section>
+
+<section title="SWIs">
+<swi-definition name="DDEUtils_Prefix"
+                number="90210"
+                description="Sets up the prefix for a context"
+                irqs="undefined"
+                fiqs="enabled"
+                processor-mode="SVC"
+                re-entrant="no">
+
+<entry>
+ <register-use number="1">Register details</register-use>
+</entry>
+<exit>
+ <register-use number="0">Possible return values:
+  <value-table>
+   <value number="0">Some important value</value>
+   <value number="1">Another value</value>
+  </value-table>
+ </register-use>
+</exit>
+
+<use>
+<p>What this SWI is used for.</p>
+</use>
+
+<compatibility>
+    <version supplier='Cy Booker'>Supported, but only for a limited set
+        of filing system calls</version>
+    <version supplier='Justin Fletcher'>Supported, but only for a limited
+        set of filing system calls.</version>
+    <version supplier='Acorn'>Supported, but only for a limited set of
+        filing system versions and does not apply to the
+        Run$Path</version>
+    <version supplier='RISC OS Ltd'>Supported as for Acorn, but also
+        supports changing directories updating the prefix
+        directory.</version>
+</compatibility>
+
+<related>
+    <reference type="swi" name="Module_SWIName" />
+</related>
+
+</swi-definition>
+
+</section>
+
+</chapter>
+
+<!-- MetaData -->
+<meta>
+ <maintainer>
+  <email name="Gerph" address="gerph@gerph.org" />
+ </maintainer>
+ <disclaimer>
+    <p>
+        &copy; Gerph, 2021.
+    </p>
+ </disclaimer>
+
+ <history>
+  <revision number="1" author="Gerph" date="28 Sep 2021" title="Initial version">
+    <change>Examples of the declaration of different version usage.</change>
+  </revision>
+ </history>
+</meta>
+</riscos-prm>

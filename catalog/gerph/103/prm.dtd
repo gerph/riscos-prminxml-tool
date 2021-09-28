@@ -294,6 +294,20 @@
 <!ATTLIST declaration
         type (unknown | prototype | structure) "unknown">
 
+<!-- Compatibility/version elements -->
+<!ELEMENT compatibility (version)*>
+<!ELEMENT version (#PCDATA | p)*>
+<!ATTLIST version
+        module-name     CDATA #IMPLIED
+        module-lt       CDATA #IMPLIED
+        module-ge       CDATA #IMPLIED
+        riscos-lt       CDATA #IMPLIED
+        riscos-ge       CDATA #IMPLIED
+        supplier        CDATA #IMPLIED
+        hardware        CDATA #IMPLIED
+        architecture    (arch32 | aarch64 | x64) "arch32"
+        state           (supported | unsupported | content) "content"
+>
 
 <!-- User input - something that the user might type
      Should really be text or userreplace -->

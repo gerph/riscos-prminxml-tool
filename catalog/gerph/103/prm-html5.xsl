@@ -478,6 +478,119 @@
 </xsl:template>
 
 
+<xsl:template match="compatibility">
+<xsl:choose>
+ <xsl:when test="count(*) = 0">
+    <!-- No compatibility block, so no need to do anything -->
+ </xsl:when>
+ <xsl:otherwise>
+  <section class='definition definition-compatibility'>
+    <xsl:apply-templates/>
+  </section>
+ </xsl:otherwise>
+</xsl:choose>
+</xsl:template>
+
+
+<xsl:template match="version">
+    <!-- FIXME: Not all attributes supported
+Attributes:
+
+    module-name: The name of a module within which this version applies
+    (defaults to not saying the module, assuming to be the one documented in
+    the chapter)
+
+    module-lt: The documentation details versions up to the version
+    given.
+
+    module-ge: The documentation details versions after the version given.
+
+    riscos-lt: The documentation details versions of the OS up to the
+    version given.
+
+    riscos-ge: The documentation details versions of the OS after the
+    version given.
+
+    supplier: Qualifies the supplier of the component (RISC OS/module),
+    eg to discuss RISC OS Ltd versions, RISC OS Open versions, RISC OS Direct
+    versions (for the OS), or the supplier of a module, eg in the case of
+    different hardwar manufacturers of some modules (like Joystick).
+
+    hardware: Qualifies the behaviour on a given hardware.
+
+    architecture: Describes the processor architectures to which it applies (defaulting to AArch32) as a comma separated list of aarch32, aarch64, x64 (include python for Pyromaniac?).
+
+    state: 'supported', 'unsupported' or 'content' ('content' is the
+    default, and includes any content)
+ -->
+    <div>
+        <xsl:attribute name='class'>
+            <xsl:text>version</xsl:text>
+            <!-- programatic attributes? -->
+        </xsl:attribute>
+
+        <span class='version-qualifiers'>
+            <xsl:if test='@supplier'>
+                <span class='version-supplier'>
+                    <xsl:value-of select="@supplier"/>
+                </span>
+            </xsl:if>
+
+            <xsl:if test='@hardware'>
+                <span class='version-hardware'>
+                    <xsl:value-of select="@hardware"/>
+                </span>
+            </xsl:if>
+
+            <xsl:if test='@architecture'>
+                <span class='version-architecture'>
+                    <xsl:value-of select="@architecture"/>
+                </span>
+            </xsl:if>
+
+            <xsl:if test='@module-name or @module-lt or @module-gt'>
+                <span class='version-module'>
+                    <span class='version-module-name'>
+                        <xsl:value-of select="@module-name"/>
+                    </span>
+                    <span class='version-module-lt'>
+                        <xsl:value-of select="@module-lt"/>
+                    </span>
+                    <span class='version-module-ge'>
+                        <xsl:value-of select="@module-ge"/>
+                    </span>
+                </span>
+            </xsl:if>
+
+            <xsl:if test='@riscos-lt or @riscos-gt'>
+                <span class='version-riscos'>
+                    <span class='version-riscos-lt'>
+                        <xsl:value-of select="@riscos-lt"/>
+                    </span>
+                    <span class='version-riscos-ge'>
+                        <xsl:value-of select="@riscos-ge"/>
+                    </span>
+                </span>
+            </xsl:if>
+        </span>
+
+        <xsl:choose>
+            <xsl:when test='@state = "content"'>
+                <span class='version-content'>
+                    <xsl:apply-templates/>
+                </span>
+            </xsl:when>
+
+            <xsl:otherwise>
+                <span class='version-content version-state-{@state}'>
+                    <xsl:value-of select='@state'/>
+                </span>
+            </xsl:otherwise>
+        </xsl:choose>
+    </div>
+</xsl:template>
+
+
 <xsl:template match="related">
 <div class='definition-related'>
 <xsl:choose>
@@ -638,6 +751,8 @@
   <xsl:call-template name='definition-reentrancy'/>
 
   <xsl:apply-templates select="use" />
+
+  <xsl:apply-templates select='compatibility'/>
 
   <xsl:call-template name="examples-block">
    <xsl:with-param name="where" select="." />

@@ -183,6 +183,9 @@ section.definition::before {
 .definition-declarations::before {
   content: 'Declarations';
 }
+.definition-compatibility::before {
+  content: 'Compatibility';
+}
 .definition-examples::before {
   content: 'Examples';
 }
@@ -292,6 +295,38 @@ table {
 }
 .table-body .table-value.table-value-bitstate {
     text-align: right;
+}
+
+.version-qualifiers {
+    font-style: italic;
+    display: block;
+}
+.version-supplier {
+    margin-right: 1em;
+}
+.version-module-name {
+    margin-right: 1em;
+}
+.version-module-lt {
+    margin-right: 1em;
+}
+.version-module-gt {
+    margin-right: 1em;
+}
+.version-riscos-lt {
+    margin-right: 1em;
+}
+.version-riscos-gt {
+    margin-right: 1em;
+}
+.version-hardware {
+    margin-right: 1em;
+}
+.version-architecture {
+    margin-right: 1em;
+}
+.version-content {
+    padding-left: 2em;
 }
 
 .userreplace {
