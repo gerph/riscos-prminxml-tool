@@ -842,7 +842,7 @@ name: the full name of this SWI, eg OS_Module
 number: (optional) the number of this SWI in hex
 offset: (optional) the offset of this SWI from a given base
 offset-base: (optional) the name of base for this SWI offset
-reason: (optional) the reason code for this SWI, eg 7
+reason: (optional) the reason code for this SWI in decimal, eg 7
 reasonname: (optional) the name of this reason code as a capitalised name,
        without spaces, eg FreeBlock
 description: one sentence description of the function provided by this
@@ -992,7 +992,7 @@ Children:   (entry?, exit?, use, declaration?, related?)
 
 name: the full name of this vector, eg ColourV
 number: the number of this vector in hex
-reason: (optional) the reason code for this vector, eg 2
+reason: (optional) the reason code for this vector in decimal, eg 2
 reasonname: (optional) the name of this reason code as a capitalised name
       without spaces, eg FreeBlock
 description: one sentence description of the function provided by this
@@ -1019,7 +1019,7 @@ Children:   (entry?, exit?, use, declaration?, related)
 
 name: the full name of this code, eg FileEntry_MiscOp
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point, eg 23
+reason: (optional) the reason code for this entry point in decimal, eg 23
 reasonname: (optional) the name of this reason code as a capitalised name
       without spaces, eg MountAlienSpaceship
 description: one sentence description of the function provided by this
@@ -1047,7 +1047,7 @@ Children:   (entry, exit, use, declaration?, related)
 
 name: the name of this service, eg ShutDown
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point, eg 2
+reason: (optional) the reason code for this service in decimal, eg 2
 reasonname: (optional) the name of this reason code as a capitalised name
             without spaces, eg Intialising
 description: one sentence description of the function provided by this
@@ -1068,7 +1068,7 @@ Children:   (entry, exit, use, declaration?, related)
 
 name: the name of this UpCall, eg FileModified
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point, eg 257
+reason: (optional) the reason code for this UpCall in decimal, eg 257
 reasonname: (optional) the name of this reason code as a capitalised name
             without spaces, eg Renaming
 description: one sentence description of the function provided by this
@@ -1158,7 +1158,7 @@ Children:   (entry, exit, use, declaration?, related)
 
 name: the name of this service, eg ColourMenu_SetTitle
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point, eg 2
+reason: (optional) the reason code for this method in decimal, eg 2
 reasonname: (optional) the name of this reason code as a capitalised name
             without spaces, eg Intialising
 description: one sentence description of the function provided by this
