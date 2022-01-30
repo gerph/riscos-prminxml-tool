@@ -394,6 +394,16 @@ img {
     max-width: 100%;
 }
 
+/* Strong emphasis is in bold, regular emphasis is in italic */
+strong {
+    font-style: normal;
+    font-weight: bold;
+}
+em {
+    font-style: italic;
+    font-weight: normal;
+}
+
 .fixme {
     display: inline-block;
     border-radius: 4px;
@@ -1538,10 +1548,14 @@ section.indexed-section h2 + section.indexed-section h2 {
 }
 
 
-/* Strong emphasis is in italic, not bold, it seems */
+/* Strong emphasis is in italic, regular emphasis is in bold */
 strong {
     font-style: italic;
     font-weight: normal;
+}
+em {
+    font-style: normal;
+    font-weight: bold;
 }
 
 
