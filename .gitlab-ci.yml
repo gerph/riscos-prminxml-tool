@@ -32,6 +32,26 @@ variables:
 #        - artifacts/results.xml
 
 
+# Test by running this on build.riscos.online
+# Note: This only runs some simple tests - it doesn't build the examples.
+p:riscos:
+  stage: platforms
+  script:
+    - |
+      # Ensure we have the RISC OS bits downloaded and usable
+      crosscompile/download-binaries.sh
+
+      # Zip up the source to send to robuild
+      zip -q9r /tmp/source-archive.zip riscos-bits ROTest,feb .robuild.yaml
+
+      # Fetch the build client
+      curl -s -L -o riscos-build-online https://github.com/gerph/robuild-client/releases/download/v0.05/riscos-build-online && chmod +x riscos-build-online
+
+      # Send the archive file to build service
+      # Note: This is being sent directly to the back end to avoid the gateway that times out at 10 minutes.
+      ./riscos-build-online -i /tmp/source-archive.zip -a off -o /tmp/built
+
+      # If it didn't report an error, the test was successful.
 #### Builds ####
 build-linux:
   <<: *common-cross
