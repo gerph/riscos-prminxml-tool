@@ -8,10 +8,7 @@
 version_xslt=v1.41/LibXSLT-1.41.zip
 version_xml2=v1.41/LibXML2-1.41.zip
 
-perl_bin=~/projects/RO/commands/riscos-source/Sources/BuildUtils/Perl/aif32/perl,ff8
-
-# How we configured the virtualenv
-version_venv=1
+perlbin=~/projects/RO/commands/riscos-source/Sources/BuildUtils/Perl/aif32/perl,ff8
 
 set -eo pipefail
 
@@ -32,19 +29,8 @@ if [[ ! -f "${download_xml2}" ]] ; then
     wget -O "${download_xml2}" "https://github.com/gerph/libxml2/releases/download/${version_xml2}"
 fi
 
-# Set up virtualenv
-venv_key_expect="$(echo "$version_xslt $version_xml2 $version_venv" | md5sum | cut -d' ' -f1)"
-venv_key_actual="$([ -f "$venvdir/key" ] && cat "$venvdir/key" || true)"
-
-if [[ "${venv_key_actual}" != "${venv_key_expect}" ]] ; then
-    echo rm -rf "${venvdir}"
-
-    virtualenv -p python2 "${venvdir}"
-    source "${venvdir}/bin/activate"
-    pip install rozipinfo
-    echo "$venv_key_expect" > "$venvdir/key"
-    deactivate
-fi
+eval "$("${scriptdir}/ci-vars")"
+source "${scriptdir}/setup-venv.sh"
 
 # obtain a perl, if we have one (not needed when run under build service)
 if [[ -f "${perlbin}" ]] ; then
@@ -53,18 +39,17 @@ fi
 
 # Extract them
 source "${venvdir}/bin/activate"
-python -m rozipfile --chdir "${downloaddir}" --extract "${download_xml2}"
-python -m rozipfile --chdir "${downloaddir}" --extract "${download_xslt}"
+riscos-unzip --chdir "${downloaddir}" "${download_xml2}"
+riscos-unzip --chdir "${downloaddir}" "${download_xslt}"
 
 # We don't need the libraries
 rm -rf "${downloaddir}/Lib"
 
 # Put our tool in the top level
-cp "${rootdir}/riscos-prminxml" "${downloaddir}/riscos-prminxml.pl"
+"${scriptdir}/build-riscos-tool.sh" "${downloaddir}"
 
 # Put the examples in there
 cp -R "${rootdir}/examples" "${downloaddir}/examples"
 
 # Put the !Install tool in there
-cp -R "${rootdir}/catalog" "${downloaddir}/"
 cp "${rootdir}/Resources/!Install,feb" "${downloaddir}/"

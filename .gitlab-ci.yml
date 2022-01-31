@@ -86,6 +86,10 @@ p:centos-8:
   stage: platforms
   needs: ['test-examples']
   script:
+    - echo "Fixing up centos 8 being EOL'd"
+    - for i in /etc/yum.repos.d/* ; do sed -i 's/mirrorlist/#mirrorlist/' $i ; done
+    - for i in /etc/yum.repos.d/* ; do sed -i 's!#baseurl=http://mirror.!baseurl=http://vault.!' $i ; done
+    - echo "Now building"
     - crosscompile/build-examples.sh
   tags:
     - linux
@@ -107,7 +111,7 @@ p:riscos:
   script:
     - |
       # Ensure we have the RISC OS bits downloaded and usable
-      crosscompile/download-binaries.sh
+      crosscompile/setup-riscos-tests.sh
 
       # Zip up the source to send to robuild
       zip -q9r /tmp/source-archive.zip riscos-bits ROTest,feb .robuild.yaml
@@ -116,7 +120,6 @@ p:riscos:
       curl -s -L -o riscos-build-online https://github.com/gerph/robuild-client/releases/download/v0.05/riscos-build-online && chmod +x riscos-build-online
 
       # Send the archive file to build service
-      # Note: This is being sent directly to the back end to avoid the gateway that times out at 10 minutes.
       ./riscos-build-online -i /tmp/source-archive.zip -a off -o /tmp/built
 
       # If it didn't report an error, the test was successful.
@@ -138,6 +141,17 @@ export-macos:
   script:
     - if [ "$CI_COMMIT_BRANCH" = 'master' ] ; then upload=--upload ; else upload= ; fi
     - ci/build.sh native install ${upload}
+  tags:
+    - macos
+
+export-riscos:
+  <<: *common-cross
+  stage: export-cross
+  script:
+    # Ensure we have the RISC OS bits downloaded and usable
+    - mkdir -p artifacts
+    - eval "$(crosscompile/ci-vars)"
+    - crosscompile/build-riscos-archive.sh artifacts/prminxml-${CI_BRANCH_VERSION:-UNKNOWN}.zip
   tags:
     - macos
 

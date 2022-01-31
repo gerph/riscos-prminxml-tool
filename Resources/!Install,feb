@@ -1,9 +1,9 @@
 | Install the PRMinXML files inside the !Catalog resource
 
-copy <Obey$Dir>.catalog.docs <XMLCatalog$Dir>.PRMinXML-docs ~C~VR
-copy <Obey$Dir>.catalog.gerph <XMLCatalog$Dir>.gerph ~C~VR
-copy <Obey$Dir>.catalog.oasis <XMLCatalog$Dir>.oasis ~C~VR
-copy <Obey$Dir>.catalog.riscos <XMLCatalog$Dir>.riscos ~C~VR
+copy <Obey$Dir>.riscos-prminxml.catalog.docs <XMLCatalog$Dir>.PRMinXML-docs ~C~VR
+copy <Obey$Dir>.riscos-prminxml.catalog.gerph <XMLCatalog$Dir>.gerph ~C~VR
+copy <Obey$Dir>.riscos-prminxml.catalog.oasis <XMLCatalog$Dir>.oasis ~C~VR
+copy <Obey$Dir>.riscos-prminxml.catalog.riscos <XMLCatalog$Dir>.riscos ~C~VR
 
 | FIXME: These don't work yet
 |xmlcatalog --noout --add rewriteSystem http://www.movspclr.co.uk/dtd/ file:///%3CXMLCatalog$Dir%3E/gerph/ <XMLCatalog$Dir>.root/xml
