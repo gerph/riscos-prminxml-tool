@@ -13,12 +13,12 @@ If "<Sys$ReturnCode>" <> 0 Then Error Bad return code (from xmllint)
 | Check that we can run the riscos-prminxml tool and it recognise the local catalogs
 echo +++ Checking PRMinXML tool version
 dir <TestBits$Dir>
-perl riscos-prminxml/pl --version
+/riscos-prminxml --version
 
 | Check the tool conversion works
 echo +++ Checking conversion tool
 remove tables/html
-perl riscos-prminxml/pl --debug -f html examples.tables/xml
+/riscos-prminxml --debug -f html examples.tables/xml
 If "<Sys$ReturnCode>" <> 0 Then Error Bad return code (from riscos-prminxml/pl)
 IfThere tables/html Then Echo Created OK Else Error File 'tables/html' was not created properly
 

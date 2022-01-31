@@ -1,0 +1,4 @@
+| Run the RISC OS prminxml tool.
+
+WimpSlot -min 1024K
+perl <Obey$Dir>.riscos-prminxml/pl %*0
