@@ -60,10 +60,8 @@ rm -rf "${downloaddir}/Lib"
 # Put our tool in the top level
 "${scriptdir}/build-riscos-tool.sh" "${downloaddir}"
 
-# Put the examples in there (only if they are present)
-if [[ -d "${rootdir}/examples" ]] ; then
-    cp -R "${rootdir}/examples" "${downloaddir}/examples"
-fi
+# Put the examples in there
+cp -R "${rootdir}/examples" "${downloaddir}/examples"
 
 # Put the !Install tool in there
 cp "${rootdir}/Resources/!Install,feb" "${downloaddir}/"
