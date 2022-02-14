@@ -21,7 +21,12 @@ version=${CI_BRANCH_VERSION:-VERSION}
 mkdir -p "${install_dir}/riscos-prminxml"
 
 # Perl filetype is &102
-sed "s/VERSION/$version/" "${rootdir}/riscos-prminxml" > "${install_dir}/riscos-prminxml/riscos-prminxml.pl,102"
+if [[ -f "${rootdir}/process.pl" ]] ; then
+    tool_file="${rootdir}/process.pl"
+else
+    tool_file="${rootdir}/riscos-prminxml"
+fi
+sed "s/VERSION/$version/" "${tool_file}" > "${install_dir}/riscos-prminxml/riscos-prminxml.pl,102"
 cp -R "${rootdir}/catalog" "${install_dir}/riscos-prminxml/catalog"
 cp -R "${rootdir}/Resources/!Run,feb" "${install_dir}/riscos-prminxml/!Run,feb"
 

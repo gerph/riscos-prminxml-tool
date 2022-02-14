@@ -19,14 +19,26 @@ downloaddir="${rootdir}/riscos-bits"
 
 mkdir -p "$downloaddir"
 
+function download() {
+    local output=$1
+    local url=$2
+    if wget -V >/dev/null 2>&1 ; then
+        # We have wget.
+        wget -O "$output" "$url"
+    else
+        # We don't have wget, so try curl
+        curl --location --output "$output" "$url"
+    fi
+}
+
 # Download the RISC OS tools
 download_xslt="${downloaddir}/$(basename "$version_xslt")"
 download_xml2="${downloaddir}/$(basename "$version_xml2")"
 if [[ ! -f "${download_xslt}" ]] ; then
-    wget -O "${download_xslt}" "https://github.com/gerph/libxslt/releases/download/${version_xslt}"
+    download "${download_xslt}" "https://github.com/gerph/libxslt/releases/download/${version_xslt}"
 fi
 if [[ ! -f "${download_xml2}" ]] ; then
-    wget -O "${download_xml2}" "https://github.com/gerph/libxml2/releases/download/${version_xml2}"
+    download "${download_xml2}" "https://github.com/gerph/libxml2/releases/download/${version_xml2}"
 fi
 
 eval "$("${scriptdir}/ci-vars")"
@@ -48,8 +60,10 @@ rm -rf "${downloaddir}/Lib"
 # Put our tool in the top level
 "${scriptdir}/build-riscos-tool.sh" "${downloaddir}"
 
-# Put the examples in there
-cp -R "${rootdir}/examples" "${downloaddir}/examples"
+# Put the examples in there (only if they are present)
+if [[ -d "${rootdir}/examples" ]] ; then
+    cp -R "${rootdir}/examples" "${downloaddir}/examples"
+fi
 
 # Put the !Install tool in there
 cp "${rootdir}/Resources/!Install,feb" "${downloaddir}/"
