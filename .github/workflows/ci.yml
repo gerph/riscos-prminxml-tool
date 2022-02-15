@@ -1,0 +1,122 @@
+---
+# Building the tools for RISC OS (and other platforms)
+#
+
+name: RISC OS
+
+# Controls when the action will run. Triggers the workflow on:
+#   * push on any branch.
+#   * tag creation for tags beginning with a 'v'
+on:
+  push:
+    branches: ["*"]
+    tags: ["v*"]
+  # Pull request events happen on pull request state transitions, so we probably don't want this here.
+  #pull_request:
+  #  branches: ["*"]
+
+jobs:
+  test-riscos:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-20.04
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Install required packages
+        run: |
+          sudo apt-get install -y python2 virtualenv
+
+      - name: Test through build.riscos.online
+        run: |
+          # Ensure we have the RISC OS bits downloaded and usable
+          crosscompile/setup-riscos-tests.sh
+
+          # Zip up the source to send to robuild
+          zip -q9r /tmp/source-archive.zip riscos-bits ROTest,feb .robuild.yaml
+
+          # Fetch the build client
+          curl -s -L -o riscos-build-online https://github.com/gerph/robuild-client/releases/download/v0.05/riscos-build-online && chmod +x riscos-build-online
+
+          # Send the archive file to build service
+          ./riscos-build-online -i /tmp/source-archive.zip -a off -o /tmp/built
+
+          # If it didn't report an error, the test was successful.
+
+  export-riscos:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-20.04
+    needs: test-riscos
+
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      leafname: ${{ steps.version.outputs.leafname }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Install required packages
+        run: |
+          sudo apt-get install -y python2 virtualenv
+
+      - name: Give the output a versioned name
+        id: version
+        run: |
+          eval "$(crosscompile/ci-vars)"
+          version="${CI_BRANCH_VERSION}"
+          echo "This is version: $version"
+          leafname="PRMinXML-$version.zip"
+          echo "::set-output name=version::$version"
+          echo "::set-output name=leafname::$leafname"
+
+      - name: Build through build.riscos.online
+        run: |
+          mkdir -p artifacts
+          crosscompile/build-riscos-archive.sh ${{ steps.version.outputs.leafname }}
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: RISCOS-build
+          path: ${{ steps.version.outputs.leafname }}
+        # The artifact that is downloadable from the Actions is actually a zip of the artifacts
+        # that we supply. So it will be a regular Zip file containing a RISC OS Zip file.
+
+  # The release only triggers when the thing that was pushed was a tag starting with 'v'
+  release:
+    needs: export-riscos
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Download built binary
+        uses: actions/download-artifact@v1
+        with:
+          name: RISCOS-build
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ needs.export-riscos.outputs.version }}
+          draft: true
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`.
+          # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: RISCOS-build/${{ needs.export-riscos.outputs.leafname }}
+          asset_name: ${{ needs.export-riscos.outputs.leafname }}
+          asset_content_type: application/zip
