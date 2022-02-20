@@ -17,22 +17,25 @@ tables, with a HTML 5/CSS transformation coming in later versions.
 The tool, `riscos-prminxml`, is a Perl script intended to be used to process
 XML files into other formats without installation.
 
-## Installation
+## Installation on RISC OS
 
-The release archives contain the tool ready to be installed into your `PATH` (on posix
-systems) or on `Run$Path` (on RISC OS systems).
+The release archives contain the tool ready to be installed into your `PATH` (on POSIX
+systems) or on `Run$Path` (on RISC OS systems). The tool requires Perl 5 on later to
+function.
 
 ## Usage
 
-The tool contains help on the tool's use. However, the most common usage of the tool
+The tool contains help on the its usage. However, the most common usage of the tool
 (on a POSIX-like system) would be something like:
 
     riscos-prminxml myfile.xml
 
 which will generate a file `myfile.html`, after transforming the content.
 
-On RISC OS, the command would be called `riscos-prminxml` would be used, and filenames
-will be in RISC OS format.
+On RISC OS, the tool would be placed into the library, and filenames will be in
+RISC OS format, for example:
+
+    riscos-prminxml myfile/xml
 
 The tool can be used to generate skeleton documents from which you can begin processing
 content:
