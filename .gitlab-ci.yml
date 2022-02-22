@@ -123,6 +123,9 @@ p:riscos:
       ./riscos-build-online -i /tmp/source-archive.zip -a off -o /tmp/built
 
       # If it didn't report an error, the test was successful.
+  tags:
+    - linux
+
 
 #### Exports ####
 export-linux:
