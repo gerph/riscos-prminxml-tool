@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-20.04
     container: ubuntu:18.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Build examples
         run: |
@@ -42,10 +42,11 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu:18.04", "ubuntu:20.04", "ubuntu:21.04", "centos:7", "centos:8", "debian:10"]
+        #os: ["ubuntu:18.04"]
     container: ${{ matrix.os }}
     needs: test-examples #  always run after the baseline tests
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Prerequisites for CentOS 8
         if: matrix.os == 'centos:8'
@@ -66,7 +67,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install required packages
         run: |
@@ -93,7 +94,9 @@ jobs:
     needs: ["test-riscos", "test-platforms"]
     container: ubuntu:18.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Prerequisites
         run: |
@@ -122,7 +125,9 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Install required packages
         run: |
@@ -171,6 +176,8 @@ jobs:
       - name: Archive the contents of the POSIX version
         run: |
           cd Tool-POSIX
+          # For some reason, the executable flag has been lost on the tool.
+          chmod +x riscos-prminxml
           tar zcvf ../PRMinXML-${{ needs.export-riscos.outputs.version }}.tar.gz *
 
       - name: Create Release
