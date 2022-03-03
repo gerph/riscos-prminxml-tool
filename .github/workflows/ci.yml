@@ -33,7 +33,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: Example-output
+          name: Test-Output
           path: test-output
 
   # Tests for different platforms
@@ -172,6 +172,11 @@ jobs:
         with:
           name: Tool-POSIX
 
+      - name: Download built binary (tests)
+        uses: actions/download-artifact@v1
+        with:
+          name: Test-Output
+
       # RISC OS version is already archived in a RISC OS archive format.
       - name: Archive the contents of the POSIX version
         run: |
@@ -179,6 +184,13 @@ jobs:
           # For some reason, the executable flag has been lost on the tool.
           chmod +x riscos-prminxml
           tar zcvf ../PRMinXML-${{ needs.export-riscos.outputs.version }}.tar.gz *
+
+      - name: Archive the contents of the Test output
+        run: |
+          cd Test-Output
+          # We use zip here because most people using these tools will be RISC OS users
+          # and zip is more friendly to them.
+          zip ../TestOutput-${{ needs.export-riscos.outputs.version }}.zip *
 
       - name: Create Release
         id: create_release
@@ -216,3 +228,16 @@ jobs:
           asset_path: PRMinXML-${{ needs.export-riscos.outputs.version }}.tar.gz
           asset_name: POSIX-PRMinXML-${{ needs.export-riscos.outputs.version }}.tar.gz
           asset_content_type: application/gzip
+
+      - name: Upload Release Asset (Test output)
+        id: upload-release-asset-test-output
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`.
+          # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: TestOutput-${{ needs.export-riscos.outputs.version }}.zip
+          asset_name: Example-Output-${{ needs.export-riscos.outputs.version }}.zip
+          asset_content_type: application/zip
