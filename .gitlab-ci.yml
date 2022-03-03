@@ -33,25 +33,13 @@ variables:
 #        - artifacts/results.xml
 
 
-# Test by running this on build.riscos.online
-# Note: This only runs some simple tests - it doesn't build the examples.
-p:riscos:
-  stage: platforms
+#### Test examples
+test-examples:
+  <<: *common-cross
+  stage: test
   script:
-    - |
-      # Ensure we have the RISC OS bits downloaded and usable
-      crosscompile/setup-riscos-tests.sh
-
-      # Zip up the source to send to robuild
-      zip -q9r /tmp/source-archive.zip riscos-bits ROTest,feb .robuild.yaml
-
-      # Fetch the build client
-      curl -s -L -o riscos-build-online https://github.com/gerph/robuild-client/releases/download/v0.05/riscos-build-online && chmod +x riscos-build-online
-
-      # Send the archive file to build service
-      ./riscos-build-online -i /tmp/source-archive.zip -a off -o /tmp/built
-
-      # If it didn't report an error, the test was successful.
+    # Build the examples first, as if it fails we'll then not upload the results.
+    - crosscompile/build-examples.sh
   tags:
     - linux
 
@@ -135,15 +123,16 @@ p:riscos:
       ./riscos-build-online -i /tmp/source-archive.zip -a off -o /tmp/built
 
       # If it didn't report an error, the test was successful.
+  tags:
+    - linux
 
-#### Builds ####
+
+#### Exports ####
 export-linux:
   <<: *common-cross
   stage: export-cross
   script:
-    # Build the examples first, as if it fails we'll then not upload the results.
-    - crosscompile/build-examples.sh
-    # Now build and upload the binary to Artifactory.
+    # Build and upload the binary to Artifactory.
     - if [ "$CI_COMMIT_BRANCH" = 'master' ] ; then upload=--upload ; else upload= ; fi
     - ci/build.sh native install ${upload}
   tags:
@@ -179,7 +168,8 @@ export-riscos:
 
 #### Stages to execute ####
 stages:
-#  - export
+# - build
+  - test
   - platforms
   - export-cross
 #  - build-riscos

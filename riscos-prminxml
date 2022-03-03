@@ -1032,13 +1032,13 @@ The 'dirs' element describes where content should be read and written to:
 The 'options' element describes some settings for the index build:
 
     hide-empty:     'yes' or 'no': whether pages without a href will
-                    be omitted
+                    be omitted from the contents.
     include-source: 'yes' or 'no': whether source XML files will be
-                    linked in the index (they'll always be copied).
+                    linked in the index (they will always be copied).
     make-contents:  'yes' or 'no': whether the contents with inline
                     section details will be generated. This allows
                     you to see the indexed elements inline with the
-                    contents. It's not especially useful in reality.
+                    contents. It's not especially useful.
 
 The 'make-index' elements describe which parts of the indexes will
 be included in the output.

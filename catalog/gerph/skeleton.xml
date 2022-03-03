@@ -24,7 +24,7 @@ This section is a brief introduction to what the component does.
     <subsubsection title="SubSubSection title">
         <p />
         <category title="Category title">
-            <p>'category' is not a 'sub-sub-sub-section' for two reasons:
+            <p>'category' is not a 'sub-sub-sub-section' for a few reasons:
                 <list>
                     <item>It's a bit of a mouthful</item>
                     <item>It is used in the PRM to break up blocks of text into alternative topics (rather than to introduce new topics which is what the subsections do)</item>
