@@ -92,7 +92,6 @@ jobs:
   export-posix:
     runs-on: ubuntu-20.04
     needs: ["test-riscos", "test-platforms"]
-    container: ubuntu:18.04
     steps:
       - uses: actions/checkout@v3
         with:
@@ -100,13 +99,15 @@ jobs:
 
       - name: Prerequisites
         run: |
-          apt-get update && apt-get install -y git make
+          sudo apt-get update && sudo apt-get install -y git make
 
       - name: Build release
         run: |
           set -e
+          eval "$(crosscompile/ci-vars)"
           cd crosscompile
           make cross_install ROTOOL_DIR=../artifacts
+          ../artifacts/riscos-prminxml --version
 
       - uses: actions/upload-artifact@v2
         with:
@@ -146,6 +147,7 @@ jobs:
       - name: Build through build.riscos.online
         run: |
           mkdir -p artifacts
+          eval "$(crosscompile/ci-vars)"
           crosscompile/build-riscos-archive.sh ${{ steps.version.outputs.leafname }}
 
       - uses: actions/upload-artifact@v2
