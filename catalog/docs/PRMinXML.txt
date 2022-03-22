@@ -66,7 +66,7 @@ to ensure they understand any issues that the transformation has raised.
 When locating faults, the transformation will display an XPath like description
 of the fault location. This can take one of two forms (depending on the
 configuration of the stylesheet). The first of these forms is the simple
-index form, eg :
+index form, for example :
 
 Message definition for Window_Info not found at
    /riscos-prm/chapter/section[2]/subsection[2]/subsubsection[3]/category[5]/p/list/item[3]/reference.
@@ -79,7 +79,7 @@ Message definition for Window_Info not found at
    /
    riscos-prm/
    chapter[@title='Pinboard']/
-   section[@title='Technical Details']/
+   section[@title='Technical details']/
    subsection[@title='The iconise protocol']/
    subsubsection[@title='Shift held down when the close tool of a window is clicked']/
    category[@title='New application']/
@@ -834,21 +834,20 @@ the PRMs provide.
 
 
 Element:    swi-definition
-Attributes: name, number, offset, reason, reasonname,
+Attributes: name, number, offset, offset-base, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, declaration?, related?)
+Children:   (entry?, exit?, use, (example)*, declaration?, related?)
 
-name: the full name of this SWI, eg OS_Module
+name: the full name of this SWI; for example 'OS_Module'
 number: (optional) the number of this SWI in hex
 offset: (optional) the offset of this SWI from a given base
 offset-base: (optional) the name of base for this SWI offset
-reason: (optional) the reason code for this SWI in decimal, eg 7
-        if a sub-reason code is required then it should be separated with 
-        comma and a space. e.g as '7, 1'
+reason: (optional) the reason code for this SWI in decimal.
+        If a sub-reason code is required, it should be separated with a
+        comma; for example '127,1'
 reasonname: (optional) the name of this reason code as a capitalised name,
-       without spaces, eg FreeBlock
-description: one sentence description of the function provided by this
-             SWI
+       without spaces; for example 'FreeBlock'
+description: one sentence description of the function provided by this SWI
 internal: 'yes' if this is an internal SWI (all other content will be
           ignored)
 irqs: state of IRQs during this call, usually 'enabled', 'disabled', or
@@ -944,18 +943,16 @@ Children:   <text>
 
 The use element describes how the definition functions, its effect and any
 other details relevant to its use which are not part of the overall component
-structure as described in the Technical Details.
+structure as described in the Technical details.
 
 
 Element:    example
 Attributes: <none>
 Children:   (p | command | systemoutput | br)*
 
-The example element is used to enclose code or execution examples within a
 definition. The element can be repeated within the definition to give
 multiple unrelated examples.
 
-Examples might be command line execution, or short sections of code which
 use the definition.
 
 
@@ -963,14 +960,9 @@ Element:    declaration
 Attributes: type
 Children:   (code | extended-example)*
 
-type: usage type for the declaration, with the following types defined:
-      'unknown' - should be used when the other types do not apply
       'prototype' - should be used for C prototypes for functions
       'structure' - should be used for C structure declarations
 
-The declaration element is used to describe an interface to a definition
-within a common library. It should give a short example of the declaration
-as a code element, or a longer one with the extended-example element.
 
 
 Element:    related
@@ -990,13 +982,15 @@ section to provide links.
 Element:    vector-definition
 Attributes: name, number, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, declaration?, related?)
+Children:   (entry?, exit?, use, declaration?, (example)*, related?)
 
-name: the full name of this vector, eg ColourV
+name: the full name of this vector; for example 'ColourV'
 number: the number of this vector in hex
-reason: (optional) the reason code for this vector in decimal, eg 2
+reason: (optional) the reason code for this vector in decimal.
+        If a sub-reason code is required, it should be separated with a
+        comma; for example '127,1'
 reasonname: (optional) the name of this reason code as a capitalised name
-      without spaces, eg FreeBlock
+      without spaces; for example 'OutputBufferEmpty'
 description: one sentence description of the function provided by this
              vector
 internal: 'yes' if this is an internal vector (all other content will be
@@ -1017,13 +1011,13 @@ is used to describe the standard RISC OS vectors.
 Element:    entry-definition
 Attributes: name, number, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, declaration?, related)
+Children:   (entry?, exit?, use, declaration?, (example)*, related)
 
-name: the full name of this code, eg FileEntry_MiscOp
+name: the full name of this code; for example 'FileEntry_MiscOp'
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point in decimal, eg 23
+reason: (optional) the reason code for this entry point in decimal.
 reasonname: (optional) the name of this reason code as a capitalised name
-      without spaces, eg MountAlienSpaceship
+      without spaces; for example 'MountAlienSpaceship'
 description: one sentence description of the function provided by this
              code
 internal: 'yes' if this is an internal entry (all other content will be
@@ -1045,13 +1039,15 @@ such as callbacks.
 Element:    service-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, declaration?, related)
+Children:   (entry, exit, use, declaration?, (example)*, related)
 
-name: the name of this service, eg ShutDown
+name: the name of this service; for example 'ShutDown'
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this service in decimal, eg 2
+reason: (optional) the reason code for this service in decimal.
+        If a sub-reason code is required, it should be separated with a
+        comma; for example '127,1'
 reasonname: (optional) the name of this reason code as a capitalised name
-            without spaces, eg Intialising
+            without spaces; for example 'Intialising'
 description: one sentence description of the function provided by this
              service
 internal: 'yes' if this is an internal service (all other content will be
@@ -1066,13 +1062,15 @@ prefixed by 'Service_' to indicate its lineage.
 Element:    upcall-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, declaration?, related)
+Children:   (entry, exit, use, declaration?, (example)*, related)
 
-name: the name of this UpCall, eg FileModified
+name: the name of this UpCall; for example 'FileModified'
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point, eg 257
+reason: (optional) the reason code for this entry point in decimal.
+        If a sub-reason code is required, it should be separated with a
+        comma; for example '127,1'
 reasonname: (optional) the name of this reason code as a capitalised name
-            without spaces, eg Renaming
+            without spaces; for example 'Renaming'
 description: one sentence description of the function provided by this
              upcall
 internal: 'yes' if this is an internal upcall (all other content will be
@@ -1086,9 +1084,9 @@ to indicate its lineage.
 
 Element:    sysvar-definition
 Attributes: name, description
-Children:   (use, related)
+Children:   (use, example?, related)
 
-name: the full name of this system variable, eg System$Path
+name: the full name of this system variable; for example 'System$Path'
 description: one sentence description of the function provided by this
              system variable
 
@@ -1101,7 +1099,7 @@ Attributes: number, name, description
 Children:   (use, related)
 
 number: the number of this error in hex
-name: the symbolic name of this error, eg BadPathVariable
+name: the symbolic name of this error for example 'BadPathVariable'
 description: one sentence description of the function provided by this
              system variable
 
@@ -1114,7 +1112,7 @@ Attributes: name, number, description, source, destination,
             recorded, broadcast
 Children:   (message-table, use, declaration?, related)
 
-name: the name of this message, eg DataOpen
+name: the name of this message; for example 'DataOpen'
 description: one sentence description of the function provided by this
              message
 source: the name of the task, or group of tasks that send this message,
@@ -1144,7 +1142,7 @@ Element:    tboxmessage-definition
 Attributes: name, number, description
 Children:   (message-table, use, declaration?, related)
 
-name: the name of this message, eg ColourMenu_HasBeenHidden
+name: the name of this message; for example 'ColourMenu_HasBeenHidden'
 description: one sentence description of the function provided by this
              message
 
@@ -1156,13 +1154,13 @@ is always the Toolbox and the destination is always your task.
 Element:    tboxmethod-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, declaration?, related)
+Children:   (entry, exit, use, declaration?, (example)*, related)
 
-name: the name of this service, eg ColourMenu_SetTitle
+name: the name of this service; for example 'ColourMenu_SetTitle'
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this toolbox method in decimal, eg 2
+reason: (optional) the reason code for this toolbox method in decimal.
 reasonname: (optional) the name of this reason code as a capitalised name
-            without spaces, eg Intialising
+            without spaces; for example 'Intialising'
 description: one sentence description of the function provided by this
              service
 internal: 'yes' if this is an internal service (all other content will be
@@ -1175,7 +1173,7 @@ Element:    command-definition
 Attributes: name, description
 Children:   ((syntax)*, (parameter)*, use, (example)*, related)
 
-name: the name of this command, eg DataOpen
+name: the name of this command; for example 'DataOpen'
 description: one sentence description of the function provided by this
              command
 
@@ -1189,7 +1187,7 @@ Element:    vdu-definition
 Attributes: name, number, description
 Children:   ((syntax)*, (parameter)*, use, (example)*, related)
 
-name: the name of this command, eg DataOpen
+name: the name of this command; for example DataOpen
 description: one sentence description of the function provided by this
              command
 
