@@ -15,6 +15,11 @@ if [[ "${install_dir}" = '' ]] ; then
     exit 1
 fi
 
+if [[ "$CI_BRANCH_VERSION" = '' ]] ; then
+    echo "ERROR: Cannot build the tool without the CI_BRANCH_VERSION variable (use ci-vars)" >&2
+    exit 1
+fi
+
 # Get the version we are building
 version=${CI_BRANCH_VERSION:-VERSION}
 
