@@ -672,6 +672,75 @@ element describes a system variable. Where the system variable can be
 indexed, we recommend you use <reference type="sysvar" ...>.
 
 
+Element:    input
+Attributes: <none>
+Children:   (key | mouse)*
+
+The input element contains a sequence of input device actions. The two
+input device actions currently supported, key and mouse, may be placed
+within this element to describe an actions sequence.
+
+
+Element:    key
+Attributes: name, repeat, action
+Children:   <none>
+
+name: the name of the keyboard button which is being activated. The
+      standard named keys may be used, in lower case. Regular keys
+      may also be used but will not be translated to the presentation
+      format. Standard key names:
+        shift       ctrl        alt         meta        fn
+        up          down        left        right       pageup
+        pagedown    backspace   tab         return      escape
+        enter       insert      delete      home        end
+        copy        print       break       capslock    scrolllock
+        numlock     space
+        f1          f2          f3          f4          f5
+        f6          f7          f8          f9          f10
+        f11         f12
+repeat: number of repetitions, which may be 1 (the default), 2, 3 or
+      4. Higher numbers of repetitions should be explained manually.
+action: the action which the user performs. Named actions should be
+      used:
+        click       press       release     hold
+
+The key element is used to represent a key action (such as a key
+press and release) which is performed by the user. The keys are given
+standard names so that they may be transformed appropriately by
+stylesheets for a given presentational style. Capitalised strings
+should be used for the names of special buttons, or standard letter
+keys.
+
+
+Element:    mouse
+Attributes: name, repeat, action
+Children:   <none>
+
+name: the name of the mouse input which is being activated. The
+      standard named buttons may be used, in lower case. Additional
+      buttons should be described in upper case. Standard button
+      names:
+        select      menu        adjust
+        scrollwheel
+repeat: number of repetitions, which may be 1 (the default), 2, 3 or
+      4. Higher numbers of repetitions should be explained manually.
+action: the action which the user performs. Named actions should be
+      used:
+        click       press       release     hold        drag
+        up          down        left        right
+
+The mouse element is used to present a mouse action which is being
+performed by the user. The standard RISC OS names should be used
+where possible - the physical position of the buttons should only
+be used when describing a translation between other operating
+systems and uses, or the specific behaviour of a given mouse
+driver.
+
+The scrollwheel name is intended for use when describing the actions
+of the scroll wheel which may be horizontal or vertical. The actions
+should be the direction that the scroll wheel is moved.
+
+
 Data structures
 ---------------
 
@@ -1394,4 +1463,6 @@ Changes from 1.02 to 1.03
 * All code-like and message-like definitions now allow the use of the
   declaration element to describe the declarations in C for that definition.
   Declaration was introduced in 1.02 but not documented.
+* input, key and mouse elements are now available, which allow the representation
+  of sequences of keyboard and mouse actions.
 
