@@ -1068,8 +1068,8 @@ irqs: state of IRQs during this call, usually 'enabled', 'disabled', or
       'undefined'
 fiqs: state of FIQs during this call, usually 'enabled', 'disabled', or
       'undefined'
-processor-mode: processor mode for the duration of this call, 'SVC', 'USR'
-      or 'undefined'
+processor-mode: processor mode for the duration of this call, 'SVC', 'USR',
+      'IRQ' or 'undefined'
 re-entrant: whether this call is re-entrant or not, 'undefined', 'yes',
       or 'no'
 
@@ -1465,4 +1465,5 @@ Changes from 1.02 to 1.03
   Declaration was introduced in 1.02 but not documented.
 * input, key and mouse elements are now available, which allow the representation
   of sequences of keyboard and mouse actions.
+* vector-definitions can now have processor mode IRQ.
 
