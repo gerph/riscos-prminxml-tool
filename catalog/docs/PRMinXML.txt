@@ -1465,4 +1465,4 @@ Changes from 1.02 to 1.03
   Declaration was introduced in 1.02 but not documented.
 * input, key and mouse elements are now available, which allow the representation
   of sequences of keyboard and mouse actions.
-
+* Entity &ellipsis; can now be used for a '...' sequence as a character.
