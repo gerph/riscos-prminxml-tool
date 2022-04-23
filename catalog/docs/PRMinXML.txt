@@ -821,28 +821,31 @@ element.
 
 
 Element:    offset-table
-Attributes: head-number, head-name, head-value
+Attributes: head-number, head-name, head-data-size, head-value
 Children:   (offset)*
 
 head-number: (optional) a heading for the number field
 head-name: (optional) a heading for the name field
+head-data-size: (optional) a heading for the data-size field
 head-value: (optional) a heading for the value field (the body of the
             element)
 
 The offset-table element is conventionally represented as a table of offsets
-and their meanings. Usually the table is headed by 'offset' and 'contents'
-(and possibly 'name' where name values are given). Where heading values are
-given, these will be used to provide further indication of the fields.
+and their meanings. Usually the table is headed by 'offset' and 'contents'.
+There may also be columns to name the offset, and to give the size of the data.
+Where heading values are given, these will be used to provide further
+indication of the fields.
 Whilst it is possible to subvert the meaning of the offset-table by changing
 these headings, this should only be done with care.
 
 
 Element:    offset
-Attributes: number, name
+Attributes: number, data-size, name
 Children:   <text>
 
 number: the offset, or a range of offsets separated by a hyphen.
 name: (optional) a name to assign to this offset (or range of offsets).
+data-size: (optional) a width to use for the field, in bytes.
 
 An offset is an element of a offset-table, describing the meaning of one or
 more offsets into a structure. Usually it is represented as a component of a
@@ -862,11 +865,12 @@ offsets into a message block and their meanings. The table is headed by
 
 
 Element:    message
-Attributes: offset, name
+Attributes: offset, data-size, name
 Children:   <text>
 
 offset: the offset, or a range of offsets separated by a hyphen.
 name: (optional) a name to assign to this offset (or range of offsets).
+data-size: (optional) a width to use for the field, in bytes.
 
 A message is an element of a message-table, describing the meaning of one or
 more offsets into a message block. Usually it is represented as a component
@@ -1465,4 +1469,6 @@ Changes from 1.02 to 1.03
   Declaration was introduced in 1.02 but not documented.
 * input, key and mouse elements are now available, which allow the representation
   of sequences of keyboard and mouse actions.
+* offset and message elements now have optional data-size attributes.
+  offset-table now allows a head-data-size to describe this column.
 

@@ -208,6 +208,7 @@
 <!ELEMENT message ANY>
 <!ATTLIST message
     offset CDATA #REQUIRED
+    data-size CDATA #IMPLIED
     name CDATA #IMPLIED
 >
 <!-- Toolbox message definition has a similar structure -->
@@ -255,11 +256,13 @@
 <!ATTLIST offset-table
     head-number CDATA "Offset"
     head-name CDATA #IMPLIED
+    head-data-size CDATA #IMPLIED
     head-value CDATA "Contents"
 >
 <!ELEMENT offset ANY>
 <!ATTLIST offset
     number CDATA #REQUIRED
+    data-size CDATA #IMPLIED
     name CDATA #IMPLIED
 >
 <!-- Command syntax -->

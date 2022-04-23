@@ -1646,7 +1646,7 @@
 </tr>
 </xsl:template>
 
-<!-- An offset table is similar to the value-table -->
+<!-- An offset table is similar to the value-table, but includes widths -->
 <xsl:template match="offset-table">
 <xsl:variable name="head-name">
   <xsl:choose>
@@ -1654,9 +1654,18 @@
     <xsl:when test="count(offset/@name)>0"><xsl:text>Name</xsl:text></xsl:when>
   </xsl:choose>
 </xsl:variable>
+<xsl:variable name="head-size">
+  <xsl:choose>
+    <xsl:when test="@head-data-size != ''"><xsl:value-of select="@head-data-size" /></xsl:when>
+    <xsl:when test="count(offset/@data-size)>0"><xsl:text>Size</xsl:text></xsl:when>
+  </xsl:choose>
+</xsl:variable>
 <table summary="Opaque table of offset/contents" border="0" cellspacing="8">
  <tr>
   <th align="right" valign="bottom"><xsl:value-of select="@head-number" /></th>
+  <xsl:if test="$head-size != ''">
+   <th align="right" valign="bottom"><xsl:value-of select="$head-size" /></th>
+  </xsl:if>
   <xsl:if test="$head-name != ''">
    <th align="left" valign="bottom"><xsl:value-of select="$head-name" /></th>
   </xsl:if>
@@ -1669,6 +1678,9 @@
 <xsl:template match="offset">
 <tr>
  <td valign="top" align="right">+<xsl:value-of select="@number"/></td>
+ <xsl:if test="../*/@data-size != ''">
+  <td valign="top" align="right"><xsl:value-of select="@data-size"/></td>
+ </xsl:if>
  <xsl:if test="../*/@name != ''">
   <td valign="top" align="left"><xsl:value-of select="@name"/></td>
  </xsl:if>
@@ -1683,6 +1695,9 @@
 <table summary="Opaque table for a wimp message block" border="0" cellspacing="8">
  <tr>
   <th align="right" valign="bottom">Offset</th>
+  <xsl:if test="count(message/@data-size) > 0">
+   <th align="right" valign="bottom">Size</th>
+  </xsl:if>
   <xsl:if test="count(message/@name) > 0">
    <th align="left" valign="bottom">Name</th>
   </xsl:if>
@@ -1695,6 +1710,9 @@
 <xsl:template match="message">
 <tr>
  <td valign="top" align="right">R1+<xsl:value-of select="@offset"/></td>
+ <xsl:if test="../*/@data-size != ''">
+  <td valign="top" align="right"><xsl:value-of select="@data-size"/></td>
+ </xsl:if>
  <xsl:if test="../*/@name != ''">
   <td valign="top" align="left"><xsl:value-of select="@name"/></td>
  </xsl:if>
