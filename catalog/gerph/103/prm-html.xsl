@@ -1702,6 +1702,49 @@
 </tr>
 </xsl:template>
 
+
+<!-- A definition table is a table of named definitions with headings (like a value table, but for labels)-->
+<xsl:template match="definition-table">
+<xsl:variable name="head-extra">
+  <xsl:choose>
+    <xsl:when test="@head-extra != ''"><xsl:value-of select="@head-extra" /></xsl:when>
+    <xsl:when test="count(value/@extra)>0"><xsl:text>Extra</xsl:text></xsl:when>
+  </xsl:choose>
+</xsl:variable>
+<table summary="Opaque table of extras" border="0" cellspacing="8">
+ <tr>
+  <th align="left" valign="bottom"><xsl:value-of select="@head-name" /></th>
+  <xsl:if test="$head-extra != ''">
+   <th align="left" valign="bottom"><xsl:value-of select="$head-extra" /></th>
+  </xsl:if>
+  <th align="left" valign="bottom"><xsl:value-of select="@head-value" /></th>
+ </tr>
+ <xsl:apply-templates/>
+</table>
+</xsl:template>
+
+<xsl:template match="definition">
+<tr>
+ <td valign="top" align="left"><xsl:value-of select="@name"/></td>
+ <xsl:if test="../*/@extra != ''">
+  <td valign="top" align="left"><xsl:value-of select="@extra"/></td>
+ </xsl:if>
+ <td valign="top" align="left">
+  <xsl:choose>
+   <xsl:when test="count(p) = 1">
+    <!-- Botch to stop tables looking shite on most browsers -->
+    <xsl:apply-templates select="p/*|p/text()"/>
+   </xsl:when>
+   <xsl:otherwise>
+    <xsl:apply-templates />
+   </xsl:otherwise>
+  </xsl:choose>
+ </td>
+</tr>
+</xsl:template>
+
+
+
 <xsl:template name="describepositionhelper">
 <xsl:param name = "where" />
 <xsl:if test="name($where) != name(/)">
