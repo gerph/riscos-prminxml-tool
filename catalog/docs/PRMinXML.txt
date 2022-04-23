@@ -66,7 +66,7 @@ to ensure they understand any issues that the transformation has raised.
 When locating faults, the transformation will display an XPath like description
 of the fault location. This can take one of two forms (depending on the
 configuration of the stylesheet). The first of these forms is the simple
-index form, eg :
+index form, for example :
 
 Message definition for Window_Info not found at
    /riscos-prm/chapter/section[2]/subsection[2]/subsubsection[3]/category[5]/p/list/item[3]/reference.
@@ -79,7 +79,7 @@ Message definition for Window_Info not found at
    /
    riscos-prm/
    chapter[@title='Pinboard']/
-   section[@title='Technical Details']/
+   section[@title='Technical details']/
    subsection[@title='The iconise protocol']/
    subsubsection[@title='Shift held down when the close tool of a window is clicked']/
    category[@title='New application']/
@@ -672,6 +672,75 @@ element describes a system variable. Where the system variable can be
 indexed, we recommend you use <reference type="sysvar" ...>.
 
 
+Element:    input
+Attributes: <none>
+Children:   (key | mouse)*
+
+The input element contains a sequence of input device actions. The two
+input device actions currently supported, key and mouse, may be placed
+within this element to describe an actions sequence.
+
+
+Element:    key
+Attributes: name, repeat, action
+Children:   <none>
+
+name: the name of the keyboard button which is being activated. The
+      standard named keys may be used, in lower case. Regular keys
+      may also be used but will not be translated to the presentation
+      format. Standard key names:
+        shift       ctrl        alt         meta        fn
+        up          down        left        right       pageup
+        pagedown    backspace   tab         return      escape
+        enter       insert      delete      home        end
+        copy        print       break       capslock    scrolllock
+        numlock     space
+        f1          f2          f3          f4          f5
+        f6          f7          f8          f9          f10
+        f11         f12
+repeat: number of repetitions, which may be 1 (the default), 2, 3 or
+      4. Higher numbers of repetitions should be explained manually.
+action: the action which the user performs. Named actions should be
+      used:
+        click       press       release     hold
+
+The key element is used to represent a key action (such as a key
+press and release) which is performed by the user. The keys are given
+standard names so that they may be transformed appropriately by
+stylesheets for a given presentational style. Capitalised strings
+should be used for the names of special buttons, or standard letter
+keys.
+
+
+Element:    mouse
+Attributes: name, repeat, action
+Children:   <none>
+
+name: the name of the mouse input which is being activated. The
+      standard named buttons may be used, in lower case. Additional
+      buttons should be described in upper case. Standard button
+      names:
+        select      menu        adjust
+        scrollwheel
+repeat: number of repetitions, which may be 1 (the default), 2, 3 or
+      4. Higher numbers of repetitions should be explained manually.
+action: the action which the user performs. Named actions should be
+      used:
+        click       press       release     hold        drag
+        up          down        left        right
+
+The mouse element is used to present a mouse action which is being
+performed by the user. The standard RISC OS names should be used
+where possible - the physical position of the buttons should only
+be used when describing a translation between other operating
+systems and uses, or the specific behaviour of a given mouse
+driver.
+
+The scrollwheel name is intended for use when describing the actions
+of the scroll wheel which may be horizontal or vertical. The actions
+should be the direction that the scroll wheel is moved.
+
+
 Data structures
 ---------------
 
@@ -834,19 +903,20 @@ the PRMs provide.
 
 
 Element:    swi-definition
-Attributes: name, number, offset, reason, reasonname,
+Attributes: name, number, offset, offset-base, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, related?)
+Children:   (entry?, exit?, use, (example)*, declaration?, related?)
 
-name: the full name of this SWI, eg OS_Module
+name: the full name of this SWI; for example 'OS_Module'
 number: (optional) the number of this SWI in hex
 offset: (optional) the offset of this SWI from a given base
 offset-base: (optional) the name of base for this SWI offset
-reason: (optional) the reason code for this SWI, eg 7
+reason: (optional) the reason code for this SWI in decimal.
+        If a sub-reason code is required, it should be separated with a
+        comma; for example '127,1'
 reasonname: (optional) the name of this reason code as a capitalised name,
-       without spaces, eg FreeBlock
-description: one sentence description of the function provided by this
-             SWI
+       without spaces; for example 'FreeBlock'
+description: one sentence description of the function provided by this SWI
 internal: 'yes' if this is an internal SWI (all other content will be
           ignored)
 irqs: state of IRQs during this call, usually 'enabled', 'disabled', or
@@ -942,7 +1012,26 @@ Children:   <text>
 
 The use element describes how the definition functions, its effect and any
 other details relevant to its use which are not part of the overall component
-structure as described in the Technical Details.
+structure as described in the Technical details.
+
+
+Element:    example
+Attributes: <none>
+Children:   (p | command | systemoutput | br)*
+
+definition. The element can be repeated within the definition to give
+multiple unrelated examples.
+
+use the definition.
+
+
+Element:    declaration
+Attributes: type
+Children:   (code | extended-example)*
+
+      'prototype' - should be used for C prototypes for functions
+      'structure' - should be used for C structure declarations
+
 
 
 Element:    related
@@ -962,13 +1051,15 @@ section to provide links.
 Element:    vector-definition
 Attributes: name, number, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, related?)
+Children:   (entry?, exit?, use, declaration?, (example)*, related?)
 
-name: the full name of this vector, eg ColourV
+name: the full name of this vector; for example 'ColourV'
 number: the number of this vector in hex
-reason: (optional) the reason code for this vector, eg 2
+reason: (optional) the reason code for this vector in decimal.
+        If a sub-reason code is required, it should be separated with a
+        comma; for example '127,1'
 reasonname: (optional) the name of this reason code as a capitalised name
-      without spaces, eg FreeBlock
+      without spaces; for example 'OutputBufferEmpty'
 description: one sentence description of the function provided by this
              vector
 internal: 'yes' if this is an internal vector (all other content will be
@@ -989,13 +1080,13 @@ is used to describe the standard RISC OS vectors.
 Element:    entry-definition
 Attributes: name, number, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, related)
+Children:   (entry?, exit?, use, declaration?, (example)*, related)
 
-name: the full name of this code, eg FileEntry_MiscOp
+name: the full name of this code; for example 'FileEntry_MiscOp'
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point, eg 23
+reason: (optional) the reason code for this entry point in decimal.
 reasonname: (optional) the name of this reason code as a capitalised name
-      without spaces, eg MountAlienSpaceship
+      without spaces; for example 'MountAlienSpaceship'
 description: one sentence description of the function provided by this
              code
 internal: 'yes' if this is an internal entry (all other content will be
@@ -1017,13 +1108,15 @@ such as callbacks.
 Element:    service-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, related)
+Children:   (entry, exit, use, declaration?, (example)*, related)
 
-name: the name of this service, eg ShutDown
+name: the name of this service; for example 'ShutDown'
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point, eg 2
+reason: (optional) the reason code for this service in decimal.
+        If a sub-reason code is required, it should be separated with a
+        comma; for example '127,1'
 reasonname: (optional) the name of this reason code as a capitalised name
-            without spaces, eg Intialising
+            without spaces; for example 'Intialising'
 description: one sentence description of the function provided by this
              service
 internal: 'yes' if this is an internal service (all other content will be
@@ -1038,13 +1131,15 @@ prefixed by 'Service_' to indicate its lineage.
 Element:    upcall-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, related)
+Children:   (entry, exit, use, declaration?, (example)*, related)
 
-name: the name of this UpCall, eg FileModified
+name: the name of this UpCall; for example 'FileModified'
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point, eg 257
+reason: (optional) the reason code for this entry point in decimal.
+        If a sub-reason code is required, it should be separated with a
+        comma; for example '127,1'
 reasonname: (optional) the name of this reason code as a capitalised name
-            without spaces, eg Renaming
+            without spaces; for example 'Renaming'
 description: one sentence description of the function provided by this
              upcall
 internal: 'yes' if this is an internal upcall (all other content will be
@@ -1058,9 +1153,9 @@ to indicate its lineage.
 
 Element:    sysvar-definition
 Attributes: name, description
-Children:   (use, related)
+Children:   (use, example?, related)
 
-name: the full name of this system variable, eg System$Path
+name: the full name of this system variable; for example 'System$Path'
 description: one sentence description of the function provided by this
              system variable
 
@@ -1073,7 +1168,7 @@ Attributes: number, name, description
 Children:   (use, related)
 
 number: the number of this error in hex
-name: the symbolic name of this error, eg BadPathVariable
+name: the symbolic name of this error for example 'BadPathVariable'
 description: one sentence description of the function provided by this
              system variable
 
@@ -1084,9 +1179,9 @@ errors that may be returned from a call.
 Element:    message-definition
 Attributes: name, number, description, source, destination,
             recorded, broadcast
-Children:   (message-table, use, related)
+Children:   (message-table, use, declaration?, related)
 
-name: the name of this message, eg DataOpen
+name: the name of this message; for example 'DataOpen'
 description: one sentence description of the function provided by this
              message
 source: the name of the task, or group of tasks that send this message,
@@ -1114,9 +1209,9 @@ element is described in the Data structures section.
 
 Element:    tboxmessage-definition
 Attributes: name, number, description
-Children:   (message-table, use, related)
+Children:   (message-table, use, declaration?, related)
 
-name: the name of this message, eg ColourMenu_HasBeenHidden
+name: the name of this message; for example 'ColourMenu_HasBeenHidden'
 description: one sentence description of the function provided by this
              message
 
@@ -1128,13 +1223,13 @@ is always the Toolbox and the destination is always your task.
 Element:    tboxmethod-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, related)
+Children:   (entry, exit, use, declaration?, (example)*, related)
 
-name: the name of this service, eg ColourMenu_SetTitle
+name: the name of this service; for example 'ColourMenu_SetTitle'
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point, eg 2
+reason: (optional) the reason code for this toolbox method in decimal.
 reasonname: (optional) the name of this reason code as a capitalised name
-            without spaces, eg Intialising
+            without spaces; for example 'Intialising'
 description: one sentence description of the function provided by this
              service
 internal: 'yes' if this is an internal service (all other content will be
@@ -1147,7 +1242,7 @@ Element:    command-definition
 Attributes: name, description
 Children:   ((syntax)*, (parameter)*, use, (example)*, related)
 
-name: the name of this command, eg DataOpen
+name: the name of this command; for example 'DataOpen'
 description: one sentence description of the function provided by this
              command
 
@@ -1161,7 +1256,7 @@ Element:    vdu-definition
 Attributes: name, number, description
 Children:   ((syntax)*, (parameter)*, use, (example)*, related)
 
-name: the name of this command, eg DataOpen
+name: the name of this command; for example DataOpen
 description: one sentence description of the function provided by this
              command
 
@@ -1365,3 +1460,9 @@ Changes from 1.02 to 1.03
 * syntax elements on vdu-definition are now expected to document the parameters
   to the definition, not the whole definition. This is in line with the use of
   syntax within the command-definition.
+* All code-like and message-like definitions now allow the use of the
+  declaration element to describe the declarations in C for that definition.
+  Declaration was introduced in 1.02 but not documented.
+* input, key and mouse elements are now available, which allow the representation
+  of sequences of keyboard and mouse actions.
+

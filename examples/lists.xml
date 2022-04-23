@@ -8,6 +8,7 @@
 <section title="Unordered list">
 
 <p>Regular text before.</p>
+<p>
 <list>
     <item>Item 1</item>
     <item>Item 2</item>
@@ -16,11 +17,13 @@
     <item><p>Item 5 in a paragraph</p><p>With a second paragraph</p></item>
     <item>Item 6</item>
 </list>
+</p>
 <p>Regular text after.</p>
 </section>
 
 <section title="Ordered list">
 <p>Regular text before.</p>
+<p>
 <list type='ordered'>
     <item>Item 1</item>
     <item>Item 2</item>
@@ -29,12 +32,14 @@
     <item><p>Item 5 in a paragraph</p><p>With a second paragraph</p></item>
     <item>Item 6</item>
 </list>
+</p>
 <p>Regular text after.</p>
 </section>
 
 <section title="Unordered nested lists">
 
 <p>Regular text before.</p>
+<p>
 <list>
     <item>Item 1</item>
     <item>Item 2</item>
@@ -46,6 +51,7 @@
     </item>
     <item>Item 4</item>
 </list>
+</p>
 <p>Regular text after.</p>
 </section>
 
