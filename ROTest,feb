@@ -1,0 +1,27 @@
+| Set up our environment to point into the downloads in 'riscos-bits'.
+
+Set TestBits$Dir <Obey$Dir>.riscos-bits
+Set Run$Path <TestBits$Dir>.Tools.XML.,<Run$Path>
+Run <TestBits$Dir>.!Catalogs.!Boot
+
+echo +++ Checking binary versions
+xsltproc --version
+If "<Sys$ReturnCode>" <> 0 Then Error Bad return code (from xsltproc)
+xmllint --version
+If "<Sys$ReturnCode>" <> 0 Then Error Bad return code (from xmllint)
+
+| Check that we can run the riscos-prminxml tool and it recognise the local catalogs
+echo +++ Checking PRMinXML tool version
+dir <TestBits$Dir>
+/riscos-prminxml --version
+
+| Check the tool conversion works
+echo +++ Checking conversion tool
+remove tables/html
+/riscos-prminxml --debug -f html examples.tables/xml
+If "<Sys$ReturnCode>" <> 0 Then Error Bad return code (from riscos-prminxml/pl)
+IfThere tables/html Then Echo Created OK Else Error File 'tables/html' was not created properly
+
+| Check that we can install properly
+echo +++ Checking the installation of the catalogs (not currently working)
+/<TestBits$Dir>.!Install

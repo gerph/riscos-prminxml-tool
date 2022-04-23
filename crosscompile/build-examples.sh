@@ -263,12 +263,12 @@ function generate_documents() {
     local name=$2
     local css=$3
     local html=${4:-html5}
-    local catalog=103
+    local catalog=${5:-103}
     echo "- Building documents in ${OUTPUTDIR}/$name"
     sed -e "s!artifacts/output/!${OUTPUTDIR}/$name/!g ; s!css-variant='!css-variant='$css !g ; s!page-format='.*'!page-format='$html'!" "$srcindex" > "${TMPINDEX}"
     mkdir -p "${OUTPUTDIR}/logs-$name"
     riscos-prminxml --catalog $catalog -f index -L "${OUTPUTDIR}/logs-$name" "${TMPINDEX}"
-    if [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 ]] ; then
+    if [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 && -f "${OUTPUTDIR}/$name/html/filelist.txt" ]] ; then
         ( cd "${OUTPUTDIR}/$name/html" &&
           prince --verbose -o "..//examples.pdf" -l filelist.txt )
     fi
@@ -276,6 +276,7 @@ function generate_documents() {
 
 generate_documents "examples/index.xml" examples-regular ""
 generate_documents "examples/index.xml" examples-prm "prm body-fraunces heading-raleway webfont-fraunces webfont-raleway"
+generate_documents "examples/index.xml" examples-prm-input "prm body-fraunces heading-raleway webfont-fraunces webfont-raleway input-mouse-icons input-red-function-keys"
 generate_documents "examples/index.xml" examples-prm-ro2 "prm prm-ro2 body-fraunces heading-raleway webfont-fraunces webfont-raleway"
 generate_documents "examples/index.xml" examples-unstyled "" "html"
 generate_documents "examples/index.xml" examples-102 "" "html" "102"
