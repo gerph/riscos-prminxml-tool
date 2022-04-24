@@ -1,9 +1,9 @@
 <!-- RISC OS PRM DTD
 
      Public identifier :
-        -//Gerph//DTD PRM documentation 1.02//EN
+        -//Gerph//DTD PRM documentation 1.03//EN
      System identifier :
-        http://gerph.org/dtd/102/prm.dtd
+        http://gerph.org/dtd/103/prm.dtd
 
      A DTD for writing documentation on components and their APIs in
      the style of the PRMs.
@@ -36,10 +36,13 @@
      another character with this function so ?
      rArr can be used for 'implies' as ISOtech suggests -->
 
+
 <!-- Specials for us: -->
 
 <!ENTITY implies "&#8658;">
 <!-- We recommend you use 'implies' as an entity, just to be clear -->
+<!ENTITY ellipsis "&#8230;">
+<!-- horizontal ellipsis (hellip in HTML) = three dot leader, U+2026 ISOpub  -->
 <!ENTITY hex "&amp;">
 <!-- Use &hex; to mean hex, rather than &amp; this ensures that if we
      change to using a different hex descriptor (eg 0x) all the files
@@ -127,7 +130,7 @@
     internal (yes | no) "no"
     irqs CDATA "undefined"
     fiqs CDATA "undefined"
-    processor-mode (SVC | USR | any | current | undefined) "undefined"
+    processor-mode (SVC | USR | IRQ | any | current | undefined) "undefined"
     re-entrant (undefined | yes | no) "undefined"
     reason CDATA #IMPLIED
     reasonname CDATA #IMPLIED
@@ -208,6 +211,7 @@
 <!ELEMENT message ANY>
 <!ATTLIST message
     offset CDATA #REQUIRED
+    data-size CDATA #IMPLIED
     name CDATA #IMPLIED
 >
 <!-- Toolbox message definition has a similar structure -->
@@ -255,11 +259,13 @@
 <!ATTLIST offset-table
     head-number CDATA "Offset"
     head-name CDATA #IMPLIED
+    head-data-size CDATA #IMPLIED
     head-value CDATA "Contents"
 >
 <!ELEMENT offset ANY>
 <!ATTLIST offset
     number CDATA #REQUIRED
+    data-size CDATA #IMPLIED
     name CDATA #IMPLIED
 >
 <!-- A definition table allows us to define the meaning of certain labelled values -->
@@ -315,8 +321,12 @@
 <!-- filename - a filename that might be used
      Should really be text or userreplace -->
 <!ELEMENT filename (#PCDATA | %parameters;)*>
-<!-- A menu option that the user might see -->
+<!ATTLIST filename
+        type (riscos | windows | unix | uri) "riscos">
+<!-- A menu option that the user might see and interact with -->
 <!ELEMENT menuoption (#PCDATA)>
+<!-- A button in the user interface that the user might see and interact with-->
+<!ELEMENT actionbutton (#PCDATA)>
 <!-- A named variable in some code or API -->
 <!ELEMENT variable (#PCDATA)>
 <!-- sysvar - a system variable
