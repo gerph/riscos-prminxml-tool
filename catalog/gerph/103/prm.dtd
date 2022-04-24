@@ -303,6 +303,8 @@
 <!-- filename - a filename that might be used
      Should really be text or userreplace -->
 <!ELEMENT filename (#PCDATA | %parameters;)*>
+<!ATTLIST filename
+        type (riscos | windows | unix | uri) "riscos">
 <!-- A menu option that the user might see -->
 <!ELEMENT menuoption (#PCDATA)>
 <!-- A named variable in some code or API -->

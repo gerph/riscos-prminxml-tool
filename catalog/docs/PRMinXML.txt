@@ -590,12 +590,20 @@ used only as an indexing entry.
 
 
 Element:    filename
-Attributes: <none>
+Attributes: type
 Children:   (<text> | userreplace)*
+
+type: (optional) type of filename represented:
+          riscos - a RISC OS filename (default)
+          windows - a Windows filename
+          unix - a Unix (POSIX) filename
+          uri - a URI
 
 The filename is usually represented in the PRMs by typewriter text. This
 element describes a filename which should be, or can be, supplied to the
-system.
+system. Because filenames may be transferred from different systems, and
+some filenames may need to be given in alternative formats, the type should
+be used to differentate the semantics of the filename.
 
 
 Element:    variable
@@ -1466,3 +1474,5 @@ Changes from 1.02 to 1.03
 * input, key and mouse elements are now available, which allow the representation
   of sequences of keyboard and mouse actions.
 
+* filename elements can now have a type attribute to differentiate the system
+  they are used on.
