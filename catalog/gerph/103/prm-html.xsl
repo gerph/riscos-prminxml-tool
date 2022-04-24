@@ -2239,7 +2239,7 @@
 
 <!-- System output - something the system could have displayed -->
 <xsl:template match="systemoutput">
-<br /><tt><xsl:apply-templates /></tt>
+<tt><xsl:apply-templates /></tt>
 </xsl:template>
 
 <!-- Menu option - an option that the user might chose for a menu -->

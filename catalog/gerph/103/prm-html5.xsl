@@ -1838,7 +1838,7 @@
 
 <!-- System output - something the system could have displayed -->
 <xsl:template match="systemoutput">
-<div class='systemoutput'><xsl:apply-templates /></div>
+<span class='systemoutput'><xsl:apply-templates /></span>
 </xsl:template>
 
 <!-- Menu option - an option that the user might choose for a menu -->
