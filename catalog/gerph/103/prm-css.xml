@@ -745,6 +745,17 @@ section.definition {
     page-break-inside: avoid;
 }
 
+/* The 'Use' block is large, so making it always break tends to lead to the Use
+   section being on the next page. So instead of keeping all the 'Use' block together,
+   we instead try to keep the first paragraph with the section header. */
+section.definition.definition-use {
+    page-break-inside: auto;
+}
+section.definition.definition-use > p:first-of-type {
+    break-before: avoid;
+    page-break-inside: avoid;
+}
+
 footer {
     page-break-inside: avoid;
 }
