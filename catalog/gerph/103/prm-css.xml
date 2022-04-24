@@ -578,6 +578,17 @@ table.indexed-table th {
 /* Styling specific to the print */
 @media print {
 
+    /* Change the bookmark text for the headings */
+    h1 {
+        -prince-bookmark-level: none;
+    }
+    h1 .chapter-name {
+        -prince-bookmark-level: 1;
+    }
+    .indexed h1 {
+        -prince-bookmark-level: 1;
+    }
+
     /* Avoid multiple dividers at the top of the page (the header bar + the definition border) */
     .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
         border-top: none;
