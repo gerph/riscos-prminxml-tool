@@ -774,8 +774,8 @@ Children:   <text>
 
 number: the number of the bits, or a range of bits separated by a hyphen.
 name: (optional) a name to assign to this bit (or range of bits).
-state: (optional) describes the state of the bit. There are a couple of
-       was to use this :
+state: (optional) describes the state of the bit. There are a few ways
+       to use this :
          content  : the default, refers to the content as being the only
                     information for this bit
          set      : the content describes the meaning if the bit is set
@@ -838,11 +838,18 @@ these headings, this should only be done with care.
 
 
 Element:    offset
-Attributes: number, name
+Attributes: number, name, state
 Children:   <text>
 
 number: the offset, or a range of offsets separated by a hyphen.
 name: (optional) a name to assign to this offset (or range of offsets).
+state: (optional) describes the state of the field. There are a few ways
+       to use this :
+         content  : the default, refers to the content as being the only
+                    information for this field
+         reserved : this field is reserved and must be zero
+         undefined : this field is undefined and its value is should not
+                     be interpreted
 
 An offset is an element of a offset-table, describing the meaning of one or
 more offsets into a structure. Usually it is represented as a component of a
@@ -862,11 +869,18 @@ offsets into a message block and their meanings. The table is headed by
 
 
 Element:    message
-Attributes: offset, name
+Attributes: offset, name, state
 Children:   <text>
 
 offset: the offset, or a range of offsets separated by a hyphen.
 name: (optional) a name to assign to this offset (or range of offsets).
+state: (optional) describes the state of the field. There are a few ways
+       to use this :
+         content  : the default, refers to the content as being the only
+                    information for this field
+         reserved : this field is reserved and must be zero
+         undefined : this field is undefined and its value is should not
+                     be interpreted
 
 A message is an element of a message-table, describing the meaning of one or
 more offsets into a message block. Usually it is represented as a component
@@ -1465,4 +1479,5 @@ Changes from 1.02 to 1.03
   Declaration was introduced in 1.02 but not documented.
 * input, key and mouse elements are now available, which allow the representation
   of sequences of keyboard and mouse actions.
-
+* offset and message now have a state attribute, to allow them to be marked as
+  being undefined or reserved.

@@ -209,6 +209,7 @@
 <!ATTLIST message
     offset CDATA #REQUIRED
     name CDATA #IMPLIED
+    state (reserved | undefined | content) "content"
 >
 <!-- Toolbox message definition has a similar structure -->
 <!ELEMENT tboxmessage-definition ((message-table | value-table | offset-table)?, use, declaration?, related?)>
@@ -261,6 +262,7 @@
 <!ATTLIST offset
     number CDATA #REQUIRED
     name CDATA #IMPLIED
+    state (reserved | undefined | content) "content"
 >
 <!-- Command syntax -->
 <!-- <!ELEMENT syntax (userreplace | optional | switch)*> -->

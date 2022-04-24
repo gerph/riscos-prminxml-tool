@@ -1672,7 +1672,13 @@
  <xsl:if test="../*/@name != ''">
   <td valign="top" align="left"><xsl:value-of select="@name"/></td>
  </xsl:if>
- <td valign="top" align="left"><xsl:apply-templates/></td>
+ <td valign="top" align="left">
+  <xsl:choose>
+   <xsl:when test="@state='reserved'"><xsl:text>Reserved, must be zero</xsl:text></xsl:when>
+   <xsl:when test="@state='undefined'"><xsl:text>Undefined</xsl:text></xsl:when>
+   <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
+ </xsl:choose>
+ </td>
 </tr>
 </xsl:template>
 
@@ -1698,7 +1704,13 @@
  <xsl:if test="../*/@name != ''">
   <td valign="top" align="left"><xsl:value-of select="@name"/></td>
  </xsl:if>
- <td valign="top" align="left"><xsl:apply-templates/></td>
+ <td valign="top" align="left">
+  <xsl:choose>
+   <xsl:when test="@state='reserved'"><xsl:text>Reserved, must be zero</xsl:text></xsl:when>
+   <xsl:when test="@state='undefined'"><xsl:text>Undefined</xsl:text></xsl:when>
+   <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
+ </xsl:choose>
+ </td>
 </tr>
 </xsl:template>
 
