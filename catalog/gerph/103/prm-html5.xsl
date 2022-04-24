@@ -1489,10 +1489,19 @@
     <xsl:when test="count(offset/@name)>0"><xsl:text>Name</xsl:text></xsl:when>
   </xsl:choose>
 </xsl:variable>
+<xsl:variable name="head-size">
+  <xsl:choose>
+    <xsl:when test="@head-data-size != ''"><xsl:value-of select="@head-data-size" /></xsl:when>
+    <xsl:when test="count(offset/@data-size)>0"><xsl:text>Size</xsl:text></xsl:when>
+  </xsl:choose>
+</xsl:variable>
 <table class='user-table offset-table'>
  <thead class='table-head'>
   <tr>
    <th class='table-number'><xsl:value-of select="@head-number" /></th>
+   <xsl:if test="$head-size != ''">
+    <th class='table-data-size'><xsl:value-of select="$head-size" /></th>
+   </xsl:if>
    <xsl:if test="$head-name != ''">
     <th class='table-name'><xsl:value-of select="$head-name" /></th>
    </xsl:if>
@@ -1508,6 +1517,9 @@
 <xsl:template match="offset">
 <tr>
  <td class='table-number'><xsl:value-of select="@number"/></td>
+ <xsl:if test="../*/@data-size != ''">
+  <td class='table-data-size'><xsl:value-of select="@data-size"/></td>
+ </xsl:if>
  <xsl:if test="../*/@name != ''">
   <td class='table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
@@ -1525,6 +1537,9 @@
  <thead class='table-head'>
   <tr>
    <th class='table-number'>Offset</th>
+   <xsl:if test="count(message/@data-size) > 0">
+    <th class='table-data-size'>Size</th>
+   </xsl:if>
    <xsl:if test="count(message/@name) > 0">
     <th class='table-name'>Name</th>
    </xsl:if>
@@ -1539,7 +1554,10 @@
 
 <xsl:template match="message">
 <tr>
- <td class='table-number'>R1+<xsl:value-of select="@offset"/></td>
+ <td class='table-number'><xsl:value-of select="@offset"/></td>
+ <xsl:if test="../*/@data-size != ''">
+  <td class='table-data-size'><xsl:value-of select="@data-size"/></td>
+ </xsl:if>
  <xsl:if test="../*/@name != ''">
   <td class='table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
@@ -1823,10 +1841,16 @@
 <span class='systemoutput'><xsl:apply-templates /></span>
 </xsl:template>
 
-<!-- Menu option - an option that the user might chose for a menu -->
+<!-- Menu option - an option that the user might choose for a menu -->
 <xsl:template match="menuoption">
 <span class='menuoption'><xsl:apply-templates /></span>
 </xsl:template>
+
+<!-- Action button - a button in the interface that the user might interact with -->
+<xsl:template match="actionbutton">
+<span class='actionbutton'><xsl:apply-templates /></span>
+</xsl:template>
+
 
 <!-- The collection of input device operations -->
 <!-- FIXME: Enforce the keys before mouse? -->
