@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.02//EN"
-                            "http://gerph.org/dtd/102/prm.dtd">
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.03//EN"
+                            "http://gerph.org/dtd/103/prm.dtd">
 
 <riscos-prm>
 <chapter title="PRM-in-XML tables">
@@ -86,6 +86,38 @@
 </p>
 </category>
 
+<category title="Data sizes">
+<p>
+<offset-table>
+ <offset number="0" data-size='4'>Some important offset</offset>
+ <offset number="4" data-size='2'>Another offset</offset>
+ <offset number="6" data-size='1'>More</offset>
+ <offset number="7" data-size='1'>Yet more</offset>
+ <offset number="8" data-size='8'>Very large field</offset>
+</offset-table>
+</p>
+</category>
+
+<category title="Partial data sizes">
+<p>
+<offset-table>
+ <offset number="0">Some important offset</offset>
+ <offset number="4">Another offset</offset>
+ <offset number="8" data-size='8'>Very large field</offset>
+</offset-table>
+</p>
+</category>
+
+<category title="Partial data sizes + names">
+<p>
+<offset-table>
+ <offset number="0">Some important offset</offset>
+ <offset number="4" name="OFFSET4">Another offset</offset>
+ <offset number="8" data-size='8' name="OFFSET8">Very large field</offset>
+</offset-table>
+</p>
+</category>
+
 <category title="Labelled headings">
 <p>
 <offset-table head-number='Byte offset' head-value='What it means'>
@@ -122,8 +154,35 @@
 <category title="Named offsets">
 <p>
 <message-table>
- <message offset="0" name='OFFSET0'>Some important daat</message>
+ <message offset="0" name='OFFSET0'>Some important data</message>
  <message offset="4" name='OFFSET4'>Another data</message>
+</message-table>
+</p>
+</category>
+
+<category title="Data sizes">
+<p>
+<message-table>
+ <message offset="0" data-size='4'>Some important data</message>
+ <message offset="4" data-size='4'>Another data</message>
+</message-table>
+</p>
+</category>
+
+<category title="Partial data sizes">
+<p>
+<message-table>
+ <message offset="0">Some important data</message>
+ <message offset="4" data-size='4'>Another data</message>
+</message-table>
+</p>
+</category>
+
+<category title="Partial data sizes + names">
+<p>
+<message-table>
+ <message offset="0" name='OFFSET0'>Some important data</message>
+ <message offset="4" data-size='4' name='OFFSET4'>Another data</message>
 </message-table>
 </p>
 </category>
@@ -197,13 +256,15 @@
  </maintainer>
  <disclaimer>
     <p>
-        &copy; Gerph, 2021.
+        &copy; Gerph, 2021-2022.
     </p>
  </disclaimer>
 
  <history>
   <revision number="1" author="Gerph" date="17 Aug 2021" title="Initial version">
     <change>Some examples of table forms</change>
+  </revision>
+  <revision number="2" author="Gerph" date="22 Apr 2022" title="Data-size field added">
   </revision>
  </history>
 </meta>
