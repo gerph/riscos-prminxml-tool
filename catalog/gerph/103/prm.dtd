@@ -1,9 +1,9 @@
 <!-- RISC OS PRM DTD
 
      Public identifier :
-        -//Gerph//DTD PRM documentation 1.02//EN
+        -//Gerph//DTD PRM documentation 1.03//EN
      System identifier :
-        http://gerph.org/dtd/102/prm.dtd
+        http://gerph.org/dtd/103/prm.dtd
 
      A DTD for writing documentation on components and their APIs in
      the style of the PRMs.
