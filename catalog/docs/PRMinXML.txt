@@ -1081,8 +1081,8 @@ irqs: state of IRQs during this call, usually 'enabled', 'disabled', or
       'undefined'
 fiqs: state of FIQs during this call, usually 'enabled', 'disabled', or
       'undefined'
-processor-mode: processor mode for the duration of this call, 'SVC', 'USR'
-      or 'undefined'
+processor-mode: processor mode for the duration of this call, 'SVC', 'USR',
+      'IRQ' or 'undefined'
 re-entrant: whether this call is re-entrant or not, 'undefined', 'yes',
       or 'no'
 
@@ -1481,4 +1481,5 @@ Changes from 1.02 to 1.03
 * actionbutton element added to match the menuoption element.
 * offset and message elements now have optional data-size attributes.
   offset-table now allows a head-data-size to describe this column.
+* vector-definitions can now have processor mode IRQ.
 

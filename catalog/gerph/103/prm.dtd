@@ -127,7 +127,7 @@
     internal (yes | no) "no"
     irqs CDATA "undefined"
     fiqs CDATA "undefined"
-    processor-mode (SVC | USR | any | current | undefined) "undefined"
+    processor-mode (SVC | USR | IRQ | any | current | undefined) "undefined"
     re-entrant (undefined | yes | no) "undefined"
     reason CDATA #IMPLIED
     reasonname CDATA #IMPLIED
