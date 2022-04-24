@@ -272,6 +272,9 @@ table {
 .table-head .table-number {
     text-align: right;
 }
+.table-head .table-data-size {
+    text-align: right;
+}
 .table-head .table-name {
     text-align: left;
 }
@@ -282,6 +285,15 @@ table {
     vertical-align: top;
 }
 .table-body .table-number {
+    text-align: right;
+}
+.offset-table .table-body .table-number::before {
+    content: '+';
+}
+.message-table .table-body .table-number::before {
+    content: 'R1+';
+}
+.table-body .table-data-size {
     text-align: right;
 }
 .table-body .table-name {
@@ -311,6 +323,9 @@ table {
   font-family: monospace;
 }
 .menuoption {
+  font-weight: bold;
+}
+.actionbutton {
   font-weight: bold;
 }
 .variable {
