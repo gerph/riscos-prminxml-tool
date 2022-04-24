@@ -36,10 +36,13 @@
      another character with this function so ?
      rArr can be used for 'implies' as ISOtech suggests -->
 
+
 <!-- Specials for us: -->
 
 <!ENTITY implies "&#8658;">
 <!-- We recommend you use 'implies' as an entity, just to be clear -->
+<!ENTITY ellipsis "&#8230;">
+<!-- horizontal ellipsis (hellip in HTML) = three dot leader, U+2026 ISOpub  -->
 <!ENTITY hex "&amp;">
 <!-- Use &hex; to mean hex, rather than &amp; this ensures that if we
      change to using a different hex descriptor (eg 0x) all the files

@@ -1486,4 +1486,4 @@ Changes from 1.02 to 1.03
   element, so would start a new line, which was at odds with its description
   and declaration in the DTD. Uses of systemoutput will need to be checked
   carefully to make sure they do not disrupt the formatting of the content.
-
+* Entity &ellipsis; can now be used for a '...' sequence as a character.
