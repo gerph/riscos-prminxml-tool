@@ -1489,10 +1489,19 @@
     <xsl:when test="count(offset/@name)>0"><xsl:text>Name</xsl:text></xsl:when>
   </xsl:choose>
 </xsl:variable>
+<xsl:variable name="head-size">
+  <xsl:choose>
+    <xsl:when test="@head-data-size != ''"><xsl:value-of select="@head-data-size" /></xsl:when>
+    <xsl:when test="count(offset/@data-size)>0"><xsl:text>Size</xsl:text></xsl:when>
+  </xsl:choose>
+</xsl:variable>
 <table class='user-table offset-table'>
  <thead class='table-head'>
   <tr>
    <th class='table-number'><xsl:value-of select="@head-number" /></th>
+   <xsl:if test="$head-size != ''">
+    <th class='table-data-size'><xsl:value-of select="$head-size" /></th>
+   </xsl:if>
    <xsl:if test="$head-name != ''">
     <th class='table-name'><xsl:value-of select="$head-name" /></th>
    </xsl:if>
@@ -1508,6 +1517,9 @@
 <xsl:template match="offset">
 <tr>
  <td class='table-number'><xsl:value-of select="@number"/></td>
+ <xsl:if test="../*/@data-size != ''">
+  <td class='table-data-size'><xsl:value-of select="@data-size"/></td>
+ </xsl:if>
  <xsl:if test="../*/@name != ''">
   <td class='table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
@@ -1529,6 +1541,9 @@
  <thead class='table-head'>
   <tr>
    <th class='table-number'>Offset</th>
+   <xsl:if test="count(message/@data-size) > 0">
+    <th class='table-data-size'>Size</th>
+   </xsl:if>
    <xsl:if test="count(message/@name) > 0">
     <th class='table-name'>Name</th>
    </xsl:if>
@@ -1543,7 +1558,10 @@
 
 <xsl:template match="message">
 <tr>
- <td class='table-number'>R1+<xsl:value-of select="@offset"/></td>
+ <td class='table-number'><xsl:value-of select="@offset"/></td>
+ <xsl:if test="../*/@data-size != ''">
+  <td class='table-data-size'><xsl:value-of select="@data-size"/></td>
+ </xsl:if>
  <xsl:if test="../*/@name != ''">
   <td class='table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
@@ -1556,6 +1574,54 @@
  </td>
 </tr>
 </xsl:template>
+
+
+
+<!-- A definition table is a table of named definitions with headings (like a value table, but for labels)-->
+<xsl:template match="definition-table">
+<xsl:variable name="head-extra">
+  <xsl:choose>
+    <xsl:when test="@head-extra != ''"><xsl:value-of select="@head-extra" /></xsl:when>
+    <xsl:when test="count(value/@extra)>0"><xsl:text>Extra</xsl:text></xsl:when>
+  </xsl:choose>
+</xsl:variable>
+<table class='user-table definition-table'>
+ <thead class='table-head'>
+  <tr>
+   <th class='table-name'><xsl:value-of select="@head-name" /></th>
+   <xsl:if test="$head-extra != ''">
+    <th class='table-extra'><xsl:value-of select="$head-extra" /></th>
+   </xsl:if>
+   <th class='table-value'><xsl:value-of select="@head-value" /></th>
+ </tr>
+ </thead>
+ <tbody class='table-body'>
+  <xsl:apply-templates/>
+ </tbody>
+</table>
+</xsl:template>
+
+<xsl:template match="definition">
+<tr>
+ <td class='table-name'><xsl:value-of select="@name"/></td>
+ <xsl:if test="../*/@extra != ''">
+  <td class='table-extra'><xsl:value-of select="@extra" /></td>
+ </xsl:if>
+ <td class='table-value'>
+  <xsl:choose>
+   <xsl:when test="count(p) = 1">
+    <!-- Botch to stop tables looking shite on most browsers -->
+    <xsl:apply-templates select="p/*|p/text()"/>
+   </xsl:when>
+   <xsl:otherwise>
+    <xsl:apply-templates />
+   </xsl:otherwise>
+  </xsl:choose>
+ </td>
+</tr>
+</xsl:template>
+
+
 
 <xsl:template name="describepositionhelper">
 <xsl:param name = "where" />
@@ -1830,13 +1896,19 @@
 
 <!-- System output - something the system could have displayed -->
 <xsl:template match="systemoutput">
-<div class='systemoutput'><xsl:apply-templates /></div>
+<span class='systemoutput'><xsl:apply-templates /></span>
 </xsl:template>
 
-<!-- Menu option - an option that the user might chose for a menu -->
+<!-- Menu option - an option that the user might choose for a menu -->
 <xsl:template match="menuoption">
 <span class='menuoption'><xsl:apply-templates /></span>
 </xsl:template>
+
+<!-- Action button - a button in the interface that the user might interact with -->
+<xsl:template match="actionbutton">
+<span class='actionbutton'><xsl:apply-templates /></span>
+</xsl:template>
+
 
 <!-- The collection of input device operations -->
 <!-- FIXME: Enforce the keys before mouse? -->
@@ -1953,7 +2025,12 @@
 
 <!-- a filename -->
 <xsl:template match="filename">
-<span class='filename'><xsl:apply-templates /></span>
+<span>
+ <xsl:attribute name='class'>
+  <xsl:text>filename filename-</xsl:text>
+  <xsl:value-of select='@type'/>
+ </xsl:attribute>
+ <xsl:apply-templates /></span>
 </xsl:template>
 
 <!-- a system variable -->

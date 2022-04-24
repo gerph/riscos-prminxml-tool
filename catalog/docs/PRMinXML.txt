@@ -589,13 +589,30 @@ menu option. Its representation in a transformation is undefined; it may be
 used only as an indexing entry.
 
 
-Element:    filename
+Element:    actionbutton
 Attributes: <none>
+Children:   (<text>)*
+
+The actionbutton is not represented in the PRMs. This element describes a
+button in the interface. Its representation in a transformation is undefined;
+it may be used only as an indexing entry.
+
+
+Element:    filename
+Attributes: type
 Children:   (<text> | userreplace)*
+
+type: (optional) type of filename represented:
+          riscos - a RISC OS filename (default)
+          windows - a Windows filename
+          unix - a Unix (POSIX) filename
+          uri - a URI
 
 The filename is usually represented in the PRMs by typewriter text. This
 element describes a filename which should be, or can be, supplied to the
-system.
+system. Because filenames may be transferred from different systems, and
+some filenames may need to be given in alternative formats, the type should
+be used to differentate the semantics of the filename.
 
 
 Element:    variable
@@ -744,17 +761,22 @@ should be the direction that the scroll wheel is moved.
 Data structures
 ---------------
 
-There are four types of data structures provided by this definition. These
-are the 'bitfield-table', 'value-table', 'offset-table' and 'message-table'.
+There are a few types of data structures provided by this definition. These
+are the 'bitfield-table', 'value-table', 'offset-table', 'message-table'
+and 'definition-table'.
 These are grouped into table/value pairs :
 
   bitfield-table & bit
   value-table & value
   offset-table & offset
   message-table & message
+  definition-table & definition
 
 message-tables are solely for use within descriptions of Wimp message
 blocks.
+
+value-tables are intended for numeric data, whilst definition-tables are
+indented for textual definitions.
 
 
 Element:    bitfield-table
@@ -821,28 +843,31 @@ element.
 
 
 Element:    offset-table
-Attributes: head-number, head-name, head-value
+Attributes: head-number, head-name, head-data-size, head-value
 Children:   (offset)*
 
 head-number: (optional) a heading for the number field
 head-name: (optional) a heading for the name field
+head-data-size: (optional) a heading for the data-size field
 head-value: (optional) a heading for the value field (the body of the
             element)
 
 The offset-table element is conventionally represented as a table of offsets
-and their meanings. Usually the table is headed by 'offset' and 'contents'
-(and possibly 'name' where name values are given). Where heading values are
-given, these will be used to provide further indication of the fields.
+and their meanings. Usually the table is headed by 'offset' and 'contents'.
+There may also be columns to name the offset, and to give the size of the data.
+Where heading values are given, these will be used to provide further
+indication of the fields.
 Whilst it is possible to subvert the meaning of the offset-table by changing
 these headings, this should only be done with care.
 
 
 Element:    offset
-Attributes: number, name, state
+Attributes: number, data-size, name, state
 Children:   <text>
 
 number: the offset, or a range of offsets separated by a hyphen.
 name: (optional) a name to assign to this offset (or range of offsets).
+data-size: (optional) a width to use for the field, in bytes.
 state: (optional) describes the state of the field. There are a few ways
        to use this :
          content  : the default, refers to the content as being the only
@@ -869,11 +894,12 @@ offsets into a message block and their meanings. The table is headed by
 
 
 Element:    message
-Attributes: offset, name, state
+Attributes: offset, data-size, name, state
 Children:   <text>
 
 offset: the offset, or a range of offsets separated by a hyphen.
 name: (optional) a name to assign to this offset (or range of offsets).
+data-size: (optional) a width to use for the field, in bytes.
 state: (optional) describes the state of the field. There are a few ways
        to use this :
          content  : the default, refers to the content as being the only
@@ -890,6 +916,35 @@ will always be described preceded by 'R1+' to indicate that they are from
 the message block pointer in register 1 (as supplied to
 Wimp_SendMessage/Wimp_Poll[Idle])
 
+
+Element:    definition-table
+Attributes: head-name, head-extra, head-value
+Children:   (value)*
+
+head-name: (optional) a heading for the number field
+head-exra: (optional, but recommended) a heading for the extra field
+head-value: (optional) a heading for the value field (the body of the
+            element)
+
+The definition-table element is conventionally represented as a table of
+textual definitions. Usually the table is headed by 'name' and 'meaning'
+(and possibly 'extra' when an extra field is supplied). Where heading
+values are given, these will be used to provide further indication of
+the fields. The definition-table is intended to make it possible to
+describe terms and labels, whilst the value-table is intended for numbers.
+
+
+Element:    definition
+Attributes: name, extra
+Children:   <text>
+
+name: the textual string being defined
+extra: (optional) an additional field if required in the table
+
+A definition is an element of a definition-table, describing the meaning
+of one or more terms. Usually it is represented as a component of a
+table comprising the definitions. The meaning of the definition is
+described by the content of the element.
 
 
 API definitions
@@ -1082,8 +1137,8 @@ irqs: state of IRQs during this call, usually 'enabled', 'disabled', or
       'undefined'
 fiqs: state of FIQs during this call, usually 'enabled', 'disabled', or
       'undefined'
-processor-mode: processor mode for the duration of this call, 'SVC', 'USR'
-      or 'undefined'
+processor-mode: processor mode for the duration of this call, 'SVC', 'USR',
+      'IRQ' or 'undefined'
 re-entrant: whether this call is re-entrant or not, 'undefined', 'yes',
       or 'no'
 
@@ -1479,5 +1534,18 @@ Changes from 1.02 to 1.03
   Declaration was introduced in 1.02 but not documented.
 * input, key and mouse elements are now available, which allow the representation
   of sequences of keyboard and mouse actions.
+* actionbutton element added to match the menuoption element.
+* offset and message elements now have optional data-size attributes.
+  offset-table now allows a head-data-size to describe this column.
+* vector-definitions can now have processor mode IRQ.
+* systemoutput is now an inline element. In 1.02, the element had been a block
+  element, so would start a new line, which was at odds with its description
+  and declaration in the DTD. Uses of systemoutput will need to be checked
+  carefully to make sure they do not disrupt the formatting of the content.
+* Entity &ellipsis; can now be used for a '...' sequence as a character.
+* filename elements can now have a type attribute to differentiate the system
+  they are used on.
+* definition-tables can now be used in place of value-tables, for non-numeric
+  definitions.
 * offset and message now have a state attribute, to allow them to be marked as
   being undefined or reserved.
