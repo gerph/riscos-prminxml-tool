@@ -213,6 +213,7 @@
     offset CDATA #REQUIRED
     data-size CDATA #IMPLIED
     name CDATA #IMPLIED
+    state (reserved | undefined | content) "content"
 >
 <!-- Toolbox message definition has a similar structure -->
 <!ELEMENT tboxmessage-definition ((message-table | value-table | offset-table)?, use, declaration?, related?)>
@@ -267,6 +268,7 @@
     number CDATA #REQUIRED
     data-size CDATA #IMPLIED
     name CDATA #IMPLIED
+    state (reserved | undefined | content) "content"
 >
 <!-- A definition table allows us to define the meaning of certain labelled values -->
 <!ELEMENT definition-table (definition)*>

@@ -136,6 +136,15 @@
 </p>
 </category>
 
+<category title="States">
+<p>
+<offset-table>
+ <offset number="0" state="reserved"/>
+ <offset number="4" state="undefined"/>
+</offset-table>
+</p>
+</category>
+
 </section>
 
 
@@ -183,6 +192,15 @@
 <message-table>
  <message offset="0" name='OFFSET0'>Some important data</message>
  <message offset="4" data-size='4' name='OFFSET4'>Another data</message>
+</message-table>
+</p>
+</category>
+
+<category title="States">
+<p>
+<message-table>
+ <message offset="0" state="reserved"/>
+ <message offset="4" state="undefined"/>
 </message-table>
 </p>
 </category>
