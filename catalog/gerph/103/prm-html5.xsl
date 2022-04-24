@@ -1967,7 +1967,12 @@
 
 <!-- a filename -->
 <xsl:template match="filename">
-<span class='filename'><xsl:apply-templates /></span>
+<span>
+ <xsl:attribute name='class'>
+  <xsl:text>filename filename-</xsl:text>
+  <xsl:value-of select='@type'/>
+ </xsl:attribute>
+ <xsl:apply-templates /></span>
 </xsl:template>
 
 <!-- a system variable -->

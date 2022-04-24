@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.02//EN"
-                            "http://gerph.org/dtd/102/prm.dtd">
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.03//EN"
+                            "http://gerph.org/dtd/103/prm.dtd">
 
 <riscos-prm>
 <chapter title="PRM-in-XML styled elements">
@@ -23,6 +23,9 @@
 <p>
 <list>
     <item>Filename: <filename>ADFS::HardDisc4.$.Apps.!Paint</filename></item>
+    <item>Filename (Windows): <filename type='windows'>C:\Program Files\</filename></item>
+    <item>Filename (Unix): <filename type='unix'>/etc/hosts</filename></item>
+    <item>Filename (URI): <filename type='uri'>http://example.com/</filename></item>
     <item>System Variable: <sysvar>CLI$Prompt</sysvar></item>
 </list>
 </p>

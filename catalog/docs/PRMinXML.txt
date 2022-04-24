@@ -599,12 +599,20 @@ it may be used only as an indexing entry.
 
 
 Element:    filename
-Attributes: <none>
+Attributes: type
 Children:   (<text> | userreplace)*
+
+type: (optional) type of filename represented:
+          riscos - a RISC OS filename (default)
+          windows - a Windows filename
+          unix - a Unix (POSIX) filename
+          uri - a URI
 
 The filename is usually represented in the PRMs by typewriter text. This
 element describes a filename which should be, or can be, supplied to the
-system.
+system. Because filenames may be transferred from different systems, and
+some filenames may need to be given in alternative formats, the type should
+be used to differentate the semantics of the filename.
 
 
 Element:    variable
@@ -1487,3 +1495,6 @@ Changes from 1.02 to 1.03
   and declaration in the DTD. Uses of systemoutput will need to be checked
   carefully to make sure they do not disrupt the formatting of the content.
 * Entity &ellipsis; can now be used for a '...' sequence as a character.
+* filename elements can now have a type attribute to differentiate the system
+  they are used on.
+
