@@ -313,6 +313,9 @@ table {
 .menuoption {
   font-weight: bold;
 }
+.actionbutton {
+  font-weight: bold;
+}
 .variable {
   font-family: monospace;
 }
