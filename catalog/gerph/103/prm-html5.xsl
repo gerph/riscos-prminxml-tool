@@ -1841,10 +1841,16 @@
 <div class='systemoutput'><xsl:apply-templates /></div>
 </xsl:template>
 
-<!-- Menu option - an option that the user might chose for a menu -->
+<!-- Menu option - an option that the user might choose for a menu -->
 <xsl:template match="menuoption">
 <span class='menuoption'><xsl:apply-templates /></span>
 </xsl:template>
+
+<!-- Action button - a button in the interface that the user might interact with -->
+<xsl:template match="actionbutton">
+<span class='actionbutton'><xsl:apply-templates /></span>
+</xsl:template>
+
 
 <!-- The collection of input device operations -->
 <!-- FIXME: Enforce the keys before mouse? -->
