@@ -589,6 +589,15 @@ menu option. Its representation in a transformation is undefined; it may be
 used only as an indexing entry.
 
 
+Element:    actionbutton
+Attributes: <none>
+Children:   (<text>)*
+
+The actionbutton is not represented in the PRMs. This element describes a
+button in the interface. Its representation in a transformation is undefined;
+it may be used only as an indexing entry.
+
+
 Element:    filename
 Attributes: <none>
 Children:   (<text> | userreplace)*
@@ -1465,4 +1474,4 @@ Changes from 1.02 to 1.03
   Declaration was introduced in 1.02 but not documented.
 * input, key and mouse elements are now available, which allow the representation
   of sequences of keyboard and mouse actions.
-
+* actionbutton element added to match the menuoption element.

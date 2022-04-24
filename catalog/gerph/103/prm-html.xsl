@@ -2229,6 +2229,12 @@
 <em><xsl:apply-templates /></em>
 </xsl:template>
 
+<!-- Action button - a button in the interface that the user might interact with -->
+<xsl:template match="actionbutton">
+<em><xsl:apply-templates /></em>
+</xsl:template>
+
+
 <!-- The collection of input device operations -->
 <!-- FIXME: Enforce the keys before mouse? -->
 <xsl:template match="input">
@@ -2268,6 +2274,8 @@
         </xsl:choose>
 </kbd>
 </xsl:template>
+
+
 <!-- Variable -->
 <xsl:template match="variable">
 <tt><xsl:apply-templates /></tt>
