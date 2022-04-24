@@ -278,6 +278,9 @@ table {
 .table-head .table-name {
     text-align: left;
 }
+.table-head .table-extra {
+    text-align: left;
+}
 .table-head .table-value {
     text-align: left;
 }
@@ -297,6 +300,9 @@ table {
     text-align: right;
 }
 .table-body .table-name {
+    text-align: left;
+}
+.table-body .table-extra {
     text-align: left;
 }
 .table-body .table-value {

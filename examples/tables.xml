@@ -247,6 +247,31 @@
 
 </section>
 
+
+
+<!-- Definition table -->
+<section title="Definition table examples">
+
+<category title="Simple table">
+<p>
+<definition-table>
+ <definition name="Foo">Some important definition</definition>
+ <definition name="Bar">Another definition</definition>
+</definition-table>
+</p>
+</category>
+
+<category title="Extra fields">
+<p>
+<definition-table head-extra="Alias">
+ <definition name="Foo" extra='Bob'>Some important definition</definition>
+ <definition name="Bar" extra='Tom'>Another definition</definition>
+</definition-table>
+</p>
+</category>
+
+</section>
+
 </chapter>
 
 <!-- MetaData -->
@@ -264,7 +289,9 @@
   <revision number="1" author="Gerph" date="17 Aug 2021" title="Initial version">
     <change>Some examples of table forms</change>
   </revision>
-  <revision number="2" author="Gerph" date="22 Apr 2022" title="Data-size field added">
+  <revision number="2" author="Gerph" date="22 Apr 2022">
+    <change>Data-size field added</change>
+    <change>Definition tables have been added.</change>
   </revision>
  </history>
 </meta>

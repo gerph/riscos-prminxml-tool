@@ -761,17 +761,22 @@ should be the direction that the scroll wheel is moved.
 Data structures
 ---------------
 
-There are four types of data structures provided by this definition. These
-are the 'bitfield-table', 'value-table', 'offset-table' and 'message-table'.
+There are a few types of data structures provided by this definition. These
+are the 'bitfield-table', 'value-table', 'offset-table', 'message-table'
+and 'definition-table'.
 These are grouped into table/value pairs :
 
   bitfield-table & bit
   value-table & value
   offset-table & offset
   message-table & message
+  definition-table & definition
 
 message-tables are solely for use within descriptions of Wimp message
 blocks.
+
+value-tables are intended for numeric data, whilst definition-tables are
+indented for textual definitions.
 
 
 Element:    bitfield-table
@@ -897,6 +902,35 @@ will always be described preceded by 'R1+' to indicate that they are from
 the message block pointer in register 1 (as supplied to
 Wimp_SendMessage/Wimp_Poll[Idle])
 
+
+Element:    definition-table
+Attributes: head-name, head-extra, head-value
+Children:   (value)*
+
+head-name: (optional) a heading for the number field
+head-exra: (optional, but recommended) a heading for the extra field
+head-value: (optional) a heading for the value field (the body of the
+            element)
+
+The definition-table element is conventionally represented as a table of
+textual definitions. Usually the table is headed by 'name' and 'meaning'
+(and possibly 'extra' when an extra field is supplied). Where heading
+values are given, these will be used to provide further indication of
+the fields. The definition-table is intended to make it possible to
+describe terms and labels, whilst the value-table is intended for numbers.
+
+
+Element:    definition
+Attributes: name, extra
+Children:   <text>
+
+name: the textual string being defined
+extra: (optional) an additional field if required in the table
+
+A definition is an element of a definition-table, describing the meaning
+of one or more terms. Usually it is represented as a component of a
+table comprising the definitions. The meaning of the definition is
+described by the content of the element.
 
 
 API definitions
@@ -1497,4 +1531,6 @@ Changes from 1.02 to 1.03
 * Entity &ellipsis; can now be used for a '...' sequence as a character.
 * filename elements can now have a type attribute to differentiate the system
   they are used on.
+* definition-tables can now be used in place of value-tables, for non-numeric
+  definitions.
 

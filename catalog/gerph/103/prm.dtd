@@ -73,7 +73,7 @@
 <!ENTITY esc "Esc">
 <!ENTITY print "&#9113;">
 
-<!ENTITY % tables "offset-table | bitfield-table | value-table | message-table">
+<!ENTITY % tables "offset-table | bitfield-table | value-table | message-table | definition-table">
 <!ENTITY % parameters "userinput | menuoption | systemoutput | command | function | variable | userreplace | optional | sysvar | filename | switch | input">
 <!ENTITY % style "strong | sub | sup">
 <!ENTITY % link "reference | email">
@@ -267,6 +267,18 @@
     number CDATA #REQUIRED
     data-size CDATA #IMPLIED
     name CDATA #IMPLIED
+>
+<!-- A definition table allows us to define the meaning of certain labelled values -->
+<!ELEMENT definition-table (definition)*>
+<!ATTLIST definition-table
+    head-name CDATA "Name"
+    head-extra CDATA #IMPLIED
+    head-value CDATA "Meaning"
+>
+<!ELEMENT definition ANY>
+<!ATTLIST definition
+    name CDATA #REQUIRED
+    extra CDATA #IMPLIED
 >
 <!-- Command syntax -->
 <!-- <!ELEMENT syntax (userreplace | optional | switch)*> -->
