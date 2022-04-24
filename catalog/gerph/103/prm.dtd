@@ -1,9 +1,9 @@
 <!-- RISC OS PRM DTD
 
      Public identifier :
-        -//Gerph//DTD PRM documentation 1.02//EN
+        -//Gerph//DTD PRM documentation 1.03//EN
      System identifier :
-        http://gerph.org/dtd/102/prm.dtd
+        http://gerph.org/dtd/103/prm.dtd
 
      A DTD for writing documentation on components and their APIs in
      the style of the PRMs.
@@ -130,7 +130,7 @@
     internal (yes | no) "no"
     irqs CDATA "undefined"
     fiqs CDATA "undefined"
-    processor-mode (SVC | USR | any | current | undefined) "undefined"
+    processor-mode (SVC | USR | IRQ | any | current | undefined) "undefined"
     re-entrant (undefined | yes | no) "undefined"
     reason CDATA #IMPLIED
     reasonname CDATA #IMPLIED
@@ -211,6 +211,7 @@
 <!ELEMENT message ANY>
 <!ATTLIST message
     offset CDATA #REQUIRED
+    data-size CDATA #IMPLIED
     name CDATA #IMPLIED
 >
 <!-- Toolbox message definition has a similar structure -->
@@ -258,11 +259,13 @@
 <!ATTLIST offset-table
     head-number CDATA "Offset"
     head-name CDATA #IMPLIED
+    head-data-size CDATA #IMPLIED
     head-value CDATA "Contents"
 >
 <!ELEMENT offset ANY>
 <!ATTLIST offset
     number CDATA #REQUIRED
+    data-size CDATA #IMPLIED
     name CDATA #IMPLIED
 >
 <!-- Command syntax -->
@@ -306,8 +309,10 @@
 <!-- filename - a filename that might be used
      Should really be text or userreplace -->
 <!ELEMENT filename (#PCDATA | %parameters;)*>
-<!-- A menu option that the user might see -->
+<!-- A menu option that the user might see and interact with -->
 <!ELEMENT menuoption (#PCDATA)>
+<!-- A button in the user interface that the user might see and interact with-->
+<!ELEMENT actionbutton (#PCDATA)>
 <!-- A named variable in some code or API -->
 <!ELEMENT variable (#PCDATA)>
 <!-- sysvar - a system variable
