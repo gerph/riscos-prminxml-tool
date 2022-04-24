@@ -14,7 +14,9 @@
     catalog-version="103"
     page-format='html5'
     page-css-variant=''
-    index-css-variant='no-thumb-bar'
+    index-css-variant='no-edge-index'
+    docgroup-name='Example documents'
+    chapter-numbers='yes'
     />
 
 <make-index type="swi" />

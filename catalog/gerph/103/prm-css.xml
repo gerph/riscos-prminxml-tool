@@ -585,9 +585,6 @@ table.indexed-table th {
     h1 .chapter-name {
         -prince-bookmark-level: 1;
     }
-    .indexed h1 {
-        -prince-bookmark-level: 1;
-    }
 
     /* Avoid multiple dividers at the top of the page (the header bar + the definition border) */
     .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {

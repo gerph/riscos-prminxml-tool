@@ -49,6 +49,8 @@
 <xsl:param name="css-variant">no-edge-index</xsl:param>
 <xsl:param name="css-file">none</xsl:param>
 
+<xsl:param name="override-docgroup">RISC OS Programmers Reference Manuals</xsl:param>
+
 <xsl:variable name="title-to-id-src">ABCDEFGHIJKLMNOPQRSTUVWXYZ ,$:()-*?</xsl:variable>
 <xsl:variable name="title-to-id-map">abcdefghijklmnopqrstuvwxyz_-_-</xsl:variable>
 
@@ -103,7 +105,8 @@
 <head>
   <meta charset="utf-8"/>
   <title>
-    <xsl:text>RISC OS Programmers Reference Manuals : </xsl:text>
+    <xsl:value-of select="$override-docgroup"/>
+    <xsl:text> : </xsl:text>
     <xsl:text>Index</xsl:text>
     <xsl:choose>
      <xsl:when test="@type != ''">
@@ -164,7 +167,8 @@
 <head>
   <meta charset="utf-8"/>
   <title>
-    <xsl:text>RISC OS Programmers Reference Manuals : </xsl:text>
+    <xsl:value-of select="$override-docgroup"/>
+    <xsl:text> : </xsl:text>
     <xsl:text>Index</xsl:text>
     <xsl:choose>
      <xsl:when test="@type != ''">
@@ -552,8 +556,8 @@
 <head>
   <meta charset="utf-8"/>
   <title>
-    <xsl:text>RISC OS Programmers Reference Manuals : </xsl:text>
-    <xsl:text>Contents</xsl:text>
+    <xsl:value-of select="$override-docgroup"/>
+    <xsl:text> : </xsl:text>
     <xsl:choose>
      <xsl:when test="$index-entity != ''">
       <xsl:text> (</xsl:text>
@@ -603,7 +607,12 @@
 <xsl:template name="index-header">
 <xsl:param name="title"/>
     <header>
-        <h1><xsl:value-of select='$title'/></h1>
+        <h1 class='chapter-title'>
+            <span class='chapter-docgroup-name'>
+                <xsl:value-of select="$override-docgroup"/>
+            </span>
+            <span class='chapter-name'><xsl:value-of select='$title'/></span>
+        </h1>
     </header>
 </xsl:template>
 
