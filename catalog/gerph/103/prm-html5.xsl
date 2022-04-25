@@ -213,7 +213,19 @@
 <body>
 
 <header>
+<!-- Variables in the span here have no presentation in the document;
+     they're just referenced in CSS -->
+<span class='chapter-vars'>
+    <span class='chapter-page-prefix'>
+        <xsl:if test="$override-docgroup-part != ''">
+            <xsl:value-of select="$override-docgroup-part"/>
+            <xsl:text>-</xsl:text>
+        </xsl:if>
+    </span>
+</span>
+
 <h1 class='chapter-title'>
+    <!-- Variables in the span here might be used to construct the heading -->
     <span class='chapter-docgroup-name'>
         <xsl:choose>
             <xsl:when test="$override-docgroup != ''"><xsl:value-of select="$override-docgroup"/></xsl:when>

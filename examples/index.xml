@@ -15,7 +15,6 @@
     page-format='html5'
     page-css-variant=''
     index-css-variant='no-edge-index'
-    docgroup-name='Example documents'
     chapter-numbers='yes'
     />
 
@@ -39,14 +38,25 @@
 <p>It has two paragraphs in it.</p>
 </footer>
 
-<page href="sections">Sections</page>
-<page href="styled">Styled elements</page>
-<page href="tables">Tables</page>
-<page href="lists">Lists</page>
-<page href="definitions">Definitions</page>
-<page href="meta">Metadata</page>
-<page href="fixme">FIXMEs</page>
-<page href="input">Input</page>
+<section title="Structural elements"
+         docgroup-part="I" docgroup-name="Structural elements">
+    <page href="sections">Sections</page>
+    <page href="tables">Tables</page>
+    <page href="lists">Lists</page>
+    <page href="definitions">Definitions</page>
+    <page href="input">Input</page>
+</section>
+
+<section title="Miscellaneous"
+         docgroup-part="II" docgroup-name="Miscellaneous elements">
+    <page href="styled">Styled elements</page>
+</section>
+
+<section title="Metadata"
+         docgroup-part="III" docgroup-name="Metadata">
+    <page href="meta">Metadata</page>
+    <page href="fixme">FIXMEs</page>
+</section>
 
 
 </index>

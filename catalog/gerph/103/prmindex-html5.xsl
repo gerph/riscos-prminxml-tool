@@ -50,6 +50,7 @@
 <xsl:param name="css-file">none</xsl:param>
 
 <xsl:param name="override-docgroup">RISC OS Programmers Reference Manuals</xsl:param>
+<xsl:param name="override-docgroup-part"></xsl:param>
 
 <xsl:variable name="title-to-id-src">ABCDEFGHIJKLMNOPQRSTUVWXYZ ,$:()-*?</xsl:variable>
 <xsl:variable name="title-to-id-map">abcdefghijklmnopqrstuvwxyz_-_-</xsl:variable>
@@ -607,6 +608,17 @@
 <xsl:template name="index-header">
 <xsl:param name="title"/>
     <header>
+        <!-- Variables in the span here have no presentation in the document;
+             they're just referenced in CSS -->
+        <span class='chapter-vars'>
+            <span class='chapter-page-prefix'>
+                <xsl:if test="$override-docgroup-part != ''">
+                    <xsl:value-of select="$override-docgroup-part"/>
+                    <xsl:text>-</xsl:text>
+                </xsl:if>
+            </span>
+        </span>
+
         <h1 class='chapter-title'>
             <span class='chapter-docgroup-name'>
                 <xsl:value-of select="$override-docgroup"/>

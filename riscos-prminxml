@@ -1012,6 +1012,8 @@ The 'index.xml' file has the following format:
     index-css-base="standard"
     index-css-variant="none"
     index-css-file="none"
+    docgroup-name="My document set name"
+    docgroup-part="III"
     />
 
 <!-- Indexes that we want to generate -->
@@ -1089,6 +1091,14 @@ The 'options' element describes some settings for the index build:
                     and contents pages. Defaults to 'no-edge-index'.
     index-css-file:  A CSS file to apply to index and contents
                     pages. Defaults to 'none'.
+    docgroup-name: The name of this collection of documentation.
+                   Usually used by the edge index, or in document
+                   titles.
+                   Defaults to 'RISC OS Programmers Reference Manuals'.
+    docgroup-part: The sequence number of this collection of
+                   documentation. Usually used in the page numbering
+                   to distinguish between volumes.
+                   Defaults to '', which will omit the part number.
 
 The 'make-index' elements describe which parts of the indexes will
 be included in the output.
@@ -1108,14 +1118,26 @@ which is distinct from this footer).
 
 The 'section' elements may be repeated and nested. These define the
 sections of the documentation, with head being further nested than
-the others. The 'dir' attribute must be populated with the name of
-the directory the section describes - sections and pages must be
-stored in the same hierarchy as described in this document.
+the others. Attributes are:
+
+    title: Must be set to the title to show in the contents.
+    dir: (optional) May be populated with the name of the directory
+         the section describes. Sections and pages must be stored
+         in the same hierarchy as described in this document.
+    docgroup-name: (optional) May be populated with the name of
+         the collection of documentation within the section.
+         Overrides the global 'docgroup-name'.
+    docgroup-part: (optional) May be populated with the sequence
+         number of the collection of documentation within the
+         section. Overrides the global 'docgroup-part'.
 
 The 'page' element describes a page (chapter, really) which will be
-linked from the index. If a 'href' attribute is given, the document
-will be generated and linked. If a 'href' attribute is not given,
-the page will be unlinked (or omitted if 'hide-empty' is 'yes').
+linked from the index. Attributes are:
+
+    href: (optional) If supplied, the document will be generated
+         and linked in the index. If not supplied the page will be
+         unlinked (or omitted entirely from the index if 'hide-empty'
+         is 'yes').
 
 Any images supplied within the input directory will be copied into
 the output, even if they are not referenced.

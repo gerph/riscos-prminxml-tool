@@ -51,6 +51,7 @@ header h1 {
 }
 
 
+header .chapter-vars,
 header h1 .chapter-docgroup-name,
 header h1 .chapter-docgroup-part {
   display: none
@@ -795,6 +796,7 @@ footer {
 .chapter-docgroup-part { string-set: docgroup-part content() }
 .chapter-name { string-set: chapter-name content() }
 .chapter-number { string-set: chapter-number content() }
+.chapter-page-prefix { string-set: chapter-page-prefix content() }
 section.section h2,
 section.meta h2 {
     string-set: section-name content()
@@ -1104,7 +1106,7 @@ article .definition-related a:active {
     }
 
     @bottom-left {
-        content: counter(page);
+        content: string(chapter-page-prefix) counter(page);
         font-family: sans-serif;
         vertical-align: top;
         padding-top: 0.25rem;
@@ -1127,7 +1129,7 @@ article .definition-related a:active {
     }
 
     @bottom-right {
-        content: counter(page);
+        content: string(chapter-page-prefix) counter(page);
         font-family: sans-serif;
         vertical-align: top;
         padding-top: 0.25rem;
