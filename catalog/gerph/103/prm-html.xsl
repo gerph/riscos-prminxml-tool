@@ -121,8 +121,6 @@
 <html>
 <xsl:comment>
   Auto-generated using XSLT stylesheet created by Gerph.
-
-  This document was created with the HTML stylesheet updated 19 Sep 2020.
 </xsl:comment>
 <xsl:apply-templates />
 <xsl:apply-templates select="riscos-prm/meta" mode="tail"/>
@@ -136,7 +134,7 @@
 <head>
   <meta charset="utf-8"/>
   <title>
-  <xsl:value-of select="../@doc-group"/>
+  <xsl:value-of select="../@docgroup"/>
   <xsl:text> : </xsl:text>
   <xsl:value-of select="@title"/>
  </title>

@@ -1171,12 +1171,17 @@ article .definition-related a:active {
     @right-top {
         display: inline;
         margin-left: 1.5rem;
-        margin-top: 2rem;
+
+        /* 5% gap at top/bottom, dividing the 90% remaining into edgeindex-max
+         * blocks, of which this is the edgeindex'th one (0-indexed).
+         */
+        margin-top: calc((5 + (90 / var(--edgeindex-max)) * var(--edgeindex-number)) * 1%);
+        margin-bottom: calc((100 - (5 + (90 / var(--edgeindex-max)) * (var(--edgeindex-number) + 1))) * 1%);
+
         padding-top: 1rem;
         padding-bottom: 1rem;
         writing-mode: vertical-rl;
         padding-left: 0.5rem;
-        margin-bottom: 60%;
         font-family: sans-serif;
         font-weight: bold;
         font-size: 0.75rem;
@@ -1663,8 +1668,8 @@ table.history h5 {
 body {
   font-family: "Fraunces 28pt", "Fraunces", monospace;
   font-weight: lighter;
-  font-feature-settings: 'ss01' 1;
-  font-variant: prince-opentype(ss01(1));
+  font-feature-settings: 'ss01' 0;
+  font-variant: prince-opentype(ss01(0));
 }
 th {
   font-weight: normal;

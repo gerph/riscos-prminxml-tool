@@ -1085,7 +1085,7 @@ The 'options' element describes some settings for the index build:
                     content. Defaults to 'none'.
     page-css-file:  A CSS file to apply to the HTML content.
                     Defaults to 'none'.
-    index-css-base:  The base CSS stylesheet to use for the index
+    index-css-base: The base CSS stylesheet to use for the index
                     and contents pages. Defaults to 'standard'.
     index-css-variant: A list of variants to apply to the index
                     and contents pages. Defaults to 'no-edge-index'.
@@ -1099,6 +1099,15 @@ The 'options' element describes some settings for the index build:
                    documentation. Usually used in the page numbering
                    to distinguish between volumes.
                    Defaults to '', which will omit the part number.
+    chapter-numbers: 'yes' or 'no'. Enables the passing of chapter
+                   numbers to each document. The chapter numbers
+                   will automatically increment for each document.
+                   Defaults to 'no'.
+    edgeindex-max: The number of equally spaced edge index blocks
+                   which will be used within the documents.
+                   The edge index will only be shown in paged
+                   media (such as PDFs).
+                   Defaults to 4.
 
 The 'make-index' elements describe which parts of the indexes will
 be included in the output.
@@ -1130,6 +1139,10 @@ the others. Attributes are:
     docgroup-part: (optional) May be populated with the sequence
          number of the collection of documentation within the
          section. Overrides the global 'docgroup-part'.
+    edgeindex: (optional) May be populated with the number of the
+         edge index which will show the 'docgroup-name', starting
+         from 1 which is at the top of the page.
+
 
 The 'page' element describes a page (chapter, really) which will be
 linked from the index. Attributes are:
