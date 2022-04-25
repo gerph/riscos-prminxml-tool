@@ -172,23 +172,15 @@ Structurally, the document consists of :
  </riscos-prm>
 
 Element:    riscos-prm
-Attributes: doc-group
+Attributes: (none)
 Children:   (chapter*), meta
 
 The riscos-prm element is the top level element, within which other PRM
-elements are contained. 'doc-group' may be set to some prefix that declares
-the category of the documentation. By default this is set to "RISC OS
-Programmers Reference Manuals". Because of the diversity of the
-documentation that may be produced, this value can be modified to suit
-the class being documented. Examples of documentation groups might be :
-
-  Network Protocols
-  Zap Developer Documentation
-  Bogons Ltd Internal Documentation
+elements are contained.
 
 
 Element:    chapter
-Attributes: title
+Attributes: title, docgroup, docgroup-part
 Children:   section*
 
 The chapter equates to a chapter in the PRMs. The 'title' attribute should
@@ -196,6 +188,21 @@ be set to the title of the chapter. This is usually the component name, for
 example 'Window Manager', 'ChangeFSI'. Whilst multiple chapters can be held
 in a single file, it is expected that usually only a single chapter will be
 held in the file at any one time.
+
+The 'docgroup' may be set to some prefix that declares the category of
+the documentation. By default this is set to "RISC OS Programmers
+Reference Manuals". Because of the diversity of the documentation that may
+be produced, this value can be modified to suit the class being documented.
+Examples of documentation groups might be :
+
+  Network Protocols
+  Zap Developer Documentation
+  Bogons Ltd Internal Documentation
+
+The 'docgroup-part' is used to separate groups of documentation, such as
+by volumes. For example this might be set to 'III' for the 3rd volume of
+the documentation. By default this is an empty string, which removes any
+sequence number.
 
 
 Element:    section
@@ -1549,3 +1556,6 @@ Changes from 1.02 to 1.03
   definitions.
 * offset and message now have a state attribute, to allow them to be marked as
   being undefined or reserved.
+* chapter has docgroup and docgroup-part attributes to distinguish the
+  document. In 1.02 the doc-group was documented as being present on the
+  riscos-prm element, but had always been an attribute of chapter (as doc-group).

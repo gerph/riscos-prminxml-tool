@@ -150,6 +150,36 @@
     Use 'none' to not include an external
     stylesheet.
 </pixparams:param>
+<pixparams:param name="override-chapter-number" values="chapter | ''" default="''">
+    Defines the number of the chapter to include
+    in the titles of the document.
+    Use '' to omit any chapter number.
+</pixparams:param>
+<pixparams:param name="override-docgroup" values="group-name" default="''">
+    Overrides any document group specified in the
+    document. If none was specified in the document,
+    it would default to 'RISC OS Programmers Reference
+    Manuals'.
+    Use '' to use the group specified in the document.
+</pixparams:param>
+<pixparams:param name="override-docgroup-part" values="group-part" default="''">
+    Overrides any document group part specified in the
+    document. If none was specified in the document,
+    it would be omitted.
+    Use '' to use the part specified in the document.
+</pixparams:param>
+
+<pixparams:param name="edgeindex" values="number" default="1">
+    Selects which edge index will be used to show the
+    document group, if any. Edge indexes are numbered
+    from 1 to 'edgeindex-max', descending from the top
+    of the page.
+</pixparams:param>
+
+<pixparams:param name="edgeindex-max" values="number" default="4">
+    Selects how many edge index spaces are left on the
+    edge of the page.
+</pixparams:param>
 
 <xsl:param name="create-contents">yes</xsl:param>
 <xsl:param name="create-body">yes</xsl:param>
@@ -159,6 +189,13 @@
 <xsl:param name="css-base">standard</xsl:param>
 <xsl:param name="css-variant">none</xsl:param>
 <xsl:param name="css-file">none</xsl:param>
+
+<xsl:param name="override-chapter-number"></xsl:param>
+<xsl:param name="override-docgroup"></xsl:param>
+<xsl:param name="override-docgroup-part"></xsl:param>
+
+<xsl:param name="edgeindex">1</xsl:param>
+<xsl:param name="edgeindex-max">4</xsl:param>
 
 
 <xsl:template match="/">
@@ -189,26 +226,67 @@
      </xsl:attribute>
    </meta>
   </xsl:if>
-  <meta name='subject'>
+  <meta name='description'>
    <xsl:attribute name='content'>
     <xsl:value-of select='@title'/>
    </xsl:attribute>
   </meta>
 
   <title>
-  <xsl:value-of select="../@doc-group"/>
-  <xsl:text> : </xsl:text>
-  <xsl:value-of select="@title"/>
- </title>
- <xsl:call-template name='head-css'/>
+    <xsl:choose>
+        <xsl:when test="$override-docgroup != ''"><xsl:value-of select="$override-docgroup"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="../@docgroup"/></xsl:otherwise>
+    </xsl:choose>
+    <xsl:text> : </xsl:text>
+    <xsl:value-of select="@title"/>
+  </title>
+  <xsl:call-template name='head-css'/>
 </head>
 
 <body>
 
 <header>
+<!-- Variables in the span here have no presentation in the document;
+     they're just referenced in CSS -->
+<span class='chapter-vars'>
+    <span class='chapter-page-prefix'>
+        <xsl:if test="$override-docgroup-part != ''">
+            <xsl:value-of select="$override-docgroup-part"/>
+            <xsl:text>-</xsl:text>
+        </xsl:if>
+    </span>
+    <!-- The edge index values can only be calculated from CSS values, so we assign this here -->
+    <style type='text/css'>
+        <xsl:text>:root {</xsl:text>
+        <xsl:text>  --edgeindex-number: </xsl:text>
+        <xsl:value-of select="$edgeindex - 1"/>
+        <xsl:text>;</xsl:text>
+        <xsl:text>  --edgeindex-max: </xsl:text>
+        <xsl:value-of select="$edgeindex-max"/>
+        <xsl:text>;</xsl:text>
+    </style>
+</span>
+
 <h1 class='chapter-title'>
-    <span class='chapter-number'><!-- NYI --></span>
-    <span class='chapter-docgroup'><xsl:value-of select="../@doc-group"/></span>
+    <!-- Variables in the span here might be used to construct the heading -->
+    <span class='chapter-docgroup-name'>
+        <xsl:choose>
+            <xsl:when test="$override-docgroup != ''"><xsl:value-of select="$override-docgroup"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="../@docgroup"/></xsl:otherwise>
+        </xsl:choose>
+    </span>
+    <span class='chapter-docgroup-part'>
+        <xsl:choose>
+            <xsl:when test="$override-docgroup-part != ''"><xsl:value-of select="$override-docgroup-part"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="../@docgroup-part"/></xsl:otherwise>
+        </xsl:choose>
+    </span>
+    <span class='chapter-number'>
+        <xsl:choose>
+            <xsl:when test="$override-chapter-number != ''"><xsl:value-of select="$override-chapter-number"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="@number"/></xsl:otherwise>
+        </xsl:choose>
+    </span>
     <span class='chapter-name'><xsl:value-of select="@title"/></span>
 </h1>
 <xsl:choose>

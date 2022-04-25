@@ -14,7 +14,9 @@
     catalog-version="103"
     page-format='html5'
     page-css-variant=''
-    index-css-variant='no-thumb-bar'
+    index-css-variant='no-edge-index'
+    chapter-numbers='yes'
+    edgeindex-max='3'
     />
 
 <make-index type="swi" />
@@ -37,14 +39,28 @@
 <p>It has two paragraphs in it.</p>
 </footer>
 
-<page href="sections">Sections</page>
-<page href="styled">Styled elements</page>
-<page href="tables">Tables</page>
-<page href="lists">Lists</page>
-<page href="definitions">Definitions</page>
-<page href="meta">Metadata</page>
-<page href="fixme">FIXMEs</page>
-<page href="input">Input</page>
+<section title="Structural elements"
+         docgroup-name="Structural elements"
+         edgeindex='1'>
+    <page href="sections">Sections</page>
+    <page href="tables">Tables</page>
+    <page href="lists">Lists</page>
+    <page href="definitions">Definitions</page>
+    <page href="input">Input</page>
+</section>
+
+<section title="Miscellaneous"
+         docgroup-name="Miscellaneous elements"
+         edgeindex='2'>
+    <page href="styled">Styled elements</page>
+</section>
+
+<section title="Metadata"
+         docgroup-name="Metadata"
+         edgeindex='3'>
+    <page href="meta">Metadata</page>
+    <page href="fixme">FIXMEs</page>
+</section>
 
 
 </index>
