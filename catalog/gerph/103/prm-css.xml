@@ -1195,6 +1195,10 @@ header h1 {
   border-bottom: none;
   padding-bottom: 4em;
 }
+header h1 .chapter-number {
+  /* RO 2 PRM doesn't include the chapter numbers */
+  display: none;
+}
 .indexed-index header h1 {
   padding-bottom: 1em;
 }
