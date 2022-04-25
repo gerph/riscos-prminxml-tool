@@ -754,6 +754,26 @@ section.section .entry-definition:first-of-type {
     break-before: avoid;
 }
 
+
+/* Usually the section is immediately followed by a definition block,
+ * but when they include a descriptive paragraph before those blocks
+ * we want to force to a new page.
+ */
+section.section p + .service-definition:first-of-type,
+section.section p + .swi-definition:first-of-type,
+section.section p + .vector-definition:first-of-type,
+section.section p + .upcall-definition:first-of-type,
+section.section p + .command-definition:first-of-type,
+section.section p + .vdu-definition:first-of-type,
+section.section p + .error-definition:first-of-type,
+section.section p + .sysvar-definition:first-of-type,
+section.section p + .message-definition:first-of-type,
+section.section p + .tboxmessage-definition:first-of-type,
+section.section p + .tboxmethod-definition:first-of-type,
+section.section p + .entry-definition:first-of-type {
+    break-before: page;
+}
+
 /* If we have a heading which is followed by content, we would like to keep that content
    together with the heading. This appears to be effective in PrinceXML but not in
    Firefox or Chrome; maybe something subtle I've missed. */
