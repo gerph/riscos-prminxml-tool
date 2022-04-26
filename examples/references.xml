@@ -65,28 +65,28 @@
 </subsection>
 <subsection title="References external to this file">
 
-<p>This is a reference to the <strong>chapter</strong> entitled <reference type="chapter" name="External chapter" href="test_refs_external_target" />.</p>
+<p>This is a reference to the <strong>chapter</strong> entitled <reference type="chapter" name="External chapter" href="references_external_targets" />.</p>
 
-<p>This is a reference to the <strong>section</strong> entitled <reference type="section" name="External section" href="test_refs_external_target" />.</p>
+<p>This is a reference to the <strong>section</strong> entitled <reference type="section" name="External section" href="references_external_targets" />.</p>
 
-<p>This is a reference to the <strong>subsection</strong> entitled <reference type="subsection" name="External subsection" href="test_refs_external_target" />.</p>
+<p>This is a reference to the <strong>subsection</strong> entitled <reference type="subsection" name="External subsection" href="references_external_targets" />.</p>
 
-<p>This is a reference to the <strong>subsubsection</strong> entitled <reference type="subsubsection" name="External subsubsection" href="test_refs_external_target" />.</p>
+<p>This is a reference to the <strong>subsubsection</strong> entitled <reference type="subsubsection" name="External subsubsection" href="references_external_targets" />.</p>
 
-<p>This is a reference to the <strong>category</strong> entitled <reference type="category" name="External category" href="test_refs_external_target" />.</p>
+<p>This is a reference to the <strong>category</strong> entitled <reference type="category" name="External category" href="references_external_targets" />.</p>
 
 </subsection>
 <subsection title="References external to this file pointing to an additional chapter">
 
-<p>This is a reference to the <strong>chapter</strong> entitled <reference type="chapter" name="Additional chapter" href="test_refs_external_target" />.</p>
+<p>This is a reference to the <strong>chapter</strong> entitled <reference type="chapter" name="Additional chapter" href="references_external_targets" />.</p>
 
-<p>This is a reference to the <strong>section</strong> entitled <reference type="section" name="Additional section" href="test_refs_external_target" />.</p>
+<p>This is a reference to the <strong>section</strong> entitled <reference type="section" name="Additional section" href="references_external_targets" />.</p>
 
-<p>This is a reference to the <strong>subsection</strong> entitled <reference type="subsection" name="Additional subsection" href="test_refs_external_target" />.</p>
+<p>This is a reference to the <strong>subsection</strong> entitled <reference type="subsection" name="Additional subsection" href="references_external_targets" />.</p>
 
-<p>This is a reference to the <strong>subsubsection</strong> entitled <reference type="subsubsection" name="Additional subsubsection" href="test_refs_external_target" />.</p>
+<p>This is a reference to the <strong>subsubsection</strong> entitled <reference type="subsubsection" name="Additional subsubsection" href="references_external_targets" />.</p>
 
-<p>This is a reference to the <strong>category</strong> entitled <reference type="category" name="Additional category" href="test_refs_external_target" />.</p>
+<p>This is a reference to the <strong>category</strong> entitled <reference type="category" name="Additional category" href="references_external_targets" />.</p>
 
 </subsection>
 

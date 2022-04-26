@@ -38,6 +38,7 @@
 <localdb:definition-titles type="tboxmethod"   prefix-definition=""         prefix-name=""         prefix-number="Method "  number-base="&amp;" name="Toolbox method"   Name="Toolbox method"     />
 
 <!-- Similar database for the subsections (also in the 'definition-titles' space because it's easier to lookup) -->
+<localdb:definition-titles type="chapter" Name='Chapter'/>
 <localdb:definition-titles type="section" Name='Section'/>
 <localdb:definition-titles type="subsection" Name='SubSection'/>
 <localdb:definition-titles type="subsubsection" Name='SubSubSection'/>
@@ -268,6 +269,11 @@
 </span>
 
 <h1 class='chapter-title'>
+    <xsl:attribute name="id">
+        <xsl:text>chapter_</xsl:text>
+        <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
+    </xsl:attribute>
+
     <!-- Variables in the span here might be used to construct the heading -->
     <span class='chapter-docgroup-name'>
         <xsl:choose>
@@ -1814,7 +1820,7 @@
                            string(@reason)=$refreason]"/>
  </xsl:when>
 
- <xsl:when test="$reftype='section' or $reftype='subsection' or $reftype='subsubsection' or $reftype='category'">
+ <xsl:when test="$reftype='chapter' or $reftype='section' or $reftype='subsection' or $reftype='subsubsection' or $reftype='category'">
   <xsl:copy-of select="//*[local-name()=$reftype and
                            @title=$refname]"/>
  </xsl:when>
@@ -1845,7 +1851,7 @@
  </xsl:when>
 
  <!-- Section type reference -->
- <xsl:when test="$reftype='section' or $reftype='subsection' or $reftype='subsubsection' or $reftype='category'">
+ <xsl:when test="$reftype='chapter' or $reftype='section' or $reftype='subsection' or $reftype='subsubsection' or $reftype='category'">
   <xsl:if test="not(@href) and
                 count(exslt:node-set($linknode)/*) = 0">
    <xsl:message><xsl:value-of select="$localdb/@Name" /> for '<xsl:value-of select="$refname" />' not found at
@@ -1870,7 +1876,7 @@
 
  <!-- Anything else we don't understand -->
  <xsl:otherwise>
-  <font size="+5" color="#DD0000"><xsl:value-of select="$link-content" /></font>
+  <span class='error-reference'><xsl:value-of select="$link-content" /></span>
   <xsl:message>Reference type '<xsl:value-of select="@type" />' for <xsl:value-of select="$refname" /> is unknown at
    <xsl:call-template name="describeposition" />.</xsl:message>
  </xsl:otherwise>

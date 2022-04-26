@@ -143,7 +143,15 @@
 <body bgcolor="white" text="black" link="blue" alink="red" vlink="darkblue">
 
 <hr />
-<h1><xsl:value-of select="@title"/></h1>
+<h1>
+    <a>
+        <xsl:attribute name="name">
+         <xsl:text>chapter_</xsl:text>
+         <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
+        </xsl:attribute>
+        <xsl:value-of select="@title"/>
+    </a>
+</h1>
 <hr />
 
 <xsl:choose>
@@ -2151,6 +2159,14 @@
 
  <!-- Section type reference -->
 <!--  There must be an easier way to do this ? -->
+ <xsl:when test="@type='chapter'">
+  <xsl:if test="(not(@href)) and
+                 not (//chapter[@title=$refname])">
+   <xsl:message>Chapter for <xsl:value-of select="$refname" /> not found at
+   <xsl:call-template name="describeposition" />.</xsl:message>
+  </xsl:if>
+  <xsl:value-of select="$link-content" />
+ </xsl:when>
  <xsl:when test="@type='section'">
   <xsl:if test="(not(@href)) and
                  not (//section[@title=$refname])">

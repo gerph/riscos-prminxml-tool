@@ -53,6 +53,8 @@
          docgroup-name="Miscellaneous elements"
          edgeindex='2'>
     <page href="styled">Styled elements</page>
+    <page href="references">References</page>
+    <page href="references_external_targets">(target document for References)</page>
 </section>
 
 <section title="Metadata"

@@ -40,6 +40,12 @@ dt {
     background-color: lightgreen;
 }
 
+/* Errors we recognise */
+.error-reference {
+    color: red;
+    font-size: 3em;
+}
+
 header {
 }
 header h1 {
@@ -58,6 +64,10 @@ header h1 .chapter-docgroup-part {
 }
 header h1 .chapter-number {
   display: inline-block;
+}
+header h1 .chapter-number::after {
+  display: inline-block;
+  content: "\00a0";
 }
 header h1 .chapter-name {
   display: inline-block;
