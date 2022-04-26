@@ -370,7 +370,7 @@
 <!-- References are links -->
 <!ELEMENT reference (#PCDATA)>
 <!ATTLIST reference
-        type (link | swi | error | sysvar | command | upcall | service | message | entry | vector | document | section | subsection | subsubsection | category | vdu | tboxmethod | tboxmessage) "link"
+        type (link | swi | error | sysvar | command | upcall | service | message | entry | vector | document | chapter | section | subsection | subsubsection | category | vdu | tboxmethod | tboxmessage) "link"
     href CDATA #IMPLIED
     name CDATA #IMPLIED
     reason CDATA #IMPLIED

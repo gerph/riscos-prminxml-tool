@@ -473,6 +473,11 @@ type: may be one of :
        error - a reference to an error message, given by 'name'
        tboxmessage - a reference to a Toolbox message
        tboxmethod - a reference to a Toolbox method
+       chapter - a reference to a chapter element, given by the 'title'.
+       section - a reference to a section element, given by the 'title'.
+       subsection - a reference to a subsection element, given by the 'title'.
+       subsubsection - a reference to a subsection element, given by the 'title'.
+       category - a reference to a subsection element, given by the 'title'.
 name: describes the thing referred to (for non-link elements).
 reason: describes a reason code on the referenced section (for non-link
         elements)
@@ -1559,3 +1564,5 @@ Changes from 1.02 to 1.03
 * chapter has docgroup and docgroup-part attributes to distinguish the
   document. In 1.02 the doc-group was documented as being present on the
   riscos-prm element, but had always been an attribute of chapter (as doc-group).
+* references can now be made to chapter, as well as documents, which may make
+  the references read more clearly.
