@@ -276,7 +276,7 @@ my $rc = 0;
 
 if ($format eq 'index')
 {
-    # Special case for the 'index' format - we take an index.xml file and we build everything
+    # Special case for the 'index' format - we take a index.xml file and we build everything
     # described in it and give it a common structure.
     if (scalar(@inputs) != 1)
     {
@@ -301,8 +301,12 @@ if ($format eq 'index')
     my $makefile = "$tempbase-Makefile";
     # FIXME: Should we use the makefile-ro for RISC OS? Does that work any more?
     my $xslt = "$catalog_base/$catalog_version/prmindex-makefile.xsl";
-    my $cmd = "$tool -stringparam index-xml \"$indexxml\" $xslt \"$indexxml\" > \"$makefile\"";
+    my $cmd = "$tool";
+    $cmd .= " -stringparam index-xml \"$indexxml\"";
+    $cmd .= " $xslt \"$indexxml\" > \"$makefile\"";
     runcommand($cmd) && die "Unable to generate makefile with: $cmd\n";
+    #print("Made makefile: $makefile\n");
+    #<STDIN>;
 
     # Clean
     print "Cleaning target\n";
@@ -318,17 +322,21 @@ if ($format eq 'index')
     build_with_log("make -f \"$makefile\"", $logfile, "build documentation");
     $step += 1;
 
-    # Validate
-    print "Validating source\n";
-    $logfile = "$logdir${dirsep}$step-validate${extsep}log";
-    build_with_log("make -f \"$makefile\" validate", $logfile, "validate documentation", 1);
-    $step += 1;
-
-    # Report on the validity errors
-    if (check_lint_log($logfile) && $lint)
+    if ($lint)
     {
-        $rc  = 1;
+        # Validate
+        print "Validating source\n";
+        $logfile = "$logdir${dirsep}$step-validate${extsep}log";
+        build_with_log("make -f \"$makefile\" validate", $logfile, "validate documentation", 1);
+        $step += 1;
+
+        # Report on the validity errors
+        if (check_lint_log($logfile) && $lint)
+        {
+            $rc  = 1;
+        }
     }
+    unlink "$makefile";
 }
 else
 {
@@ -635,12 +643,29 @@ sub runcommand
     my $oldenv = $ENV{$envvar_catalog};
     # Use the catalog files that we supplied.
     my $need_restore = 0;
+    my $tmpsymlink = undef;
     my $catalog = "${resourcedir}${dirsep}root${extsep}xml";
     if (-f "$catalog") {
         # Only use the resource catalog if one is present; otherwise we'll fall back to the
         # system catalogs or fetching from the network if possible.
         $need_restore = 1;
         $ENV{$envvar_catalog} = $catalog;
+
+        if ($catalog =~ / / && !$riscos)
+        {
+            # The catalog directory contains a space. This would make it impossible for us to reference the
+            # XML catalog because the files used would be inaccessible due to the spaces in the path.
+            # However, we can get around this. We can create a temporary symlink which points to the resources
+            # directory. This would then allow us to use /that/ as the path, which had no spaces in.
+            $tmpsymlink = "$tempbase-res";
+            symlink "$resourcedir", "$tmpsymlink";
+            $ENV{$envvar_catalog} = "${tmpsymlink}${dirsep}root${extsep}xml";
+            print "Replaced catalog with ${tmpsymlink}${dirsep}root${extsep}xml\n" if ($debug);
+        }
+    }
+    else
+    {
+        print "WARNING: Falling back to system catalog / network resources as catalog not available ('$catalog' does not exist)\n";
     }
 
     print "Command: $cmd\n" if ($debug);
@@ -655,6 +680,10 @@ sub runcommand
         else {
             delete $ENV{$envvar_catalog};
         }
+    }
+    if ($tmpsymlink)
+    {
+        unlink $tmpsymlink;
     }
     return $rc;
 }
@@ -939,7 +968,7 @@ work with future iterations of the conversion.
 Linting can be used as a check in addition to any of the other formatting
 operations by specifying the --lint option.
 
-The 'index' format is more complex; it can take an 'index.xml' file which
+The 'index' format is more complex; it can take a 'index.xml' file which
 describes many documents to be included in the structured output documentation:
 
     $tool -f index index.xml
@@ -964,6 +993,7 @@ The 'index.xml' file has the following format:
 <?xml version="1.0"?>
 <index>
 <dirs output="output/html"
+      index="output/index"
       help="output/help"
       header="output/header"
       input="src"
@@ -972,8 +1002,21 @@ The 'index.xml' file has the following format:
     hide-empty="no"
     include-source="no"
     make-contents="no"
+    include-sections="no"
+    include-sections-depth="1"
+    page-format="html"
+    catalog-version="103"
+    page-css-base="standard"
+    page-css-variant="none"
+    page-css-file="none"
+    index-css-base="standard"
+    index-css-variant="none"
+    index-css-file="none"
+    docgroup-name="My document set name"
+    docgroup-part="III"
     />
 
+<!-- Indexes that we want to generate -->
 <make-index type="swi" />
 <make-index type="command" />
 <make-index type="message" />
@@ -986,15 +1029,22 @@ The 'index.xml' file has the following format:
 <make-index type="vdu" />
 <make-index type="tboxmessage" />
 <make-index type="tboxmethod" />
-<make-index type="section" />
+
+<!-- Generate an XML file containing all the referencable content -->
+<make-indexdata/>
+
+<!-- Generate a text file listing all the content files -->
+<make-filelist/>
 
 <footer>
 Your Disclaimer Here.
 </footer>
 
+<!-- List of the sections and the directories that they contain, which may be nested -->
 <section title="Overview" dir="overview">
- <page href="about">About this documentation</page>
- <page href="more">More documentation</page>
+    <!-- Pages to generate and list - omit 'href' for placeholders (which are hidden with hide-empty) -->
+    <page href="about">About this documentation</page>
+    <page href="more">More documentation</page>
 </section>
 </index>
 ----
@@ -1010,16 +1060,66 @@ The 'dirs' element describes where content should be read and written to:
 The 'options' element describes some settings for the index build:
 
     hide-empty:     'yes' or 'no': whether pages without a href will
-                    be omitted
+                    be omitted from the contents.
     include-source: 'yes' or 'no': whether source XML files will be
-                    linked in the index (they'll always be copied).
+                    linked in the index (they will always be copied).
     make-contents:  'yes' or 'no': whether the contents with inline
                     section details will be generated. This allows
                     you to see the indexed elements inline with the
-                    contents. It's not especially useful in reality.
+                    contents. It's not especially useful.
+    include-sections: 'yes' or 'no': Whether the main contents page
+                    will include the sections from the pages being
+                    indexed.
+    include-sections-depth: Number of nested section elements that
+                    will be included on the contents page when the
+                    sections are included. For example '1' would
+                    list only the 'section' elements, whilst '2'
+                    would list 'section' and 'subsection' elements.
+    catalog-version: The version number of the catalog to use.
+                    Defaults to '103'.
+    page-format:    The format of the HTML content, which can be
+                    either 'html' or 'html5'.
+    page-css-base:  The base CSS stylesheet to use for the HTML
+                    content. Defaults to 'standard'.
+    page-css-variant: A list of variants to apply to the HTML
+                    content. Defaults to 'none'.
+    page-css-file:  A CSS file to apply to the HTML content.
+                    Defaults to 'none'.
+    index-css-base: The base CSS stylesheet to use for the index
+                    and contents pages. Defaults to 'standard'.
+    index-css-variant: A list of variants to apply to the index
+                    and contents pages. Defaults to 'no-edge-index'.
+    index-css-file:  A CSS file to apply to index and contents
+                    pages. Defaults to 'none'.
+    docgroup-name: The name of this collection of documentation.
+                   Usually used by the edge index, or in document
+                   titles.
+                   Defaults to 'RISC OS Programmers Reference Manuals'.
+    docgroup-part: The sequence number of this collection of
+                   documentation. Usually used in the page numbering
+                   to distinguish between volumes.
+                   Defaults to '', which will omit the part number.
+    chapter-numbers: 'yes' or 'no'. Enables the passing of chapter
+                   numbers to each document. The chapter numbers
+                   will automatically increment for each document.
+                   Defaults to 'no'.
+    edgeindex-max: The number of equally spaced edge index blocks
+                   which will be used within the documents.
+                   The edge index will only be shown in paged
+                   media (such as PDFs).
+                   Defaults to 4.
 
 The 'make-index' elements describe which parts of the indexes will
 be included in the output.
+
+The 'make-filelist' element indicates that a list of the generated
+HTML files is required. This will be placed in the HTML output
+directory with the name 'filelist.txt'.
+
+The 'make-indexdata' element indicates that an XML file containing
+the details of all the sections and definitions which are referencable
+within the generated documentation. This will be placed in the
+index directory with the name 'index-data.xml'.
 
 The 'footer' element can contain text to place at the bottom of the
 index pages (individual pages may have their own explicit disclaimer,
@@ -1027,15 +1127,41 @@ which is distinct from this footer).
 
 The 'section' elements may be repeated and nested. These define the
 sections of the documentation, with head being further nested than
-the others. The 'dir' attribute must be populated with the name of
-the directory the section describes - sections and pages must be
-stored in the same hierarchy as described in this document.
+the others. Attributes are:
+
+    title: Must be set to the title to show in the contents.
+    dir: (optional) May be populated with the name of the directory
+         the section describes. Sections and pages must be stored
+         in the same hierarchy as described in this document.
+    docgroup-name: (optional) May be populated with the name of
+         the collection of documentation within the section.
+         Overrides the global 'docgroup-name'.
+    docgroup-part: (optional) May be populated with the sequence
+         number of the collection of documentation within the
+         section. Overrides the global 'docgroup-part'.
+    edgeindex: (optional) May be populated with the number of the
+         edge index which will show the 'docgroup-name', starting
+         from 1 which is at the top of the page.
+
 
 The 'page' element describes a page (chapter, really) which will be
-linked from the index. If a 'href' attribute is given, the document
-will be generated and linked. If a 'href' attribute is not given,
-the page will be unlinked (or omitted if 'hide-empty' is 'yes').
+linked from the index. Attributes are:
 
+    href: (optional) If supplied, the document will be generated
+         and linked in the index. If not supplied the page will be
+         unlinked (or omitted entirely from the index if 'hide-empty'
+         is 'yes').
+
+Any images supplied within the input directory will be copied into
+the output, even if they are not referenced.
+
+To convert all the files, use a command like:
+
+    $tool -f index -L logs index.xml
+
+To convert all the files and validate them, use a command like:
+
+    $tool --lint -f index -L logs index.xml
 EOM
 }
 

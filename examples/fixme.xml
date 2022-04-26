@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.02//EN"
+                            "http://gerph.org/dtd/102/prm.dtd">
+
+<riscos-prm>
+<chapter title="FIXME examples">
+<section title="Introduction">
+<p>
+Examples of fixmes.
+</p>
+
+<p>
+    Bare fixme: <fixme/>
+</p>
+
+<p>
+    A pair of them <fixme/> with text around them <fixme/>
+</p>
+
+<p>
+    <fixme>Message goes here</fixme>
+</p>
+
+<p>
+    A pair of them <fixme>Message goes here</fixme> with text around <fixme>Message goes here</fixme>.
+</p>
+
+</section>
+
+</chapter>
+
+<!-- MetaData -->
+<meta>
+ <maintainer>
+  <email name="Gerph" address="gerph@gerph.org" />
+ </maintainer>
+ <disclaimer>
+    <p>
+        &copy; Gerph, 2021.
+    </p>
+ </disclaimer>
+
+ <history>
+  <revision number="1" author="Gerph" date="12 Sep 2021" title="Initial version">
+    <change>Some examples of different types of fixme.</change>
+  </revision>
+ </history>
+</meta>
+</riscos-prm>

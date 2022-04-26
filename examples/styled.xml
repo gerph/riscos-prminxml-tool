@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.03//EN"
+                            "http://gerph.org/dtd/103/prm.dtd">
+
+<riscos-prm>
+<chapter title="PRM-in-XML styled elements">
+
+<section title="Interaction elements">
+
+<p>Elements that are for interaction between the user and the system..</p>
+<p>
+<list>
+    <item>User input: <userinput>I typed this</userinput></item>
+    <item>System output: <systemoutput>The system responded with this</systemoutput></item>
+    <item>Menu option: <menuoption>File</menuoption> <menuoption>Info</menuoption></item>
+    <item>Action button: <actionbutton>Continue</actionbutton></item>
+</list>
+</p>
+</section>
+
+<section title="Environmental elements">
+<p>Elements that describe parts of the system.</p>
+<p>
+<list>
+    <item>Filename: <filename>ADFS::HardDisc4.$.Apps.!Paint</filename></item>
+    <item>Filename (Windows): <filename type='windows'>C:\Program Files\</filename></item>
+    <item>Filename (Unix): <filename type='unix'>/etc/hosts</filename></item>
+    <item>Filename (URI): <filename type='uri'>http://example.com/</filename></item>
+    <item>System Variable: <sysvar>CLI$Prompt</sysvar></item>
+</list>
+</p>
+</section>
+
+<section title="Internal elements">
+<p>Elements that describe implementation of the system.</p>
+<p>
+<list>
+    <item>Variable: <variable>errno</variable></item>
+    <item>Command: <command>Help</command></item>
+    <item>Function: <function>printf</function></item>
+</list>
+</p>
+</section>
+
+<section title="Presentational elements">
+<p>Elements that are presentational only.</p>
+<p>
+<list>
+    <item>Strong: <strong>I really mean this</strong></item>
+    <item>Emphasis: <em>I also mean this</em></item>
+    <item>Superscript: 2<sup>log2bpp</sup></item>
+    <item>Subscript: idlen<sub>1</sub></item>
+    <item>Line break: Text<br/>More text</item>
+</list>
+</p>
+</section>
+
+</chapter>
+
+<!-- MetaData -->
+<meta>
+ <maintainer>
+  <email name="Gerph" address="gerph@gerph.org" />
+ </maintainer>
+ <disclaimer>
+    <p>
+        &copy; Gerph, 2021.
+    </p>
+ </disclaimer>
+
+ <history>
+  <revision number="1" author="Gerph" date="15 Sep 2021" title="Initial version">
+    <change>Some examples of different types of styled elements.</change>
+  </revision>
+ </history>
+</meta>
+</riscos-prm>

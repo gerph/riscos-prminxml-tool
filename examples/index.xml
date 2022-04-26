@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<index>
+<dirs output="artifacts/output/html"
+      help="artifacts/output/help"
+      header="artifacts/output/header"
+      input="examples"
+      temp="tmp" />
+<options
+    hide-empty="no"
+    include-source="no"
+    make-contents="no"
+    include-sections="yes"
+    include-sections-depth="1"
+    catalog-version="103"
+    page-format='html5'
+    page-css-variant=''
+    index-css-variant='no-edge-index'
+    chapter-numbers='yes'
+    edgeindex-max='3'
+    />
+
+<make-index type="swi" />
+<make-index type="command" />
+<make-index type="message" />
+<make-index type="upcall" />
+<make-index type="service" />
+<make-index type="sysvar" />
+<make-index type="entry" />
+<make-index type="vector" />
+<make-index type="error" />
+<make-index type="vdu" />
+<make-index type="tboxmessage" />
+<make-index type="tboxmethod" />
+
+<make-filelist/>
+
+<footer>
+<p>This is an example of a footer.</p>
+<p>It has two paragraphs in it.</p>
+</footer>
+
+<section title="Structural elements"
+         docgroup-name="Structural elements"
+         edgeindex='1'>
+    <page href="sections">Sections</page>
+    <page href="tables">Tables</page>
+    <page href="lists">Lists</page>
+    <page href="definitions">Definitions</page>
+    <page href="input">Input</page>
+</section>
+
+<section title="Miscellaneous"
+         docgroup-name="Miscellaneous elements"
+         edgeindex='2'>
+    <page href="styled">Styled elements</page>
+</section>
+
+<section title="Metadata"
+         docgroup-name="Metadata"
+         edgeindex='3'>
+    <page href="meta">Metadata</page>
+    <page href="fixme">FIXMEs</page>
+</section>
+
+
+</index>
+

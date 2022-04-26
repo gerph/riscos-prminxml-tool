@@ -1,4 +1,4 @@
-                      Structure of PRM documentation (1.02)
+                      Structure of PRM documentation (1.03)
                       =====================================
 
 Introduction
@@ -13,25 +13,30 @@ used by myself and others. The aims of the documentation format are simple :
   * To provide cross-referencing facilities
 
 These aims have been, for the most part, met by the current DTD and reference
-translation (HTML).
+transformation (HTML).
 
-Within the document, descriptions of elements are made with pseudo-SGML
+Within this document, descriptions of elements are made with pseudo-SGML
 entity description notation. This is mostly to simplify description. Where
 the DTD and the descriptions in this document differ, the DTD should be
 regarded as correct, with this document merely giving guidance on the use
 of elements.
 
 
-HTML translation
-----------------
-The major translation which is performed at present is that of XML to HTML
-using XSLT. The translation provided by the HTML is intended to be as close
-to that of the PRMs themselves. It should also be degradable to HTML 3. The
-major restriction that prevents degradation to HTML 2 is the use of tables
-for laying out structural tables.
+HTML transformation
+-------------------
+There are two major HTML transformations present in this release of the
+PRM-in-XML stylesheets - the HTML 3.2 transformation ('prm-html') and
+the HTML 5/CSS transformation ('prm-html5').
 
-Whilst the HTML translation is the current reference translation, there is
-no reason why other translations, such as StrongHelp or Impression DDF could
+The transformation provided by the HTML stylesheets is intended to be as close
+to that of the PRMs themselves. The HTML 3.2 is intended for use on legacy
+browsers where stylesheets are not available. The HTML 5 layout, however, is
+able to be used with modern browsers and takes advantage of many CSS features
+as part of its layout. As such it is much more flexible than the original
+transformation.
+
+Whilst the HTML transformations are the current reference transformations,
+there is no reason why others, such as StrongHelp or Impression DDF could
 not be created.
 
 
@@ -49,19 +54,19 @@ For the document to be translated, they need only be well-formed. However,
 we strongly encourage all authors to ensure that their documents are both
 well-formed and valid to reduce the likelihood of problems in the future.
 
-In addition to this, the HTML translation will apply a number of checks
+In addition to this, the HTML transformation will apply a number of checks
 itself on the document content. Where a problem is encountered, a message
 will be displayed to indicate the issue which has been identified. Some
 issues may not be a problem for the author - for example a reference to
 an external document whose name has not been given (href="?...") which is
 purely a place holder until the document exists. Some messages will indicate
 more serious problems. Authors should read the messages that are presented
-to ensure they understand any issues that the translation has raised.
+to ensure they understand any issues that the transformation has raised.
 
-When locating faults, the translation will display an XPath like description
+When locating faults, the transformation will display an XPath like description
 of the fault location. This can take one of two forms (depending on the
 configuration of the stylesheet). The first of these forms is the simple
-index form, eg :
+index form, for example :
 
 Message definition for Window_Info not found at
    /riscos-prm/chapter/section[2]/subsection[2]/subsubsection[3]/category[5]/p/list/item[3]/reference.
@@ -74,7 +79,7 @@ Message definition for Window_Info not found at
    /
    riscos-prm/
    chapter[@title='Pinboard']/
-   section[@title='Technical Details']/
+   section[@title='Technical details']/
    subsection[@title='The iconise protocol']/
    subsubsection[@title='Shift held down when the close tool of a window is clicked']/
    category[@title='New application']/
@@ -167,23 +172,15 @@ Structurally, the document consists of :
  </riscos-prm>
 
 Element:    riscos-prm
-Attributes: doc-group
+Attributes: (none)
 Children:   (chapter*), meta
 
 The riscos-prm element is the top level element, within which other PRM
-elements are contained. 'doc-group' may be set to some prefix that declares
-the category of the documentation. By default this is set to "RISC OS
-Programmers Reference Manuals". Because of the diversity of the
-documentation that may be produced, this value can be modified to suit
-the class being documented. Examples of documentation groups might be :
-
-  Network Protocols
-  Zap Developer Documentation
-  Bogons Ltd Internal Documentation
+elements are contained.
 
 
 Element:    chapter
-Attributes: title
+Attributes: title, docgroup, docgroup-part
 Children:   section*
 
 The chapter equates to a chapter in the PRMs. The 'title' attribute should
@@ -191,6 +188,21 @@ be set to the title of the chapter. This is usually the component name, for
 example 'Window Manager', 'ChangeFSI'. Whilst multiple chapters can be held
 in a single file, it is expected that usually only a single chapter will be
 held in the file at any one time.
+
+The 'docgroup' may be set to some prefix that declares the category of
+the documentation. By default this is set to "RISC OS Programmers
+Reference Manuals". Because of the diversity of the documentation that may
+be produced, this value can be modified to suit the class being documented.
+Examples of documentation groups might be :
+
+  Network Protocols
+  Zap Developer Documentation
+  Bogons Ltd Internal Documentation
+
+The 'docgroup-part' is used to separate groups of documentation, such as
+by volumes. For example this might be set to 'III' for the 3rd volume of
+the documentation. By default this is an empty string, which removes any
+sequence number.
 
 
 Element:    section
@@ -428,7 +440,7 @@ They can exist between local and external sections of documents. Because
 the references need to refer to particular instances within the document
 regularly, a 'type' is provided to indicate the object being referred to.
 This will usually modify the manner in which the reference is presented,
-although the methods used by the HTML translation are preferred for
+although the methods used by the HTML transformation are preferred for
 consistency.
 
 
@@ -580,17 +592,34 @@ Attributes: <none>
 Children:   (<text> | userreplace)*
 
 The menuoption is not represented in the PRMs. This element describes a
-menu option. Its representation in a translation is undefined; it may be
+menu option. Its representation in a transformation is undefined; it may be
 used only as an indexing entry.
 
 
-Element:    filename
+Element:    actionbutton
 Attributes: <none>
+Children:   (<text>)*
+
+The actionbutton is not represented in the PRMs. This element describes a
+button in the interface. Its representation in a transformation is undefined;
+it may be used only as an indexing entry.
+
+
+Element:    filename
+Attributes: type
 Children:   (<text> | userreplace)*
+
+type: (optional) type of filename represented:
+          riscos - a RISC OS filename (default)
+          windows - a Windows filename
+          unix - a Unix (POSIX) filename
+          uri - a URI
 
 The filename is usually represented in the PRMs by typewriter text. This
 element describes a filename which should be, or can be, supplied to the
-system.
+system. Because filenames may be transferred from different systems, and
+some filenames may need to be given in alternative formats, the type should
+be used to differentate the semantics of the filename.
 
 
 Element:    variable
@@ -667,20 +696,94 @@ element describes a system variable. Where the system variable can be
 indexed, we recommend you use <reference type="sysvar" ...>.
 
 
+Element:    input
+Attributes: <none>
+Children:   (key | mouse)*
+
+The input element contains a sequence of input device actions. The two
+input device actions currently supported, key and mouse, may be placed
+within this element to describe an actions sequence.
+
+
+Element:    key
+Attributes: name, repeat, action
+Children:   <none>
+
+name: the name of the keyboard button which is being activated. The
+      standard named keys may be used, in lower case. Regular keys
+      may also be used but will not be translated to the presentation
+      format. Standard key names:
+        shift       ctrl        alt         meta        fn
+        up          down        left        right       pageup
+        pagedown    backspace   tab         return      escape
+        enter       insert      delete      home        end
+        copy        print       break       capslock    scrolllock
+        numlock     space
+        f1          f2          f3          f4          f5
+        f6          f7          f8          f9          f10
+        f11         f12
+repeat: number of repetitions, which may be 1 (the default), 2, 3 or
+      4. Higher numbers of repetitions should be explained manually.
+action: the action which the user performs. Named actions should be
+      used:
+        click       press       release     hold
+
+The key element is used to represent a key action (such as a key
+press and release) which is performed by the user. The keys are given
+standard names so that they may be transformed appropriately by
+stylesheets for a given presentational style. Capitalised strings
+should be used for the names of special buttons, or standard letter
+keys.
+
+
+Element:    mouse
+Attributes: name, repeat, action
+Children:   <none>
+
+name: the name of the mouse input which is being activated. The
+      standard named buttons may be used, in lower case. Additional
+      buttons should be described in upper case. Standard button
+      names:
+        select      menu        adjust
+        scrollwheel
+repeat: number of repetitions, which may be 1 (the default), 2, 3 or
+      4. Higher numbers of repetitions should be explained manually.
+action: the action which the user performs. Named actions should be
+      used:
+        click       press       release     hold        drag
+        up          down        left        right
+
+The mouse element is used to present a mouse action which is being
+performed by the user. The standard RISC OS names should be used
+where possible - the physical position of the buttons should only
+be used when describing a translation between other operating
+systems and uses, or the specific behaviour of a given mouse
+driver.
+
+The scrollwheel name is intended for use when describing the actions
+of the scroll wheel which may be horizontal or vertical. The actions
+should be the direction that the scroll wheel is moved.
+
+
 Data structures
 ---------------
 
-There are four types of data structures provided by this definition. These
-are the 'bitfield-table', 'value-table', 'offset-table' and 'message-table'.
+There are a few types of data structures provided by this definition. These
+are the 'bitfield-table', 'value-table', 'offset-table', 'message-table'
+and 'definition-table'.
 These are grouped into table/value pairs :
 
   bitfield-table & bit
   value-table & value
   offset-table & offset
   message-table & message
+  definition-table & definition
 
 message-tables are solely for use within descriptions of Wimp message
 blocks.
+
+value-tables are intended for numeric data, whilst definition-tables are
+indented for textual definitions.
 
 
 Element:    bitfield-table
@@ -700,8 +803,8 @@ Children:   <text>
 
 number: the number of the bits, or a range of bits separated by a hyphen.
 name: (optional) a name to assign to this bit (or range of bits).
-state: (optional) describes the state of the bit. There are a couple of
-       was to use this :
+state: (optional) describes the state of the bit. There are a few ways
+       to use this :
          content  : the default, refers to the content as being the only
                     information for this bit
          set      : the content describes the meaning if the bit is set
@@ -747,28 +850,38 @@ element.
 
 
 Element:    offset-table
-Attributes: head-number, head-name, head-value
+Attributes: head-number, head-name, head-data-size, head-value
 Children:   (offset)*
 
 head-number: (optional) a heading for the number field
 head-name: (optional) a heading for the name field
+head-data-size: (optional) a heading for the data-size field
 head-value: (optional) a heading for the value field (the body of the
             element)
 
 The offset-table element is conventionally represented as a table of offsets
-and their meanings. Usually the table is headed by 'offset' and 'contents'
-(and possibly 'name' where name values are given). Where heading values are
-given, these will be used to provide further indication of the fields.
+and their meanings. Usually the table is headed by 'offset' and 'contents'.
+There may also be columns to name the offset, and to give the size of the data.
+Where heading values are given, these will be used to provide further
+indication of the fields.
 Whilst it is possible to subvert the meaning of the offset-table by changing
 these headings, this should only be done with care.
 
 
 Element:    offset
-Attributes: number, name
+Attributes: number, data-size, name, state
 Children:   <text>
 
 number: the offset, or a range of offsets separated by a hyphen.
 name: (optional) a name to assign to this offset (or range of offsets).
+data-size: (optional) a width to use for the field, in bytes.
+state: (optional) describes the state of the field. There are a few ways
+       to use this :
+         content  : the default, refers to the content as being the only
+                    information for this field
+         reserved : this field is reserved and must be zero
+         undefined : this field is undefined and its value is should not
+                     be interpreted
 
 An offset is an element of a offset-table, describing the meaning of one or
 more offsets into a structure. Usually it is represented as a component of a
@@ -788,11 +901,19 @@ offsets into a message block and their meanings. The table is headed by
 
 
 Element:    message
-Attributes: offset, name
+Attributes: offset, data-size, name, state
 Children:   <text>
 
 offset: the offset, or a range of offsets separated by a hyphen.
 name: (optional) a name to assign to this offset (or range of offsets).
+data-size: (optional) a width to use for the field, in bytes.
+state: (optional) describes the state of the field. There are a few ways
+       to use this :
+         content  : the default, refers to the content as being the only
+                    information for this field
+         reserved : this field is reserved and must be zero
+         undefined : this field is undefined and its value is should not
+                     be interpreted
 
 A message is an element of a message-table, describing the meaning of one or
 more offsets into a message block. Usually it is represented as a component
@@ -802,6 +923,35 @@ will always be described preceded by 'R1+' to indicate that they are from
 the message block pointer in register 1 (as supplied to
 Wimp_SendMessage/Wimp_Poll[Idle])
 
+
+Element:    definition-table
+Attributes: head-name, head-extra, head-value
+Children:   (value)*
+
+head-name: (optional) a heading for the number field
+head-exra: (optional, but recommended) a heading for the extra field
+head-value: (optional) a heading for the value field (the body of the
+            element)
+
+The definition-table element is conventionally represented as a table of
+textual definitions. Usually the table is headed by 'name' and 'meaning'
+(and possibly 'extra' when an extra field is supplied). Where heading
+values are given, these will be used to provide further indication of
+the fields. The definition-table is intended to make it possible to
+describe terms and labels, whilst the value-table is intended for numbers.
+
+
+Element:    definition
+Attributes: name, extra
+Children:   <text>
+
+name: the textual string being defined
+extra: (optional) an additional field if required in the table
+
+A definition is an element of a definition-table, describing the meaning
+of one or more terms. Usually it is represented as a component of a
+table comprising the definitions. The meaning of the definition is
+described by the content of the element.
 
 
 API definitions
@@ -829,19 +979,20 @@ the PRMs provide.
 
 
 Element:    swi-definition
-Attributes: name, number, offset, reason, reasonname,
+Attributes: name, number, offset, offset-base, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, related?)
+Children:   (entry?, exit?, use, (example)*, declaration?, related?)
 
-name: the full name of this SWI, eg OS_Module
+name: the full name of this SWI; for example 'OS_Module'
 number: (optional) the number of this SWI in hex
 offset: (optional) the offset of this SWI from a given base
 offset-base: (optional) the name of base for this SWI offset
-reason: (optional) the reason code for this SWI, eg 7
+reason: (optional) the reason code for this SWI in decimal.
+        If a sub-reason code is required, it should be separated with a
+        comma; for example '127,1'
 reasonname: (optional) the name of this reason code as a capitalised name,
-       without spaces, eg FreeBlock
-description: one sentence description of the function provided by this
-             SWI
+       without spaces; for example 'FreeBlock'
+description: one sentence description of the function provided by this SWI
 internal: 'yes' if this is an internal SWI (all other content will be
           ignored)
 irqs: state of IRQs during this call, usually 'enabled', 'disabled', or
@@ -917,10 +1068,10 @@ Details section.
 
 
 Element:    processor-flag
-Attributes: flag state
+Attributes: name, state
 Children:   <text>
 
-flag: the processor flag (N, C, V or Z) being described
+name: the processor flag (N, C, V or Z) being described
 state: (optional) describes the state of the register, for exit contexts
        'preserved', 'corrupted', 'undefined' or 'content'. If unset or
        'content' is used, the content of this element is used.
@@ -937,7 +1088,26 @@ Children:   <text>
 
 The use element describes how the definition functions, its effect and any
 other details relevant to its use which are not part of the overall component
-structure as described in the Technical Details.
+structure as described in the Technical details.
+
+
+Element:    example
+Attributes: <none>
+Children:   (p | command | systemoutput | br)*
+
+definition. The element can be repeated within the definition to give
+multiple unrelated examples.
+
+use the definition.
+
+
+Element:    declaration
+Attributes: type
+Children:   (code | extended-example)*
+
+      'prototype' - should be used for C prototypes for functions
+      'structure' - should be used for C structure declarations
+
 
 
 Element:    related
@@ -957,13 +1127,15 @@ section to provide links.
 Element:    vector-definition
 Attributes: name, number, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, related?)
+Children:   (entry?, exit?, use, declaration?, (example)*, related?)
 
-name: the full name of this vector, eg ColourV
+name: the full name of this vector; for example 'ColourV'
 number: the number of this vector in hex
-reason: (optional) the reason code for this vector, eg 2
+reason: (optional) the reason code for this vector in decimal.
+        If a sub-reason code is required, it should be separated with a
+        comma; for example '127,1'
 reasonname: (optional) the name of this reason code as a capitalised name
-      without spaces, eg FreeBlock
+      without spaces; for example 'OutputBufferEmpty'
 description: one sentence description of the function provided by this
              vector
 internal: 'yes' if this is an internal vector (all other content will be
@@ -972,8 +1144,8 @@ irqs: state of IRQs during this call, usually 'enabled', 'disabled', or
       'undefined'
 fiqs: state of FIQs during this call, usually 'enabled', 'disabled', or
       'undefined'
-processor-mode: processor mode for the duration of this call, 'SVC', 'USR'
-      or 'undefined'
+processor-mode: processor mode for the duration of this call, 'SVC', 'USR',
+      'IRQ' or 'undefined'
 re-entrant: whether this call is re-entrant or not, 'undefined', 'yes',
       or 'no'
 
@@ -984,13 +1156,13 @@ is used to describe the standard RISC OS vectors.
 Element:    entry-definition
 Attributes: name, number, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, related)
+Children:   (entry?, exit?, use, declaration?, (example)*, related)
 
-name: the full name of this code, eg FileEntry_MiscOp
+name: the full name of this code; for example 'FileEntry_MiscOp'
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point, eg 23
+reason: (optional) the reason code for this entry point in decimal.
 reasonname: (optional) the name of this reason code as a capitalised name
-      without spaces, eg MountAlienSpaceship
+      without spaces; for example 'MountAlienSpaceship'
 description: one sentence description of the function provided by this
              code
 internal: 'yes' if this is an internal entry (all other content will be
@@ -1012,13 +1184,15 @@ such as callbacks.
 Element:    service-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, related)
+Children:   (entry, exit, use, declaration?, (example)*, related)
 
-name: the name of this service, eg ShutDown
+name: the name of this service; for example 'ShutDown'
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point, eg 2
+reason: (optional) the reason code for this service in decimal.
+        If a sub-reason code is required, it should be separated with a
+        comma; for example '127,1'
 reasonname: (optional) the name of this reason code as a capitalised name
-            without spaces, eg Intialising
+            without spaces; for example 'Intialising'
 description: one sentence description of the function provided by this
              service
 internal: 'yes' if this is an internal service (all other content will be
@@ -1033,13 +1207,15 @@ prefixed by 'Service_' to indicate its lineage.
 Element:    upcall-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, related)
+Children:   (entry, exit, use, declaration?, (example)*, related)
 
-name: the name of this UpCall, eg FileModified
+name: the name of this UpCall; for example 'FileModified'
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point, eg 257
+reason: (optional) the reason code for this entry point in decimal.
+        If a sub-reason code is required, it should be separated with a
+        comma; for example '127,1'
 reasonname: (optional) the name of this reason code as a capitalised name
-            without spaces, eg Renaming
+            without spaces; for example 'Renaming'
 description: one sentence description of the function provided by this
              upcall
 internal: 'yes' if this is an internal upcall (all other content will be
@@ -1053,9 +1229,9 @@ to indicate its lineage.
 
 Element:    sysvar-definition
 Attributes: name, description
-Children:   (use, related)
+Children:   (use, example?, related)
 
-name: the full name of this system variable, eg System$Path
+name: the full name of this system variable; for example 'System$Path'
 description: one sentence description of the function provided by this
              system variable
 
@@ -1068,7 +1244,7 @@ Attributes: number, name, description
 Children:   (use, related)
 
 number: the number of this error in hex
-name: the symbolic name of this error, eg BadPathVariable
+name: the symbolic name of this error for example 'BadPathVariable'
 description: one sentence description of the function provided by this
              system variable
 
@@ -1079,9 +1255,9 @@ errors that may be returned from a call.
 Element:    message-definition
 Attributes: name, number, description, source, destination,
             recorded, broadcast
-Children:   (message-table, use, related)
+Children:   (message-table, use, declaration?, related)
 
-name: the name of this message, eg DataOpen
+name: the name of this message; for example 'DataOpen'
 description: one sentence description of the function provided by this
              message
 source: the name of the task, or group of tasks that send this message,
@@ -1109,9 +1285,9 @@ element is described in the Data structures section.
 
 Element:    tboxmessage-definition
 Attributes: name, number, description
-Children:   (message-table, use, related)
+Children:   (message-table, use, declaration?, related)
 
-name: the name of this message, eg ColourMenu_HasBeenHidden
+name: the name of this message; for example 'ColourMenu_HasBeenHidden'
 description: one sentence description of the function provided by this
              message
 
@@ -1123,13 +1299,13 @@ is always the Toolbox and the destination is always your task.
 Element:    tboxmethod-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, related)
+Children:   (entry, exit, use, declaration?, (example)*, related)
 
-name: the name of this service, eg ColourMenu_SetTitle
+name: the name of this service; for example 'ColourMenu_SetTitle'
 number: the number of this entry, if applicable, in hex
-reason: (optional) the reason code for this entry point, eg 2
+reason: (optional) the reason code for this toolbox method in decimal.
 reasonname: (optional) the name of this reason code as a capitalised name
-            without spaces, eg Intialising
+            without spaces; for example 'Intialising'
 description: one sentence description of the function provided by this
              service
 internal: 'yes' if this is an internal service (all other content will be
@@ -1142,7 +1318,7 @@ Element:    command-definition
 Attributes: name, description
 Children:   ((syntax)*, (parameter)*, use, (example)*, related)
 
-name: the name of this command, eg DataOpen
+name: the name of this command; for example 'DataOpen'
 description: one sentence description of the function provided by this
              command
 
@@ -1156,7 +1332,7 @@ Element:    vdu-definition
 Attributes: name, number, description
 Children:   ((syntax)*, (parameter)*, use, (example)*, related)
 
-name: the name of this command, eg DataOpen
+name: the name of this command; for example DataOpen
 description: one sentence description of the function provided by this
              command
 
@@ -1172,6 +1348,9 @@ Children:   (switch | optional | text | userreplace)*
 The syntax element describes the syntax of the *Command, giving a breakdown
 of the syntax. If the syntax cannot be described in a single example,
 multiple syntax blocks may be supplied.
+
+In 1.02, the syntax for vdu-definitions had to be prefixed by the VDU number.
+In 1.03, the syntax for vdu-definitions only documents the additional parameters.
 
 
 Element:    switch
@@ -1348,3 +1527,35 @@ useful :
    should be able to work out that title is a valid attribute, and that a "
    would be expected after the equals sign, so in that context the likeliest
    fault is a missing = sign.
+
+
+Changes from 1.02 to 1.03
+-------------------------
+* prm-html5 style sheet now exists, which uses HTML 5 features and CSS for the
+  presentation of elements.
+* syntax elements on vdu-definition are now expected to document the parameters
+  to the definition, not the whole definition. This is in line with the use of
+  syntax within the command-definition.
+* All code-like and message-like definitions now allow the use of the
+  declaration element to describe the declarations in C for that definition.
+  Declaration was introduced in 1.02 but not documented.
+* input, key and mouse elements are now available, which allow the representation
+  of sequences of keyboard and mouse actions.
+* actionbutton element added to match the menuoption element.
+* offset and message elements now have optional data-size attributes.
+  offset-table now allows a head-data-size to describe this column.
+* vector-definitions can now have processor mode IRQ.
+* systemoutput is now an inline element. In 1.02, the element had been a block
+  element, so would start a new line, which was at odds with its description
+  and declaration in the DTD. Uses of systemoutput will need to be checked
+  carefully to make sure they do not disrupt the formatting of the content.
+* Entity &ellipsis; can now be used for a '...' sequence as a character.
+* filename elements can now have a type attribute to differentiate the system
+  they are used on.
+* definition-tables can now be used in place of value-tables, for non-numeric
+  definitions.
+* offset and message now have a state attribute, to allow them to be marked as
+  being undefined or reserved.
+* chapter has docgroup and docgroup-part attributes to distinguish the
+  document. In 1.02 the doc-group was documented as being present on the
+  riscos-prm element, but had always been an attribute of chapter (as doc-group).

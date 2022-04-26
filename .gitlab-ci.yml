@@ -19,6 +19,7 @@ variables:
     when: always
     paths:
       - artifacts
+      - test-output
       - ci-logs
   dependencies: []
 
@@ -32,22 +33,128 @@ variables:
 #        - artifacts/results.xml
 
 
-#### Builds ####
-build-linux:
+#### Test examples
+test-examples:
   <<: *common-cross
-  stage: build-cross
+  stage: test
   script:
+    # Build the examples first, as if it fails we'll then not upload the results.
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+
+# A collection of tests for different platforms
+p:ubuntu-18.04:
+  image: ubuntu:18.04
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+p:ubuntu-21.04:
+  image: ubuntu:21.04
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+p:ubuntu-20.04:
+  image: ubuntu:20.04
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+p:centos-7:
+  image: centos:7
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+p:centos-8:
+  image: centos:8
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - echo "Fixing up centos 8 being EOL'd"
+    - for i in /etc/yum.repos.d/* ; do sed -i 's/mirrorlist/#mirrorlist/' $i ; done
+    - for i in /etc/yum.repos.d/* ; do sed -i 's!#baseurl=http://mirror.!baseurl=http://vault.!' $i ; done
+    - echo "Now building"
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+p:debian-10:
+  image: debian:10
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+# Test by running this on build.riscos.online
+# Note: This only runs some simple tests - it doesn't build the examples.
+p:riscos:
+  stage: platforms
+
+  script:
+    - |
+      # Ensure we have the RISC OS bits downloaded and usable
+      crosscompile/setup-riscos-tests.sh
+
+      # Zip up the source to send to robuild
+      zip -q9r /tmp/source-archive.zip riscos-bits ROTest,feb .robuild.yaml
+
+      # Fetch the build client
+      curl -s -L -o riscos-build-online https://github.com/gerph/robuild-client/releases/download/v0.05/riscos-build-online && chmod +x riscos-build-online
+
+      # Send the archive file to build service
+      ./riscos-build-online -i /tmp/source-archive.zip -a off -o /tmp/built
+
+      # If it didn't report an error, the test was successful.
+  tags:
+    - linux
+
+
+#### Exports ####
+export-linux:
+  <<: *common-cross
+  stage: export-cross
+  script:
+    # Build and upload the binary to Artifactory.
     - if [ "$CI_COMMIT_BRANCH" = 'master' ] ; then upload=--upload ; else upload= ; fi
     - ci/build.sh native install ${upload}
   tags:
     - linux
 
-build-macos:
+export-macos:
   <<: *common-cross
-  stage: build-cross
+  stage: export-cross
   script:
     - if [ "$CI_COMMIT_BRANCH" = 'master' ] ; then upload=--upload ; else upload= ; fi
     - ci/build.sh native install ${upload}
+  tags:
+    - macos
+
+export-riscos:
+  <<: *common-cross
+  stage: export-cross
+  script:
+    # Ensure we have the RISC OS bits downloaded and usable
+    - mkdir -p artifacts
+    - eval "$(crosscompile/ci-vars)"
+    - crosscompile/build-riscos-archive.sh artifacts/prminxml-${CI_BRANCH_VERSION:-UNKNOWN}.zip
   tags:
     - macos
 
@@ -61,6 +168,8 @@ build-macos:
 
 #### Stages to execute ####
 stages:
-#  - export
-  - build-cross
+# - build
+  - test
+  - platforms
+  - export-cross
 #  - build-riscos
