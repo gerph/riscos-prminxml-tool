@@ -1549,10 +1549,11 @@
 
 <!-- notice that we do some complex matching here to ensure that we put
      the set and clear bit values in what appears to be a sub-table,
-     thus preventing the double use of the bit number in the heading -->
+     thus preventing the double use of the bit number/name in the heading -->
 <xsl:template match="bit">
 <!-- Note: preceding-sibling returns nodes going backward from the current node -->
 <xsl:variable name="lastelement" select="preceding-sibling::bit[1]" />
+<xsl:variable name="nextelement" select="following-sibling::bit[position() = 1]" />
 <xsl:if test="not( ($lastelement/@number = @number) and
                    ($lastelement/@state != '') )">
  <!-- We only want to process the first of any sets of rows -->
@@ -1580,13 +1581,20 @@
      <xsl:apply-templates/>
     </td>
 
-    <xsl:variable name="nextelement" select="following-sibling::bit[position() = 1]" />
     <xsl:if test="($nextelement/@number = @number) and
                   ($nextelement/@state != '')">
      <tr>
       <td></td>
       <xsl:if test="count(../*/@name)>0">
-       <td valign="top"><xsl:value-of select="$nextelement/@name"/></td>
+       <xsl:choose>
+        <xsl:when test="($nextelement/@name = '') or
+                        ($nextelement/@name = @name)">
+         <td valign="top"></td>
+        </xsl:when>
+        <xsl:otherwise>
+         <td valign="top"><xsl:value-of select="$nextelement/@name"/></td>
+        </xsl:otherwise>
+       </xsl:choose>
       </xsl:if>
 
       <td valign="top" align="right">
