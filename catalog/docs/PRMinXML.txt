@@ -1566,3 +1566,5 @@ Changes from 1.02 to 1.03
   riscos-prm element, but had always been an attribute of chapter (as doc-group).
 * references can now be made to chapter, as well as documents, which may make
   the references read more clearly.
+* bit elements which have state and name attributes no longer repeat the attribute
+  name if they are identical.

@@ -263,6 +263,21 @@
 </p>
 </category>
 
+<category title="State + Names">
+<p>
+<bitfield-table>
+ <bit number="0" name="FLAG_FEATURE" state='set'>Thing should happen</bit>
+ <bit number="0" name="FLAG_FEATURE" state='clear'>Thing never happens</bit>
+ <bit number="1" name="FLAG_FEATURE" state='set'>Thing should happen (has name)</bit>
+ <bit number="1" state='clear'>Thing never happens (no name)</bit>
+ <bit number="2" name="FLAG_ON" state='set'>Thing should happen (has name)</bit>
+ <bit number="2" name="FLAG_OFF" state='clear'>Thing never happens (different name)</bit>
+ <bit number="3" state='set'>Thing should happen (no name)</bit>
+ <bit number="3" state='clear'>Thing never happens (no name)</bit>
+</bitfield-table>
+</p>
+</category>
+
 </section>
 
 
@@ -310,6 +325,9 @@
   <revision number="2" author="Gerph" date="22 Apr 2022">
     <change>Data-size field added</change>
     <change>Definition tables have been added.</change>
+  </revision>
+  <revision number="3" author="Gerph" date="06 May 2022">
+    <change>Bitfield state + name tests added.</change>
   </revision>
  </history>
 </meta>
