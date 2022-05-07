@@ -1848,7 +1848,7 @@
   <xsl:choose>
    <xsl:when test="not(@href) and
                    (@use-description = 'yes') and
-                   count(exslt:node-set($linknode)/*) = 0">
+                   count(exslt:node-set($linknode)/*) != 0">
     <xsl:value-of select="exslt:node-set($linknode)/*/@description" />
    </xsl:when>
    <xsl:otherwise>
