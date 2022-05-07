@@ -256,14 +256,16 @@ indices: ${INDEX_XML}
 
 <!-- Similar recursion, to get the docgroup-name to use (or none) -->
 <xsl:template match="section" mode="docgroup-name">
-<xsl:if test="@docgroup-name != ''">
- <xsl:text> --stringparam override-docgroup '</xsl:text>
- <xsl:value-of select="@docgroup-name" />
- <xsl:text>'</xsl:text>
-</xsl:if>
-<xsl:if test="@docgroup-name = ''">
- <xsl:apply-templates select=".." mode="docgroup-name" />
-</xsl:if>
+<xsl:choose>
+    <xsl:when test="@docgroup-name != ''">
+        <xsl:text> --stringparam override-docgroup '</xsl:text>
+        <xsl:value-of select="@docgroup-name" />
+        <xsl:text>'</xsl:text>
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:apply-templates select=".." mode="docgroup-name" />
+    </xsl:otherwise>
+</xsl:choose>
 </xsl:template>
 
 <xsl:template match="index" mode="docgroup-name">
@@ -277,14 +279,16 @@ indices: ${INDEX_XML}
 
 <!-- Similar recursion, to get the docgroup-part to use (or none) -->
 <xsl:template match="section" mode="docgroup-part">
-<xsl:if test="@docgroup-part != ''">
- <xsl:text> --stringparam override-docgroup-part '</xsl:text>
- <xsl:value-of select="@docgroup-part" />
- <xsl:text>'</xsl:text>
-</xsl:if>
-<xsl:if test="@docgroup-part = ''">
- <xsl:apply-templates select=".." mode="docgroup-part" />
-</xsl:if>
+<xsl:choose>
+    <xsl:when test="@docgroup-part != ''">
+        <xsl:text> --stringparam override-docgroup-part '</xsl:text>
+        <xsl:value-of select="@docgroup-part" />
+        <xsl:text>'</xsl:text>
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:apply-templates select=".." mode="docgroup-part" />
+    </xsl:otherwise>
+</xsl:choose>
 </xsl:template>
 
 <xsl:template match="index" mode="docgroup-part">
@@ -298,14 +302,16 @@ indices: ${INDEX_XML}
 
 <!-- Similar recursion, to get the edgeindex-number to use (or none) -->
 <xsl:template match="section" mode="edgeindex-number">
-<xsl:if test="@edgeindex != ''">
- <xsl:text> --stringparam edgeindex '</xsl:text>
- <xsl:value-of select="@edgeindex" />
- <xsl:text>'</xsl:text>
-</xsl:if>
-<xsl:if test="@edgeindex = ''">
- <xsl:apply-templates select=".." mode="edgeindex-number" />
-</xsl:if>
+<xsl:choose>
+    <xsl:when test="@edgeindex != ''">
+        <xsl:text> --stringparam edgeindex '</xsl:text>
+        <xsl:value-of select="@edgeindex" />
+        <xsl:text>'</xsl:text>
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:apply-templates select=".." mode="edgeindex-number" />
+    </xsl:otherwise>
+</xsl:choose>
 </xsl:template>
 
 <xsl:template match="index" mode="edgeindex-number">
