@@ -302,10 +302,10 @@ table {
 .table-body .table-number {
     text-align: right;
 }
-.offset-table .table-body .table-number::before {
+.offset-table > .table-body > tr > .table-number::before {
     content: '+';
 }
-.message-table .table-body .table-number::before {
+.message-table > .table-body > tr > .table-number::before {
     content: 'R1+';
 }
 .table-body .table-data-size {

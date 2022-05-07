@@ -53,6 +53,21 @@
 </p>
 </category>
 
+<category title="Table with table inside">
+<p>
+<value-table>
+ <value number="0"><p>Values could be...</p>
+    <p>
+    <value-table>
+        <value number="0">This is special.</value>
+    </value-table>
+    </p>
+ </value>
+ <value number="1">Another value</value>
+</value-table>
+</p>
+</category>
+
 </section>
 
 
@@ -145,6 +160,21 @@
 </p>
 </category>
 
+<category title="Table with table inside">
+<p>
+<offset-table>
+ <offset number="0"><p>Values could be...</p>
+    <p>
+    <value-table>
+        <value number="0">This is special.</value>
+    </value-table>
+    </p>
+ </offset>
+ <offset number="1">Another value</offset>
+</offset-table>
+</p>
+</category>
+
 </section>
 
 
@@ -201,6 +231,21 @@
 <message-table>
  <message offset="0" state="reserved"/>
  <message offset="4" state="undefined"/>
+</message-table>
+</p>
+</category>
+
+<category title="Table with table inside">
+<p>
+<message-table>
+ <message offset="0"><p>Another table in it.</p>
+    <p>
+    <value-table>
+        <value number="0">This is special.</value>
+    </value-table>
+    </p>
+ </message>
+ <message offset="4">Another value</message>
 </message-table>
 </p>
 </category>
