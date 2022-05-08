@@ -839,6 +839,7 @@ footer {
 }
 
 
+.indexed-table-field { string-set: indexed-field content() }
 .chapter-docgroup-name { string-set: docgroup-name content() }
 .chapter-docgroup-part { string-set: docgroup-part content() }
 .chapter-name { string-set: chapter-name content() }
@@ -1896,7 +1897,7 @@ section.section:first-of-type p:first-of-type::first-letter {
     <css variant='index-include-indexed-header-label'><![CDATA[
 @page:left {
     @top-left {
-        content: string(indexed-label, first);
+        content: string(indexed-field, first);
     }
 }
 ]]></css>

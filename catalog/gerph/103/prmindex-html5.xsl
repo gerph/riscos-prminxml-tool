@@ -157,6 +157,7 @@
         <!-- <xsl:sort select="@section" order="ascending" data-type="text" case-order="upper-first" /> -->
         <xsl:sort select="@name" order="ascending" data-type="text" case-order="upper-first" />
         <xsl:call-template name='ref'>
+            <xsl:with-param name="key-field" select="'name'"/>
             <xsl:with-param name="use-numbers">
                 <xsl:if test="document('')//localdb:sections[(@type=$type) and
                                                              (@number='yes')]">
@@ -238,6 +239,7 @@
      <xsl:sort select="count(@reason)" order="ascending" data-type="number" />
      <xsl:sort select="@reason" order="ascending" data-type="number" />
      <xsl:call-template name='ref'>
+        <xsl:with-param name="key-field" select="'number'"/>
         <xsl:with-param name="use-numbers">
             <xsl:if test="document('')//localdb:sections[(@type=$type) and
                                                          (@number='yes')]">
@@ -255,6 +257,7 @@
      <xsl:sort select="count(@reason)" order="ascending" data-type="number" />
      <xsl:sort select="@reason" order="ascending" data-type="number" />
      <xsl:call-template name='ref'>
+        <xsl:with-param name="key-field" select="'number'"/>
         <xsl:with-param name="use-numbers">
             <xsl:if test="document('')//localdb:sections[(@type=$type) and
                                                          (@number='yes')]">
@@ -338,11 +341,19 @@
 </xsl:template>
 
 <xsl:template name="ref">
+<xsl:param name="key-field" />
 <xsl:param name="use-numbers" />
 <tr>
 
 <xsl:if test="$use-numbers = 'yes'">
-    <td class='indexed-table-number'>
+    <td>
+        <xsl:attribute name='class'>
+            <xsl:text>indexed-table-number</xsl:text>
+            <xsl:if test="$key-field = 'number'">
+                <xsl:text> indexed-table-field</xsl:text>
+            </xsl:if>
+        </xsl:attribute>
+        <!-- FIXME: We should really use the localdb to retrieve this, like in html5 -->
         <xsl:text>&amp;</xsl:text>
         <xsl:value-of select="@number-hex" />
     </td>
@@ -350,7 +361,13 @@
 
 <td class='indexed-table-label'><a>
 <xsl:attribute name="href"><xsl:value-of select="@href" /></xsl:attribute>
-    <span class='indexed-table-label-name'>
+    <span>
+        <xsl:attribute name='class'>
+            <xsl:text>indexed-table-label-name</xsl:text>
+            <xsl:if test="$key-field = 'name'">
+                <xsl:text> indexed-table-field</xsl:text>
+            </xsl:if>
+        </xsl:attribute>
         <xsl:value-of select="@label" />
     </span>
     <xsl:if test="@reason and @reason != ''">
