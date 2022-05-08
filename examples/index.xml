@@ -14,7 +14,7 @@
     catalog-version="103"
     page-format='html5'
     page-css-variant=''
-    index-css-variant='no-edge-index'
+    index-css-variant='no-edge-index index-reason-linebreak-in-print'
     chapter-numbers='yes'
     edgeindex-max='3'
     />

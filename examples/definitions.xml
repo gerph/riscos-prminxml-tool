@@ -152,6 +152,44 @@ _kernel_oserror *Module_SWIName(int reason, int *return_value);
 
 </swi-definition>
 
+<swi-definition name="Module_SWIName"
+                number="90210"
+                reason="42"
+                reasonname="Magic"
+                description="Special variant of the SWI"
+                irqs="undefined"
+                fiqs="enabled"
+                processor-mode="SVC"
+                re-entrant="no">
+
+<entry>
+ <register-use number="1">Register details</register-use>
+</entry>
+<exit>
+ <register-use number="0">Possible return values:
+  <value-table>
+   <value number="0">Some important value</value>
+   <value number="1">Another value</value>
+  </value-table>
+ </register-use>
+</exit>
+
+<use>
+<p>What this SWI is used for.</p>
+</use>
+
+<declaration type="prototype">
+<extended-example type='c'>
+_kernel_oserror *Module_SWIName(int reason, int *return_value);
+</extended-example>
+</declaration>
+
+<related>
+    <reference type="swi" name="Module_SWIName" />
+</related>
+
+</swi-definition>
+
 <vector-definition name="MyVectorV"
                    number="99"
                    description="What the vector is for"

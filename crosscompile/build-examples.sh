@@ -275,8 +275,8 @@ function generate_documents() {
 }
 
 generate_documents "examples/index.xml" examples-regular ""
+generate_documents "examples/index.xml" examples-unstyled "" "html"
+generate_documents "examples/index.xml" examples-102 "" "html" "102"
 generate_documents "examples/index.xml" examples-prm "prm body-fraunces heading-raleway webfont-fraunces webfont-raleway"
 generate_documents "examples/index.xml" examples-prm-input "prm body-fraunces heading-raleway webfont-fraunces webfont-raleway input-mouse-icons input-red-function-keys"
 generate_documents "examples/index.xml" examples-prm-ro2 "prm prm-ro2 body-fraunces heading-raleway webfont-fraunces webfont-raleway"
-generate_documents "examples/index.xml" examples-unstyled "" "html"
-generate_documents "examples/index.xml" examples-102 "" "html" "102"

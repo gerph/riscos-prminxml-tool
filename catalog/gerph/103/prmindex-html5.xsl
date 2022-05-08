@@ -11,7 +11,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:localdb="local-file-database"
                 xmlns:str="http://exslt.org/strings"
-                xmlns="http://www.w3.org/TR/xhtml1/strict">
+                xmlns="http://www.w3.org/TR/xhtml1/strict"
+                exclude-result-prefixes="localdb str">
 
 
 
@@ -31,7 +32,7 @@
 <localdb:sections type="tboxmethod" filename="tboxmethods" title="TBox methods" number="yes"/>
 <localdb:sections type="tboxmessage" filename="tboxmessages" title="TBox messages" number="yes"/>
 
-<xsl:output method="html" indent="no"/>
+<xsl:output method="html" indent="no" encoding="utf-8"/>
 
 <xsl:param name="include-source" select="//options/@include-source" />
 <xsl:param name="hide-empty" select="//options/@hide-empty" />
@@ -102,7 +103,7 @@
  
  <xsl:message>  Sorting (names)</xsl:message>
  <!-- and then produce the HTML for those indexes -->
- <xsl:document href="{concat('index-',@type,'s.html')}" method="xml" indent="no">
+ <xsl:document href="{concat('index-',@type,'s.html')}" method="html" indent="no" encoding="utf-8">
 <head>
   <meta charset="utf-8"/>
   <title>
@@ -141,13 +142,29 @@
 <section class='indexed-table'>
 <table class='indexed-table'>
 <tr class='indexed-table-headings'>
-    <th class='indexed-table-heading-link'>Link</th>
+    <xsl:if test="document('')//localdb:sections[(@type=$type) and
+                                                 (@number='yes')]">
+        <th class='indexed-table-heading-number'>Number</th>
+    </xsl:if>
+    <th class='indexed-table-heading-label'><xsl:value-of select="document('')//localdb:sections[(@type=$type)]/@title"/></th>
+    <th class='indexed-table-heading-link'><xsl:value-of select="document('')//localdb:sections[(@type=$type)]/@title"/></th>
     <th class='indexed-table-heading-description'>Description</th>
-    <th class='indexed-table-heading-section'>Section</th></tr>
-  <xsl:apply-templates select="$document///ref">
-<!--    <xsl:sort select="@section" order="ascending" data-type="text" case-order="upper-first" /> -->
-   <xsl:sort select="@name" order="ascending" data-type="text" case-order="upper-first" />
-  </xsl:apply-templates>
+    <th class='indexed-table-heading-section'>Section</th>
+    <th class='indexed-table-heading-page'>Page</th>
+</tr>
+
+    <xsl:for-each select="$document///ref">
+        <!-- <xsl:sort select="@section" order="ascending" data-type="text" case-order="upper-first" /> -->
+        <xsl:sort select="@name" order="ascending" data-type="text" case-order="upper-first" />
+        <xsl:call-template name='ref'>
+            <xsl:with-param name="use-numbers">
+                <xsl:if test="document('')//localdb:sections[(@type=$type) and
+                                                             (@number='yes')]">
+                    <xsl:text>yes</xsl:text>
+                </xsl:if>
+            </xsl:with-param>
+        </xsl:call-template>
+    </xsl:for-each>
 </table>
 </section>
 
@@ -164,7 +181,7 @@
                                               (@number='yes')]">
  <xsl:message>  Sorting (numbers)</xsl:message>
  <!-- and then produce the HTML for those indexes -->
- <xsl:document href="{concat('index-',@type,'s-n.html')}" method="xml" indent="no">
+ <xsl:document href="{concat('index-',@type,'s-n.html')}" method="html" indent="no" encoding="utf-8">
 <head>
   <meta charset="utf-8"/>
   <title>
@@ -203,26 +220,49 @@
 <section class='indexed-table'>
 <table class='indexed-table'>
 <tr class='indexed-table-headings'>
-    <th class='indexed-table-heading-link'>Link</th>
+    <xsl:if test="document('')//localdb:sections[(@type=$type) and
+                                                 (@number='yes')]">
+        <th class='indexed-table-heading-number'>Number</th>
+    </xsl:if>
+    <th class='indexed-table-heading-label'><xsl:value-of select="document('')//localdb:sections[(@type=$type)]/@title"/></th>
+    <th class='indexed-table-heading-link'><xsl:value-of select="document('')//localdb:sections[(@type=$type)]/@title"/></th>
     <th class='indexed-table-heading-description'>Description</th>
-    <th class='indexed-table-heading-section'>Section</th></tr>
+    <th class='indexed-table-heading-section'>Section</th>
+    <th class='indexed-table-heading-page'>Page</th>
+</tr>
   <xsl:choose>
    <xsl:when test="$type = 'tboxmethod'">
-    <xsl:apply-templates select="$document///ref">
+    <xsl:for-each select="$document///ref">
      <xsl:sort select="@section" order="ascending" data-type="text" case-order="upper-first" />
      <xsl:sort select="@number" order="ascending" data-type="number" />
      <xsl:sort select="count(@reason)" order="ascending" data-type="number" />
      <xsl:sort select="@reason" order="ascending" data-type="number" />
-    </xsl:apply-templates>
+     <xsl:call-template name='ref'>
+        <xsl:with-param name="use-numbers">
+            <xsl:if test="document('')//localdb:sections[(@type=$type) and
+                                                         (@number='yes')]">
+                <xsl:text>yes</xsl:text>
+            </xsl:if>
+        </xsl:with-param>
+     </xsl:call-template>
+    </xsl:for-each>
    </xsl:when>
    <xsl:otherwise>
-    <xsl:apply-templates select="$document///ref">
+    <xsl:for-each select="$document///ref">
      <xsl:sort select="@number" order="ascending" data-type="number" />
      <!-- we have to sort the reason slightly differently because if not set it might
           end up in the wrong place because its value (number('')) is NaN -->
      <xsl:sort select="count(@reason)" order="ascending" data-type="number" />
      <xsl:sort select="@reason" order="ascending" data-type="number" />
-    </xsl:apply-templates>
+     <xsl:call-template name='ref'>
+        <xsl:with-param name="use-numbers">
+            <xsl:if test="document('')//localdb:sections[(@type=$type) and
+                                                         (@number='yes')]">
+                <xsl:text>yes</xsl:text>
+            </xsl:if>
+        </xsl:with-param>
+     </xsl:call-template>
+    </xsl:for-each>
    </xsl:otherwise>
   </xsl:choose>
 </table>
@@ -297,16 +337,50 @@
 <p><xsl:apply-templates mode='literal'/></p>
 </xsl:template>
 
-<xsl:template match="ref">
+<xsl:template name="ref">
+<xsl:param name="use-numbers" />
 <tr>
+
+<xsl:if test="$use-numbers = 'yes'">
+    <td class='indexed-table-number'>
+        <xsl:text>&amp;</xsl:text>
+        <xsl:value-of select="@number-hex" />
+    </td>
+</xsl:if>
+
+<td class='indexed-table-label'><a>
+<xsl:attribute name="href"><xsl:value-of select="@href" /></xsl:attribute>
+    <span class='indexed-table-label-name'>
+        <xsl:value-of select="@label" />
+    </span>
+    <xsl:if test="@reason and @reason != ''">
+        <span class='indexed-table-reason'>
+            <xsl:value-of select='@reason'/>
+            <xsl:if test="@reasonname!=''">
+                <xsl:text> - </xsl:text>
+                <xsl:value-of select="@reasonname" />
+            </xsl:if>
+        </span>
+    </xsl:if>
+    <span class='indexed-label-trailer'/>
+</a>
+</td>
+
 <td class='indexed-table-link'><a>
 <xsl:attribute name="href"><xsl:value-of select="@href" /></xsl:attribute>
 <xsl:value-of select="@name" />
 <span class='indexed-link-trailer'/>
 </a></td>
+
 <td class='indexed-table-description'><xsl:value-of select="@description" /></td>
 <td class='indexed-table-section'>
 <xsl:value-of select="@section" />
+</td>
+
+<td class='indexed-table-page'>
+    <a>
+        <xsl:attribute name="href"><xsl:value-of select="@href" /></xsl:attribute>
+    </a>
 </td>
 </tr>
 <xsl:text>&#10;</xsl:text>
@@ -331,7 +405,7 @@
      <xsl:value-of select="translate(@reason,$title-to-id-src,$title-to-id-map)" />
     </xsl:if>
    </xsl:attribute>
-   
+
    <xsl:attribute name="description">
     <xsl:choose>
      <xsl:when test="@internal='yes'">
@@ -342,6 +416,17 @@
      </xsl:otherwise>
     </xsl:choose>
    </xsl:attribute>
+
+   <xsl:attribute name="label">
+    <xsl:if test="local-name(.) = 'command-definition'">
+     <xsl:text>*</xsl:text>
+    </xsl:if>
+    <xsl:if test="local-name(.) = 'vdu-definition'">
+     <xsl:text>VDU </xsl:text>
+    </xsl:if>
+    <xsl:value-of select="@name" />
+   </xsl:attribute>
+
    <xsl:attribute name="name">
     <xsl:if test="local-name(.) = 'command-definition'">
      <xsl:text>*</xsl:text>
@@ -366,7 +451,7 @@
      </xsl:if>
     </xsl:if>
    </xsl:attribute>
-   
+
    <xsl:if test="@number != ''">
     <xsl:attribute name="number">
      <xsl:call-template name="convert-hex-to-decimal">
@@ -376,13 +461,19 @@
     <xsl:attribute name="number-hex">
      <xsl:value-of select="@number" />
     </xsl:attribute>
-    <xsl:if test="@reason != ''">
-     <xsl:attribute name="reason">
-      <xsl:value-of select="@reason" />
-     </xsl:attribute>
-    </xsl:if>
    </xsl:if>
-   
+
+   <xsl:if test="@reason != ''">
+    <xsl:attribute name="reason">
+     <xsl:value-of select="@reason" />
+    </xsl:attribute>
+   </xsl:if>
+   <xsl:if test="@reasonname!=''">
+     <xsl:attribute name="reasonname">
+      <xsl:value-of select="@reasonname" />
+     </xsl:attribute>
+   </xsl:if>
+
    <xsl:attribute name="section">
     <xsl:value-of select="$section" />
    </xsl:attribute>

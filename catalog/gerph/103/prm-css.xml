@@ -603,8 +603,23 @@ section.indexed-table {
     padding-left: 2em;
     padding-right: 2em;
 }
+table.indexed-table {
+    border-spacing: 1em 0px;
+}
 table.indexed-table th {
     text-align: left;
+}
+tr.indexed-table-headings th {
+    padding-bottom: 0.75em;
+}
+
+/* The indexed-table-link isn't needed any more, but might be something someone wants to style */
+table .indexed-table-link,
+table .indexed-table-heading-link {
+    display: none;
+}
+table .indexed-table-reason:before {
+    content: " ";
 }
 
 /* Styling specific to the print */
@@ -639,9 +654,17 @@ table.indexed-table th {
         content: none;
     }
 
-    /* Special style that's used on the index pages */
-    body.indexed a[href]::after {
+    /* Special style that's used on the contents pages */
+    body.indexed-contents a[href]::after {
         content: "\A0\A0\A0" target-counter(attr(href), page);
+    }
+
+    /* Special style that's used on the index pages */
+    body.indexed-index .indexed-table-label a[href]::after {
+        content: "";
+    }
+    body.indexed-index .indexed-table-page a[href]::after {
+        content: target-counter(attr(href), page);
     }
 
 
@@ -709,11 +732,6 @@ table.indexed-table th {
         display: none;
     }
 
-    /* The index pages shouldn't need to say that they're a link or a description, I think */
-    .indexed-table-headings th {
-        display: none;
-    }
-
     .indexed-page-section {
         clear: right;
     }
@@ -728,12 +746,11 @@ table.indexed-table th {
     .indexed-index a[href]::after {
         clear: right;
         float: right;
-        margin-right: 0.5rem;
         font-style: italic;
     }
 
     /* Hide the section as it's not as useful in the printed version */
-    .indexed-table-section {
+    .indexed-table-section, .indexed-table-heading-section {
         display: none;
     }
 }
@@ -1688,6 +1705,9 @@ body {
 th {
   font-weight: normal;
 }
+body.indexed th {
+  font-weight: bold;
+}
 table.history h5 {
   font-weight: normal;
   font-family: "Fraunces 28pt", "Fraunces", monospace;
@@ -1834,6 +1854,50 @@ section.section:first-of-type p:first-of-type::first-letter {
     <css variant='page-a5'><![CDATA[
 @page {
     size: a5 portrait;
+}
+]]></css>
+
+
+<!-- Indexes: Remove the description of the indexed entries from the print version -->
+    <css variant='index-no-descriptions-in-print'><![CDATA[
+@media print {
+    /* Hide the description if it's not needed in the print version */
+    .indexed-table-description, .indexed-table-heading-description {
+        display: none;
+    }
+}
+]]></css>
+
+
+<!-- Indexes: Remove the description of the indexed entries from the print version -->
+    <css variant='index-no-headings-in-print'><![CDATA[
+@media print {
+    /* Hide the headings if they're not needed in the print version */
+    .indexed-table-headings th {
+        display: none;
+    }
+}
+]]></css>
+
+
+<!-- Indexes: Reasons on separate line -->
+    <css variant='index-reason-linebreak-in-print'><![CDATA[
+@media print {
+    /* Split up the reason in the indexes, so it's separate */
+    span.indexed-table-reason {
+        margin-left: 1em;
+        display: block;
+    }
+}
+]]></css>
+
+
+<!-- Indexes: Include the indexed text in the page header -->
+    <css variant='index-include-indexed-header-label'><![CDATA[
+@page:left {
+    @top-left {
+        content: string(indexed-label, first);
+    }
 }
 ]]></css>
 

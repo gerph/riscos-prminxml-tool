@@ -14,7 +14,8 @@
                 xmlns:saxon="http://icl.com/saxon"
                 xmlns:str="http://exslt.org/strings"
                 xmlns:exslt="http://exslt.org/common"
-                xmlns:pixparams="http://gerph.org/dtd/prminxml-params">
+                xmlns:pixparams="http://gerph.org/dtd/prminxml-params"
+                exclude-result-prefixes="localdb saxon str exslt pixparams">
 
 <xsl:include href="http://gerph.org/dtd/bnf/100/html.xsl" />
 
