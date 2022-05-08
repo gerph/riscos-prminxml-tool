@@ -755,6 +755,12 @@ table .indexed-table-reason:before {
     }
 }
 
+@media screen {
+    /* Hide the page fields when shown on the screen */
+    .indexed-table-page, .indexed-table-heading-page {
+        display: none;
+    }
+}
 
 /* Paged media page breaks */
 .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
