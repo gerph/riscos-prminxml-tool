@@ -103,6 +103,24 @@ p:debian-10:
   tags:
     - linux
 
+p:mint-18:
+  image: linuxmintd/mint18-amd64
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+p:mint-20:
+  image: linuxmintd/mint20-amd64
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
 # Test by running this on build.riscos.online
 # Note: This only runs some simple tests - it doesn't build the examples.
 p:riscos:
