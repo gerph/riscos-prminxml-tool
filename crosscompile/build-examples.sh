@@ -273,7 +273,7 @@ function generate_documents() {
     echo "- Building documents in ${OUTPUTDIR}/$name"
     sed -e "s!artifacts/output/!${OUTPUTDIR}/$name/!g ; s!css-variant='!css-variant='$css !g ; s!page-format='.*'!page-format='$html'!" "$srcindex" > "${TMPINDEX}"
     mkdir -p "${OUTPUTDIR}/logs-$name"
-    riscos-prminxml --catalog $catalog -f index -L "${OUTPUTDIR}/logs-$name" "${TMPINDEX}"
+    riscos-prminxml --catalog "$catalog" -f index -L "${OUTPUTDIR}/logs-$name" "${TMPINDEX}"
     if [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 && -f "${OUTPUTDIR}/$name/html/filelist.txt" ]] ; then
         ( cd "${OUTPUTDIR}/$name/html" &&
           prince --verbose -o "..//examples.pdf" -l filelist.txt )
