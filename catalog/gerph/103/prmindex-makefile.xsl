@@ -225,10 +225,11 @@ indices: ${INDEX_XML}
 <xsl:apply-templates select="/" mode="docgroup-part"/>
 <xsl:apply-templates mode="edgeindex-number" select="/"/>
 <xsl:apply-templates mode="edgeindex-max" select="/"/>
-<xsl:text> -stringparam base-dir "$$(pwd)" -o "${OUTPUT_DIR}/index.html" http://gerph.org/dtd/${CATALOG_VERSION}/prmindex-${PAGE_FORMAT}.xsl "${INDEX_XML}"
+<!-- Note that we need to be careful with the base directory here - if it contains spaces or any other special characters they will need to be escaped -->
+<xsl:text> -stringparam base-dir "$$(pwd | sed 's/ /%20/g')" -o "${OUTPUT_DIR}/index.html" http://gerph.org/dtd/${CATALOG_VERSION}/prmindex-${PAGE_FORMAT}.xsl "${INDEX_XML}"
 
 &indexdir;&dirsep;index-data.xml: ${INDEX_XML}
-&indent;xsltproc -stringparam base-dir "$$(pwd)" -o "${INDEX_DIR}/index-data.xml" http://gerph.org/dtd/${CATALOG_VERSION}/prmindex-data.xsl "${INDEX_XML}"
+&indent;xsltproc -stringparam base-dir "$$(pwd | sed 's/ /%20/g')" -o "${INDEX_DIR}/index-data.xml" http://gerph.org/dtd/${CATALOG_VERSION}/prmindex-data.xsl "${INDEX_XML}"
 
 </xsl:text>
 

@@ -60,6 +60,20 @@ Individual tags within the documentation format can be described with a command:
 
     riscos-prminxml --help-tag chapter
 
+## Tested platforms
+
+The PRM-in-XML tool is tested and known to work on a number of platforms:
+
+* RISC OS
+* Ubuntu (18.04, 20.04, 21.04)
+* CentOS (7 and 8)
+* Debian (10)
+* Linux Mint (18 and 20)
+
+Other platforms may work, but are not tested as part of the standard testing process.
+Although not part of the automated testing, the tool also works and is developed on
+macOS.
+
 ## Documentation
 
 The PRM-in-XML format is documented within the text files in the [`catalog/docs`](catalog/docs)
