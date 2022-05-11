@@ -1705,7 +1705,6 @@ table.history h5 {
 
 <!-- Fraunces is a freely available font which is similar in style to the Novarese font.
      However:
-       - It is a little too bold in its default configuration, so we must lighten it.
        - It has an overly fancy & which we need to disable the stylistic set.
          In earlier versions of the font, this was necessary (and with Prince it
          appears to explicitly enable it):
@@ -1721,10 +1720,6 @@ table.history h5 {
     <css variant='body-fraunces'><![CDATA[
 body {
   font-family: "Fraunces 28pt", "Fraunces", monospace;
-  font-weight: lighter;
-}
-th {
-  font-weight: normal;
 }
 body.indexed th {
   font-weight: bold;
