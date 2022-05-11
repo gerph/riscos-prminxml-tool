@@ -15,6 +15,7 @@
     page-format='html5'
     page-css-variant=''
     index-css-variant='no-edge-index index-reason-linebreak-in-print index-include-indexed-header-label'
+    chapter-contents='no'
     chapter-numbers='yes'
     edgeindex-max='3'
     />
@@ -38,6 +39,8 @@
 <p>This is an example of a footer.</p>
 <p>It has two paragraphs in it.</p>
 </footer>
+
+<front-matter type="title" href="frontmatter" />
 
 <section title="Structural elements"
          docgroup-name="Structural elements"

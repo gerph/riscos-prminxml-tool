@@ -1014,6 +1014,9 @@ The 'index.xml' file has the following format:
     index-css-file="none"
     docgroup-name="My document set name"
     docgroup-part="III"
+    chapter-numbers="yes"
+    chapter-contents="yes"
+    edgeindex-max="4"
     />
 
 <!-- Indexes that we want to generate -->
@@ -1039,6 +1042,8 @@ The 'index.xml' file has the following format:
 <footer>
 Your Disclaimer Here.
 </footer>
+
+<front-matter type='title' href='title-page'/>
 
 <!-- List of the sections and the directories that they contain, which may be nested -->
 <section title="Overview" dir="overview">
@@ -1103,6 +1108,9 @@ The 'options' element describes some settings for the index build:
                    numbers to each document. The chapter numbers
                    will automatically increment for each document.
                    Defaults to 'no'.
+    chapter-contents: 'yes' or 'no'. Enables the generation of the
+                   opening chapter contents in the HTML documents.
+                   Defaults to 'yes'.
     edgeindex-max: The number of equally spaced edge index blocks
                    which will be used within the documents.
                    The edge index will only be shown in paged
@@ -1124,6 +1132,17 @@ index directory with the name 'index-data.xml'.
 The 'footer' element can contain text to place at the bottom of the
 index pages (individual pages may have their own explicit disclaimer,
 which is distinct from this footer).
+
+The 'front-matter' element refers to pages which are generated from
+the XML content which describe pages which appear before the contents
+page. These pages are generally styled differently and may have other
+attributes. Attributes are:
+
+    type: The type of the front matter. At present only 'title' is
+          treated differently.
+    href: The XML document which describes the front matter. The
+          XML content must still conform to PRM-in-XML but might
+          be styled differenly.
 
 The 'section' elements may be repeated and nested. These define the
 sections of the documentation, with head being further nested than

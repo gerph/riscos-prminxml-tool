@@ -1142,6 +1142,8 @@
 
 <xsl:template match="make-filelist">
     <xsl:document href="filelist.txt" method="text" indent="no">
+        <xsl:apply-templates select="//front-matter[@href != '']" mode="filelist"/>
+
         <xsl:text>index.html&#10;</xsl:text>
 
         <!-- Now the actual content referenced -->
@@ -1167,7 +1169,7 @@
     </xsl:document>
 </xsl:template>
 
-<xsl:template match="page" mode="filelist">
+<xsl:template match="page|front-matter[@href != '']" mode="filelist">
 <xsl:if test="@href != ''">
   <xsl:apply-templates mode="dir" select=".."/>
   <xsl:value-of select="@href"/>

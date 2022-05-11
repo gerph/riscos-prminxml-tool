@@ -48,12 +48,29 @@ dt {
 
 header {
 }
-header h1 {
+body.chapter header h1 {
   margin-top: 0em;
   padding-top: 0.67em;
   padding-bottom: 0.67em;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
+}
+body.front-matter-title h1 {
+    font-size: 4rem;
+}
+body.front-matter-title h2 {
+    font-size: 2.5rem;
+}
+body.front-matter-title h3 {
+    font-size: 2rem;
+}
+body.front-matter-title {
+    text-align: center;
+    width: 100%;
+    max-height: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 45%;
 }
 
 
@@ -62,10 +79,10 @@ header h1 .chapter-docgroup-name,
 header h1 .chapter-docgroup-part {
   display: none
 }
-header h1 .chapter-number {
+body.chapter header h1 .chapter-number {
   display: inline-block;
 }
-header h1 .chapter-number::after {
+body.chapter header h1 .chapter-number::after {
   display: inline-block;
   content: "\00a0";
 }
@@ -82,23 +99,23 @@ nav > ul {
   padding-left: 5rem;
 }
 
-section.section {
+body.chapter section.section {
   border-bottom: 2px solid black;
   padding-bottom: 1rem;
 }
-section.section {
+body.chapter section.section {
   padding-left: 5rem;
 }
-section.section h2 {
+body.chapter section.section h2 {
   margin-left: -5rem;
 }
-section.subsection h3 {
+body.chapter section.subsection h3 {
   margin-left: -5rem;
 }
-section.subsubsection h4 {
+body.chapter section.subsubsection h4 {
   margin-left: -2.5rem;
 }
-section.category h5 {
+body.chapter section.category h5 {
 }
 
 .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
@@ -906,13 +923,13 @@ section.meta h2 {
 -->
     <css variant="acornfs"><![CDATA[
 /* Green borders, centred heading */
-header h1 {
+body.chapter header h1 {
     border-color: #008000;
     border-top-width: 0.25rem;
     border-bottom-width: 0.25rem;
     text-align: center;
 }
-header h1 .chapter-name {
+body.chapter header h1 .chapter-name {
     padding-left: 0em;
 }
 footer {
@@ -943,24 +960,24 @@ h2.contents {
 }
 
 /* Make the divider between sections green */
-section.section {
+body.chapter section.section {
   border-bottom: 0.25rem solid #008000;
 }
 
 /* Remove all the text indentations, leave the headings with some indentation (not sure about this) */
-section.section {
+body.chapter section.section {
   padding-left: 0;
 }
-section.section h2 {
+body.chapter section.section h2 {
   margin-left: 0;
 }
-section.subsection h3 {
+body.chapter section.subsection h3 {
   margin-left: 0em;
 }
-section.subsubsection h4 {
+body.chapter section.subsubsection h4 {
   margin-left: 0.5rem;
 }
-section.category h5 {
+body.chapter section.category h5 {
   margin-left: 1.0rem;
 }
 
@@ -1048,7 +1065,7 @@ footer section.meta table th {
 }
 
 /* Grey divider lines */
-header h1 {
+body.chapter header h1 {
   border-top: 0.375rem solid #bbbbbb;
   border-bottom: 0.375rem solid #bbbbbb;
 }
@@ -1059,7 +1076,7 @@ nav {
 nav.indexed-bar-bottom {
   border-top: 0.375rem solid #bbbbbb;
 }
-section.section {
+body.chapter section.section {
   border-bottom: 0.375rem solid #bbbbbb;
 }
 
@@ -1077,36 +1094,36 @@ footer {
 }
 
 /* Indent the chapter name like the PRM did */
-header h1 {
+body.chapter header h1 {
   position: relative;
 }
-header h1 .chapter-number {
+body.chapter header h1 .chapter-number {
   position: absolute;
   width: 5rem;
 }
-header h1 .chapter-name {
+body.chapter header h1 .chapter-name {
   padding-left: 5rem;
   display: inline-block;
 }
 
 /* Heading sizes are much bigger, and not always bold */
-h1 {
+body.chapter h1 {
   font-size: 2rem;
   font-weight: normal;
 }
-h2 {
+body.chapter h2 {
   font-size: 1.8rem;
   font-weight: normal;
 }
-h3 {
+body.chapter h3 {
   font-size: 1.2rem;
   font-weight: bold;
 }
-h4 {
+body.chapter h4 {
   font-size: 1.2rem;
   font-weight: normal;
 }
-h5 {
+body.chapter h5 {
   font-size: 1rem;
   font-weight: bold;
 }
@@ -1165,7 +1182,9 @@ article .definition-related a:active {
         color: black;
     }
 
-    header h1 {
+    body.chapter header h1,
+    body.contents header h1,
+    body.indexed header h1 {
         /* Force on to the right pages */
         break-before: recto;
 
@@ -1279,12 +1298,12 @@ pre {
 }
 
 /* No divider lines */
-header h1 {
+body.chapter header h1 {
   border-top: none;
   border-bottom: none;
   padding-bottom: 4em;
 }
-header h1 .chapter-number {
+body.chapter header h1 .chapter-number {
   /* RO 2 PRM doesn't include the chapter numbers */
   display: none;
 }
@@ -1299,7 +1318,7 @@ nav.indexed-bar-bottom {
   border-top: 0.375rem solid lightgray;
   margin-top: 1em;
 }
-section.section {
+body.chapter section.section {
   border-bottom: 0.375rem solid lightgray;
 }
 
@@ -1311,53 +1330,53 @@ footer {
 }
 
 /* Indent the chapter name like the PRM did */
-header h1 {
+body.chapter header h1 {
   position: relative;
 }
-header h1 .chapter-number {
+body.chapter header h1 .chapter-number {
   position: absolute;
   width: 5rem;
 }
-header h1 .chapter-name {
+body.chapter header h1 .chapter-name {
   padding-left: 0em;
   display: inline-block;
 }
 
-article section.section, footer section.meta, section.indexed-root, header nav {
+body.chapter article section.section, footer section.meta, section.indexed-root, header nav {
     position: relative;
     margin-left: 13rem;
     padding-left: 1em;
     border-left: 1px solid black;
     margin-bottom: none;
 }
-section.section, header nav {
+body.chapter section.section, header nav {
     border-bottom: none;
 }
-section.section p:first-of-type {
+body.chapter section.section p:first-of-type {
     margin-top: 0em;
 }
-section.section pre:first-of-type {
+body.chapter section.section pre:first-of-type {
     margin-top: 0em;
 }
 
 /* Heading sizes are much bigger, and not always bold */
-h1 {
+body.chapter h1 {
   font-size: 2.5rem;
   font-weight: normal;
 }
-h2 {
+body.chapter h2 {
   font-size: 1rem;
   font-weight: bold;
 }
-h3 {
+body.chapter h3 {
   font-size: 1rem;
   font-weight: normal;
 }
-h4 {
+body.chapter h4 {
   font-size: 1rem;
   font-weight: normal;
 }
-h5 {
+body.chapter h5 {
   font-size: 1rem;
   font-weight: bold;
 }
@@ -1371,42 +1390,42 @@ p {
     margin-bottom: 0.75em;
 }
 
-section.section h2, section.meta h2 {
+body.chapter section.section h2, section.meta h2 {
     margin-top: 0em;
     position: absolute;
     margin-left: -14rem;
     width: 12rem;
 }
 
-section.section h2 + section:before {
+body.chapter section.section h2 + section:before {
     display: block;
     content: "\a0";
     padding-bottom: 0.75em;
 }
 
-section.subsection h3 {
+body.chapter section.subsection h3 {
     margin-top: 0em;
     position: absolute;
     margin-left: -14rem;
     width: 12rem;
 }
 
-section.section h3 + section:before {
+body.chapter section.section h3 + section:before {
     display: block;
     content: "\a0";
     padding-bottom: 0.75em;
 }
 
-section.subsubsection h4 {
+body.chapter section.subsubsection h4 {
     margin-top: 0em;
     position: absolute;
     margin-left: -12rem;
     width: 10rem;
 }
 
-section.section h2 + section.category h5,
-section.subsection h3 + section.category h5,
-section.subsubsection h4 + section.category h5 {
+body.chapter section.section h2 + section.category h5,
+body.chapter section.subsection h3 + section.category h5,
+body.chapter section.subsubsection h4 + section.category h5 {
     margin-top: 0em;
 }
 
@@ -1677,25 +1696,25 @@ article section h3::before {
 article section h4 {
   counter-reset: countercategory;
 }
-article section.subsubsection h4::before { /* if they skipped the subsection */
+body.chapter article section.subsubsection h4::before { /* if they skipped the subsection */
   counter-increment: countersubsubsection;
   content: counter(countersection) "." counter(countersubsubsection) " ";
 }
-article section.subsection section.subsubsection h4::before {
+body.chapter article section.subsection section.subsubsection h4::before {
   counter-increment: countersubsubsection;
   content: counter(countersection) "." counter(countersubsection) "." counter(countersubsubsection) " ";
 }
 
-article section.category {
+body.chapter article section.category {
   counter-increment: countercategory;
 }
 article section.category h5::before { /* if they skipped subsubsection and subsection */
   content: counter(countersection) "." counter(countercategory) " ";
 }
-article section.subsection section.category h5::before { /* if they skipped subsubsection */
+body.chapter article section.subsection section.category h5::before { /* if they skipped subsubsection */
   content: counter(countersection) "." counter(countersubsection) "." counter(countercategory) " ";
 }
-article section.subsection section.subsubsection section.category h5::before {
+body.chapter article section.subsection section.subsubsection section.category h5::before {
   content: counter(countersection) "." counter(countersubsection) "." counter(countersubsubsection) "." counter(countercategory) " ";
 }
 ]]></css>
@@ -1861,7 +1880,7 @@ article ul > li {
 <!-- Drop letter at the start of a paragraph - only on the first letter of the
      first paragraph of the first section -->
     <css variant='drop-character'><![CDATA[
-section.section:first-of-type p:first-of-type::first-letter {
+body.chapter section.section:first-of-type p:first-of-type::first-letter {
     font-size: 2.75rem;
     line-height: 2.75rem;
     font-weight: bold;
