@@ -42,6 +42,10 @@
 
 <front-matter type="title" href="frontmatter" />
 
+<!-- Front matter chapters are styled as roman numerals when referenced -->
+<!-- Note the 'type' is not currently carried through to the document as chapter-front-matter -->
+<page href="preface" type="front-matter">Preface</page>
+
 <section title="Structural elements"
          docgroup-name="Structural elements"
          edgeindex='1'>

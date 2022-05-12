@@ -55,9 +55,6 @@ body.chapter header h1 {
   border-top: 2px solid black;
   border-bottom: 2px solid black;
 }
-body.front-matter {
-    page: front-matter;
-}
 body.front-matter-title h1 {
     font-size: 4rem;
 }
@@ -74,6 +71,25 @@ body.front-matter-title {
     margin-left: auto;
     margin-right: auto;
     margin-top: 45%;
+}
+
+/* Paged content page type from the body */
+body.front-matter {
+    /* Generally omits headers and footers, and styles differently */
+    page: front-matter;
+}
+body.indexed-contents {
+    /* Resets the page counter to 1, uses roman page numbers */
+    page: contents;
+    counter-reset: page 1;
+}
+body.chapter {
+    /* Regular chapters */
+    page: chapter;
+}
+body.chapter-front-matter {
+    /* Chapters styled in the usual way, but using roman page numbers */
+    page: chapter;
 }
 
 
@@ -1276,6 +1292,24 @@ article .definition-related a:active {
         background-color: #bbbbbb;
     }
 }
+
+/* Numbering the contents + chapter-front-matter pages with lower-roman
+   works for the footers of the page, but does not work for the links that
+   are generated. The style is not known, so the page number will come out
+   wrongly. So for now, this is just disabled.
+ */
+/*
+@page contents:right {
+    @bottom-right {
+        content: string(chapter-page-prefix) counter(page, lower-roman);
+    }
+}
+@page contents:left {
+    @bottom-left {
+        content: string(chapter-page-prefix) counter(page, lower-roman);
+    }
+}
+*/
 
 /* Numbering and the headers are omitted for pages in the front-matter */
 @page front-matter {
