@@ -779,6 +779,9 @@ table .indexed-table-reason:before {
     body.indexed-contents a[href]::after {
         content: "\A0\A0\A0" target-counter(attr(href), page);
     }
+    body.indexed-contents .front-matter-link a[href]::after {
+        content: "";
+    }
 
     /* Special style that's used on the index pages */
     body.indexed-index .indexed-table-label a[href]::after {

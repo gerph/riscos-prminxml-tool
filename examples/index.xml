@@ -43,9 +43,9 @@
 <!-- Example page names taken from https://en.wikipedia.org/wiki/Book_design#Front_matter -->
 
 <!-- <front-matter type="half-title" href="frontmatter-half-title" /> -->
-<front-matter type="title" href="frontmatter-title" />
-<front-matter type="copyright" href="frontmatter-copyright" />
-<front-matter type="dedication" href="frontmatter-dedication" />
+<front-matter type="title" href="frontmatter-title" title="Title"/>
+<front-matter type="copyright" href="frontmatter-copyright" title="Copyright"/>
+<front-matter type="dedication" href="frontmatter-dedication" title="Dedication"/>
 
 <!-- Front matter chapters are intended to be styled as roman numerals when referenced, but this does not as yet -->
 <!-- Note the 'type' is not currently carried through to the document as chapter-front-matter -->
