@@ -55,6 +55,9 @@ body.chapter header h1 {
   border-top: 2px solid black;
   border-bottom: 2px solid black;
 }
+body.front-matter {
+    page: front-matter;
+}
 body.front-matter-title h1 {
     font-size: 4rem;
 }
@@ -1271,6 +1274,33 @@ article .definition-related a:active {
         content: string(docgroup-name);
         color: white;
         background-color: #bbbbbb;
+    }
+}
+
+/* Numbering and the headers are omitted for pages in the front-matter */
+@page front-matter {
+    /* Headers */
+    @top-left {
+        content: "";
+        border-bottom: none;
+    }
+    @top-right {
+        content: "";
+        border-bottom: none;
+    }
+
+    /* Footers */
+    @bottom-right {
+        content: "";
+    }
+    @bottom-left {
+        content: "";
+    }
+
+    /* Edge index */
+    @right-top {
+        content: "";
+        background-color: transparent;
     }
 }
 
