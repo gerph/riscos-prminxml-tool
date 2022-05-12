@@ -2033,6 +2033,14 @@ body.chapter section.section:first-of-type p:first-of-type::first-letter {
 ]]></css>
 
 
+<!-- Remove the metadata section from each chapter -->
+    <css variant='no-meta-section'><![CDATA[
+footer {
+    display: none;
+}
+]]></css>
+
+
 
 <!-- Force the page size -->
     <css variant='page-a4'><![CDATA[

@@ -13,7 +13,7 @@
     include-sections-depth="1"
     catalog-version="103"
     page-format='html5'
-    page-css-variant=''
+    page-css-variant='no-meta-section'
     index-css-variant='no-edge-index index-reason-linebreak-in-print index-include-indexed-header-label'
     chapter-contents='no'
     chapter-numbers='yes'
