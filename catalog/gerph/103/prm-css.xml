@@ -73,6 +73,38 @@ body.front-matter-title {
     margin-top: 45%;
 }
 
+/* Copyright page doesn't actually have any headings */
+body.front-matter-copyright h1, body.front-matter-copyright h2 {
+    display: none;
+}
+
+body.front-matter-copyright section.section {
+    break-before: auto;
+}
+
+body.front-matter-copyright section.section:not(:first-of-type) {
+    position: absolute;
+    bottom: 0;
+}
+
+/* Dedication page is a simple text */
+body.front-matter-dedication h1, body.front-matter-dedication h2 {
+    display: none;
+}
+
+body.front-matter-dedication section.section {
+    font-size: 2rem;
+    font-style: italic;
+    text-align: center;
+    max-height: 70%;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 45%;
+}
+
+
+
+
 /* Paged content page type from the body */
 body.front-matter {
     /* Generally omits headers and footers, and styles differently */

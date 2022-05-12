@@ -3,8 +3,12 @@
                             "http://gerph.org/dtd/103/prm.dtd">
 
 <riscos-prm>
-<chapter title="PRM-in-XML examples">
-    <section title="Testing the PRM-in-XML elements">
+<chapter title="Dedication">
+    <section title="Dedication">
+        <!-- The dedication body appears in the center of the page by default -->
+        <p>
+            For free people everywhere.
+        </p>
     </section>
 </chapter>
 </riscos-prm>
