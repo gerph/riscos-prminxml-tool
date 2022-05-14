@@ -1579,3 +1579,4 @@ Changes from 1.02 to 1.03
 * bit elements which have state and name attributes no longer repeat the attribute
   name if they are identical.
 * alternates element added to allow for alternates which are not optional.
+* indexed content now supports cover and front-matter elements.

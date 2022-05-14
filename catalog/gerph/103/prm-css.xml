@@ -102,6 +102,44 @@ body.front-matter-dedication section.section {
     margin-top: 45%;
 }
 
+/* Epigraph has multiple blocks of quotes */
+body.front-matter-epigraph h1, body.front-matter-epigraph h2 {
+    display: none;
+}
+
+body.front-matter-epigraph section.section:first-of-type {
+    break-before: recto;
+}
+
+body.front-matter-epigraph section.section {
+    font-size: 1.5rem;
+    font-style: italic;
+    max-height: 80%;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 25%;
+}
+
+body.front-matter-epigraph section.subsection {
+    display: flex;
+    flex-direction: column;
+}
+
+body.front-matter-epigraph section.subsection p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+body.front-matter-epigraph section.subsection h3 {
+    order: 1;
+    font-style: normal;
+    text-align: right;
+    margin-top: 0;
+    margin-bottom: 3rem;
+}
+body.front-matter-epigraph section.subsection h3:before {
+    content: "\2014\00A0";
+}
 
 
 

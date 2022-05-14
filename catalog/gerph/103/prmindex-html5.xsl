@@ -64,8 +64,7 @@
 </xsl:template>
 
 <!-- hide the footer declaration when producing the index itself -->
-<xsl:template match="footer">
-</xsl:template>
+<xsl:template match="footer"/>
 
 <xsl:template match="make-index">
 <xsl:param name="index-entity" />
@@ -1040,37 +1039,50 @@
 <!-- Front matter documents are shown, but don't have any page numbers -->
 <xsl:template match="front-matter">
 <xsl:param name="index-entity"/>
-<xsl:variable name="href">
+
+<xsl:variable name="target">
  <xsl:apply-templates mode="dir" select=".."/>
- <xsl:value-of select="@href"/>
+    <xsl:choose>
+        <xsl:when test="@href!=''">
+            <xsl:value-of select="@href"/>
+            <xml:text>.html</xml:text>
+        </xsl:when>
+        <xsl:when test="@html!=''">
+            <xsl:value-of select="@html"/>
+        </xsl:when>
+    </xsl:choose>
 </xsl:variable>
 
-<xsl:choose>
- <xsl:when test="@href!=''">
-  <div class='indexed-page front-matter-link'>
-    <a>
-     <xsl:attribute name="href"><xsl:value-of select="$href"/>
-                                <xml:text>.html</xml:text>
-                                </xsl:attribute>
-     <xsl:value-of select='@title' />
-     <span class='indexed-link-trailer'/>
-    </a>
-   <xsl:if test="$include-source = 'yes'">
-    <span class='indexed-xml-link'>
-    <xsl:text> (</xsl:text>
-    <a>
-     <xsl:attribute name="href"><xsl:value-of select="$href"/>
+<xsl:if test="@title != ''">
+    <div class='indexed-page front-matter-link'>
+        <a>
+            <xsl:attribute name="href">
+                <xsl:value-of select="$target"/>
+            </xsl:attribute>
+            <xsl:value-of select='@title' />
+            <span class='indexed-link-trailer'/>
+        </a>
+
+        <xsl:choose>
+            <xsl:when test="@href!=''">
+                <xsl:if test="$include-source = 'yes'">
+                    <span class='indexed-xml-link'>
+                        <xsl:text> (</xsl:text>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:value-of select="@href"/>
                                 <xml:text>.xml</xml:text>
-                                </xsl:attribute>
-     <xsl:text>XML source</xsl:text>
-     <span class='indexed-link-trailer'/>
-    </a>
-    <xsl:text>)</xsl:text>
-</span>
-   </xsl:if>
-  </div>
- </xsl:when>
-</xsl:choose>
+                            </xsl:attribute>
+                            <xsl:text>XML source</xsl:text>
+                            <span class='indexed-link-trailer'/>
+                        </a>
+                        <xsl:text>)</xsl:text>
+                    </span>
+               </xsl:if>
+            </xsl:when>
+        </xsl:choose>
+    </div>
+</xsl:if>
 
 </xsl:template>
 

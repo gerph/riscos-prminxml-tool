@@ -36,7 +36,7 @@
 <make-filelist/>
 
 <!-- The default cover page style; any attribute can be empty -->
-<!-- can use `html='<page>'` if a dedicate HTML page is being used -->
+<!-- Can use `html='<page>'` if a dedicated HTML page is being used -->
 <cover src="cover.svg"
        title="PRM-in-XML examples"
        subtitle="Testing the PRM-in-XML elements"
@@ -50,6 +50,9 @@
 <front-matter type="title" href="frontmatter-title" title="Title"/>
 <front-matter type="copyright" href="frontmatter-copyright" title="Copyright"/>
 <front-matter type="dedication" href="frontmatter-dedication" title="Dedication"/>
+
+<!-- No title is present on the Epigraph, to test the lack of title omits from the contents -->
+<front-matter type="epigraph" href="frontmatter-epigraph"/>
 
 <!-- Front matter chapters are intended to be styled as roman numerals when referenced, but this does not as yet -->
 <!-- Note the 'type' is not currently carried through to the document as chapter-front-matter -->

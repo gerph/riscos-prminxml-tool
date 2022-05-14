@@ -608,7 +608,17 @@ indices: ${INDEX_XML}
  </xsl:if>
  <xsl:text>'</xsl:text>
 
-  <xsl:text> --stringparam css-file '${PAGE_CSS_FILE}'</xsl:text>
+ <xsl:choose>
+    <xsl:when test="@css-file">
+        <xsl:text> --stringparam css-file '</xsl:text>
+        <xsl:value-of select="@css-file"/>
+        <xsl:text>'</xsl:text>
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:text> --stringparam css-file '${PAGE_CSS_FILE}'</xsl:text>
+    </xsl:otherwise>
+ </xsl:choose>
+
  <xsl:choose>
     <xsl:when test="local-name() = 'front-matter'">
         <xsl:text> --stringparam create-contents 'no'</xsl:text>

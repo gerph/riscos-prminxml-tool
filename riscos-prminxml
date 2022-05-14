@@ -1043,6 +1043,12 @@ The 'index.xml' file has the following format:
 Your Disclaimer Here.
 </footer>
 
+<cover src="cover.svg"
+       title="Document title"
+       subtitle="Document sub title"
+       author="Your name"
+       publisher="Publisher name"/>
+
 <front-matter type='title' href='title-page'/>
 
 <!-- List of the sections and the directories that they contain, which may be nested -->
@@ -1130,19 +1136,58 @@ within the generated documentation. This will be placed in the
 index directory with the name 'index-data.xml'.
 
 The 'footer' element can contain text to place at the bottom of the
-index pages (individual pages may have their own explicit disclaimer,
-which is distinct from this footer).
+contents and index pages (individual pages may have their own
+explicit disclaimer, which is distinct from this footer).
+
+The 'cover' element creates cover page which appears at the front
+of the generated documents in the PDF form. The cover page is intended
+to appear as the front of the book, and may be generated as a stock
+style of cover with templated fields, or as a self-contained HTML
+file. Attributes are:
+
+    src: (optional) An image file to place in the center of the
+         page. The templated attributes are only used if this
+         attribute is set.
+    html: (optional) A self-contained HTML file for the cover
+         page. The templated attributes will be ignored if this
+         attribute is set.
+    title: (optional) The document title.
+    subtitle: (optional) The document sub-title.
+    author: (optional) The author name.
+    publisher: (optional) The publisher name.
+    css-variant: (optional) Adds extra CSS variants to those used
+         by the page.
+    css-file: (optional) Replace the standard css-file.
 
 The 'front-matter' element refers to pages which are generated from
 the XML content which describe pages which appear before the contents
 page. These pages are generally styled differently and may have other
 attributes. Attributes are:
 
-    type: The type of the front matter. At present only 'title' is
-          treated differently.
-    href: The XML document which describes the front matter. The
-          XML content must still conform to PRM-in-XML but might
-          be styled differenly.
+    type: The type of the front matter. Types which are known and
+         handled in special ways by the standard CSS:
+            title:      Title page:
+                            <chapter> is the main title
+                            <section> appears under as the subtitle
+                            <subsection> appears under as an author
+            copyright:  Copyright and disclaimer page:
+                            First <section> appears at the top.
+                            Second <section> appears at the bottom.
+            dedication: Dedication statement. Content of the first
+                        section appears centered, italicised.
+            epigraph:   Phrase, quotation or poem:
+                            <subsection> gives the quote, with
+                            the attribution in the title.
+    href: (optional) The XML document which describes the front
+         matter. The XML content must still conform to PRM-in-XML
+         but might be styled differenly. Alternatively use the
+         'html' attribute to directly reference
+    html: (optional) The HTML document which describes the front
+         matter. May be used in place of 'href'.
+    title: (optional) Title to appear in the contents.
+    css-variant: (optional) Adds extra CSS variants to those used
+         by the page.
+    css-file: (optional) Replace the standard css-file.
 
 The 'section' elements may be repeated and nested. These define the
 sections of the documentation, with head being further nested than
@@ -1162,7 +1207,6 @@ the others. Attributes are:
          edge index which will show the 'docgroup-name', starting
          from 1 which is at the top of the page.
 
-
 The 'page' element describes a page (chapter, really) which will be
 linked from the index. Attributes are:
 
@@ -1170,6 +1214,9 @@ linked from the index. Attributes are:
          and linked in the index. If not supplied the page will be
          unlinked (or omitted entirely from the index if 'hide-empty'
          is 'yes').
+    css-variant: (optional) Adds extra CSS variants to those used
+         by the page.
+    css-file: (optional) Replace the standard css-file.
 
 Any images supplied within the input directory will be copied into
 the output, even if they are not referenced.
