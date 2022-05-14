@@ -655,27 +655,45 @@ indices: ${INDEX_XML}
  <xsl:text>&outputdir;&dirsep;_cover_&escaped_extsep;html</xsl:text>
  <xsl:text>: </xsl:text>
  <xsl:text>${INDEX_XML} </xsl:text>
- <xsl:text>&inputdir;&dirsep;</xsl:text>
- <xsl:value-of select="@src" />
+ <xsl:choose>
+    <xsl:when test="@src">
+        <xsl:text>&inputdir;&dirsep;</xsl:text>
+        <xsl:value-of select="@src" />
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:text>&inputdir;&dirsep;</xsl:text>
+        <xsl:value-of select="@html" />
+    </xsl:otherwise>
+ </xsl:choose>
  <xsl:text>&#10;</xsl:text>
 
- <xsl:text>&indent;</xsl:text>
- <xsl:text>xsltproc -output </xsl:text>
- <xsl:text>&outputdir;&dirsep;_cover_.html</xsl:text>
- <xsl:text> --stringparam css-base '${PAGE_CSS_BASE}'</xsl:text>
+ <xsl:choose>
+    <xsl:when test="@src">
+        <xsl:text>&indent;</xsl:text>
+        <xsl:text>xsltproc -output </xsl:text>
+        <xsl:text>&outputdir;&dirsep;_cover_.html</xsl:text>
+        <xsl:text> --stringparam css-base '${PAGE_CSS_BASE}'</xsl:text>
 
- <xsl:text> --stringparam css-variant '${PAGE_CSS_VARIANT}</xsl:text>
- <xsl:if test="@css-variant and @css-variant != ''">
-    <xsl:value-of select="@css-variant"/>
- </xsl:if>
- <xsl:text>'</xsl:text>
+        <xsl:text> --stringparam css-variant '${PAGE_CSS_VARIANT}</xsl:text>
+        <xsl:if test="@css-variant and @css-variant != ''">
+            <xsl:value-of select="@css-variant"/>
+        </xsl:if>
+        <xsl:text>'</xsl:text>
 
- <xsl:text> --stringparam css-file '${PAGE_CSS_FILE}'</xsl:text>
- <xsl:text> </xsl:text>
- <xsl:text>http://gerph.org/dtd/${CATALOG_VERSION}/prmcover-${PAGE_FORMAT}.xsl</xsl:text>
- <xsl:text> </xsl:text>
- <xsl:text>${INDEX_XML}</xsl:text>
- <xsl:text>&#10;</xsl:text>
+        <xsl:text> --stringparam css-file '${PAGE_CSS_FILE}'</xsl:text>
+        <xsl:text> </xsl:text>
+        <xsl:text>http://gerph.org/dtd/${CATALOG_VERSION}/prmcover-${PAGE_FORMAT}.xsl</xsl:text>
+        <xsl:text> </xsl:text>
+        <xsl:text>${INDEX_XML}</xsl:text>
+        <xsl:text>&#10;</xsl:text>
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:text>&indent;cp "&inputdir;&dirsep;</xsl:text>
+        <xsl:value-of select="@html" />
+        <xsl:text>" "$@"</xsl:text>
+        <xsl:text>&#10;</xsl:text>
+    </xsl:otherwise>
+ </xsl:choose>
 
 </xsl:template>
 
