@@ -253,6 +253,7 @@ section.definition::before {
 }
 .definition-parameters-list td {
     vertical-align: top;
+    border-spacing: 0px;
 }
 .definition-parameter > td {
     padding-bottom: 0.5em;
@@ -260,7 +261,13 @@ section.definition::before {
 .definition-parameter-aliases {
 }
 .definition-parameter-aliases td {
-    padding-top: 0px;
+    padding: 0px;
+}
+.definition-parameter-or {
+}
+.definition-parameter-or-alias {
+    font-style: italic;
+    margin-left: -1.75em;
 }
 table {
     border-spacing: 2px 0px;
@@ -332,6 +339,12 @@ table {
 }
 .userreplace::after {
   content: ">";
+}
+.optional::before {
+  content: "[";
+}
+.optional::after {
+  content: "]";
 }
 .userinput {
   font-family: monospace;

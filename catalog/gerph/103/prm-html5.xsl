@@ -1313,7 +1313,7 @@
      <xsl:call-template name="describeposition" />.</xsl:message>
             </xsl:if>
             <table class='definition-parameter-aliases'>
-             <tr><td>&#160;</td>
+             <tr><td><span class='definition-parameter-or'/></td>
               <td>
                <code>
                 <xsl:text>-</xsl:text>
@@ -1323,7 +1323,7 @@
                </code>
               </td>
              </tr>
-             <tr><td><i>or</i></td>
+             <tr><td><span class='definition-parameter-or-alias'>or&#160;</span></td>
               <td>
                <code>
                 <xsl:text>-</xsl:text>
@@ -2131,16 +2131,27 @@
 <span class='sysvar'><xsl:apply-templates /></span>
 </xsl:template>
 
-<!-- User replacement -->
+<!-- choices -->
 <xsl:template match="optional">
-<xsl:text>[</xsl:text>
-<xsl:for-each select="*">
-<xsl:if test="(position()>1) and (../@alternates='true')">
- <xsl:text> | </xsl:text>
-</xsl:if>
-<xsl:apply-templates select="."/>
-</xsl:for-each>
-<xsl:text>]</xsl:text>
+<span class='optional'>
+    <xsl:for-each select="*">
+        <xsl:if test="(position()>1) and (../@alternates='true')">
+         <xsl:text> | </xsl:text>
+        </xsl:if>
+        <xsl:apply-templates select="."/>
+    </xsl:for-each>
+</span>
+</xsl:template>
+
+<xsl:template match="alternates">
+<span class='alternates'>
+    <xsl:for-each select="*">
+        <xsl:if test="position()>1">
+            <xsl:text> | </xsl:text>
+        </xsl:if>
+        <xsl:apply-templates select="."/>
+    </xsl:for-each>
+</span>
 </xsl:template>
 
 <!-- Command line switch -->

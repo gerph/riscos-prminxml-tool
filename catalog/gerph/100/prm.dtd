@@ -52,7 +52,7 @@
 <!-- Use lsl, lsr, and asr to indicate bit-shifts -->
 
 <!ENTITY % tables "offset-table | bitfield-table | value-table">
-<!ENTITY % parameters "userinput | menuoption | systemoutput | command | function | userreplace | optional | sysvar | filename | switch">
+<!ENTITY % parameters "userinput | menuoption | systemoutput | command | function | userreplace | optional | alternates | sysvar | filename | switch">
 <!ENTITY % style "strong | sub | sup">
 <!ENTITY % link "reference | email">
 <!ENTITY % inline "br | image | list | extended-example | fixme | %style;">
@@ -158,7 +158,7 @@
 <!ELEMENT error-definition (use, related?)>
 <!ATTLIST error-definition
 	name CDATA #REQUIRED
-        number CDATA #REQUIRED
+    number CDATA #REQUIRED
 	description CDATA #REQUIRED
 >
 <!-- Message definition is vaguely complex -->
@@ -211,12 +211,13 @@
 	name CDATA #IMPLIED
 >
 <!-- Command syntax -->
-<!-- <!ELEMENT syntax (userreplace | optional | switch)*> -->
+<!-- <!ELEMENT syntax (userreplace | optional | alternates | switch)*> -->
 <!-- Really want to say that it can include the above or text nodes -->
 <!ELEMENT syntax ANY>
-<!ELEMENT switch (userreplace | optional | text)*>
+<!ELEMENT switch (userreplace | optional | alternates | text)*>
 <!ELEMENT userreplace (#PCDATA)>
-<!ELEMENT optional (optional | switch | userreplace | text)*>
+<!ELEMENT alternates (optional | alternates | switch | userreplace | text)*>
+<!ELEMENT optional (optional | alternates | switch | userreplace | text)*>
 <!ATTLIST optional
 	alternates (true | false) "false"
 >
