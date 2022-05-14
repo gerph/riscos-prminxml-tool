@@ -106,6 +106,10 @@ body.front-matter-dedication section.section {
 
 
 /* Paged content page type from the body */
+body.cover {
+    /* Usually quite different */
+    page: cover;
+}
 body.front-matter {
     /* Generally omits headers and footers, and styles differently */
     page: front-matter;
@@ -122,6 +126,62 @@ body.chapter {
 body.chapter-front-matter {
     /* Chapters styled in the usual way, but using roman page numbers */
     page: chapter;
+}
+
+
+/* Cover page default style */
+body.cover {
+    height: 100pvh;
+}
+body.cover article {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100pvh;
+}
+
+body.cover .cover-title {
+    font-size: 3rem;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    order: 1;
+}
+body.cover .cover-subtitle {
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    order: 2;
+}
+
+body.cover img.cover-image {
+    width: 100%;
+    display: block;
+    margin-bottom: 3rem;
+    order: 3;
+}
+
+body.cover .cover-author {
+    font-size: 1.5rem;
+    text-align: right;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    order: 4;
+}
+
+body.cover .cover-publisher {
+    font-size: 1.5rem;
+    text-align: left;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    order: 4;
 }
 
 
@@ -658,6 +718,7 @@ nav.indexed-bar-bottom {
 section.indexed-root {
     margin-left: 3rem;
     margin-right: 3rem;
+    margin-top: 1rem;
 }
 
 section.indexed-section {
@@ -720,18 +781,30 @@ table .indexed-table-reason:before {
     content: " ";
 }
 
+
 /* Styling specific to the print */
 @media print {
 
     /* Change the bookmark text for the headings */
     h1 {
-        -prince-bookmark-level: none;
+        prince-bookmark-level: none;
     }
     h1 .chapter-name {
-        -prince-bookmark-level: 1;
+        prince-bookmark-level: 1;
     }
     h1 .chapter-name {
         string-set: chapter-name content()
+    }
+
+    /* The cover has no bookmarks */
+    body.cover h2 {
+        prince-bookmark-level: none;
+    }
+    body.cover h1 {
+        prince-bookmark-level: none;
+    }
+    body.cover h3 {
+        prince-bookmark-level: none;
     }
 
     /* All the front-matter pages take their headings from the chapter name,
@@ -739,19 +812,19 @@ table .indexed-table-reason:before {
     body.front-matter h1 .chapter-name,
     body.front-matter h2,
     body.front-matter h3 {
-        -prince-bookmark-level: none;
+        prince-bookmark-level: none;
     }
     body.front-matter section.section:first-of-type {
-        -prince-bookmark-level: 1;
-        -prince-bookmark-label: string(chapter-name);
+        prince-bookmark-level: 1;
+        prince-bookmark-label: string(chapter-name);
     }
     body.front-matter.front-matter-title section.section:first-of-type {
         /* In the bookmark, we want to label it with Title, not the book title, as that'll look weird if there's a half-title */
-        -prince-bookmark-label: "Title";
+        prince-bookmark-label: "Title";
     }
     body.front-matter.front-matter-half-title section.section:first-of-type {
         /* But we'll remove the half title anyhow */
-        -prince-bookmark-level: none;
+        prince-bookmark-level: none;
     }
 
     /* Avoid multiple dividers at the top of the page (the header bar + the definition border) */
@@ -876,6 +949,12 @@ table .indexed-table-reason:before {
     /* Hide the section as it's not as useful in the printed version */
     .indexed-table-section, .indexed-table-heading-section {
         display: none;
+    }
+
+    /* Cover pages go much closer to the edges */
+    @page cover {
+        margin: 1cm;
+        padding: 0;
     }
 }
 
@@ -1368,6 +1447,33 @@ article .definition-related a:active {
     }
 }
 */
+
+/* Numbering and the headers are omitted for the cover */
+@page cover {
+    /* Headers */
+    @top-left {
+        content: "";
+        border-bottom: none;
+    }
+    @top-right {
+        content: "";
+        border-bottom: none;
+    }
+
+    /* Footers */
+    @bottom-right {
+        content: "";
+    }
+    @bottom-left {
+        content: "";
+    }
+
+    /* Edge index */
+    @right-top {
+        content: "";
+        background-color: transparent;
+    }
+}
 
 /* Numbering and the headers are omitted for pages in the front-matter */
 @page front-matter {

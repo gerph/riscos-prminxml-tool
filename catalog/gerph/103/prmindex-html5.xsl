@@ -1153,7 +1153,7 @@
        <xml:text>_</xml:text>
        <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
       </xsl:attribute>
-      
+
       <xsl:value-of select="@title" />
       <span class='indexed-link-trailer'/>
      </a>
@@ -1180,6 +1180,7 @@
 
 <xsl:template match="make-filelist">
     <xsl:document href="filelist.txt" method="text" indent="no">
+        <xsl:apply-templates select="//cover" mode="filelist"/>
         <xsl:apply-templates select="//front-matter[@href != '']" mode="filelist"/>
 
         <xsl:text>index.html&#10;</xsl:text>
@@ -1205,6 +1206,11 @@
             </xsl:if>
          </xsl:for-each>
     </xsl:document>
+</xsl:template>
+
+<xsl:template match="cover" mode="filelist">
+  <xsl:apply-templates mode="dir" select=".."/>
+  <xsl:text>_cover_.html&#10;</xsl:text>
 </xsl:template>
 
 <xsl:template match="page|front-matter[@href != '']" mode="filelist">

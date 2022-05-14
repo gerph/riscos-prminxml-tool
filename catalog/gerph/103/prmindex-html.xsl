@@ -51,6 +51,9 @@
 </html>
 </xsl:template>
 
+<!-- hide the footer declaration when producing the index itself -->
+<xsl:template match="footer"/>
+
 <xsl:template match="make-index">
 <xsl:param name="index-entity" />
 <xsl:variable name="type" select="@type" />
@@ -927,6 +930,9 @@
 
 <xsl:template match="make-filelist">
     <xsl:document href="filelist.txt" method="text" indent="no">
+        <xsl:apply-templates select="//cover" mode="filelist"/>
+        <xsl:apply-templates select="//front-matter[@href != '']" mode="filelist"/>
+
         <xsl:text>index.html&#10;</xsl:text>
 
         <!-- Now the actual content referenced -->
@@ -953,6 +959,19 @@
 </xsl:template>
 
 <xsl:template match="page" mode="filelist">
+<xsl:if test="@href != ''">
+  <xsl:apply-templates mode="dir" select=".."/>
+  <xsl:value-of select="@href"/>
+  <xsl:text>.html&#10;</xsl:text>
+</xsl:if>
+</xsl:template>
+
+<xsl:template match="cover" mode="filelist">
+  <xsl:apply-templates mode="dir" select=".."/>
+  <xsl:text>_cover_.html&#10;</xsl:text>
+</xsl:template>
+
+<xsl:template match="page|front-matter[@href != '']" mode="filelist">
 <xsl:if test="@href != ''">
   <xsl:apply-templates mode="dir" select=".."/>
   <xsl:value-of select="@href"/>
