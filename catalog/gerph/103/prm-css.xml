@@ -405,6 +405,8 @@ figure {
     margin-left: 2rem;
     margin-right: 2rem;
     object-fit: scale-down;
+    display: inline-block;
+    text-align: center;
 }
 figure figcaption {
     text-align: center;

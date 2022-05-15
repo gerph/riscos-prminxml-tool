@@ -1966,15 +1966,7 @@
 
 <!-- Paragraphs are simple -->
 <xsl:template match="p">
-<xsl:choose>
-    <!-- If we've only got an image inside us, don't format with a paragraph around it -->
-    <xsl:when test="count(*) = 1 and image">
-        <xsl:apply-templates/>
-    </xsl:when>
-    <xsl:otherwise>
-        <p><xsl:apply-templates /></p>
-    </xsl:otherwise>
-</xsl:choose>
+<p><xsl:apply-templates /></p>
 </xsl:template>
 
 <!-- User replacement - something the user must replace with a value -->
@@ -2242,10 +2234,14 @@
     <img>
       <xsl:variable name="style">
        <xsl:if test="@width and @width != ''">
-        <xsl:text>width: </xsl:text><xsl:value-of select="@width" /><xsl:text>; </xsl:text>
+        <xsl:text>width: </xsl:text><xsl:value-of select="@width" />px<xsl:text>; </xsl:text>
        </xsl:if>
        <xsl:if test="@height and @height != ''">
-        <xsl:text>height: </xsl:text><xsl:value-of select="@height" /><xsl:text>; </xsl:text>
+        <xsl:text>height: </xsl:text><xsl:value-of select="@height" />px<xsl:text>; </xsl:text>
+       </xsl:if>
+       <!-- Ensure that we have something visible if they didn't give any settings -->
+       <xsl:if test="not(@width and @width != '') and not(@height and @height != '')">
+        <xsl:text>min-width: 1em; </xsl:text>
        </xsl:if>
        <xsl:value-of select="string(@href)"/>
       </xsl:variable>
