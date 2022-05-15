@@ -6,10 +6,7 @@
 <chapter title="Compatibility/version elements">
 <section title="Introduction">
 <p>
-Examples of compatibility elements.
-</p>
-<p>
-    <fixme> Block examples </fixme>
+Examples of compatibility and version-table elements.
 </p>
 </section>
 
@@ -17,7 +14,7 @@ Examples of compatibility elements.
     <p>
         <version-table>
             <version riscos-lt="2" state='unsupported'/>
-            <version riscos-lt="3.0">This protocol is not available.</version>
+            <version riscos-eq="3.0">This protocol is not available.</version>
             <version riscos-ge="3.1" state='supported'/>
         </version-table>
     </p>
@@ -27,15 +24,16 @@ Examples of compatibility elements.
     <subsection title="RISC OS versions">
         <p>
             <version-table>
-                <version riscos-lt="2" state='unsupported'/>
-                <version riscos-ge="3" state='supported'/>
+                <version riscos-lt="3.0" state='unsupported'/>
+                <version riscos-eq="3.0" state='unsupported'/>
+                <version riscos-ge="3.1" state='supported'/>
             </version-table>
         </p>
 
         <p>
             <version-table>
-                <version riscos-lt="3.0" state='supported'/>
-                <version riscos-lt="2" riscos-ge="3.1" state='unsupported'/>
+                <version riscos-lt="3.1" state='supported'/>
+                <version riscos-lt="3.0" riscos-ge="3.1" state='unsupported'/>
             </version-table>
         </p>
     </subsection>
@@ -44,6 +42,7 @@ Examples of compatibility elements.
         <p>
             <version-table>
                 <version module-lt="0.99" state='unsupported'/>
+                <version module-eq="0.99" state='unsupported'/>
                 <version module-ge="0.99" state='supported'/>
                 <version module-name="SpriteExtend" module-ge="0.99" state='supported'/>
             </version-table>
@@ -83,6 +82,65 @@ Examples of compatibility elements.
             </version-table>
         </p>
     </subsection>
+</section>
+
+<section title="Real world examples">
+<subsection title="ColourTrans_SelectTable">
+    <p>
+
+        <version-table>
+            <version riscos-lt="3">
+                R0 must be less than 256, and so R5 - R7 are unused.
+                Consequently, to use a sprite as the source you first have to copy its palette
+                information out from its header. Furthermore, you cannot find the required size
+                of the buffer by setting R4 to 0 on entry.
+            </version>
+        </version-table>
+    </p>
+</subsection>
+
+<subsection title="ColourTrans_InvalidateCache">
+    <p>
+        <version-table>
+            <version riscos-lt="3">
+                You must call this SWI if output has been switched to a sprite, and ColourTrans is to be called while the output is so redirected. You must then call it again after output is directed back to the screen. For example, the palette utility on the icon bar calls this SWI when you finish dragging one of the RGB slider bars.
+            </version>
+            <version riscos-ge="3">
+                This call is made automatically when output is redirected.
+            </version>
+        </version-table>
+    </p>
+</subsection>
+
+<subsection title="Font_ListFonts">
+    <p>
+        <version-table>
+            <version riscos-eq="3.0">
+                The Font Manager in the RISC OS 3 ROMs (ie Font Manager 3.07 or earlier) has a bug in its handling of indirected menu titles.
+                To work around this, you must use MessageTrans to decode the 'FontList' token in the Fonts resource file;
+                if its length is more than 12 characters you must set the 'indirected menu title'
+                bit of the first menu item, and otherwise you must clear it.
+            </version>
+            <version riscos-eq="2">
+                <p>In the 'RISC OS 2-compatible mode' (used if bits 16 - 31 of R2 are clear),
+                    this call works as if bits 16 and 18 of R2 were set on entry,
+                    bits 17 and 19 - 31 were clear, and R3 was 40 (irrespective of its
+                    actual value).
+                </p>
+                <p>
+                    Under RISC OS 2, this call works as if bits 16 and 18 of R2 were set on entry,
+                    and bits 17 and 19 - 31 were clear (hence R4, R5 and R6 are ignored). However,
+                    R3 is used to point to the path to search; a value of -1 means that Font$Path
+                    is used instead.
+                </p>
+                <p>
+                    If your program does not RMEnsure the current version of the Font Manager,
+                    you should therefore always use Font$Path to specify the path to search.
+                </p>
+            </version>
+        </version-table>
+    </p>
+</subsection>
 </section>
 
 <section title="SWIs">

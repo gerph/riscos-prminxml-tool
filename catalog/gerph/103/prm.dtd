@@ -73,7 +73,7 @@
 <!ENTITY esc "Esc">
 <!ENTITY print "&#9113;">
 
-<!ENTITY % tables "offset-table | bitfield-table | value-table | message-table | definition-table">
+<!ENTITY % tables "offset-table | bitfield-table | value-table | message-table | definition-table | version-table">
 <!ENTITY % parameters "userinput | menuoption | systemoutput | command | function | variable | userreplace | optional | sysvar | filename | switch | input">
 <!ENTITY % style "strong | em | sub | sup">
 <!ENTITY % link "reference | email">
@@ -318,12 +318,15 @@
 
 <!-- Compatibility/version elements -->
 <!ELEMENT compatibility (version)*>
+<!ELEMENT version-table (version)*>
 <!ELEMENT version (#PCDATA | p)*>
 <!ATTLIST version
         module-name     CDATA #IMPLIED
         module-lt       CDATA #IMPLIED
+        module-eq       CDATA #IMPLIED
         module-ge       CDATA #IMPLIED
         riscos-lt       CDATA #IMPLIED
+        riscos-eq       CDATA #IMPLIED
         riscos-ge       CDATA #IMPLIED
         supplier        CDATA #IMPLIED
         hardware        CDATA #IMPLIED

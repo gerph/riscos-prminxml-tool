@@ -83,6 +83,15 @@
 <localdb:input-action aname='left' prefix="" suffix=" LEFT"/>
 <localdb:input-action aname='right' prefix="" suffix=" RIGHT"/>
 
+<!-- state names -->
+<localdb:state-names state="undefined"   label="undefined"              Label="Undefined"/>
+<localdb:state-names state="reserved"    label="reserved, must be zero" Label="Reserved, must be zero"/>
+<localdb:state-names state="corrupted"   label="corrupted"              Label="Corrupted"/>
+<localdb:state-names state="preserved"   label="preserved"              Label="Preserved"/>
+
+<localdb:state-names state="supported"   label="supported"              Label="Supported"/>
+<localdb:state-names state="unsupported" label="not supported"          Label="Not supported"/>
+
 <xsl:output method="xml" indent="no" encoding="utf-8"/>
 
 <xsl:variable name="title-to-id-src">ABCDEFGHIJKLMNOPQRSTUVWXYZ ,$:()-*?</xsl:variable>
@@ -632,6 +641,159 @@
 </xsl:template>
 
 
+
+<xsl:template match="compatibility">
+<xsl:choose>
+ <xsl:when test="count(*) = 0">
+    <!-- No compatibility block, so no need to do anything -->
+ </xsl:when>
+ <xsl:otherwise>
+  <dt><h5>Compatibility</h5></dt>
+  <dd>
+    <xsl:apply-templates/>
+  </dd>
+ </xsl:otherwise>
+</xsl:choose>
+</xsl:template>
+
+
+<xsl:template match="version-table">
+<div>
+  <span><b>Compatibility</b></span>
+  <xsl:apply-templates/>
+</div>
+</xsl:template>
+
+
+<xsl:template match="version">
+    <dl>
+        <dt>
+            <xsl:if test='@supplier'>
+                <span><i>
+                    <xsl:value-of select="@supplier"/>
+                </i></span>
+                <xsl:text>&#160;&#160;</xsl:text>
+            </xsl:if>
+
+            <xsl:if test='@hardware'>
+                <span><i>
+                    <xsl:value-of select="@hardware"/>
+                </i></span>
+                <xsl:text>&#160;&#160;</xsl:text>
+            </xsl:if>
+
+            <xsl:if test='../*/@architecture != ./@architecture'>
+                <span><i>
+                    <xsl:value-of select="@architecture"/>
+                </i></span>
+                <xsl:text>&#160;&#160;</xsl:text>
+            </xsl:if>
+
+            <xsl:if test='@module-name or @module-lt or @module-eq or @module-ge'>
+                <span class='version-module'>
+                    <xsl:if test="@module-name">
+                        <span><i>
+                            <xsl:value-of select="@module-name"/>
+                            <xsl:text>&#160;</xsl:text>
+                        </i></span>
+                    </xsl:if>
+                    <xsl:if test="@module-lt">
+                        <span><i>
+                            <xsl:text>&lt;&#160;</xsl:text>
+                            <xsl:value-of select="@module-lt"/>
+                        </i></span>
+                        <xsl:if test="@module-ge or @module-eq">
+                            <xsl:text>, </xsl:text>
+                        </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="@module-eq">
+                        <span><i>
+                            <xsl:value-of select="@module-eq"/>
+                        </i></span>
+                        <xsl:if test="@module-ge">
+                            <xsl:text>, </xsl:text>
+                        </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="@module-ge">
+                        <span><i>
+                            <xsl:text>&gt;=&#160;</xsl:text>
+                            <xsl:value-of select="@module-ge"/>
+                        </i></span>
+                    </xsl:if>
+                </span>
+                <xsl:text>&#160;&#160;</xsl:text>
+            </xsl:if>
+
+            <xsl:if test='@riscos-lt or @riscos-eq or @riscos-ge'>
+                <span class='version-riscos'>
+                    <i><xsl:text>RISC&#160;OS&#160;</xsl:text></i>
+                    <xsl:if test="@riscos-lt">
+                        <span><i>
+                            <xsl:text>&lt;&#160;</xsl:text>
+                            <xsl:value-of select="@riscos-lt"/>
+                        </i></span>
+                        <xsl:if test="@riscos-ge or @riscos-eq">
+                            <xsl:text>, </xsl:text>
+                        </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="@riscos-eq">
+                        <span><i>
+                            <xsl:value-of select="@riscos-eq"/>
+                        </i></span>
+                        <xsl:if test="@riscos-ge">
+                            <xsl:text>, </xsl:text>
+                        </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="@riscos-ge">
+                        <span><i>
+                            <xsl:text>&gt;=&#160;</xsl:text>
+                            <xsl:value-of select="@riscos-ge"/>
+                        </i></span>
+                    </xsl:if>
+                </span>
+                <xsl:text>&#160;&#160;</xsl:text>
+            </xsl:if>
+        </dt>
+
+        <dd>
+            <xsl:call-template name="state-elements">
+                <xsl:with-param name="form" select="'Label'" />
+                <xsl:with-param name="state" select="@state" />
+            </xsl:call-template>
+        </dd>
+    </dl>
+</xsl:template>
+
+
+<xsl:template name='state-elements'>
+    <xsl:param name="state"/>
+    <xsl:param name="form"/>
+    <xsl:variable name="state-name" select="document('')//localdb:state-names[@state=$state]"/>
+
+    <xsl:choose>
+        <xsl:when test="@state != 'content' and not($state-name)">
+            <!-- This shouldn't happen? -->
+        </xsl:when>
+
+        <xsl:when test="$state-name">
+            <xsl:choose>
+                <xsl:when test="$form = 'label'">
+                    <xsl:value-of select="$state-name/@label"/>
+                </xsl:when>
+                <xsl:when test="$form = 'Label'">
+                    <xsl:value-of select="$state-name/@Label"/>
+                </xsl:when>
+            </xsl:choose>
+        </xsl:when>
+
+        <xsl:otherwise>
+            <xsl:apply-templates/>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+
+
+
 <xsl:template match="related">
 <xsl:choose>
  <xsl:when test="count(*) = 0">
@@ -869,6 +1031,7 @@
   </dd>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select="compatibility" />
 
   <xsl:choose>
    <xsl:when test="count(example) > 0">
@@ -981,6 +1144,7 @@
   </dd>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select="compatibility" />
 
   <xsl:choose>
    <xsl:when test="count(example) > 0">
@@ -1123,6 +1287,7 @@
   </xsl:if>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select="compatibility" />
 
   <xsl:apply-templates select="declaration" />
 
@@ -1153,6 +1318,7 @@
   <dd><xsl:value-of select="@description"/></dd>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select="compatibility" />
 
   <xsl:choose>
    <xsl:when test="count(example) > 0">
@@ -1206,6 +1372,7 @@
   <dd><xsl:value-of select="@description"/></dd>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select="compatibility" />
 
   <xsl:apply-templates select="related" />
 
@@ -1276,6 +1443,7 @@
   </dd>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select="compatibility" />
 
   <xsl:choose>
    <xsl:when test="count(example) > 0">
@@ -1368,6 +1536,7 @@
   </dd>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select="compatibility" />
 
   <xsl:choose>
    <xsl:when test="count(example) > 0">
@@ -1459,6 +1628,7 @@
   </dd>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select="compatibility" />
 
   <xsl:apply-templates select="related" />
 
