@@ -3,15 +3,16 @@
 <!-- BNF stylesheet
 
      Converts XML BNF descriptions to HTML.
-     (c) Justin Fletcher, distribution unlimited.
-     Version 1.00 development.
+     (c) Gerph, distribution unlimited.
+     Version 1.00.
   -->
 
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/TR/xhtml1/strict"
                 xmlns:bnf="http://gerph.org/dtd/bnf/100/bnf.dtd"
-                xmlns:saxon = "http://icl.com/saxon">
+                xmlns:saxon = "http://icl.com/saxon"
+                exclude-result-prefixes="saxon">
 <xsl:output method="html" indent="no"/>
 <xsl:variable name="bnf-italic-names">yes</xsl:variable>
 <xsl:variable name="bnf-indented">yes</xsl:variable>

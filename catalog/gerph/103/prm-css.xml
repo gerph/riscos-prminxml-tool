@@ -40,6 +40,12 @@ dt {
     background-color: lightgreen;
 }
 
+/* Errors we recognise */
+.error-reference {
+    color: red;
+    font-size: 3em;
+}
+
 header {
 }
 header h1 {
@@ -51,11 +57,17 @@ header h1 {
 }
 
 
-header h1 .chapter-docgroup {
+header .chapter-vars,
+header h1 .chapter-docgroup-name,
+header h1 .chapter-docgroup-part {
   display: none
 }
 header h1 .chapter-number {
   display: inline-block;
+}
+header h1 .chapter-number::after {
+  display: inline-block;
+  content: "\00a0";
 }
 header h1 .chapter-name {
   display: inline-block;
@@ -275,7 +287,13 @@ table {
 .table-head .table-number {
     text-align: right;
 }
+.table-head .table-data-size {
+    text-align: right;
+}
 .table-head .table-name {
+    text-align: left;
+}
+.table-head .table-extra {
     text-align: left;
 }
 .table-head .table-value {
@@ -287,7 +305,19 @@ table {
 .table-body .table-number {
     text-align: right;
 }
+.offset-table > .table-body > tr > .table-number::before {
+    content: '+';
+}
+.message-table > .table-body > tr > .table-number::before {
+    content: 'R1+';
+}
+.table-body .table-data-size {
+    text-align: right;
+}
 .table-body .table-name {
+    text-align: left;
+}
+.table-body .table-extra {
     text-align: left;
 }
 .table-body .table-value {
@@ -346,6 +376,9 @@ table {
   font-family: monospace;
 }
 .menuoption {
+  font-weight: bold;
+}
+.actionbutton {
   font-weight: bold;
 }
 .variable {
@@ -605,12 +638,35 @@ section.indexed-table {
     padding-left: 2em;
     padding-right: 2em;
 }
+table.indexed-table {
+    border-spacing: 1em 0px;
+}
 table.indexed-table th {
     text-align: left;
+}
+tr.indexed-table-headings th {
+    padding-bottom: 0.75em;
+}
+
+/* The indexed-table-link isn't needed any more, but might be something someone wants to style */
+table .indexed-table-link,
+table .indexed-table-heading-link {
+    display: none;
+}
+table .indexed-table-reason:before {
+    content: " ";
 }
 
 /* Styling specific to the print */
 @media print {
+
+    /* Change the bookmark text for the headings */
+    h1 {
+        -prince-bookmark-level: none;
+    }
+    h1 .chapter-name {
+        -prince-bookmark-level: 1;
+    }
 
     /* Avoid multiple dividers at the top of the page (the header bar + the definition border) */
     .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
@@ -633,9 +689,17 @@ table.indexed-table th {
         content: none;
     }
 
-    /* Special style that's used on the index pages */
-    body.indexed a[href]::after {
+    /* Special style that's used on the contents pages */
+    body.indexed-contents a[href]::after {
         content: "\A0\A0\A0" target-counter(attr(href), page);
+    }
+
+    /* Special style that's used on the index pages */
+    body.indexed-index .indexed-table-label a[href]::after {
+        content: "";
+    }
+    body.indexed-index .indexed-table-page a[href]::after {
+        content: target-counter(attr(href), page);
     }
 
 
@@ -703,11 +767,6 @@ table.indexed-table th {
         display: none;
     }
 
-    /* The index pages shouldn't need to say that they're a link or a description, I think */
-    .indexed-table-headings th {
-        display: none;
-    }
-
     .indexed-page-section {
         clear: right;
     }
@@ -722,16 +781,21 @@ table.indexed-table th {
     .indexed-index a[href]::after {
         clear: right;
         float: right;
-        margin-right: 0.5rem;
         font-style: italic;
     }
 
     /* Hide the section as it's not as useful in the printed version */
-    .indexed-table-section {
+    .indexed-table-section, .indexed-table-heading-section {
         display: none;
     }
 }
 
+@media screen {
+    /* Hide the page fields when shown on the screen */
+    .indexed-table-page, .indexed-table-heading-page {
+        display: none;
+    }
+}
 
 /* Paged media page breaks */
 .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
@@ -758,6 +822,26 @@ section.section .entry-definition:first-of-type {
     break-before: avoid;
 }
 
+
+/* Usually the section is immediately followed by a definition block,
+ * but when they include a descriptive paragraph before those blocks
+ * we want to force to a new page.
+ */
+section.section p + .service-definition:first-of-type,
+section.section p + .swi-definition:first-of-type,
+section.section p + .vector-definition:first-of-type,
+section.section p + .upcall-definition:first-of-type,
+section.section p + .command-definition:first-of-type,
+section.section p + .vdu-definition:first-of-type,
+section.section p + .error-definition:first-of-type,
+section.section p + .sysvar-definition:first-of-type,
+section.section p + .message-definition:first-of-type,
+section.section p + .tboxmessage-definition:first-of-type,
+section.section p + .tboxmethod-definition:first-of-type,
+section.section p + .entry-definition:first-of-type {
+    break-before: page;
+}
+
 /* If we have a heading which is followed by content, we would like to keep that content
    together with the heading. This appears to be effective in PrinceXML but not in
    Firefox or Chrome; maybe something subtle I've missed. */
@@ -780,13 +864,28 @@ section.definition {
     page-break-inside: avoid;
 }
 
+/* The 'Use' block is large, so making it always break tends to lead to the Use
+   section being on the next page. So instead of keeping all the 'Use' block together,
+   we instead try to keep the first paragraph with the section header. */
+section.definition.definition-use {
+    page-break-inside: auto;
+}
+section.definition.definition-use > p:first-of-type {
+    break-before: avoid;
+    page-break-inside: avoid;
+}
+
 footer {
     page-break-inside: avoid;
 }
 
 
-.chapter-docgroup { string-set: docgroup-name content() }
+.indexed-table-field { string-set: indexed-field content() }
+.chapter-docgroup-name { string-set: docgroup-name content() }
+.chapter-docgroup-part { string-set: docgroup-part content() }
 .chapter-name { string-set: chapter-name content() }
+.chapter-number { string-set: chapter-number content() }
+.chapter-page-prefix { string-set: chapter-page-prefix content() }
 section.section h2,
 section.meta h2 {
     string-set: section-name content()
@@ -955,30 +1054,30 @@ footer section.meta table th {
 
 /* Grey divider lines */
 header h1 {
-  border-top: 0.375rem solid lightgray;
-  border-bottom: 0.375rem solid lightgray;
+  border-top: 0.375rem solid #bbbbbb;
+  border-bottom: 0.375rem solid #bbbbbb;
 }
 
 nav {
-  border-bottom: 0.375rem solid lightgray;
+  border-bottom: 0.375rem solid #bbbbbb;
 }
 nav.indexed-bar-bottom {
-  border-top: 0.375rem solid lightgray;
+  border-top: 0.375rem solid #bbbbbb;
 }
 section.section {
-  border-bottom: 0.375rem solid lightgray;
+  border-bottom: 0.375rem solid #bbbbbb;
 }
 
 footer {
-  border-bottom: 0.375rem solid lightgray;
+  border-bottom: 0.375rem solid #bbbbbb;
 }
 
 @media screen {
     .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
-      border-top: 0.375rem solid lightgray;
+      border-top: 0.375rem solid #bbbbbb;
     }
     footer {
-      border-bottom: 0.375rem solid lightgray;
+      border-bottom: 0.375rem solid #bbbbbb;
     }
 }
 
@@ -1070,6 +1169,17 @@ article .definition-related a:active {
         text-decoration: none;
         color: black;
     }
+
+    header h1 {
+        /* Force on to the right pages */
+        break-before: recto;
+
+        /* Remove the top border because we will use the divider
+         * provided by the @page @top-left/@top-right.
+         */
+        border-top: 0px none;
+        padding-top: 0.5rem;
+    }
 }
 
 
@@ -1096,7 +1206,7 @@ article .definition-related a:active {
     }
 
     @bottom-left {
-        content: counter(page);
+        content: string(chapter-page-prefix) counter(page);
         font-family: sans-serif;
         vertical-align: top;
         padding-top: 0.25rem;
@@ -1119,7 +1229,7 @@ article .definition-related a:active {
     }
 
     @bottom-right {
-        content: counter(page);
+        content: string(chapter-page-prefix) counter(page);
         font-family: sans-serif;
         vertical-align: top;
         padding-top: 0.25rem;
@@ -1130,12 +1240,17 @@ article .definition-related a:active {
     @right-top {
         display: inline;
         margin-left: 1.5rem;
-        margin-top: 2rem;
+
+        /* 5% gap at top/bottom, dividing the 90% remaining into edgeindex-max
+         * blocks, of which this is the edgeindex'th one (0-indexed).
+         */
+        margin-top: calc((5 + (90 / var(--edgeindex-max)) * var(--edgeindex-number)) * 1%);
+        margin-bottom: calc((100 - (5 + (90 / var(--edgeindex-max)) * (var(--edgeindex-number) + 1))) * 1%);
+
         padding-top: 1rem;
         padding-bottom: 1rem;
         writing-mode: vertical-rl;
         padding-left: 0.5rem;
-        margin-bottom: 60%;
         font-family: sans-serif;
         font-weight: bold;
         font-size: 0.75rem;
@@ -1146,13 +1261,8 @@ article .definition-related a:active {
 }
 
 @page:first {
-  @top-left {
-    content: normal;
-    border-bottom: 0px none;
-  }
   @top-right {
-    content: normal;
-    border-bottom: 0px none;
+    content: '';
   }
 }
 
@@ -1178,6 +1288,10 @@ header h1 {
   border-top: none;
   border-bottom: none;
   padding-bottom: 4em;
+}
+header h1 .chapter-number {
+  /* RO 2 PRM doesn't include the chapter numbers */
+  display: none;
 }
 .indexed-index header h1 {
   padding-bottom: 1em;
@@ -1612,9 +1726,15 @@ table.history h5 {
 
 <!-- Fraunces is a freely available font which is similar in style to the Novarese font.
      However:
-       - it is a little too bold in its default configuration, so we must lighten it.
-       - it has an overly fancy & which we need to disable the stylistic set.
+       - It is a little too bold in its default configuration, so we must lighten it.
+       - It has an overly fancy & which we need to disable the stylistic set.
+         In earlier versions of the font, this was necessary (and with Prince it
+         appears to explicitly enable it):
+            font-feature-settings: 'ss01' 0;
+            font-variant: prince-opentype(ss01(0));
      See: https://fonts.google.com/specimen/Fraunces
+
+
   -->
     <css variant='webfont-fraunces'><![CDATA[
 @import url('https://fonts.googleapis.com/css2?family=Fraunces&display=block');
@@ -1623,11 +1743,12 @@ table.history h5 {
 body {
   font-family: "Fraunces 28pt", "Fraunces", monospace;
   font-weight: lighter;
-  font-feature-settings: 'ss01' 1;
-  font-variant: prince-opentype(ss01(1));
 }
 th {
   font-weight: normal;
+}
+body.indexed th {
+  font-weight: bold;
 }
 table.history h5 {
   font-weight: normal;
@@ -1775,6 +1896,50 @@ section.section:first-of-type p:first-of-type::first-letter {
     <css variant='page-a5'><![CDATA[
 @page {
     size: a5 portrait;
+}
+]]></css>
+
+
+<!-- Indexes: Remove the description of the indexed entries from the print version -->
+    <css variant='index-no-descriptions-in-print'><![CDATA[
+@media print {
+    /* Hide the description if it's not needed in the print version */
+    .indexed-table-description, .indexed-table-heading-description {
+        display: none;
+    }
+}
+]]></css>
+
+
+<!-- Indexes: Remove the description of the indexed entries from the print version -->
+    <css variant='index-no-headings-in-print'><![CDATA[
+@media print {
+    /* Hide the headings if they're not needed in the print version */
+    .indexed-table-headings th {
+        display: none;
+    }
+}
+]]></css>
+
+
+<!-- Indexes: Reasons on separate line -->
+    <css variant='index-reason-linebreak-in-print'><![CDATA[
+@media print {
+    /* Split up the reason in the indexes, so it's separate */
+    span.indexed-table-reason {
+        margin-left: 1em;
+        display: block;
+    }
+}
+]]></css>
+
+
+<!-- Indexes: Include the indexed text in the page header -->
+    <css variant='index-include-indexed-header-label'><![CDATA[
+@page:left {
+    @top-left {
+        content: string(indexed-field, first);
+    }
 }
 ]]></css>
 

@@ -121,8 +121,6 @@
 <html>
 <xsl:comment>
   Auto-generated using XSLT stylesheet created by Gerph.
-
-  This document was created with the HTML stylesheet updated 19 Sep 2020.
 </xsl:comment>
 <xsl:apply-templates />
 <xsl:apply-templates select="riscos-prm/meta" mode="tail"/>
@@ -136,7 +134,7 @@
 <head>
   <meta charset="utf-8"/>
   <title>
-  <xsl:value-of select="../@doc-group"/>
+  <xsl:value-of select="../@docgroup"/>
   <xsl:text> : </xsl:text>
   <xsl:value-of select="@title"/>
  </title>
@@ -145,7 +143,15 @@
 <body bgcolor="white" text="black" link="blue" alink="red" vlink="darkblue">
 
 <hr />
-<h1><xsl:value-of select="@title"/></h1>
+<h1>
+    <a>
+        <xsl:attribute name="name">
+         <xsl:text>chapter_</xsl:text>
+         <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
+        </xsl:attribute>
+        <xsl:value-of select="@title"/>
+    </a>
+</h1>
 <hr />
 
 <xsl:choose>
@@ -1543,10 +1549,11 @@
 
 <!-- notice that we do some complex matching here to ensure that we put
      the set and clear bit values in what appears to be a sub-table,
-     thus preventing the double use of the bit number in the heading -->
+     thus preventing the double use of the bit number/name in the heading -->
 <xsl:template match="bit">
 <!-- Note: preceding-sibling returns nodes going backward from the current node -->
 <xsl:variable name="lastelement" select="preceding-sibling::bit[1]" />
+<xsl:variable name="nextelement" select="following-sibling::bit[position() = 1]" />
 <xsl:if test="not( ($lastelement/@number = @number) and
                    ($lastelement/@state != '') )">
  <!-- We only want to process the first of any sets of rows -->
@@ -1574,13 +1581,20 @@
      <xsl:apply-templates/>
     </td>
 
-    <xsl:variable name="nextelement" select="following-sibling::bit[position() = 1]" />
     <xsl:if test="($nextelement/@number = @number) and
                   ($nextelement/@state != '')">
      <tr>
       <td></td>
       <xsl:if test="count(../*/@name)>0">
-       <td valign="top"><xsl:value-of select="$nextelement/@name"/></td>
+       <xsl:choose>
+        <xsl:when test="($nextelement/@name = '') or
+                        ($nextelement/@name = @name)">
+         <td valign="top"></td>
+        </xsl:when>
+        <xsl:otherwise>
+         <td valign="top"><xsl:value-of select="$nextelement/@name"/></td>
+        </xsl:otherwise>
+       </xsl:choose>
       </xsl:if>
 
       <td valign="top" align="right">
@@ -1646,7 +1660,7 @@
 </tr>
 </xsl:template>
 
-<!-- An offset table is similar to the value-table -->
+<!-- An offset table is similar to the value-table, but includes widths -->
 <xsl:template match="offset-table">
 <xsl:variable name="head-name">
   <xsl:choose>
@@ -1654,9 +1668,18 @@
     <xsl:when test="count(offset/@name)>0"><xsl:text>Name</xsl:text></xsl:when>
   </xsl:choose>
 </xsl:variable>
+<xsl:variable name="head-size">
+  <xsl:choose>
+    <xsl:when test="@head-data-size != ''"><xsl:value-of select="@head-data-size" /></xsl:when>
+    <xsl:when test="count(offset/@data-size)>0"><xsl:text>Size</xsl:text></xsl:when>
+  </xsl:choose>
+</xsl:variable>
 <table summary="Opaque table of offset/contents" border="0" cellspacing="8">
  <tr>
   <th align="right" valign="bottom"><xsl:value-of select="@head-number" /></th>
+  <xsl:if test="$head-size != ''">
+   <th align="right" valign="bottom"><xsl:value-of select="$head-size" /></th>
+  </xsl:if>
   <xsl:if test="$head-name != ''">
    <th align="left" valign="bottom"><xsl:value-of select="$head-name" /></th>
   </xsl:if>
@@ -1669,10 +1692,19 @@
 <xsl:template match="offset">
 <tr>
  <td valign="top" align="right">+<xsl:value-of select="@number"/></td>
+ <xsl:if test="../*/@data-size != ''">
+  <td valign="top" align="right"><xsl:value-of select="@data-size"/></td>
+ </xsl:if>
  <xsl:if test="../*/@name != ''">
   <td valign="top" align="left"><xsl:value-of select="@name"/></td>
  </xsl:if>
- <td valign="top" align="left"><xsl:apply-templates/></td>
+ <td valign="top" align="left">
+  <xsl:choose>
+   <xsl:when test="@state='reserved'"><xsl:text>Reserved, must be zero</xsl:text></xsl:when>
+   <xsl:when test="@state='undefined'"><xsl:text>Undefined</xsl:text></xsl:when>
+   <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
+ </xsl:choose>
+ </td>
 </tr>
 </xsl:template>
 
@@ -1683,6 +1715,9 @@
 <table summary="Opaque table for a wimp message block" border="0" cellspacing="8">
  <tr>
   <th align="right" valign="bottom">Offset</th>
+  <xsl:if test="count(message/@data-size) > 0">
+   <th align="right" valign="bottom">Size</th>
+  </xsl:if>
   <xsl:if test="count(message/@name) > 0">
    <th align="left" valign="bottom">Name</th>
   </xsl:if>
@@ -1695,12 +1730,64 @@
 <xsl:template match="message">
 <tr>
  <td valign="top" align="right">R1+<xsl:value-of select="@offset"/></td>
+ <xsl:if test="../*/@data-size != ''">
+  <td valign="top" align="right"><xsl:value-of select="@data-size"/></td>
+ </xsl:if>
  <xsl:if test="../*/@name != ''">
   <td valign="top" align="left"><xsl:value-of select="@name"/></td>
  </xsl:if>
- <td valign="top" align="left"><xsl:apply-templates/></td>
+ <td valign="top" align="left">
+  <xsl:choose>
+   <xsl:when test="@state='reserved'"><xsl:text>Reserved, must be zero</xsl:text></xsl:when>
+   <xsl:when test="@state='undefined'"><xsl:text>Undefined</xsl:text></xsl:when>
+   <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
+ </xsl:choose>
+ </td>
 </tr>
 </xsl:template>
+
+
+<!-- A definition table is a table of named definitions with headings (like a value table, but for labels)-->
+<xsl:template match="definition-table">
+<xsl:variable name="head-extra">
+  <xsl:choose>
+    <xsl:when test="@head-extra != ''"><xsl:value-of select="@head-extra" /></xsl:when>
+    <xsl:when test="count(value/@extra)>0"><xsl:text>Extra</xsl:text></xsl:when>
+  </xsl:choose>
+</xsl:variable>
+<table summary="Opaque table of extras" border="0" cellspacing="8">
+ <tr>
+  <th align="left" valign="bottom"><xsl:value-of select="@head-name" /></th>
+  <xsl:if test="$head-extra != ''">
+   <th align="left" valign="bottom"><xsl:value-of select="$head-extra" /></th>
+  </xsl:if>
+  <th align="left" valign="bottom"><xsl:value-of select="@head-value" /></th>
+ </tr>
+ <xsl:apply-templates/>
+</table>
+</xsl:template>
+
+<xsl:template match="definition">
+<tr>
+ <td valign="top" align="left"><xsl:value-of select="@name"/></td>
+ <xsl:if test="../*/@extra != ''">
+  <td valign="top" align="left"><xsl:value-of select="@extra"/></td>
+ </xsl:if>
+ <td valign="top" align="left">
+  <xsl:choose>
+   <xsl:when test="count(p) = 1">
+    <!-- Botch to stop tables looking shite on most browsers -->
+    <xsl:apply-templates select="p/*|p/text()"/>
+   </xsl:when>
+   <xsl:otherwise>
+    <xsl:apply-templates />
+   </xsl:otherwise>
+  </xsl:choose>
+ </td>
+</tr>
+</xsl:template>
+
+
 
 <xsl:template name="describepositionhelper">
 <xsl:param name = "where" />
@@ -2080,6 +2167,14 @@
 
  <!-- Section type reference -->
 <!--  There must be an easier way to do this ? -->
+ <xsl:when test="@type='chapter'">
+  <xsl:if test="(not(@href)) and
+                 not (//chapter[@title=$refname])">
+   <xsl:message>Chapter for <xsl:value-of select="$refname" /> not found at
+   <xsl:call-template name="describeposition" />.</xsl:message>
+  </xsl:if>
+  <xsl:value-of select="$link-content" />
+ </xsl:when>
  <xsl:when test="@type='section'">
   <xsl:if test="(not(@href)) and
                  not (//section[@title=$refname])">
@@ -2221,13 +2316,19 @@
 
 <!-- System output - something the system could have displayed -->
 <xsl:template match="systemoutput">
-<br /><tt><xsl:apply-templates /></tt>
+<tt><xsl:apply-templates /></tt>
 </xsl:template>
 
 <!-- Menu option - an option that the user might chose for a menu -->
 <xsl:template match="menuoption">
 <em><xsl:apply-templates /></em>
 </xsl:template>
+
+<!-- Action button - a button in the interface that the user might interact with -->
+<xsl:template match="actionbutton">
+<em><xsl:apply-templates /></em>
+</xsl:template>
+
 
 <!-- The collection of input device operations -->
 <!-- FIXME: Enforce the keys before mouse? -->
@@ -2268,6 +2369,8 @@
         </xsl:choose>
 </kbd>
 </xsl:template>
+
+
 <!-- Variable -->
 <xsl:template match="variable">
 <tt><xsl:apply-templates /></tt>

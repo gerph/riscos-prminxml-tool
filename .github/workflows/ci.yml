@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        os: ["ubuntu:18.04", "ubuntu:20.04", "ubuntu:21.04", "centos:7", "centos:8", "debian:10"]
+        os: ["ubuntu:18.04", "ubuntu:20.04", "ubuntu:21.04", "centos:7", "centos:8", "debian:10", "linuxmintd/mint18-amd64", "linuxmintd/mint20-amd64"]
         #os: ["ubuntu:18.04"]
     container: ${{ matrix.os }}
     needs: test-examples #  always run after the baseline tests
@@ -192,7 +192,7 @@ jobs:
           cd Test-Output
           # We use zip here because most people using these tools will be RISC OS users
           # and zip is more friendly to them.
-          zip ../TestOutput-${{ needs.export-riscos.outputs.version }}.zip *
+          zip -9r ../TestOutput-${{ needs.export-riscos.outputs.version }}.zip *
 
       - name: Create Release
         id: create_release

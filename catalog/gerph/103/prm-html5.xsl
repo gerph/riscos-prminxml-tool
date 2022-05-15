@@ -14,7 +14,8 @@
                 xmlns:saxon="http://icl.com/saxon"
                 xmlns:str="http://exslt.org/strings"
                 xmlns:exslt="http://exslt.org/common"
-                xmlns:pixparams="http://gerph.org/dtd/prminxml-params">
+                xmlns:pixparams="http://gerph.org/dtd/prminxml-params"
+                exclude-result-prefixes="localdb saxon str exslt pixparams">
 
 <xsl:include href="http://gerph.org/dtd/bnf/100/html.xsl" />
 
@@ -38,6 +39,7 @@
 <localdb:definition-titles type="tboxmethod"   prefix-definition=""         prefix-name=""         prefix-number="Method "  number-base="&amp;" name="Toolbox method"   Name="Toolbox method"     />
 
 <!-- Similar database for the subsections (also in the 'definition-titles' space because it's easier to lookup) -->
+<localdb:definition-titles type="chapter" Name='Chapter'/>
 <localdb:definition-titles type="section" Name='Section'/>
 <localdb:definition-titles type="subsection" Name='SubSection'/>
 <localdb:definition-titles type="subsubsection" Name='SubSubSection'/>
@@ -150,6 +152,36 @@
     Use 'none' to not include an external
     stylesheet.
 </pixparams:param>
+<pixparams:param name="override-chapter-number" values="chapter | ''" default="''">
+    Defines the number of the chapter to include
+    in the titles of the document.
+    Use '' to omit any chapter number.
+</pixparams:param>
+<pixparams:param name="override-docgroup" values="group-name" default="''">
+    Overrides any document group specified in the
+    document. If none was specified in the document,
+    it would default to 'RISC OS Programmers Reference
+    Manuals'.
+    Use '' to use the group specified in the document.
+</pixparams:param>
+<pixparams:param name="override-docgroup-part" values="group-part" default="''">
+    Overrides any document group part specified in the
+    document. If none was specified in the document,
+    it would be omitted.
+    Use '' to use the part specified in the document.
+</pixparams:param>
+
+<pixparams:param name="edgeindex" values="number" default="1">
+    Selects which edge index will be used to show the
+    document group, if any. Edge indexes are numbered
+    from 1 to 'edgeindex-max', descending from the top
+    of the page.
+</pixparams:param>
+
+<pixparams:param name="edgeindex-max" values="number" default="4">
+    Selects how many edge index spaces are left on the
+    edge of the page.
+</pixparams:param>
 
 <xsl:param name="create-contents">yes</xsl:param>
 <xsl:param name="create-body">yes</xsl:param>
@@ -159,6 +191,13 @@
 <xsl:param name="css-base">standard</xsl:param>
 <xsl:param name="css-variant">none</xsl:param>
 <xsl:param name="css-file">none</xsl:param>
+
+<xsl:param name="override-chapter-number"></xsl:param>
+<xsl:param name="override-docgroup"></xsl:param>
+<xsl:param name="override-docgroup-part"></xsl:param>
+
+<xsl:param name="edgeindex">1</xsl:param>
+<xsl:param name="edgeindex-max">4</xsl:param>
 
 
 <xsl:template match="/">
@@ -189,26 +228,72 @@
      </xsl:attribute>
    </meta>
   </xsl:if>
-  <meta name='subject'>
+  <meta name='description'>
    <xsl:attribute name='content'>
     <xsl:value-of select='@title'/>
    </xsl:attribute>
   </meta>
 
   <title>
-  <xsl:value-of select="../@doc-group"/>
-  <xsl:text> : </xsl:text>
-  <xsl:value-of select="@title"/>
- </title>
- <xsl:call-template name='head-css'/>
+    <xsl:choose>
+        <xsl:when test="$override-docgroup != ''"><xsl:value-of select="$override-docgroup"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="../@docgroup"/></xsl:otherwise>
+    </xsl:choose>
+    <xsl:text> : </xsl:text>
+    <xsl:value-of select="@title"/>
+  </title>
+  <xsl:call-template name='head-css'/>
 </head>
 
 <body>
 
 <header>
+<!-- Variables in the span here have no presentation in the document;
+     they're just referenced in CSS -->
+<span class='chapter-vars'>
+    <span class='chapter-page-prefix'>
+        <xsl:if test="$override-docgroup-part != ''">
+            <xsl:value-of select="$override-docgroup-part"/>
+            <xsl:text>-</xsl:text>
+        </xsl:if>
+    </span>
+    <!-- The edge index values can only be calculated from CSS values, so we assign this here -->
+    <style type='text/css'>
+        <xsl:text>:root {</xsl:text>
+        <xsl:text>  --edgeindex-number: </xsl:text>
+        <xsl:value-of select="$edgeindex - 1"/>
+        <xsl:text>;</xsl:text>
+        <xsl:text>  --edgeindex-max: </xsl:text>
+        <xsl:value-of select="$edgeindex-max"/>
+        <xsl:text>;</xsl:text>
+    </style>
+</span>
+
 <h1 class='chapter-title'>
-    <span class='chapter-number'><!-- NYI --></span>
-    <span class='chapter-docgroup'><xsl:value-of select="../@doc-group"/></span>
+    <xsl:attribute name="id">
+        <xsl:text>chapter_</xsl:text>
+        <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
+    </xsl:attribute>
+
+    <!-- Variables in the span here might be used to construct the heading -->
+    <span class='chapter-docgroup-name'>
+        <xsl:choose>
+            <xsl:when test="$override-docgroup != ''"><xsl:value-of select="$override-docgroup"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="../@docgroup"/></xsl:otherwise>
+        </xsl:choose>
+    </span>
+    <span class='chapter-docgroup-part'>
+        <xsl:choose>
+            <xsl:when test="$override-docgroup-part != ''"><xsl:value-of select="$override-docgroup-part"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="../@docgroup-part"/></xsl:otherwise>
+        </xsl:choose>
+    </span>
+    <span class='chapter-number'>
+        <xsl:choose>
+            <xsl:when test="$override-chapter-number != ''"><xsl:value-of select="$override-chapter-number"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="@number"/></xsl:otherwise>
+        </xsl:choose>
+    </span>
     <span class='chapter-name'><xsl:value-of select="@title"/></span>
 </h1>
 <xsl:choose>
@@ -1493,6 +1578,7 @@ Attributes:
 <xsl:template match="bit">
 <!-- Note: preceding-sibling returns nodes going backward from the current node -->
 <xsl:variable name="lastelement" select="preceding-sibling::bit[1]" />
+<xsl:variable name="nextelement" select="following-sibling::bit[position() = 1]" />
 <xsl:if test="not( ($lastelement/@number = @number) and
                    ($lastelement/@state != '') )">
  <!-- We only want to process the first of any sets of rows -->
@@ -1520,13 +1606,20 @@ Attributes:
      <xsl:apply-templates/>
     </td>
 
-    <xsl:variable name="nextelement" select="following-sibling::bit[position() = 1]" />
     <xsl:if test="($nextelement/@number = @number) and
                   ($nextelement/@state != '')">
      <tr>
       <td></td>
       <xsl:if test="count(../*/@name)>0">
-       <td class='table-name'><xsl:value-of select="$nextelement/@name"/></td>
+       <xsl:choose>
+        <xsl:when test="($nextelement/@name = '') or
+                        ($nextelement/@name = @name)">
+         <td class='table-name'></td>
+        </xsl:when>
+        <xsl:otherwise>
+         <td class='table-name'><xsl:value-of select="$nextelement/@name"/></td>
+        </xsl:otherwise>
+       </xsl:choose>
       </xsl:if>
 
       <td class='table-value table-value-bitstate'>
@@ -1604,10 +1697,19 @@ Attributes:
     <xsl:when test="count(offset/@name)>0"><xsl:text>Name</xsl:text></xsl:when>
   </xsl:choose>
 </xsl:variable>
+<xsl:variable name="head-size">
+  <xsl:choose>
+    <xsl:when test="@head-data-size != ''"><xsl:value-of select="@head-data-size" /></xsl:when>
+    <xsl:when test="count(offset/@data-size)>0"><xsl:text>Size</xsl:text></xsl:when>
+  </xsl:choose>
+</xsl:variable>
 <table class='user-table offset-table'>
  <thead class='table-head'>
   <tr>
    <th class='table-number'><xsl:value-of select="@head-number" /></th>
+   <xsl:if test="$head-size != ''">
+    <th class='table-data-size'><xsl:value-of select="$head-size" /></th>
+   </xsl:if>
    <xsl:if test="$head-name != ''">
     <th class='table-name'><xsl:value-of select="$head-name" /></th>
    </xsl:if>
@@ -1623,11 +1725,18 @@ Attributes:
 <xsl:template match="offset">
 <tr>
  <td class='table-number'><xsl:value-of select="@number"/></td>
+ <xsl:if test="../*/@data-size != ''">
+  <td class='table-data-size'><xsl:value-of select="@data-size"/></td>
+ </xsl:if>
  <xsl:if test="../*/@name != ''">
   <td class='table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
  <td class='table-value'>
-  <xsl:apply-templates/>
+  <xsl:choose>
+   <xsl:when test="@state='reserved'"><xsl:text>Reserved, must be zero</xsl:text></xsl:when>
+   <xsl:when test="@state='undefined'"><xsl:text>Undefined</xsl:text></xsl:when>
+   <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
+ </xsl:choose>
  </td>
 </tr>
 </xsl:template>
@@ -1640,6 +1749,9 @@ Attributes:
  <thead class='table-head'>
   <tr>
    <th class='table-number'>Offset</th>
+   <xsl:if test="count(message/@data-size) > 0">
+    <th class='table-data-size'>Size</th>
+   </xsl:if>
    <xsl:if test="count(message/@name) > 0">
     <th class='table-name'>Name</th>
    </xsl:if>
@@ -1654,13 +1766,70 @@ Attributes:
 
 <xsl:template match="message">
 <tr>
- <td class='table-number'>R1+<xsl:value-of select="@offset"/></td>
+ <td class='table-number'><xsl:value-of select="@offset"/></td>
+ <xsl:if test="../*/@data-size != ''">
+  <td class='table-data-size'><xsl:value-of select="@data-size"/></td>
+ </xsl:if>
  <xsl:if test="../*/@name != ''">
   <td class='table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
- <td class='table-value'><xsl:apply-templates/></td>
+ <td class='table-value'>
+  <xsl:choose>
+   <xsl:when test="@state='reserved'"><xsl:text>Reserved, must be zero</xsl:text></xsl:when>
+   <xsl:when test="@state='undefined'"><xsl:text>Undefined</xsl:text></xsl:when>
+   <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
+ </xsl:choose>
+ </td>
 </tr>
 </xsl:template>
+
+
+
+<!-- A definition table is a table of named definitions with headings (like a value table, but for labels)-->
+<xsl:template match="definition-table">
+<xsl:variable name="head-extra">
+  <xsl:choose>
+    <xsl:when test="@head-extra != ''"><xsl:value-of select="@head-extra" /></xsl:when>
+    <xsl:when test="count(value/@extra)>0"><xsl:text>Extra</xsl:text></xsl:when>
+  </xsl:choose>
+</xsl:variable>
+<table class='user-table definition-table'>
+ <thead class='table-head'>
+  <tr>
+   <th class='table-name'><xsl:value-of select="@head-name" /></th>
+   <xsl:if test="$head-extra != ''">
+    <th class='table-extra'><xsl:value-of select="$head-extra" /></th>
+   </xsl:if>
+   <th class='table-value'><xsl:value-of select="@head-value" /></th>
+ </tr>
+ </thead>
+ <tbody class='table-body'>
+  <xsl:apply-templates/>
+ </tbody>
+</table>
+</xsl:template>
+
+<xsl:template match="definition">
+<tr>
+ <td class='table-name'><xsl:value-of select="@name"/></td>
+ <xsl:if test="../*/@extra != ''">
+  <td class='table-extra'><xsl:value-of select="@extra" /></td>
+ </xsl:if>
+ <td class='table-value'>
+  <xsl:choose>
+   <xsl:when test="count(p) = 1">
+    <!-- Botch to stop tables looking shite on most browsers -->
+    <xsl:apply-templates select="p/*|p/text()"/>
+   </xsl:when>
+   <xsl:otherwise>
+    <xsl:apply-templates />
+   </xsl:otherwise>
+  </xsl:choose>
+ </td>
+</tr>
+</xsl:template>
+
+
 
 <xsl:template name="describepositionhelper">
 <xsl:param name = "where" />
@@ -1775,7 +1944,7 @@ Attributes:
                            string(@reason)=$refreason]"/>
  </xsl:when>
 
- <xsl:when test="$reftype='section' or $reftype='subsection' or $reftype='subsubsection' or $reftype='category'">
+ <xsl:when test="$reftype='chapter' or $reftype='section' or $reftype='subsection' or $reftype='subsubsection' or $reftype='category'">
   <xsl:copy-of select="//*[local-name()=$reftype and
                            @title=$refname]"/>
  </xsl:when>
@@ -1795,7 +1964,7 @@ Attributes:
   <xsl:choose>
    <xsl:when test="not(@href) and
                    (@use-description = 'yes') and
-                   count(exslt:node-set($linknode)/*) = 0">
+                   count(exslt:node-set($linknode)/*) != 0">
     <xsl:value-of select="exslt:node-set($linknode)/*/@description" />
    </xsl:when>
    <xsl:otherwise>
@@ -1806,7 +1975,7 @@ Attributes:
  </xsl:when>
 
  <!-- Section type reference -->
- <xsl:when test="$reftype='section' or $reftype='subsection' or $reftype='subsubsection' or $reftype='category'">
+ <xsl:when test="$reftype='chapter' or $reftype='section' or $reftype='subsection' or $reftype='subsubsection' or $reftype='category'">
   <xsl:if test="not(@href) and
                 count(exslt:node-set($linknode)/*) = 0">
    <xsl:message><xsl:value-of select="$localdb/@Name" /> for '<xsl:value-of select="$refname" />' not found at
@@ -1831,7 +2000,7 @@ Attributes:
 
  <!-- Anything else we don't understand -->
  <xsl:otherwise>
-  <font size="+5" color="#DD0000"><xsl:value-of select="$link-content" /></font>
+  <span class='error-reference'><xsl:value-of select="$link-content" /></span>
   <xsl:message>Reference type '<xsl:value-of select="@type" />' for <xsl:value-of select="$refname" /> is unknown at
    <xsl:call-template name="describeposition" />.</xsl:message>
  </xsl:otherwise>
@@ -1935,13 +2104,19 @@ Attributes:
 
 <!-- System output - something the system could have displayed -->
 <xsl:template match="systemoutput">
-<div class='systemoutput'><xsl:apply-templates /></div>
+<span class='systemoutput'><xsl:apply-templates /></span>
 </xsl:template>
 
-<!-- Menu option - an option that the user might chose for a menu -->
+<!-- Menu option - an option that the user might choose for a menu -->
 <xsl:template match="menuoption">
 <span class='menuoption'><xsl:apply-templates /></span>
 </xsl:template>
+
+<!-- Action button - a button in the interface that the user might interact with -->
+<xsl:template match="actionbutton">
+<span class='actionbutton'><xsl:apply-templates /></span>
+</xsl:template>
+
 
 <!-- The collection of input device operations -->
 <!-- FIXME: Enforce the keys before mouse? -->
@@ -2058,7 +2233,12 @@ Attributes:
 
 <!-- a filename -->
 <xsl:template match="filename">
-<span class='filename'><xsl:apply-templates /></span>
+<span>
+ <xsl:attribute name='class'>
+  <xsl:text>filename filename-</xsl:text>
+  <xsl:value-of select='@type'/>
+ </xsl:attribute>
+ <xsl:apply-templates /></span>
 </xsl:template>
 
 <!-- a system variable -->

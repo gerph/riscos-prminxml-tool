@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.02//EN"
+                            "http://gerph.org/dtd/102/prm.dtd">
+
+<riscos-prm>
+<chapter title="Testing references">
+<section title="Purpose">
+
+<p>The purpose of this demonstrate and test references.</p>
+
+<p>In the section entitled 'The references', there are a set of sentences that contain exactly one reference to different part of this file and/or another file.</p>
+
+<p>Clicking on each link should take you to the exact specified reference anchor.</p>
+
+<p>Note: Clicking on a link within an external file will first display the external file (if found) and then try to take you to the specified reference anchor.</p>
+
+</section>
+<section title="Lorem section">
+
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin tempus urna ac maximus volutpat. Mauris id facilisis magna, eu molestie enim. Pellentesque cursus massa a augue rutrum, pulvinar rutrum justo condimentum. Vestibulum nec ipsum sed risus hendrerit mollis a venenatis leo. Nullam feugiat egestas rhoncus. Nulla ut leo in metus venenatis consequat nec tristique dui. Vestibulum tincidunt augue vel mi imperdiet molestie. Sed et quam nunc. Praesent dapibus sapien vulputate lacinia posuere. Vivamus non tempus libero. Suspendisse a quam vel sem imperdiet varius a vitae dui. Suspendisse nec diam vitae nisl aliquet eleifend. Fusce at nunc in ex pretium sodales sed vitae orci.</p>
+
+<subsection title="Lorem subsection">
+
+<p>Mauris pulvinar, lorem sit amet fringilla blandit, mauris neque pellentesque neque, eu tempus nulla dui sed ipsum. Aliquam leo eros, laoreet nec ullamcorper vel, laoreet quis massa. Pellentesque a placerat nisl, nec malesuada tortor. Aenean faucibus lorem eu libero bibendum tempor. Maecenas sagittis maximus aliquam. Proin interdum orci in lacinia tristique. Proin ex odio, fermentum in consequat et, aliquam a quam.</p>
+
+<subsubsection title="Lorem subsubsection">
+
+<p>Aenean a placerat mauris. Quisque lectus ligula, vestibulum vel imperdiet id, efficitur a augue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer semper faucibus tellus, ut maximus quam mollis ac. Sed auctor non orci et molestie. Etiam porttitor congue imperdiet. Praesent porta odio sed turpis fringilla, nec hendrerit magna interdum. Vestibulum ut quam in ligula volutpat porttitor. Fusce at convallis dui. Proin euismod interdum elit, eget dictum neque euismod at. Nunc cursus orci lectus, non laoreet metus cursus non. Sed ac felis ut mauris semper porta.</p>
+
+<category title="Lorem category">
+
+<p>In rutrum orci ut egestas ultrices. In rhoncus sem id ipsum aliquet, sit amet porta magna lacinia. Nullam rutrum mauris ac libero dignissim, ultricies tincidunt nunc varius. Nunc lorem tortor, malesuada eu quam eu, interdum sollicitudin lorem. Praesent at velit dignissim, interdum urna quis, mollis libero. Suspendisse venenatis neque dui. Curabitur mattis imperdiet finibus. Integer ac pharetra velit. Ut tortor nunc, auctor sollicitudin semper eget, sodales vel purus. Donec tempus, arcu sed facilisis tempus, massa arcu aliquam eros, sed tincidunt dolor enim vitae mi. Fusce pharetra ultrices erat, vel viverra ante consectetur sed. Mauris auctor sem ac arcu varius finibus.</p>
+
+</category>
+</subsubsection>
+</subsection>
+
+<p>Nam eu sapien arcu. Vivamus nunc felis, ultricies et arcu quis, imperdiet tristique massa. Donec posuere a nibh vel mattis. Duis fermentum vel ex id commodo. Nullam augue quam, porttitor a varius id, imperdiet et neque. Quisque vehicula dignissim magna vel feugiat. Morbi euismod, leo non iaculis pulvinar, lectus leo tempus leo, vitae lacinia ante nulla vitae diam. Nunc sit amet lectus ultricies ligula tempus maximus ut ut massa. Nullam facilisis egestas neque et venenatis. Donec at leo sagittis, volutpat justo ut, venenatis nunc. Donec sed nulla sit amet purus dictum laoreet nec nec mauris. Aenean id est risus. Duis mollis facilisis eleifend. Praesent consectetur suscipit eleifend.</p>
+
+<p>Vestibulum venenatis ante sed convallis molestie. Donec convallis congue ex in pellentesque. Nam nec condimentum tellus, ornare mollis arcu. Mauris auctor pretium suscipit. Morbi eros orci, euismod ac felis molestie, porttitor rutrum augue. Suspendisse varius facilisis eros in fermentum. Proin dapibus eu leo non vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut imperdiet commodo arcu, sed elementum ipsum bibendum et. Morbi sed aliquam lacus, quis fringilla mi. Duis a efficitur ipsum. Donec quis nisl id sapien pretium tempus. Praesent condimentum imperdiet congue. Cras dapibus egestas elit, ut scelerisque orci gravida in. Curabitur nec quam id erat lobortis malesuada. Suspendisse in fringilla enim, a ultrices leo. </p>
+
+<p>Nam eu tincidunt nisl, eget sodales risus. Nulla sit amet arcu sagittis, finibus erat at, posuere est. Nulla mollis mollis nibh, a vehicula odio imperdiet a. Sed nec imperdiet lectus. Nunc vehicula mollis ullamcorper. Ut faucibus ut nisl ut facilisis. Suspendisse tristique diam id pulvinar faucibus. Donec mollis vestibulum tortor et dapibus. Ut dignissim aliquet sem, eu porta nisi scelerisque mollis. Donec ultrices, sapien ac pharetra egestas, sem odio consectetur erat, non congue massa orci in ex. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id lorem vulputate, pretium lectus et, facilisis purus. Nam dictum, justo eu pharetra finibus, ante magna porttitor dui, a iaculis lorem sem nec leo. Nunc porttitor feugiat tellus, iaculis lobortis est feugiat in.</p>
+
+<p>Phasellus eu egestas nibh. Pellentesque elementum est et fermentum lobortis. Proin sagittis magna in ante ultrices, vitae aliquet ex sagittis. Aliquam sit amet porta mauris, eu tempor nunc. Etiam ornare molestie purus sed egestas. Phasellus pharetra lacus nec lorem convallis tincidunt. Proin ac egestas eros. Integer ornare ac eros a pharetra. Curabitur lacinia id purus congue rutrum. Nulla posuere in velit a finibus. Integer felis risus, tincidunt vitae erat nec, imperdiet ultricies metus.</p>
+
+<p>Curabitur nec finibus quam, vel consequat tortor. Nulla sollicitudin ultrices enim, eu convallis leo fringilla at. Praesent aliquam augue non ligula congue porta. Vivamus dapibus nunc id turpis iaculis, condimentum luctus ipsum laoreet. Curabitur porta feugiat augue, ut porttitor leo auctor at. Suspendisse vel efficitur neque, in placerat libero. Aenean consequat ut mi sit amet vehicula. Morbi a tempus lacus. Nam euismod eu leo sed rhoncus. In volutpat scelerisque efficitur. Aenean a felis euismod, maximus neque finibus, rutrum massa. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed pulvinar, ligula eleifend cursus ultricies, eros turpis vehicula sapien, non blandit leo lorem eu eros.</p>
+
+<p></p>
+</section>
+<section title="The references">
+
+<subsection title="References within this file">
+
+<p>This is a reference to the <strong>chapter</strong> entitled <reference type="chapter" name="Testing references" />.</p>
+
+<p>This is a reference to the <strong>section</strong> entitled <reference type="section" name="Lorem section" />.</p>
+
+<p>This is a reference to the <strong>subsection</strong> entitled <reference type="subsection" name="Lorem subsection" />.</p>
+
+<p>This is a reference to the <strong>subsubsection</strong> entitled <reference type="subsubsection" name="Lorem subsubsection" />.</p>
+
+<p>This is a reference to the <strong>category</strong> entitled <reference type="category" name="Lorem category" />.</p>
+
+</subsection>
+<subsection title="References external to this file">
+
+<p>This is a reference to the <strong>chapter</strong> entitled <reference type="chapter" name="External chapter" href="references_external_targets" />.</p>
+
+<p>This is a reference to the <strong>section</strong> entitled <reference type="section" name="External section" href="references_external_targets" />.</p>
+
+<p>This is a reference to the <strong>subsection</strong> entitled <reference type="subsection" name="External subsection" href="references_external_targets" />.</p>
+
+<p>This is a reference to the <strong>subsubsection</strong> entitled <reference type="subsubsection" name="External subsubsection" href="references_external_targets" />.</p>
+
+<p>This is a reference to the <strong>category</strong> entitled <reference type="category" name="External category" href="references_external_targets" />.</p>
+
+</subsection>
+<subsection title="References external to this file pointing to an additional chapter">
+
+<p>This is a reference to the <strong>chapter</strong> entitled <reference type="chapter" name="Additional chapter" href="references_external_targets" />.</p>
+
+<p>This is a reference to the <strong>section</strong> entitled <reference type="section" name="Additional section" href="references_external_targets" />.</p>
+
+<p>This is a reference to the <strong>subsection</strong> entitled <reference type="subsection" name="Additional subsection" href="references_external_targets" />.</p>
+
+<p>This is a reference to the <strong>subsubsection</strong> entitled <reference type="subsubsection" name="Additional subsubsection" href="references_external_targets" />.</p>
+
+<p>This is a reference to the <strong>category</strong> entitled <reference type="category" name="Additional category" href="references_external_targets" />.</p>
+
+</subsection>
+
+
+</section>
+</chapter>
+
+<!-- MetaData -->
+<meta>
+<history>
+<revision number="1" author="Alan Robertson" date="22 Sep 2021" title="Initial version">
+<change>Includes internal links, external links and external links to an additional chapter.</change>
+</revision>
+</history>
+</meta>
+
+</riscos-prm>

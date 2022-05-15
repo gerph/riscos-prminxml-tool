@@ -220,10 +220,16 @@ clean-images:
 &indent;@cp "$&lt;" "$@"
 
 indices: ${INDEX_XML}
-&indent;xsltproc --stringparam css-base '${INDEX_CSS_BASE}' --stringparam css-variant '${INDEX_CSS_VARIANT}' --stringparam css-file '${INDEX_CSS_FILE}' -stringparam base-dir "$$(pwd)" -o "${OUTPUT_DIR}/index.html" http://gerph.org/dtd/${CATALOG_VERSION}/prmindex-${PAGE_FORMAT}.xsl "${INDEX_XML}"
+&indent;xsltproc --stringparam css-base '${INDEX_CSS_BASE}' --stringparam css-variant '${INDEX_CSS_VARIANT}' --stringparam css-file '${INDEX_CSS_FILE}' </xsl:text>
+<xsl:apply-templates select="/" mode="docgroup-name"/>
+<xsl:apply-templates select="/" mode="docgroup-part"/>
+<xsl:apply-templates mode="edgeindex-number" select="/"/>
+<xsl:apply-templates mode="edgeindex-max" select="/"/>
+<!-- Note that we need to be careful with the base directory here - if it contains spaces or any other special characters they will need to be escaped -->
+<xsl:text> -stringparam base-dir "$$(pwd | sed 's/ /%20/g')" -o "${OUTPUT_DIR}/index.html" http://gerph.org/dtd/${CATALOG_VERSION}/prmindex-${PAGE_FORMAT}.xsl "${INDEX_XML}"
 
 &indexdir;&dirsep;index-data.xml: ${INDEX_XML}
-&indent;xsltproc -stringparam base-dir "$$(pwd)" -o "${INDEX_DIR}/index-data.xml" http://gerph.org/dtd/${CATALOG_VERSION}/prmindex-data.xsl "${INDEX_XML}"
+&indent;xsltproc -stringparam base-dir "$$(pwd | sed 's/ /%20/g')" -o "${INDEX_DIR}/index-data.xml" http://gerph.org/dtd/${CATALOG_VERSION}/prmindex-data.xsl "${INDEX_XML}"
 
 </xsl:text>
 
@@ -248,6 +254,85 @@ indices: ${INDEX_XML}
 </xsl:if>
 </xsl:template>
 <xsl:template match="*" mode="dir"/>
+
+<!-- Similar recursion, to get the docgroup-name to use (or none) -->
+<xsl:template match="section" mode="docgroup-name">
+<xsl:choose>
+    <xsl:when test="@docgroup-name != ''">
+        <xsl:text> --stringparam override-docgroup '</xsl:text>
+        <xsl:value-of select="@docgroup-name" />
+        <xsl:text>'</xsl:text>
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:apply-templates select=".." mode="docgroup-name" />
+    </xsl:otherwise>
+</xsl:choose>
+</xsl:template>
+
+<xsl:template match="index" mode="docgroup-name">
+<xsl:if test="//options/@docgroup-name != ''">
+ <xsl:text> --stringparam override-docgroup '</xsl:text>
+ <xsl:value-of select="//options/@docgroup-name" />
+ <xsl:text>'</xsl:text>
+</xsl:if>
+</xsl:template>
+<xsl:template match="*" mode="docgroup-name"/>
+
+<!-- Similar recursion, to get the docgroup-part to use (or none) -->
+<xsl:template match="section" mode="docgroup-part">
+<xsl:choose>
+    <xsl:when test="@docgroup-part != ''">
+        <xsl:text> --stringparam override-docgroup-part '</xsl:text>
+        <xsl:value-of select="@docgroup-part" />
+        <xsl:text>'</xsl:text>
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:apply-templates select=".." mode="docgroup-part" />
+    </xsl:otherwise>
+</xsl:choose>
+</xsl:template>
+
+<xsl:template match="index" mode="docgroup-part">
+<xsl:if test="//options/@docgroup-part != ''">
+ <xsl:text> --stringparam override-docgroup-part '</xsl:text>
+ <xsl:value-of select="//options/@docgroup-part" />
+ <xsl:text>'</xsl:text>
+</xsl:if>
+</xsl:template>
+<xsl:template match="*" mode="docgroup-part"/>
+
+<!-- Similar recursion, to get the edgeindex-number to use (or none) -->
+<xsl:template match="section" mode="edgeindex-number">
+<xsl:choose>
+    <xsl:when test="@edgeindex != ''">
+        <xsl:text> --stringparam edgeindex '</xsl:text>
+        <xsl:value-of select="@edgeindex" />
+        <xsl:text>'</xsl:text>
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:apply-templates select=".." mode="edgeindex-number" />
+    </xsl:otherwise>
+</xsl:choose>
+</xsl:template>
+
+<xsl:template match="index" mode="edgeindex-number">
+<xsl:if test="//options/@edgeindex-number != ''">
+ <xsl:text> --stringparam edgeindex '</xsl:text>
+ <xsl:value-of select="//options/@edgeindex" />
+ <xsl:text>'</xsl:text>
+</xsl:if>
+</xsl:template>
+<xsl:template match="*" mode="edgeindex-number"/>
+
+<!-- Similar recursion, to get the edgeindex-max to use (or none) -->
+<xsl:template match="index" mode="edgeindex-max">
+<xsl:if test="//options/@edgeindex-max != ''">
+ <xsl:text> --stringparam edgeindex-max '</xsl:text>
+ <xsl:value-of select="//options/@edgeindex-max" />
+ <xsl:text>'</xsl:text>
+</xsl:if>
+</xsl:template>
+<xsl:template match="*" mode="edgeindex-max"/>
 
 
 <xsl:template match="text()">
@@ -506,6 +591,15 @@ indices: ${INDEX_XML}
  <xsl:text> --stringparam css-base '${PAGE_CSS_BASE}'</xsl:text>
  <xsl:text> --stringparam css-variant '${PAGE_CSS_VARIANT}'</xsl:text>
  <xsl:text> --stringparam css-file '${PAGE_CSS_FILE}'</xsl:text>
+ <xsl:apply-templates mode="docgroup-name" select=".."/>
+ <xsl:apply-templates mode="docgroup-part" select=".."/>
+ <xsl:apply-templates mode="edgeindex-number" select=".."/>
+ <xsl:apply-templates mode="edgeindex-max" select="/"/>
+ <xsl:if test="//options/@chapter-numbers = 'yes'">
+  <xsl:text> --stringparam override-chapter-number '</xsl:text>
+  <xsl:value-of select="count(preceding::page) + 1"/>
+  <xsl:text>'</xsl:text>
+ </xsl:if>
  <xsl:text> </xsl:text>
  <xsl:text>http://gerph.org/dtd/${CATALOG_VERSION}/prm-${PAGE_FORMAT}.xsl</xsl:text>
  <xsl:text> </xsl:text>
