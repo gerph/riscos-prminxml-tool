@@ -75,7 +75,7 @@
 
 <!ENTITY % tables "offset-table | bitfield-table | value-table | message-table | definition-table">
 <!ENTITY % parameters "userinput | menuoption | systemoutput | command | function | variable | userreplace | optional | sysvar | filename | switch | input">
-<!ENTITY % style "strong | sub | sup">
+<!ENTITY % style "strong | em | sub | sup">
 <!ENTITY % link "reference | email">
 <!ENTITY % inline "br | image | bnf | list | extended-example | fixme | code  | %style;">
 <!ENTITY % definitions "swi-definition | service-definition | upcall-definition | message-definition | command-definition | sysvar-definition | error-definition | entry-definition | vector-definition | vdu-definition | tboxmessage-definition | tboxmethod-definition">
@@ -445,6 +445,7 @@
 >
 <!-- Stylistic declarations - should these really be here ? -->
 <!ELEMENT strong (#PCDATA)>
+<!ELEMENT em (#PCDATA)>
 <!ELEMENT sup (#PCDATA)>
 <!ELEMENT sub (#PCDATA)>
 

@@ -3,7 +3,7 @@
                             "http://gerph.org/dtd/103/prm.dtd">
 
 <riscos-prm>
-<chapter title="PRM-in-XML tables">
+<chapter title="Tables">
 
 <!-- Value table -->
 <section title="Value table examples">
@@ -171,6 +171,23 @@
     </p>
  </offset>
  <offset number="1">Another value</offset>
+</offset-table>
+</p>
+</category>
+
+<category title="Table with lots of different offsets">
+<p>
+<offset-table>
+    <offset number="0">Thing</offset>
+    <offset number="4">Offset to x</offset>
+    <offset number="8">Offset to y</offset>
+    <offset number="12...">String data, zero terminated</offset>
+    <offset number="x">Some data structure</offset>
+    <offset number="x+4">Some more</offset>
+    <offset number="x+8">Other data</offset>
+    <offset number="x+12...">Another string</offset>
+    <offset number="y">More data</offset>
+    <offset number="y+4...">Yet more</offset>
 </offset-table>
 </p>
 </category>

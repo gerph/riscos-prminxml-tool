@@ -1348,7 +1348,7 @@ prefix added to it.
 
 Element:    syntax
 Attributes: <none>
-Children:   (switch | optional | text | userreplace)*
+Children:   (switch | optional | alternates | text | userreplace)*
 
 The syntax element describes the syntax of the *Command, giving a breakdown
 of the syntax. If the syntax cannot be described in a single example,
@@ -1374,13 +1374,23 @@ Note: Aliases for switches are given in the 'parameter' element.
 
 Element:    optional
 Attributes: alternates
-Children:   (switch | userreplace | text)*
+Children:   (alternates | switch | userreplace | text)*
 
 alternates: (optional) 'true' if the content of this element are mutually
             exclusive alternates.
 
 The optional element indicates that its contents are not required, but that
 they can be omitted from the command.
+
+
+Element:    alternates
+Attributes: alternates
+Children:   (optional | switch | userreplace | text)*
+
+The alternates element indicates that the elements within it are mutually
+exclusive. This element can be used in a similar way to the
+<optional alternates='true'> element, but one of the alternats must be
+specified.
 
 
 Element:    parameter
@@ -1568,3 +1578,4 @@ Changes from 1.02 to 1.03
   the references read more clearly.
 * bit elements which have state and name attributes no longer repeat the attribute
   name if they are identical.
+* alternates element added to allow for alternates which are not optional.

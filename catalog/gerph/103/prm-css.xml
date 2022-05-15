@@ -256,6 +256,7 @@ section.definition::before {
 }
 .definition-parameters-list td {
     vertical-align: top;
+    border-spacing: 0px;
 }
 .definition-parameter > td {
     padding-bottom: 0.5em;
@@ -263,7 +264,13 @@ section.definition::before {
 .definition-parameter-aliases {
 }
 .definition-parameter-aliases td {
-    padding-top: 0px;
+    padding: 0px;
+}
+.definition-parameter-or {
+}
+.definition-parameter-or-alias {
+    font-style: italic;
+    margin-left: -1.75em;
 }
 table {
     border-spacing: 2px 0px;
@@ -311,6 +318,13 @@ table {
 .message-table > .table-body > tr > .table-number::before {
     content: 'R1+';
 }
+.offset-table > .table-head > tr > .table-number,
+.message-table > .table-head > tr > .table-number,
+.offset-table > .table-body > tr > .table-number,
+.message-table > .table-body > tr > .table-number {
+    text-align: left;
+}
+
 .table-body .table-data-size {
     text-align: right;
 }
@@ -367,6 +381,12 @@ table {
 }
 .userreplace::after {
   content: ">";
+}
+.optional::before {
+  content: "[";
+}
+.optional::after {
+  content: "]";
 }
 .userinput {
   font-family: monospace;
@@ -427,6 +447,16 @@ figure figcaption {
 }
 img {
     max-width: 100%;
+}
+
+/* Strong emphasis is in bold, regular emphasis is in italic */
+strong {
+    font-style: normal;
+    font-weight: bold;
+}
+em {
+    font-style: italic;
+    font-weight: normal;
 }
 
 .fixme {
@@ -1573,10 +1603,14 @@ section.indexed-section h2 + section.indexed-section h2 {
 }
 
 
-/* Strong emphasis is in italic, not bold, it seems */
+/* Strong emphasis is in italic, regular emphasis is in bold */
 strong {
     font-style: italic;
     font-weight: normal;
+}
+em {
+    font-style: normal;
+    font-weight: bold;
 }
 
 
@@ -1726,7 +1760,6 @@ table.history h5 {
 
 <!-- Fraunces is a freely available font which is similar in style to the Novarese font.
      However:
-       - It is a little too bold in its default configuration, so we must lighten it.
        - It has an overly fancy & which we need to disable the stylistic set.
          In earlier versions of the font, this was necessary (and with Prince it
          appears to explicitly enable it):
@@ -1742,10 +1775,6 @@ table.history h5 {
     <css variant='body-fraunces'><![CDATA[
 body {
   font-family: "Fraunces 28pt", "Fraunces", monospace;
-  font-weight: lighter;
-}
-th {
-  font-weight: normal;
 }
 body.indexed th {
   font-weight: bold;
@@ -1872,6 +1901,18 @@ section.section:first-of-type p:first-of-type::first-letter {
     line-height: 2.75rem;
     font-weight: bold;
     float: left;
+}
+]]></css>
+
+
+
+<!-- Make the offsets in the offset and message tables align to the right. -->
+    <css variant='offsets-align-right'><![CDATA[
+.offset-table > .table-head > tr > .table-number,
+.message-table > .table-head > tr > .table-number,
+.offset-table > .table-body > tr > .table-number,
+.message-table > .table-body > tr > .table-number {
+    text-align: right;
 }
 ]]></css>
 
