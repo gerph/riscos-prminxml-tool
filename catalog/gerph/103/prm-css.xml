@@ -308,6 +308,13 @@ table {
 .message-table > .table-body > tr > .table-number::before {
     content: 'R1+';
 }
+.offset-table > .table-head > tr > .table-number,
+.message-table > .table-head > tr > .table-number,
+.offset-table > .table-body > tr > .table-number,
+.message-table > .table-body > tr > .table-number {
+    text-align: left;
+}
+
 .table-body .table-data-size {
     text-align: right;
 }
@@ -1846,6 +1853,18 @@ section.section:first-of-type p:first-of-type::first-letter {
     line-height: 2.75rem;
     font-weight: bold;
     float: left;
+}
+]]></css>
+
+
+
+<!-- Make the offsets in the offset and message tables align to the right. -->
+    <css variant='offsets-align-right'><![CDATA[
+.offset-table > .table-head > tr > .table-number,
+.message-table > .table-head > tr > .table-number,
+.offset-table > .table-body > tr > .table-number,
+.message-table > .table-body > tr > .table-number {
+    text-align: right;
 }
 ]]></css>
 
