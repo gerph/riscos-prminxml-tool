@@ -423,7 +423,7 @@
     type (ordered | unordered) "unordered"
 >
 <!ELEMENT item (#PCDATA | %inline; | %link; | p)*>
-<!ELEMENT p (#PCDATA | %tables; | %parameters; | %inline; | %link; | import)*>
+<!ELEMENT p (#PCDATA | %tables; | %parameters; | %inline; | %link; | compatibility | import)*>
 <!-- fixme - data needs correcting element -->
 <!ELEMENT fixme (#PCDATA)>
 <!-- line break - not sure we should allow this -->

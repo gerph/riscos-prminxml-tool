@@ -103,6 +103,15 @@
 <localdb:input-action aname='left' prefix="" suffix=" LEFT"/>
 <localdb:input-action aname='right' prefix="" suffix=" RIGHT"/>
 
+<!-- state names -->
+<localdb:state-names state="undefined"   label="undefined"              Label="Undefined"/>
+<localdb:state-names state="reserved"    label="reserved, must be zero" Label="Reserved, must be zero"/>
+<localdb:state-names state="corrupted"   label="corrupted"              Label="Corrupted"/>
+<localdb:state-names state="preserved"   label="preserved"              Label="Preserved"/>
+
+<localdb:state-names state="supported"   label="supported"              Label="Supported"/>
+<localdb:state-names state="unsupported" label="not supported"          Label="Not supported"/>
+
 <xsl:output method="html" indent="no" encoding="utf-8"/>
 
 <xsl:variable name="title-to-id-src">ABCDEFGHIJKLMNOPQRSTUVWXYZ ,$:()-*?</xsl:variable>
@@ -635,6 +644,13 @@
 </xsl:template>
 
 
+<xsl:template match="version-table">
+<div class='version-table'>
+  <xsl:apply-templates/>
+</div>
+</xsl:template>
+
+
 <xsl:template match="version">
     <!-- FIXME: Not all attributes supported
 Attributes:
@@ -685,52 +701,91 @@ Attributes:
                 </span>
             </xsl:if>
 
-            <xsl:if test='@architecture'>
+            <xsl:if test='../*/@architecture != ./@architecture'>
                 <span class='version-architecture'>
                     <xsl:value-of select="@architecture"/>
                 </span>
             </xsl:if>
 
-            <xsl:if test='@module-name or @module-lt or @module-gt'>
+            <xsl:if test='@module-name or @module-lt or @module-ge'>
                 <span class='version-module'>
-                    <span class='version-module-name'>
-                        <xsl:value-of select="@module-name"/>
-                    </span>
-                    <span class='version-module-lt'>
-                        <xsl:value-of select="@module-lt"/>
-                    </span>
-                    <span class='version-module-ge'>
-                        <xsl:value-of select="@module-ge"/>
-                    </span>
+                    <xsl:if test="@module-name">
+                        <span class='version-module-name'>
+                            <xsl:value-of select="@module-name"/>
+                        </span>
+                    </xsl:if>
+                    <xsl:if test="@module-lt">
+                        <span class='version-lt'>
+                            <xsl:value-of select="@module-lt"/>
+                        </span>
+                        <xsl:if test="@module-ge">
+                            <span class='version-ltge-separator'/>
+                        </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="@module-ge">
+                        <span class='version-ge'>
+                            <xsl:value-of select="@module-ge"/>
+                        </span>
+                    </xsl:if>
                 </span>
             </xsl:if>
 
-            <xsl:if test='@riscos-lt or @riscos-gt'>
+            <xsl:if test='@riscos-lt or @riscos-ge'>
                 <span class='version-riscos'>
-                    <span class='version-riscos-lt'>
-                        <xsl:value-of select="@riscos-lt"/>
-                    </span>
-                    <span class='version-riscos-ge'>
-                        <xsl:value-of select="@riscos-ge"/>
-                    </span>
+                    <xsl:if test="@riscos-lt">
+                        <span class='version-lt'>
+                            <xsl:value-of select="@riscos-lt"/>
+                        </span>
+                        <xsl:if test="@riscos-ge">
+                            <span class='version-ltge-separator'/>
+                        </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="@riscos-ge">
+                        <span class='version-ge'>
+                            <xsl:value-of select="@riscos-ge"/>
+                        </span>
+                    </xsl:if>
                 </span>
             </xsl:if>
         </span>
 
-        <xsl:choose>
-            <xsl:when test='@state = "content"'>
-                <span class='version-content'>
-                    <xsl:apply-templates/>
-                </span>
-            </xsl:when>
-
-            <xsl:otherwise>
-                <span class='version-content version-state-{@state}'>
-                    <xsl:value-of select='@state'/>
-                </span>
-            </xsl:otherwise>
-        </xsl:choose>
+        <span class='version-content'>
+            <xsl:call-template name="state-elements">
+                <xsl:with-param name="form" select="'Label'" />
+                <xsl:with-param name="state" select="@state" />
+            </xsl:call-template>
+        </span>
     </div>
+</xsl:template>
+
+
+<xsl:template name='state-elements'>
+    <xsl:param name="state"/>
+    <xsl:param name="form"/>
+    <xsl:variable name="state-name" select="document('')//localdb:state-names[@state=$state]"/>
+
+    <xsl:choose>
+        <xsl:when test="@state != 'content' and not($state-name)">
+            <!-- This shouldn't happen? -->
+        </xsl:when>
+
+        <xsl:when test="$state-name">
+            <span class="state state-{@state}">
+                <xsl:choose>
+                    <xsl:when test="$form = 'label'">
+                        <xsl:value-of select="$state-name/@label"/>
+                    </xsl:when>
+                    <xsl:when test="$form = 'Label'">
+                        <xsl:value-of select="$state-name/@Label"/>
+                    </xsl:when>
+                </xsl:choose>
+            </span>
+        </xsl:when>
+
+        <xsl:otherwise>
+            <xsl:apply-templates/>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 
 
@@ -1500,17 +1555,13 @@ Attributes:
  </td>
 
   <xsl:choose>
-   <xsl:when test="@state='preserved'">
-    <!-- preserved is used on output registers -->
-    <td class='register-use-state register-use-preserved' colspan="2">preserved</td>
-   </xsl:when>
-   <xsl:when test="@state='corrupted'">
-    <!-- corrupted is used on output registers -->
-    <td class='register-use-state register-use-corrupted' colspan="2">corrupted</td>
-   </xsl:when>
-   <xsl:when test="@state='undefined'">
-    <!-- undefined is used on input registers -->
-    <td class='register-use-state register-use-undefined' colspan="2">undefined</td>
+   <xsl:when test="@state='preserved' or @state='corrupted' or @state='undefined'">
+    <td class='register-use-state' colspan="2">
+        <xsl:call-template name="state-elements">
+            <xsl:with-param name="form" select="'label'" />
+            <xsl:with-param name="state" select="@state" />
+        </xsl:call-template>
+    </td>
    </xsl:when>
    <xsl:otherwise>
     <td class='register-use-divider'>=</td>
@@ -1591,7 +1642,10 @@ Attributes:
   <xsl:choose>
    <xsl:when test="@state = 'reserved'">
     <td class='table-value' colspan='2'>
-     <xsl:text>Reserved, must be zero</xsl:text>
+     <xsl:call-template name="state-elements">
+         <xsl:with-param name="form" select="'Label'" />
+         <xsl:with-param name="state" select="@state" />
+     </xsl:call-template>
     </td>
    </xsl:when>
 
@@ -1732,11 +1786,10 @@ Attributes:
   <td class='table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
  <td class='table-value'>
-  <xsl:choose>
-   <xsl:when test="@state='reserved'"><xsl:text>Reserved, must be zero</xsl:text></xsl:when>
-   <xsl:when test="@state='undefined'"><xsl:text>Undefined</xsl:text></xsl:when>
-   <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
- </xsl:choose>
+    <xsl:call-template name="state-elements">
+        <xsl:with-param name="form" select="'Label'" />
+        <xsl:with-param name="state" select="@state" />
+    </xsl:call-template>
  </td>
 </tr>
 </xsl:template>
@@ -1774,11 +1827,10 @@ Attributes:
   <td class='table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
  <td class='table-value'>
-  <xsl:choose>
-   <xsl:when test="@state='reserved'"><xsl:text>Reserved, must be zero</xsl:text></xsl:when>
-   <xsl:when test="@state='undefined'"><xsl:text>Undefined</xsl:text></xsl:when>
-   <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
- </xsl:choose>
+    <xsl:call-template name="state-elements">
+        <xsl:with-param name="form" select="'Label'" />
+        <xsl:with-param name="state" select="@state" />
+    </xsl:call-template>
  </td>
 </tr>
 </xsl:template>

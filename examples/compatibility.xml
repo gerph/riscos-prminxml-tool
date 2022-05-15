@@ -3,7 +3,7 @@
                             "http://gerph.org/dtd/103/prm.dtd">
 
 <riscos-prm>
-<chapter title="Compatibility examples">
+<chapter title="Compatibility/version elements">
 <section title="Introduction">
 <p>
 Examples of compatibility elements.
@@ -11,6 +11,78 @@ Examples of compatibility elements.
 <p>
     <fixme> Block examples </fixme>
 </p>
+</section>
+
+<section title="States">
+    <p>
+        <version-table>
+            <version riscos-lt="2" state='unsupported'/>
+            <version riscos-lt="3.0">This protocol is not available.</version>
+            <version riscos-ge="3.1" state='supported'/>
+        </version-table>
+    </p>
+</section>
+
+<section title="Differentiators">
+    <subsection title="RISC OS versions">
+        <p>
+            <version-table>
+                <version riscos-lt="2" state='unsupported'/>
+                <version riscos-ge="3" state='supported'/>
+            </version-table>
+        </p>
+
+        <p>
+            <version-table>
+                <version riscos-lt="3.0" state='supported'/>
+                <version riscos-lt="2" riscos-ge="3.1" state='unsupported'/>
+            </version-table>
+        </p>
+    </subsection>
+
+    <subsection title="Module versions">
+        <p>
+            <version-table>
+                <version module-lt="0.99" state='unsupported'/>
+                <version module-ge="0.99" state='supported'/>
+                <version module-name="SpriteExtend" module-ge="0.99" state='supported'/>
+            </version-table>
+        </p>
+    </subsection>
+
+    <subsection title="Supplier">
+        <p>
+            <!-- Names chosen to avoid any bias towards suppliers of RISC OS software -->
+            <version-table>
+                <version supplier="Microsoft" state='supported'/>
+                <version supplier="Apple" state='supported'/>
+                <version supplier="RISC OS" state='unsupported'/>
+            </version-table>
+        </p>
+    </subsection>
+
+    <subsection title="Hardware">
+        <p>
+            <version-table>
+                <!-- Hardware could mean the brand name of a group of machines -->
+                <version hardware="Acmescope" state='supported'/>
+                <!-- Or the physical hardware the system uses -->
+                <version hardware="ARMv4" state='supported'/>
+                <!-- Or a model of a machine -->
+                <version hardware="RiscPC 600" state='unsupported'/>
+            </version-table>
+        </p>
+    </subsection>
+
+    <subsection title="Architecture">
+        <p>
+            <version-table>
+                <version hardware="aarch32" state='supported'/>
+                <version hardware="aarch64" state='unsupported'/>
+                <version hardware="x64" state='unsupported'/>
+            </version-table>
+        </p>
+    </subsection>
 </section>
 
 <section title="SWIs">
