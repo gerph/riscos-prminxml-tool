@@ -207,13 +207,18 @@ Examples of compatibility and version-table elements.
  </maintainer>
  <disclaimer>
     <p>
-        &copy; Gerph, 2021.
+        &copy; Gerph, 2021-2022.
     </p>
  </disclaimer>
 
  <history>
   <revision number="1" author="Gerph" date="28 Sep 2021" title="Initial version">
     <change>Examples of the declaration of different version usage.</change>
+  </revision>
+  <revision number="2" author="Gerph" date="15 May 2022" title="Proper rework">
+    <change>Added examples for the block usage.</change>
+    <change>Tested with HTML and HTML5 forms.</change>
+    <change>Covers most of the combinations (although there are many due to the number of attributes).</change>
   </revision>
  </history>
 </meta>
