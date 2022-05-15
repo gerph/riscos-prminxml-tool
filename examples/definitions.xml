@@ -389,11 +389,34 @@ typedef struct
   <optional>
     <switch name="d" />
   </optional>
+  <switch name="input" alias="i" />
+  <userreplace>parameter</userreplace>
+  <switch name="output" />
+  <userreplace>filename</userreplace>
+</syntax>
+
+<syntax>
+  <optional alternates='true'>
+    <switch name="svg" />
+    <switch name="jpeg" />
+    <switch name="png" />
+  </optional>
+  <userreplace>parameter</userreplace>
+</syntax>
+
+<syntax>
+  <alternates>
+    <text>create</text>
+    <text>delete</text>
+  </alternates>
   <userreplace>parameter</userreplace>
 </syntax>
 
 <parameter switch="d"> what this switch does.</parameter>
-<parameter name="parameter"> what the parametr means.</parameter>
+<parameter switch="input" switch-alias="i"> this one can be used in two ways </parameter>
+<parameter name="parameter"> what the parameter means.</parameter>
+<parameter switch="output" name='filename'> with a named parameter </parameter>
+<parameter label='create'> literal string parameter </parameter>
 
 <use>
 <p>What the command is used for.</p>

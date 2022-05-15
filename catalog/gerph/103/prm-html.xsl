@@ -451,7 +451,7 @@
              </code>
             </td>
            </tr>
-           <tr><td><i>or</i></td>
+           <tr><td><i>or&#160;</i></td>
             <td valign="top" align="left">
              <code>
               <xsl:text>-</xsl:text>
@@ -2396,7 +2396,7 @@
 <code><xsl:apply-templates /></code>
 </xsl:template>
 
-<!-- User replacement -->
+<!-- Choices -->
 <xsl:template match="optional">
 <xsl:text>[</xsl:text>
 <xsl:for-each select="*">
@@ -2406,6 +2406,15 @@
 <xsl:apply-templates select="."/>
 </xsl:for-each>
 <xsl:text>]</xsl:text>
+</xsl:template>
+
+<xsl:template match="alternates">
+<xsl:for-each select="*">
+    <xsl:if test="position()>1">
+        <xsl:text> | </xsl:text>
+    </xsl:if>
+    <xsl:apply-templates select="."/>
+</xsl:for-each>
 </xsl:template>
 
 <!-- Command line switch -->
