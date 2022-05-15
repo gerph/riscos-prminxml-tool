@@ -141,6 +141,15 @@ Examples of compatibility and version-table elements.
         </version-table>
     </p>
 </subsection>
+
+<subsection title="OS_ReadSysInfo 9">
+    <p>
+        <version-table>
+            <version riscos-ge='4.00' supplier='RISC OS Ltd' state='supported'/>
+        </version-table>
+    </p>
+</subsection>
+
 </section>
 
 <section title="SWIs">
