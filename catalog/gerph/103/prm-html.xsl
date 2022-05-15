@@ -111,11 +111,20 @@
     path to areas with problems is given, or the
     shorter index-based form.
 </pixparams:param>
+<pixparams:param name="override-docgroup" values="group-name" default="''">
+    Overrides any document group specified in the
+    document. If none was specified in the document,
+    it would default to 'RISC OS Programmers Reference
+    Manuals'.
+    Use '' to use the group specified in the document.
+</pixparams:param>
 
 <xsl:param name="create-contents">yes</xsl:param>
 <xsl:param name="create-body">yes</xsl:param>
 <xsl:param name="create-contents-target"></xsl:param>
 <xsl:param name="position-with-names">yes</xsl:param>
+
+<xsl:param name="override-docgroup"></xsl:param>
 
 <xsl:template match="/">
 <html>
@@ -134,7 +143,10 @@
 <head>
   <meta charset="utf-8"/>
   <title>
-  <xsl:value-of select="../@docgroup"/>
+    <xsl:choose>
+        <xsl:when test="$override-docgroup != ''"><xsl:value-of select="$override-docgroup"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="../@docgroup"/></xsl:otherwise>
+    </xsl:choose>
   <xsl:text> : </xsl:text>
   <xsl:value-of select="@title"/>
  </title>
