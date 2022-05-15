@@ -783,12 +783,16 @@ These are grouped into table/value pairs :
   offset-table & offset
   message-table & message
   definition-table & definition
+  version-table & version
 
 message-tables are solely for use within descriptions of Wimp message
 blocks.
 
 value-tables are intended for numeric data, whilst definition-tables are
 indented for textual definitions.
+
+version-tables are for describing compatibility and differences in
+behaviour between versions of a component or protocol.
 
 
 Element:    bitfield-table
@@ -959,6 +963,64 @@ table comprising the definitions. The meaning of the definition is
 described by the content of the element.
 
 
+Element:    version-table
+Attributes: <none>
+Children:   (version)*
+
+The version-table element is represented as a set of rows describing
+the differences between different versions of a component or protocol.
+Unlike the other tables above, this information is not (in the standard
+layout) presented as tabular data, but as an indented list.
+
+
+Element:    version
+Attributes: module-name, module-lt, module-eq, module-ge,
+            riscos-lt, riscos-eq, riscos-ge,
+            supplier, hardware, architecture,
+            state
+
+module-name: (optional) The name of a module within which this version applies
+            (defaults to not saying the module, assumed to be the one
+            documented in the chapter)
+module-lt: (optional) The documentation details versions up to the version
+            given.
+module-eq: (optional) The documentation details an explicit version.
+module-ge: (optional) The documentation details versions after the version given.
+riscos-lt: (optional) The documentation details versions of the OS up to the
+            version given.
+riscos-eq: (optional) The documentation details an explicit version of the OS.
+riscos-ge: (optional) The documentation details versions of the OS after the
+            version given.
+supplier: (optional) Qualifies the supplier of the component (RISC OS/module).
+            For example, to discuss RISC OS Ltd versions, RISC OS Open versions,
+            RISC OS Direct versions (for the OS), or the supplier of a module
+            as might be the case for different hardwar manufacturers of some
+            modules (like Joystick).
+hardware: (optional) Qualifies the behaviour on specific hardware.
+architecture: (optional) Describes the processor architectures to which it
+            applies (defaulting to AArch32) as a comma separated list of
+            aarch32, aarch64, x64.
+state: 'supported', 'unsupported' or 'content' ('content' is the default
+            and includes any child content)
+
+The version element describes the compatibility of a component, API or
+protocol in different versions. The attributes of the element differentiate
+which version the description applies. There are 5 dimensions in which
+the version may be differentiated:
+
+    module - differentiating a given module by version (giving its name,
+            and bounds for the version.
+    riscos - differentiating by the version of the operating system.
+    supplier - differentiating by the supplier of a module, OS, or hardware.
+    hardware - differentiating by the type of hardware.
+    architecture - differentiating by the CPU architecture.
+
+The 'state' may be stated as simply 'supported' or 'unsupported' to give
+a simple statement of the support of the feature. If these are not used,
+the content describing the compatibility will be taken from the child
+elements.
+
+
 API definitions
 ---------------
 
@@ -1094,6 +1156,15 @@ Children:   <text>
 The use element describes how the definition functions, its effect and any
 other details relevant to its use which are not part of the overall component
 structure as described in the Technical details.
+
+
+Element:    compatibility
+Attributes: <none>
+Children:   <version>*
+
+The compatibility element describes the support of the definition within
+different versions. It is equivalent to the version-table element, but as
+an explicit section within the API definition.
 
 
 Element:    example
@@ -1579,3 +1650,5 @@ Changes from 1.02 to 1.03
 * bit elements which have state and name attributes no longer repeat the attribute
   name if they are identical.
 * alternates element added to allow for alternates which are not optional.
+* compatibility, version-table and version elements added to provide information
+  about the support for given features.
