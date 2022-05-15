@@ -697,12 +697,12 @@
                             <xsl:text>&#160;</xsl:text>
                         </i></span>
                     </xsl:if>
-                    <xsl:if test="@module-lt">
+                    <xsl:if test="@module-ge">
                         <span><i>
-                            <xsl:text>&lt;&#160;</xsl:text>
-                            <xsl:value-of select="@module-lt"/>
+                            <xsl:text>&gt;=&#160;</xsl:text>
+                            <xsl:value-of select="@module-ge"/>
                         </i></span>
-                        <xsl:if test="@module-ge or @module-eq">
+                        <xsl:if test="@module-lt or @module-eq">
                             <xsl:text>, </xsl:text>
                         </xsl:if>
                     </xsl:if>
@@ -710,14 +710,14 @@
                         <span><i>
                             <xsl:value-of select="@module-eq"/>
                         </i></span>
-                        <xsl:if test="@module-ge">
+                        <xsl:if test="@module-lt">
                             <xsl:text>, </xsl:text>
                         </xsl:if>
                     </xsl:if>
-                    <xsl:if test="@module-ge">
+                    <xsl:if test="@module-lt">
                         <span><i>
-                            <xsl:text>&gt;=&#160;</xsl:text>
-                            <xsl:value-of select="@module-ge"/>
+                            <xsl:text>&lt;&#160;</xsl:text>
+                            <xsl:value-of select="@module-lt"/>
                         </i></span>
                     </xsl:if>
                 </span>
@@ -727,12 +727,12 @@
             <xsl:if test='@riscos-lt or @riscos-eq or @riscos-ge'>
                 <span class='version-riscos'>
                     <i><xsl:text>RISC&#160;OS&#160;</xsl:text></i>
-                    <xsl:if test="@riscos-lt">
+                    <xsl:if test="@riscos-ge">
                         <span><i>
-                            <xsl:text>&lt;&#160;</xsl:text>
-                            <xsl:value-of select="@riscos-lt"/>
+                            <xsl:text>&gt;=&#160;</xsl:text>
+                            <xsl:value-of select="@riscos-ge"/>
                         </i></span>
-                        <xsl:if test="@riscos-ge or @riscos-eq">
+                        <xsl:if test="@riscos-lt or @riscos-eq">
                             <xsl:text>, </xsl:text>
                         </xsl:if>
                     </xsl:if>
@@ -740,14 +740,14 @@
                         <span><i>
                             <xsl:value-of select="@riscos-eq"/>
                         </i></span>
-                        <xsl:if test="@riscos-ge">
+                        <xsl:if test="@riscos-lt">
                             <xsl:text>, </xsl:text>
                         </xsl:if>
                     </xsl:if>
-                    <xsl:if test="@riscos-ge">
+                    <xsl:if test="@riscos-lt">
                         <span><i>
-                            <xsl:text>&gt;=&#160;</xsl:text>
-                            <xsl:value-of select="@riscos-ge"/>
+                            <xsl:text>&lt;&#160;</xsl:text>
+                            <xsl:value-of select="@riscos-lt"/>
                         </i></span>
                     </xsl:if>
                 </span>

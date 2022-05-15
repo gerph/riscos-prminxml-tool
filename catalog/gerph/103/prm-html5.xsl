@@ -716,11 +716,11 @@ Attributes:
                             <xsl:value-of select="@module-name"/>
                         </span>
                     </xsl:if>
-                    <xsl:if test="@module-lt">
-                        <span class='version-lt'>
-                            <xsl:value-of select="@module-lt"/>
+                    <xsl:if test="@module-ge">
+                        <span class='version-ge'>
+                            <xsl:value-of select="@module-ge"/>
                         </span>
-                        <xsl:if test="@module-ge or @module-eq">
+                        <xsl:if test="@module-lt or @module-eq">
                             <span class='version-ltge-separator'/>
                         </xsl:if>
                     </xsl:if>
@@ -728,13 +728,13 @@ Attributes:
                         <span class='version-eq'>
                             <xsl:value-of select="@module-eq"/>
                         </span>
-                        <xsl:if test="@module-ge">
+                        <xsl:if test="@module-lt">
                             <span class='version-ltge-separator'/>
                         </xsl:if>
                     </xsl:if>
-                    <xsl:if test="@module-ge">
-                        <span class='version-ge'>
-                            <xsl:value-of select="@module-ge"/>
+                    <xsl:if test="@module-lt">
+                        <span class='version-lt'>
+                            <xsl:value-of select="@module-lt"/>
                         </span>
                     </xsl:if>
                 </span>
@@ -742,11 +742,11 @@ Attributes:
 
             <xsl:if test='@riscos-lt or @riscos-eq or @riscos-ge'>
                 <span class='version-riscos'>
-                    <xsl:if test="@riscos-lt">
-                        <span class='version-lt'>
-                            <xsl:value-of select="@riscos-lt"/>
+                    <xsl:if test="@riscos-ge">
+                        <span class='version-ge'>
+                            <xsl:value-of select="@riscos-ge"/>
                         </span>
-                        <xsl:if test="@riscos-ge or @riscos-eq">
+                        <xsl:if test="@riscos-lt or @riscos-eq">
                             <span class='version-ltge-separator'/>
                         </xsl:if>
                     </xsl:if>
@@ -754,13 +754,13 @@ Attributes:
                         <span class='version-eq'>
                             <xsl:value-of select="@riscos-eq"/>
                         </span>
-                        <xsl:if test="@riscos-ge">
+                        <xsl:if test="@riscos-lt">
                             <span class='version-ltge-separator'/>
                         </xsl:if>
                     </xsl:if>
-                    <xsl:if test="@riscos-ge">
-                        <span class='version-ge'>
-                            <xsl:value-of select="@riscos-ge"/>
+                    <xsl:if test="@riscos-lt">
+                        <span class='version-lt'>
+                            <xsl:value-of select="@riscos-lt"/>
                         </span>
                     </xsl:if>
                 </span>

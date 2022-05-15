@@ -33,7 +33,7 @@ Examples of compatibility and version-table elements.
         <p>
             <version-table>
                 <version riscos-lt="3.1" state='supported'/>
-                <version riscos-lt="3.0" riscos-ge="3.1" state='unsupported'/>
+                <version riscos-ge="3.1" riscos-lt="4.0" state='unsupported'/>
             </version-table>
         </p>
     </subsection>
