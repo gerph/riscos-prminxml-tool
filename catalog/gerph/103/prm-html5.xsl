@@ -1966,7 +1966,16 @@
 
 <!-- Paragraphs are simple -->
 <xsl:template match="p">
-<p><xsl:apply-templates /></p>
+<xsl:choose>
+    <xsl:when test="count(image) != 0">
+        <div class='images'>
+            <xsl:apply-templates />
+        </div>
+    </xsl:when>
+    <xsl:otherwise>
+        <p><xsl:apply-templates /></p>
+    </xsl:otherwise>
+</xsl:choose>
 </xsl:template>
 
 <!-- User replacement - something the user must replace with a value -->

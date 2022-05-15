@@ -11,47 +11,55 @@
 
 </section>
 
+<section title="Inline images">
+    <p>This is what a cog looks like: <image src="cog.svg" type='svg' width="32"/>. Green isn't it?</p>
+    <p>It doesn't look good, so don't try doing that.</p>
+</section>
+
 <section title="Image types">
     <category title="SVG">
-        <image src="cog.svg" type='svg' width="128"/>
+        <p><image src="cog.svg" type='svg' width="128"/></p>
     </category>
     <category title="PNG">
-        <image src="cog.png" type='png' width="128"/>
+        <p><image src="cog.png" type='png' width="128"/></p>
     </category>
 </section>
 
 <section title="Image sizes">
     <subsection title="SVG">
         <category title="SVG: no width">
-            <image src="cog.svg" type='svg'/>
+            <p><image src="cog.svg" type='svg'/></p>
         </category>
         <category title="SVG: width set">
-            <image src="cog.svg" type='svg' width="128"/>
+            <p><image src="cog.svg" type='svg' width="128"/></p>
         </category>
         <category title="SVG: height set">
-            <image src="cog.svg" type='svg' height="128"/>
+            <p><image src="cog.svg" type='svg' height="128"/></p>
         </category>
     </subsection>
 
     <subsection title="PNG">
         <category title="PNG: no width">
-            <image src="cog.png" type='png'/>
+            <p><image src="cog.png" type='png'/></p>
         </category>
         <category title="PNG: width set">
-            <image src="cog.png" type='png' width="128"/>
+            <p><image src="cog.png" type='png' width="128"/></p>
         </category>
         <category title="PNG: height set">
-            <image src="cog.png" type='png' height="128"/>
+            <p><image src="cog.png" type='png' height="128"/></p>
         </category>
     </subsection>
 </section>
 
 <section title="Captions">
     <category title="Caption present">
-        <image src="cog.png" type='png' width="128" caption="A cog image"/>
+        <p><image src="cog.png" type='png' width="128" caption="A cog image"/></p>
     </category>
     <category title="Long caption text">
-        <image src="cog.png" type='png' width="128" caption="Another image but with a longer caption"/>
+        <p><image src="cog.png" type='png' width="128" caption="Another image but with a longer caption"/></p>
+    </category>
+    <category title="Long captions">
+        <p><image src="cog.png" type='png' width="128" caption="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh."/></p>
     </category>
 </section>
 

@@ -401,9 +401,14 @@ article li > p:first-of-type {
     margin-top: 0em;
 }
 
+.images {
+    text-align: center;
+}
+
 figure {
     margin-left: 2rem;
     margin-right: 2rem;
+    margin-top: 0.5rem;
     object-fit: scale-down;
     display: inline-block;
     text-align: center;
@@ -411,6 +416,9 @@ figure {
 figure figcaption {
     text-align: center;
     font-style: italic;
+    max-width: 66%;
+    margin-left: auto;
+    margin-right: auto;
 }
 img {
     max-width: 100%;
