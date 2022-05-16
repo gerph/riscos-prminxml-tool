@@ -1853,7 +1853,9 @@
     <xsl:value-of select="exslt:node-set($linknode)/*/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:value-of select="$localdb/@prefix-name" />
+      <xsl:if test="(not(text()) and count(*) = 0) and @name">
+        <xsl:value-of select="$localdb/@prefix-name" />
+      </xsl:if>
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>

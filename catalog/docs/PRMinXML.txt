@@ -1579,5 +1579,8 @@ Changes from 1.02 to 1.03
 * bit elements which have state and name attributes no longer repeat the attribute
   name if they are identical.
 * alternates element added to allow for alternates which are not optional.
+* reference SWI elements with generated text will be prefixed by 'SWI'.
+* reference elements with explicit text in their body will no longer be
+  prefixed (previously wouldb prefixed by the usual prefixes, like 'UpCall_'.
 * image elements are better supported now and allow multiple images to be
   aligned in a row.
