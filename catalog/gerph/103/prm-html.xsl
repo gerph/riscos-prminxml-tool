@@ -1969,7 +1969,9 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>*</xsl:text>
+      <xsl:if test="(not(text()) and count(*) = 0) and @name">
+        <xsl:text>*</xsl:text>
+      </xsl:if>
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -1992,7 +1994,9 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>VDU </xsl:text>
+      <xsl:if test="(not(text()) and count(*) = 0) and @name">
+        <xsl:text>VDU </xsl:text>
+      </xsl:if>
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -2015,7 +2019,9 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>Message_</xsl:text>
+      <xsl:if test="(not(text()) and count(*) = 0) and @name">
+        <xsl:text>Message_</xsl:text>
+      </xsl:if>
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -2035,7 +2041,9 @@
     <xsl:value-of select="//error-definition[@name=$refname]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>Error_</xsl:text>
+      <xsl:if test="(not(text()) and count(*) = 0) and @name">
+        <xsl:text>Error_</xsl:text>
+      </xsl:if>
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -2058,7 +2066,9 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>Service_</xsl:text>
+      <xsl:if test="(not(text()) and count(*) = 0) and @name">
+        <xsl:text>Service_</xsl:text>
+      </xsl:if>
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -2125,7 +2135,9 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>UpCall_</xsl:text>
+      <xsl:if test="(not(text()) and count(*) = 0) and @name">
+        <xsl:text>UpCall_</xsl:text>
+      </xsl:if>
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
