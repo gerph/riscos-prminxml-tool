@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.03//EN"
+                            "http://gerph.org/dtd/103/prm.dtd">
+
+<riscos-prm>
+<chapter title="Images">
+<section title="Introduction">
+<p>
+    This document tests the use of image elements.
+</p>
+
+</section>
+
+<section title="Inline images">
+    <p>This is what a cog looks like: <image src="cog.svg" type='svg' width="32"/>. Green isn't it?</p>
+    <p>It doesn't look good, so don't try doing that.</p>
+</section>
+
+<section title="Image types">
+    <category title="SVG">
+        <p><image src="cog.svg" type='svg' width="128"/></p>
+    </category>
+    <category title="PNG">
+        <p><image src="cog.png" type='png' width="128"/></p>
+    </category>
+</section>
+
+<section title="Image sizes">
+    <subsection title="SVG">
+        <category title="SVG: no width">
+            <p><image src="cog.svg" type='svg'/></p>
+        </category>
+        <category title="SVG: width set">
+            <p><image src="cog.svg" type='svg' width="128"/></p>
+        </category>
+        <category title="SVG: height set">
+            <p><image src="cog.svg" type='svg' height="128"/></p>
+        </category>
+    </subsection>
+
+    <subsection title="PNG">
+        <category title="PNG: no width">
+            <p><image src="cog.png" type='png'/></p>
+        </category>
+        <category title="PNG: width set">
+            <p><image src="cog.png" type='png' width="128"/></p>
+        </category>
+        <category title="PNG: height set">
+            <p><image src="cog.png" type='png' height="128"/></p>
+        </category>
+    </subsection>
+</section>
+
+<section title="Captions">
+    <category title="Caption present">
+        <p><image src="cog.png" type='png' width="128" caption="A cog image"/></p>
+    </category>
+    <category title="Long caption text">
+        <p><image src="cog.png" type='png' width="128" caption="Another image but with a longer caption"/></p>
+    </category>
+    <category title="Long captions">
+        <p><image src="cog.png" type='png' width="128" caption="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh."/></p>
+    </category>
+</section>
+
+<section title="Multiple images">
+    <category title="Multiple in a single paragraph">
+        <p>
+            <image src="cog.png" type='png' width="64" caption="A cog image"/>
+            <image src="cog.png" type='png' width="64" caption="Another image but with a longer caption"/>
+        </p>
+    </category>
+
+    <category title="Separate paragraphs">
+        <p>
+            <image src="cog.png" type='png' width="64" caption="A cog image"/>
+        </p>
+        <p>
+            <image src="cog.png" type='png' width="64" caption="Another image but with a longer caption"/>
+        </p>
+    </category>
+</section>
+
+</chapter>
+
+<!-- MetaData -->
+<meta>
+ <maintainer>
+  <email name="Gerph" address="gerph@gerph.org" />
+ </maintainer>
+ <disclaimer>
+    <p>
+        &copy; Gerph, 2022.
+    </p>
+ </disclaimer>
+
+ <history>
+  <revision number="1" author="Gerph" date="15 May 2022" title="Initial version">
+    <change>Some examples of image elements.</change>
+  </revision>
+ </history>
+</meta>
+</riscos-prm>
