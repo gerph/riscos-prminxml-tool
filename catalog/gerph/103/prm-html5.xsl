@@ -103,6 +103,15 @@
 <localdb:input-action aname='left' prefix="" suffix=" LEFT"/>
 <localdb:input-action aname='right' prefix="" suffix=" RIGHT"/>
 
+<!-- state names -->
+<localdb:state-names state="undefined"   label="undefined"              Label="Undefined"/>
+<localdb:state-names state="reserved"    label="reserved, must be zero" Label="Reserved, must be zero"/>
+<localdb:state-names state="corrupted"   label="corrupted"              Label="Corrupted"/>
+<localdb:state-names state="preserved"   label="preserved"              Label="Preserved"/>
+
+<localdb:state-names state="supported"   label="supported"              Label="Supported"/>
+<localdb:state-names state="unsupported" label="not supported"          Label="Not supported"/>
+
 <xsl:output method="html" indent="no" encoding="utf-8"/>
 
 <xsl:variable name="title-to-id-src">ABCDEFGHIJKLMNOPQRSTUVWXYZ ,$:()-*?</xsl:variable>
@@ -644,6 +653,183 @@
 </xsl:template>
 
 
+<xsl:template match="compatibility">
+<xsl:choose>
+ <xsl:when test="count(*) = 0">
+    <!-- No compatibility block, so no need to do anything -->
+ </xsl:when>
+ <xsl:otherwise>
+  <section class='definition definition-compatibility'>
+    <xsl:apply-templates/>
+  </section>
+ </xsl:otherwise>
+</xsl:choose>
+</xsl:template>
+
+
+<xsl:template match="version-table">
+<div class='version-table'>
+  <xsl:apply-templates/>
+</div>
+</xsl:template>
+
+
+<xsl:template match="version">
+    <!--
+Attributes:
+
+    module-name: The name of a module within which this version applies
+    (defaults to not saying the module, assuming to be the one documented in
+    the chapter)
+
+    module-lt: The documentation details versions up to the version
+    given.
+
+    module-eq: The documentation details an explicit version.
+
+    module-ge: The documentation details versions after the version given.
+
+    riscos-lt: The documentation details versions of the OS up to the
+    version given.
+
+    riscos-ge: The documentation details versions of the OS after the
+    version given.
+
+    supplier: Qualifies the supplier of the component (RISC OS/module),
+    eg to discuss RISC OS Ltd versions, RISC OS Open versions, RISC OS Direct
+    versions (for the OS), or the supplier of a module, eg in the case of
+    different hardwar manufacturers of some modules (like Joystick).
+
+    hardware: Qualifies the behaviour on a given hardware.
+
+    architecture: Describes the processor architectures to which it applies (defaulting to AArch32) as a comma separated list of aarch32, aarch64, x64 (include python for Pyromaniac?).
+
+    state: 'supported', 'unsupported' or 'content' ('content' is the
+    default, and includes any content)
+ -->
+    <div>
+        <xsl:attribute name='class'>
+            <xsl:text>version</xsl:text>
+            <!-- programatic attributes? -->
+        </xsl:attribute>
+
+        <span class='version-qualifiers'>
+            <xsl:if test='@supplier'>
+                <span class='version-supplier'>
+                    <xsl:value-of select="@supplier"/>
+                </span>
+            </xsl:if>
+
+            <xsl:if test='@hardware'>
+                <span class='version-hardware'>
+                    <xsl:value-of select="@hardware"/>
+                </span>
+            </xsl:if>
+
+            <xsl:if test='../*/@architecture != ./@architecture'>
+                <span class='version-architecture'>
+                    <xsl:value-of select="@architecture"/>
+                </span>
+            </xsl:if>
+
+            <xsl:if test='@module-name or @module-lt or @module-eq or @module-ge'>
+                <span class='version-module'>
+                    <xsl:if test="@module-name">
+                        <span class='version-module-name'>
+                            <xsl:value-of select="@module-name"/>
+                        </span>
+                    </xsl:if>
+                    <xsl:if test="@module-ge">
+                        <span class='version-ge'>
+                            <xsl:value-of select="@module-ge"/>
+                        </span>
+                        <xsl:if test="@module-lt or @module-eq">
+                            <span class='version-ltge-separator'/>
+                        </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="@module-eq">
+                        <span class='version-eq'>
+                            <xsl:value-of select="@module-eq"/>
+                        </span>
+                        <xsl:if test="@module-lt">
+                            <span class='version-ltge-separator'/>
+                        </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="@module-lt">
+                        <span class='version-lt'>
+                            <xsl:value-of select="@module-lt"/>
+                        </span>
+                    </xsl:if>
+                </span>
+            </xsl:if>
+
+            <xsl:if test='@riscos-lt or @riscos-eq or @riscos-ge'>
+                <span class='version-riscos'>
+                    <xsl:if test="@riscos-ge">
+                        <span class='version-ge'>
+                            <xsl:value-of select="@riscos-ge"/>
+                        </span>
+                        <xsl:if test="@riscos-lt or @riscos-eq">
+                            <span class='version-ltge-separator'/>
+                        </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="@riscos-eq">
+                        <span class='version-eq'>
+                            <xsl:value-of select="@riscos-eq"/>
+                        </span>
+                        <xsl:if test="@riscos-lt">
+                            <span class='version-ltge-separator'/>
+                        </xsl:if>
+                    </xsl:if>
+                    <xsl:if test="@riscos-lt">
+                        <span class='version-lt'>
+                            <xsl:value-of select="@riscos-lt"/>
+                        </span>
+                    </xsl:if>
+                </span>
+            </xsl:if>
+        </span>
+
+        <div class='version-content'>
+            <xsl:call-template name="state-elements">
+                <xsl:with-param name="form" select="'Label'" />
+                <xsl:with-param name="state" select="@state" />
+            </xsl:call-template>
+        </div>
+    </div>
+</xsl:template>
+
+
+<xsl:template name='state-elements'>
+    <xsl:param name="state"/>
+    <xsl:param name="form"/>
+    <xsl:variable name="state-name" select="document('')//localdb:state-names[@state=$state]"/>
+
+    <xsl:choose>
+        <xsl:when test="@state != 'content' and not($state-name)">
+            <!-- This shouldn't happen? -->
+        </xsl:when>
+
+        <xsl:when test="$state-name">
+            <span class="state state-{@state}">
+                <xsl:choose>
+                    <xsl:when test="$form = 'label'">
+                        <xsl:value-of select="$state-name/@label"/>
+                    </xsl:when>
+                    <xsl:when test="$form = 'Label'">
+                        <xsl:value-of select="$state-name/@Label"/>
+                    </xsl:when>
+                </xsl:choose>
+            </span>
+        </xsl:when>
+
+        <xsl:otherwise>
+            <xsl:apply-templates/>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+
+
 <xsl:template match="related">
 <div class='definition-related'>
 <xsl:choose>
@@ -804,6 +990,8 @@
   <xsl:call-template name='definition-reentrancy'/>
 
   <xsl:apply-templates select="use" />
+
+  <xsl:apply-templates select='compatibility'/>
 
   <xsl:call-template name="examples-block">
    <xsl:with-param name="where" select="." />
@@ -1408,17 +1596,13 @@
  </td>
 
   <xsl:choose>
-   <xsl:when test="@state='preserved'">
-    <!-- preserved is used on output registers -->
-    <td class='register-use-state register-use-preserved' colspan="2">preserved</td>
-   </xsl:when>
-   <xsl:when test="@state='corrupted'">
-    <!-- corrupted is used on output registers -->
-    <td class='register-use-state register-use-corrupted' colspan="2">corrupted</td>
-   </xsl:when>
-   <xsl:when test="@state='undefined'">
-    <!-- undefined is used on input registers -->
-    <td class='register-use-state register-use-undefined' colspan="2">undefined</td>
+   <xsl:when test="@state='preserved' or @state='corrupted' or @state='undefined'">
+    <td class='register-use-state' colspan="2">
+        <xsl:call-template name="state-elements">
+            <xsl:with-param name="form" select="'label'" />
+            <xsl:with-param name="state" select="@state" />
+        </xsl:call-template>
+    </td>
    </xsl:when>
    <xsl:otherwise>
     <td class='register-use-divider'>=</td>
@@ -1499,7 +1683,10 @@
   <xsl:choose>
    <xsl:when test="@state = 'reserved'">
     <td class='table-value' colspan='2'>
-     <xsl:text>Reserved, must be zero</xsl:text>
+     <xsl:call-template name="state-elements">
+         <xsl:with-param name="form" select="'Label'" />
+         <xsl:with-param name="state" select="@state" />
+     </xsl:call-template>
     </td>
    </xsl:when>
 
@@ -1640,11 +1827,10 @@
   <td class='table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
  <td class='table-value'>
-  <xsl:choose>
-   <xsl:when test="@state='reserved'"><xsl:text>Reserved, must be zero</xsl:text></xsl:when>
-   <xsl:when test="@state='undefined'"><xsl:text>Undefined</xsl:text></xsl:when>
-   <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
- </xsl:choose>
+    <xsl:call-template name="state-elements">
+        <xsl:with-param name="form" select="'Label'" />
+        <xsl:with-param name="state" select="@state" />
+    </xsl:call-template>
  </td>
 </tr>
 </xsl:template>
@@ -1682,11 +1868,10 @@
   <td class='table-name'><xsl:value-of select="@name"/></td>
  </xsl:if>
  <td class='table-value'>
-  <xsl:choose>
-   <xsl:when test="@state='reserved'"><xsl:text>Reserved, must be zero</xsl:text></xsl:when>
-   <xsl:when test="@state='undefined'"><xsl:text>Undefined</xsl:text></xsl:when>
-   <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
- </xsl:choose>
+    <xsl:call-template name="state-elements">
+        <xsl:with-param name="form" select="'Label'" />
+        <xsl:with-param name="state" select="@state" />
+    </xsl:call-template>
  </td>
 </tr>
 </xsl:template>

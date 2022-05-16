@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.02//EN"
-                            "http://gerph.org/dtd/102/prm.dtd">
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.03//EN"
+                            "http://gerph.org/dtd/103/prm.dtd">
 
 <riscos-prm>
 <chapter title="Chapter Title">
@@ -177,6 +177,11 @@ by this component.
 <use>
 <p>What this SWI is used for.</p>
 </use>
+
+<compatibility>
+    <version riscos-lt='2' state='unsupported'/>
+    <version riscos-ge='2' riscos-lt='3'>Never returns the 'Another value'</version>
+</compatibility>
 
 <related>
 <!-- <reference type="vector" name="BingleV" /> -->

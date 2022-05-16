@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.03//EN"
+                            "http://gerph.org/dtd/103/prm.dtd">
+
+<riscos-prm>
+<chapter title="Compatibility/version elements">
+<section title="Introduction">
+<p>
+Examples of compatibility and version-table elements.
+</p>
+</section>
+
+<section title="States">
+    <p>
+        <version-table>
+            <version riscos-lt="2" state='unsupported'/>
+            <version riscos-eq="3.0">This protocol is not available.</version>
+            <version riscos-ge="3.1" state='supported'/>
+        </version-table>
+    </p>
+</section>
+
+<section title="Differentiators">
+    <subsection title="RISC OS versions">
+        <p>
+            <version-table>
+                <version riscos-lt="3.0" state='unsupported'/>
+                <version riscos-eq="3.0" state='unsupported'/>
+                <version riscos-ge="3.1" state='supported'/>
+            </version-table>
+        </p>
+
+        <p>
+            <version-table>
+                <version riscos-lt="3.1" state='supported'/>
+                <version riscos-ge="3.1" riscos-lt="4.0" state='unsupported'/>
+            </version-table>
+        </p>
+    </subsection>
+
+    <subsection title="Module versions">
+        <p>
+            <version-table>
+                <version module-lt="0.99" state='unsupported'/>
+                <version module-eq="0.99" state='unsupported'/>
+                <version module-ge="0.99" state='supported'/>
+                <version module-name="SpriteExtend" module-ge="0.99" state='supported'/>
+            </version-table>
+        </p>
+    </subsection>
+
+    <subsection title="Supplier">
+        <p>
+            <!-- Names chosen to avoid any bias towards suppliers of RISC OS software -->
+            <version-table>
+                <version supplier="Microsoft" state='supported'/>
+                <version supplier="Apple" state='supported'/>
+                <version supplier="RISC OS" state='unsupported'/>
+            </version-table>
+        </p>
+    </subsection>
+
+    <subsection title="Hardware">
+        <p>
+            <version-table>
+                <!-- Hardware could mean the brand name of a group of machines -->
+                <version hardware="Acmescope" state='supported'/>
+                <!-- Or the physical hardware the system uses -->
+                <version hardware="ARMv4" state='supported'/>
+                <!-- Or a model of a machine -->
+                <version hardware="RiscPC 600" state='unsupported'/>
+            </version-table>
+        </p>
+    </subsection>
+
+    <subsection title="Architecture">
+        <p>
+            <version-table>
+                <version hardware="aarch32" state='supported'/>
+                <version hardware="aarch64" state='unsupported'/>
+                <version hardware="x64" state='unsupported'/>
+            </version-table>
+        </p>
+    </subsection>
+</section>
+
+<section title="Real world examples">
+<subsection title="ColourTrans_SelectTable">
+    <p>
+
+        <version-table>
+            <version riscos-lt="3">
+                R0 must be less than 256, and so R5 - R7 are unused.
+                Consequently, to use a sprite as the source you first have to copy its palette
+                information out from its header. Furthermore, you cannot find the required size
+                of the buffer by setting R4 to 0 on entry.
+            </version>
+        </version-table>
+    </p>
+</subsection>
+
+<subsection title="ColourTrans_InvalidateCache">
+    <p>
+        <version-table>
+            <version riscos-lt="3">
+                You must call this SWI if output has been switched to a sprite, and ColourTrans is to be called while the output is so redirected. You must then call it again after output is directed back to the screen. For example, the palette utility on the icon bar calls this SWI when you finish dragging one of the RGB slider bars.
+            </version>
+            <version riscos-ge="3">
+                This call is made automatically when output is redirected.
+            </version>
+        </version-table>
+    </p>
+</subsection>
+
+<subsection title="Font_ListFonts">
+    <p>
+        <version-table>
+            <version riscos-eq="3.0">
+                The Font Manager in the RISC OS 3 ROMs (ie Font Manager 3.07 or earlier) has a bug in its handling of indirected menu titles.
+                To work around this, you must use MessageTrans to decode the 'FontList' token in the Fonts resource file;
+                if its length is more than 12 characters you must set the 'indirected menu title'
+                bit of the first menu item, and otherwise you must clear it.
+            </version>
+            <version riscos-eq="2">
+                <p>In the 'RISC OS 2-compatible mode' (used if bits 16 - 31 of R2 are clear),
+                    this call works as if bits 16 and 18 of R2 were set on entry,
+                    bits 17 and 19 - 31 were clear, and R3 was 40 (irrespective of its
+                    actual value).
+                </p>
+                <p>
+                    Under RISC OS 2, this call works as if bits 16 and 18 of R2 were set on entry,
+                    and bits 17 and 19 - 31 were clear (hence R4, R5 and R6 are ignored). However,
+                    R3 is used to point to the path to search; a value of -1 means that Font$Path
+                    is used instead.
+                </p>
+                <p>
+                    If your program does not RMEnsure the current version of the Font Manager,
+                    you should therefore always use Font$Path to specify the path to search.
+                </p>
+            </version>
+        </version-table>
+    </p>
+</subsection>
+
+<subsection title="OS_ReadSysInfo 9">
+    <p>
+        <version-table>
+            <version riscos-ge='4.00' supplier='RISC OS Ltd' state='supported'/>
+        </version-table>
+    </p>
+</subsection>
+
+</section>
+
+<section title="SWIs">
+<swi-definition name="DDEUtils_Prefix"
+                number="90210"
+                description="Sets up the prefix for a context"
+                irqs="undefined"
+                fiqs="enabled"
+                processor-mode="SVC"
+                re-entrant="no">
+
+<entry>
+ <register-use number="1">Register details</register-use>
+</entry>
+<exit>
+ <register-use number="0">Possible return values:
+  <value-table>
+   <value number="0">Some important value</value>
+   <value number="1">Another value</value>
+  </value-table>
+ </register-use>
+</exit>
+
+<use>
+<p>What this SWI is used for.</p>
+</use>
+
+<compatibility>
+    <version supplier='Cy Booker'>Supported, but only for a limited set
+        of filing system calls</version>
+    <version supplier='Justin Fletcher'>Supported, but only for a limited
+        set of filing system calls.</version>
+    <version supplier='Acorn'>Supported, but only for a limited set of
+        filing system versions and does not apply to the
+        Run$Path</version>
+    <version supplier='RISC OS Ltd'>Supported as for Acorn, but also
+        supports changing directories updating the prefix
+        directory.</version>
+</compatibility>
+
+<related>
+    <reference type="swi" name="Module_SWIName" />
+</related>
+
+</swi-definition>
+
+</section>
+
+</chapter>
+
+<!-- MetaData -->
+<meta>
+ <maintainer>
+  <email name="Gerph" address="gerph@gerph.org" />
+ </maintainer>
+ <disclaimer>
+    <p>
+        &copy; Gerph, 2021-2022.
+    </p>
+ </disclaimer>
+
+ <history>
+  <revision number="1" author="Gerph" date="28 Sep 2021" title="Initial version">
+    <change>Examples of the declaration of different version usage.</change>
+  </revision>
+  <revision number="2" author="Gerph" date="15 May 2022" title="Proper rework">
+    <change>Added examples for the block usage.</change>
+    <change>Tested with HTML and HTML5 forms.</change>
+    <change>Covers most of the combinations (although there are many due to the number of attributes).</change>
+  </revision>
+ </history>
+</meta>
+</riscos-prm>

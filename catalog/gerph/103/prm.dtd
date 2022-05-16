@@ -73,7 +73,7 @@
 <!ENTITY esc "Esc">
 <!ENTITY print "&#9113;">
 
-<!ENTITY % tables "offset-table | bitfield-table | value-table | message-table | definition-table">
+<!ENTITY % tables "offset-table | bitfield-table | value-table | message-table | definition-table | version-table">
 <!ENTITY % parameters "userinput | menuoption | systemoutput | command | function | variable | userreplace | optional | sysvar | filename | switch | input">
 <!ENTITY % style "strong | em | sub | sup">
 <!ENTITY % link "reference | email">
@@ -108,7 +108,7 @@
 <!ELEMENT subsubsection (p | category | import)*>
 <!ELEMENT category (p | import)*>
 <!-- SWI definition is complex -->
-<!ELEMENT swi-definition ((entry?, exit?, use, (example)*, declaration?, related?)?)>
+<!ELEMENT swi-definition ((entry?, exit?, use, compatibility?, (example)*, declaration?, related?)?)>
 <!ATTLIST swi-definition
     name CDATA #REQUIRED
     number CDATA #IMPLIED
@@ -124,7 +124,7 @@
     reasonname CDATA #IMPLIED
 >
 <!-- Vector definition is similar to SWI definition -->
-<!ELEMENT vector-definition ((entry?, exit?, use, (example)*, related)?)>
+<!ELEMENT vector-definition ((entry?, exit?, use, compatibility?, (example)*, related)?)>
 <!ATTLIST vector-definition
     name CDATA #REQUIRED
     number CDATA #REQUIRED
@@ -138,7 +138,7 @@
     reasonname CDATA #IMPLIED
 >
 <!-- Entry-point definition is similar to SWI definition -->
-<!ELEMENT entry-definition ((entry?, exit?, use, (example)*, declaration?, related)?)>
+<!ELEMENT entry-definition ((entry?, exit?, use, compatibility?, (example)*, declaration?, related)?)>
 <!ATTLIST entry-definition
     name CDATA #REQUIRED
     number CDATA #IMPLIED
@@ -152,7 +152,7 @@
     reasonname CDATA #IMPLIED
 >
 <!-- Service definition is similarly complex -->
-<!ELEMENT service-definition (entry, exit, use, (example)*, declaration?, related)>
+<!ELEMENT service-definition (entry, exit, use, compatibility?, (example)*, declaration?, related)>
 <!ATTLIST service-definition
     name CDATA #REQUIRED
     number CDATA #REQUIRED
@@ -162,7 +162,7 @@
     reasonname CDATA #IMPLIED
 >
 <!-- Upcall definition is similarly complex -->
-<!ELEMENT upcall-definition (entry, exit, use, (example)*, declaration?, related)>
+<!ELEMENT upcall-definition (entry, exit, use, compatibility?, (example)*, declaration?, related)>
 <!ATTLIST upcall-definition
     name CDATA #REQUIRED
     number CDATA #REQUIRED
@@ -171,19 +171,19 @@
     reasonname CDATA #IMPLIED
 >
 <!-- Command definition is not complex -->
-<!ELEMENT command-definition ((syntax)*, (parameter)*, use, (example)*, related?)>
+<!ELEMENT command-definition ((syntax)*, (parameter)*, use, compatibility?, (example)*, related?)>
 <!ATTLIST command-definition
     name CDATA #REQUIRED
     description CDATA #REQUIRED
 >
 <!-- VDU definition is similar to a command definition -->
-<!ELEMENT vdu-definition ((syntax)*, (parameter)*, use, (example)*, related?)>
+<!ELEMENT vdu-definition ((syntax)*, (parameter)*, use, compatibility?, (example)*, related?)>
 <!ATTLIST vdu-definition
     name CDATA #REQUIRED
     description CDATA #REQUIRED
 >
 <!-- System variable definition is very simple -->
-<!ELEMENT sysvar-definition (use, example?, related?)>
+<!ELEMENT sysvar-definition (use, compatibility?, example?, related?)>
 <!ATTLIST sysvar-definition
     name CDATA #REQUIRED
     description CDATA #REQUIRED
@@ -196,7 +196,7 @@
     description CDATA #REQUIRED
 >
 <!-- Message definition is vaguely complex -->
-<!ELEMENT message-definition ((message-table | value-table)?, use, declaration?, related?)>
+<!ELEMENT message-definition ((message-table | value-table)?, use, compatibility?, declaration?, related?)>
 <!ATTLIST message-definition
     name CDATA #REQUIRED
     number CDATA #REQUIRED
@@ -218,7 +218,7 @@
     state (reserved | undefined | content) "content"
 >
 <!-- Toolbox message definition has a similar structure -->
-<!ELEMENT tboxmessage-definition ((message-table | value-table | offset-table)?, use, declaration?, related?)>
+<!ELEMENT tboxmessage-definition ((message-table | value-table | offset-table)?, use, compatibility?, declaration?, related?)>
 <!ATTLIST tboxmessage-definition
     name CDATA #REQUIRED
     number CDATA #REQUIRED
@@ -228,7 +228,7 @@
     internal (yes | no) "no"
 >
 <!-- Toolbox method definition is similar to a SWI -->
-<!ELEMENT tboxmethod-definition (entry?, exit?, use, (example)*, declaration?, related?)>
+<!ELEMENT tboxmethod-definition (entry?, exit?, use, compatibility?, (example)*, declaration?, related?)>
 <!ATTLIST tboxmethod-definition
     name CDATA #REQUIRED
     number CDATA #REQUIRED
@@ -316,6 +316,23 @@
 <!ATTLIST declaration
         type (unknown | prototype | structure) "unknown">
 
+<!-- Compatibility/version elements -->
+<!ELEMENT compatibility (version)*>
+<!ELEMENT version-table (version)*>
+<!ELEMENT version (#PCDATA | p)*>
+<!ATTLIST version
+        module-name     CDATA #IMPLIED
+        module-lt       CDATA #IMPLIED
+        module-eq       CDATA #IMPLIED
+        module-ge       CDATA #IMPLIED
+        riscos-lt       CDATA #IMPLIED
+        riscos-eq       CDATA #IMPLIED
+        riscos-ge       CDATA #IMPLIED
+        supplier        CDATA #IMPLIED
+        hardware        CDATA #IMPLIED
+        architecture    (arch32 | aarch64 | x64) "arch32"
+        state           (supported | unsupported | content) "content"
+>
 
 <!-- User input - something that the user might type
      Should really be text or userreplace -->
@@ -409,7 +426,7 @@
     type (ordered | unordered) "unordered"
 >
 <!ELEMENT item (#PCDATA | %inline; | %link; | p)*>
-<!ELEMENT p (#PCDATA | %tables; | %parameters; | %inline; | %link; | import)*>
+<!ELEMENT p (#PCDATA | %tables; | %parameters; | %inline; | %link; | compatibility | import)*>
 <!-- fixme - data needs correcting element -->
 <!ELEMENT fixme (#PCDATA)>
 <!-- line break - not sure we should allow this -->

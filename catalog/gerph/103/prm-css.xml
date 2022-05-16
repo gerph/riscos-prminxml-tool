@@ -361,6 +361,9 @@ section.definition::before {
 .definition-declarations::before {
   content: 'Declarations';
 }
+.definition-compatibility::before {
+  content: 'Compatibility';
+}
 .definition-examples::before {
   content: 'Examples';
 }
@@ -502,6 +505,59 @@ table {
 }
 .table-body .table-value.table-value-bitstate {
     text-align: right;
+}
+
+.version-table:before {
+    content: "Compatibility";
+    font-weight: bold;
+    line-height: 2em;
+}
+.version-table {
+    padding-left: 0.5em;
+}
+.version-table .version {
+    padding-left: 1em;
+}
+
+.version + .version {
+    margin-top: 1em;
+}
+.version-qualifiers {
+    font-style: italic;
+    display: block;
+}
+.version-supplier {
+    margin-right: 1em;
+}
+.version-module {
+    margin-right: 1em;
+}
+.version-module-name:after {
+    content: "\00a0\00a0";
+}
+.version-module, .version-riscos {
+    margin-right: 1em;
+}
+.version-lt:before {
+    content: "<\00a0";
+}
+.version-ltge-separator:before {
+    content: ",\00a0\00a0";
+}
+.version-ge:before {
+    content: "\2265\00a0";
+}
+.version-riscos:before {
+    content: "RISC\00a0OS\00a0";
+}
+.version-hardware {
+    margin-right: 1em;
+}
+.version-architecture {
+    margin-right: 1em;
+}
+.version-content {
+    padding-left: 2em;
 }
 
 .userreplace {
