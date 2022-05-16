@@ -2514,7 +2514,7 @@
  <p align="center" />
 </xsl:if>
 <xsl:choose>
- <xsl:when test="@type = 'png' or @type = 'svg'">
+ <xsl:when test="@type = 'png' or @type = 'gif' or @type = 'svg'">
   <img align="center">
     <xsl:variable name="style">
      <xsl:if test="@width != ''">
