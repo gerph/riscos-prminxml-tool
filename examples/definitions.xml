@@ -10,51 +10,63 @@ Examples of each of the definitions, and references to them.
 </p>
 <p>
     <list>
-        <item>Reference: <reference type='vdu' name="1"/>.
+        <item>Reference: <reference type='vdu' name="1"/>.<br/>
+              Explicit: <reference type='vdu' name="1">VDU 1 (send to printer)</reference>.<br/>
               Description: <reference type='vdu' name="1" use-description='yes'/>.
         </item>
 
-        <item>Reference: <reference type='sysvar' name="Sys$Variable"/>.
+        <item>Reference: <reference type='sysvar' name="Sys$Variable"/>.<br/>
+              Explicit: <reference type='sysvar' name="Sys$Variable">Var Sys$Variable</reference>.<br/>
               Description: <reference type='sysvar' name="Sys$Variable" use-description='yes'/>.
         </item>
 
-        <item>Reference: <reference type='service' name="MyServiceName"/>.
+        <item>Reference: <reference type='service' name="MyServiceName"/>.<br/>
+              Explicit: <reference type='service' name="MyServiceName">Service_MyServiceName with R0 = 1</reference>.<br/>
               Description: <reference type='service' name="MyServiceName" use-description='yes'/>.
         </item>
 
-        <item>Reference: <reference type='swi' name="Module_SWIName"/>.
+        <item>Reference: <reference type='swi' name="Module_SWIName"/>.<br/>
+              Explicit: <reference type='swi' name="Module_SWIName">Module_SWIName with R0 = 1</reference>.<br/>
               Description: <reference type='swi' name="Module_SWIName" use-description='yes'/>.
         </item>
 
-        <item>Reference: <reference type='vector' name="MyVectorV"/>.
+        <item>Reference: <reference type='vector' name="MyVectorV"/>.<br/>
+              Explicit: <reference type='vector' name="MyVectorV">Vector MyVectorV (my magic vector)</reference>.<br/>
               Description: <reference type='vector' name="MyVectorV" use-description='yes'/>.
         </item>
 
-        <item>Reference: <reference type='upcall' name="UpcallName"/>.
+        <item>Reference: <reference type='upcall' name="UpcallName"/>.<br/>
+              Explicit: <reference type='upcall' name="UpcallName">UpCall UpcallName (stuff's happening)</reference>.<br/>
               Description: <reference type='upcall' name="UpcallName" use-description='yes'/>.
         </item>
 
-        <item>Reference: <reference type='entry' name="EntryPointName"/>.
+        <item>Reference: <reference type='entry' name="EntryPointName"/>.<br/>
+              Explicit: <reference type='entry' name="EntryPointName">EntryPointName (creates a thing)</reference>.<br/>
               Description: <reference type='entry' name="EntryPointName" use-description='yes'/>.
         </item>
 
-        <item>Reference: <reference type='error' name="MyErrorMessage"/>.
+        <item>Reference: <reference type='error' name="MyErrorMessage"/>.<br/>
+              Explicit: <reference type='error' name="MyErrorMessage">MyErrorMessage (Error number &hex;1234)</reference>.<br/>
               Description: <reference type='error' name="MyErrorMessage" use-description='yes'/>.
         </item>
 
-        <item>Reference: <reference type='message' name="MyModuleAction"/>.
+        <item>Reference: <reference type='message' name="MyModuleAction"/>.<br/>
+              Explicit: <reference type='message' name="MyModuleAction">MyModuleAction (broadcast)</reference>.<br/>
               Description: <reference type='message' name="MyModuleAction" use-description='yes'/>.
         </item>
 
-        <item>Reference: <reference type='tboxmethod' name="Object_MethodName"/>.
+        <item>Reference: <reference type='tboxmethod' name="Object_MethodName"/>.<br/>
+              Explicit: <reference type='tboxmethod' name="Object_MethodName">Object_MethodName (toggles state)</reference>.<br/>
               Description: <reference type='tboxmethod' name="Object_MethodName" use-description='yes'/>.
         </item>
 
-        <item>Reference: <reference type='tboxmessage' name="Object_DoneSomething"/>.
+        <item>Reference: <reference type='tboxmessage' name="Object_DoneSomething"/>.<br/>
+              Explicit: <reference type='tboxmessage' name="Object_DoneSomething">Object_DoneSomething (user finished with the object)</reference>.<br/>
               Description: <reference type='tboxmessage' name="Object_DoneSomething" use-description='yes'/>.
         </item>
 
-        <item>Reference: <reference type='command' name="CommandName"/>.
+        <item>Reference: <reference type='command' name="CommandName"/>.<br/>
+              Explicit: <reference type='command' name="CommandName">Command *CommandName</reference>.<br/>
               Description: <reference type='command' name="CommandName" use-description='yes'/>.
         </item>
 
