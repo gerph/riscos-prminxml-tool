@@ -48,12 +48,178 @@ dt {
 
 header {
 }
-header h1 {
+body.chapter header h1 {
   margin-top: 0em;
   padding-top: 0.67em;
   padding-bottom: 0.67em;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
+}
+body.front-matter-title h1 {
+    font-size: 4rem;
+}
+body.front-matter-title h2 {
+    font-size: 2.5rem;
+}
+body.front-matter-title h3 {
+    font-size: 2rem;
+}
+body.front-matter-title {
+    text-align: center;
+    width: 100%;
+    max-height: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 45%;
+}
+
+/* Copyright page doesn't actually have any headings */
+body.front-matter-copyright h1, body.front-matter-copyright h2 {
+    display: none;
+}
+
+body.front-matter-copyright section.section {
+    break-before: auto;
+}
+
+body.front-matter-copyright section.section:not(:first-of-type) {
+    position: absolute;
+    bottom: 0;
+}
+
+/* Dedication page is a simple text */
+body.front-matter-dedication h1, body.front-matter-dedication h2 {
+    display: none;
+}
+
+body.front-matter-dedication section.section {
+    font-size: 2rem;
+    font-style: italic;
+    text-align: center;
+    max-height: 70%;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 45%;
+}
+
+/* Epigraph has multiple blocks of quotes */
+body.front-matter-epigraph h1, body.front-matter-epigraph h2 {
+    display: none;
+}
+
+body.front-matter-epigraph section.section:first-of-type {
+    break-before: recto;
+}
+
+body.front-matter-epigraph section.section {
+    font-size: 1.5rem;
+    font-style: italic;
+    max-height: 80%;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 25%;
+}
+
+body.front-matter-epigraph section.subsection {
+    display: flex;
+    flex-direction: column;
+}
+
+body.front-matter-epigraph section.subsection p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+body.front-matter-epigraph section.subsection h3 {
+    order: 1;
+    font-style: normal;
+    text-align: right;
+    margin-top: 0;
+    margin-bottom: 3rem;
+}
+body.front-matter-epigraph section.subsection h3:before {
+    content: "\2014\00A0";
+}
+
+
+
+/* Paged content page type from the body */
+body.cover {
+    /* Usually quite different */
+    page: cover;
+}
+body.front-matter {
+    /* Generally omits headers and footers, and styles differently */
+    page: front-matter;
+}
+body.indexed-contents {
+    /* Resets the page counter to 1, uses roman page numbers */
+    page: contents;
+    counter-reset: page 1;
+}
+body.chapter {
+    /* Regular chapters */
+    page: chapter;
+}
+body.chapter-front-matter {
+    /* Chapters styled in the usual way, but using roman page numbers */
+    page: chapter;
+}
+
+
+/* Cover page default style */
+body.cover {
+    height: 100pvh;
+}
+body.cover article {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100pvh;
+}
+
+body.cover .cover-title {
+    font-size: 3rem;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    order: 1;
+}
+body.cover .cover-subtitle {
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    order: 2;
+}
+
+body.cover img.cover-image {
+    width: 100%;
+    display: block;
+    margin-bottom: 3rem;
+    order: 3;
+}
+
+body.cover .cover-author {
+    font-size: 1.5rem;
+    text-align: right;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    order: 4;
+}
+
+body.cover .cover-publisher {
+    font-size: 1.5rem;
+    text-align: left;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    order: 4;
 }
 
 
@@ -62,10 +228,10 @@ header h1 .chapter-docgroup-name,
 header h1 .chapter-docgroup-part {
   display: none
 }
-header h1 .chapter-number {
+body.chapter header h1 .chapter-number {
   display: inline-block;
 }
-header h1 .chapter-number::after {
+body.chapter header h1 .chapter-number::after {
   display: inline-block;
   content: "\00a0";
 }
@@ -82,23 +248,23 @@ nav > ul {
   padding-left: 5rem;
 }
 
-section.section {
+body.chapter section.section {
   border-bottom: 2px solid black;
   padding-bottom: 1rem;
 }
-section.section {
+body.chapter section.section {
   padding-left: 5rem;
 }
-section.section h2 {
+body.chapter section.section h2 {
   margin-left: -5rem;
 }
-section.subsection h3 {
+body.chapter section.subsection h3 {
   margin-left: -5rem;
 }
-section.subsubsection h4 {
+body.chapter section.subsubsection h4 {
   margin-left: -2.5rem;
 }
-section.category h5 {
+body.chapter section.category h5 {
 }
 
 .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
@@ -600,6 +766,7 @@ nav.indexed-bar-bottom {
 section.indexed-root {
     margin-left: 3rem;
     margin-right: 3rem;
+    margin-top: 1rem;
 }
 
 section.indexed-section {
@@ -662,15 +829,50 @@ table .indexed-table-reason:before {
     content: " ";
 }
 
+
 /* Styling specific to the print */
 @media print {
 
     /* Change the bookmark text for the headings */
     h1 {
-        -prince-bookmark-level: none;
+        prince-bookmark-level: none;
     }
     h1 .chapter-name {
-        -prince-bookmark-level: 1;
+        prince-bookmark-level: 1;
+    }
+    h1 .chapter-name {
+        string-set: chapter-name content()
+    }
+
+    /* The cover has no bookmarks */
+    body.cover h2 {
+        prince-bookmark-level: none;
+    }
+    body.cover h1 {
+        prince-bookmark-level: none;
+    }
+    body.cover h3 {
+        prince-bookmark-level: none;
+    }
+
+    /* All the front-matter pages take their headings from the chapter name,
+       even though it's hidden */
+    body.front-matter h1 .chapter-name,
+    body.front-matter h2,
+    body.front-matter h3 {
+        prince-bookmark-level: none;
+    }
+    body.front-matter section.section:first-of-type {
+        prince-bookmark-level: 1;
+        prince-bookmark-label: string(chapter-name);
+    }
+    body.front-matter.front-matter-title section.section:first-of-type {
+        /* In the bookmark, we want to label it with Title, not the book title, as that'll look weird if there's a half-title */
+        prince-bookmark-label: "Title";
+    }
+    body.front-matter.front-matter-half-title section.section:first-of-type {
+        /* But we'll remove the half title anyhow */
+        prince-bookmark-level: none;
     }
 
     /* Avoid multiple dividers at the top of the page (the header bar + the definition border) */
@@ -697,6 +899,9 @@ table .indexed-table-reason:before {
     /* Special style that's used on the contents pages */
     body.indexed-contents a[href]::after {
         content: "\A0\A0\A0" target-counter(attr(href), page);
+    }
+    body.indexed-contents .front-matter-link a[href]::after {
+        content: "";
     }
 
     /* Special style that's used on the index pages */
@@ -792,6 +997,12 @@ table .indexed-table-reason:before {
     /* Hide the section as it's not as useful in the printed version */
     .indexed-table-section, .indexed-table-heading-section {
         display: none;
+    }
+
+    /* Cover pages go much closer to the edges */
+    @page cover {
+        margin: 1cm;
+        padding: 0;
     }
 }
 
@@ -916,13 +1127,13 @@ section.meta h2 {
 -->
     <css variant="acornfs"><![CDATA[
 /* Green borders, centred heading */
-header h1 {
+body.chapter header h1 {
     border-color: #008000;
     border-top-width: 0.25rem;
     border-bottom-width: 0.25rem;
     text-align: center;
 }
-header h1 .chapter-name {
+body.chapter header h1 .chapter-name {
     padding-left: 0em;
 }
 footer {
@@ -953,24 +1164,24 @@ h2.contents {
 }
 
 /* Make the divider between sections green */
-section.section {
+body.chapter section.section {
   border-bottom: 0.25rem solid #008000;
 }
 
 /* Remove all the text indentations, leave the headings with some indentation (not sure about this) */
-section.section {
+body.chapter section.section {
   padding-left: 0;
 }
-section.section h2 {
+body.chapter section.section h2 {
   margin-left: 0;
 }
-section.subsection h3 {
+body.chapter section.subsection h3 {
   margin-left: 0em;
 }
-section.subsubsection h4 {
+body.chapter section.subsubsection h4 {
   margin-left: 0.5rem;
 }
-section.category h5 {
+body.chapter section.category h5 {
   margin-left: 1.0rem;
 }
 
@@ -1058,7 +1269,7 @@ footer section.meta table th {
 }
 
 /* Grey divider lines */
-header h1 {
+body.chapter header h1 {
   border-top: 0.375rem solid #bbbbbb;
   border-bottom: 0.375rem solid #bbbbbb;
 }
@@ -1069,7 +1280,7 @@ nav {
 nav.indexed-bar-bottom {
   border-top: 0.375rem solid #bbbbbb;
 }
-section.section {
+body.chapter section.section {
   border-bottom: 0.375rem solid #bbbbbb;
 }
 
@@ -1087,36 +1298,36 @@ footer {
 }
 
 /* Indent the chapter name like the PRM did */
-header h1 {
+body.chapter header h1 {
   position: relative;
 }
-header h1 .chapter-number {
+body.chapter header h1 .chapter-number {
   position: absolute;
   width: 5rem;
 }
-header h1 .chapter-name {
+body.chapter header h1 .chapter-name {
   padding-left: 5rem;
   display: inline-block;
 }
 
 /* Heading sizes are much bigger, and not always bold */
-h1 {
+body.chapter h1 {
   font-size: 2rem;
   font-weight: normal;
 }
-h2 {
+body.chapter h2 {
   font-size: 1.8rem;
   font-weight: normal;
 }
-h3 {
+body.chapter h3 {
   font-size: 1.2rem;
   font-weight: bold;
 }
-h4 {
+body.chapter h4 {
   font-size: 1.2rem;
   font-weight: normal;
 }
-h5 {
+body.chapter h5 {
   font-size: 1rem;
   font-weight: bold;
 }
@@ -1175,7 +1386,9 @@ article .definition-related a:active {
         color: black;
     }
 
-    header h1 {
+    body.chapter header h1,
+    body.contents header h1,
+    body.indexed header h1 {
         /* Force on to the right pages */
         break-before: recto;
 
@@ -1265,6 +1478,78 @@ article .definition-related a:active {
     }
 }
 
+/* Numbering the contents + chapter-front-matter pages with lower-roman
+   works for the footers of the page, but does not work for the links that
+   are generated. The style is not known, so the page number will come out
+   wrongly. So for now, this is just disabled.
+ */
+/*
+@page contents:right {
+    @bottom-right {
+        content: string(chapter-page-prefix) counter(page, lower-roman);
+    }
+}
+@page contents:left {
+    @bottom-left {
+        content: string(chapter-page-prefix) counter(page, lower-roman);
+    }
+}
+*/
+
+/* Numbering and the headers are omitted for the cover */
+@page cover {
+    /* Headers */
+    @top-left {
+        content: "";
+        border-bottom: none;
+    }
+    @top-right {
+        content: "";
+        border-bottom: none;
+    }
+
+    /* Footers */
+    @bottom-right {
+        content: "";
+    }
+    @bottom-left {
+        content: "";
+    }
+
+    /* Edge index */
+    @right-top {
+        content: "";
+        background-color: transparent;
+    }
+}
+
+/* Numbering and the headers are omitted for pages in the front-matter */
+@page front-matter {
+    /* Headers */
+    @top-left {
+        content: "";
+        border-bottom: none;
+    }
+    @top-right {
+        content: "";
+        border-bottom: none;
+    }
+
+    /* Footers */
+    @bottom-right {
+        content: "";
+    }
+    @bottom-left {
+        content: "";
+    }
+
+    /* Edge index */
+    @right-top {
+        content: "";
+        background-color: transparent;
+    }
+}
+
 @page:first {
   @top-right {
     content: '';
@@ -1289,12 +1574,12 @@ pre {
 }
 
 /* No divider lines */
-header h1 {
+body.chapter header h1 {
   border-top: none;
   border-bottom: none;
   padding-bottom: 4em;
 }
-header h1 .chapter-number {
+body.chapter header h1 .chapter-number {
   /* RO 2 PRM doesn't include the chapter numbers */
   display: none;
 }
@@ -1309,7 +1594,7 @@ nav.indexed-bar-bottom {
   border-top: 0.375rem solid lightgray;
   margin-top: 1em;
 }
-section.section {
+body.chapter section.section {
   border-bottom: 0.375rem solid lightgray;
 }
 
@@ -1321,53 +1606,53 @@ footer {
 }
 
 /* Indent the chapter name like the PRM did */
-header h1 {
+body.chapter header h1 {
   position: relative;
 }
-header h1 .chapter-number {
+body.chapter header h1 .chapter-number {
   position: absolute;
   width: 5rem;
 }
-header h1 .chapter-name {
+body.chapter header h1 .chapter-name {
   padding-left: 0em;
   display: inline-block;
 }
 
-article section.section, footer section.meta, section.indexed-root, header nav {
+body.chapter article section.section, footer section.meta, section.indexed-root, header nav {
     position: relative;
     margin-left: 13rem;
     padding-left: 1em;
     border-left: 1px solid black;
     margin-bottom: none;
 }
-section.section, header nav {
+body.chapter section.section, header nav {
     border-bottom: none;
 }
-section.section p:first-of-type {
+body.chapter section.section p:first-of-type {
     margin-top: 0em;
 }
-section.section pre:first-of-type {
+body.chapter section.section pre:first-of-type {
     margin-top: 0em;
 }
 
 /* Heading sizes are much bigger, and not always bold */
-h1 {
+body.chapter h1 {
   font-size: 2.5rem;
   font-weight: normal;
 }
-h2 {
+body.chapter h2 {
   font-size: 1rem;
   font-weight: bold;
 }
-h3 {
+body.chapter h3 {
   font-size: 1rem;
   font-weight: normal;
 }
-h4 {
+body.chapter h4 {
   font-size: 1rem;
   font-weight: normal;
 }
-h5 {
+body.chapter h5 {
   font-size: 1rem;
   font-weight: bold;
 }
@@ -1381,42 +1666,42 @@ p {
     margin-bottom: 0.75em;
 }
 
-section.section h2, section.meta h2 {
+body.chapter section.section h2, section.meta h2 {
     margin-top: 0em;
     position: absolute;
     margin-left: -14rem;
     width: 12rem;
 }
 
-section.section h2 + section:before {
+body.chapter section.section h2 + section:before {
     display: block;
     content: "\a0";
     padding-bottom: 0.75em;
 }
 
-section.subsection h3 {
+body.chapter section.subsection h3 {
     margin-top: 0em;
     position: absolute;
     margin-left: -14rem;
     width: 12rem;
 }
 
-section.section h3 + section:before {
+body.chapter section.section h3 + section:before {
     display: block;
     content: "\a0";
     padding-bottom: 0.75em;
 }
 
-section.subsubsection h4 {
+body.chapter section.subsubsection h4 {
     margin-top: 0em;
     position: absolute;
     margin-left: -12rem;
     width: 10rem;
 }
 
-section.section h2 + section.category h5,
-section.subsection h3 + section.category h5,
-section.subsubsection h4 + section.category h5 {
+body.chapter section.section h2 + section.category h5,
+body.chapter section.subsection h3 + section.category h5,
+body.chapter section.subsubsection h4 + section.category h5 {
     margin-top: 0em;
 }
 
@@ -1687,25 +1972,25 @@ article section h3::before {
 article section h4 {
   counter-reset: countercategory;
 }
-article section.subsubsection h4::before { /* if they skipped the subsection */
+body.chapter article section.subsubsection h4::before { /* if they skipped the subsection */
   counter-increment: countersubsubsection;
   content: counter(countersection) "." counter(countersubsubsection) " ";
 }
-article section.subsection section.subsubsection h4::before {
+body.chapter article section.subsection section.subsubsection h4::before {
   counter-increment: countersubsubsection;
   content: counter(countersection) "." counter(countersubsection) "." counter(countersubsubsection) " ";
 }
 
-article section.category {
+body.chapter article section.category {
   counter-increment: countercategory;
 }
 article section.category h5::before { /* if they skipped subsubsection and subsection */
   content: counter(countersection) "." counter(countercategory) " ";
 }
-article section.subsection section.category h5::before { /* if they skipped subsubsection */
+body.chapter article section.subsection section.category h5::before { /* if they skipped subsubsection */
   content: counter(countersection) "." counter(countersubsection) "." counter(countercategory) " ";
 }
-article section.subsection section.subsubsection section.category h5::before {
+body.chapter article section.subsection section.subsubsection section.category h5::before {
   content: counter(countersection) "." counter(countersubsection) "." counter(countersubsubsection) "." counter(countercategory) " ";
 }
 ]]></css>
@@ -1871,7 +2156,7 @@ article ul > li {
 <!-- Drop letter at the start of a paragraph - only on the first letter of the
      first paragraph of the first section -->
     <css variant='drop-character'><![CDATA[
-section.section:first-of-type p:first-of-type::first-letter {
+body.chapter section.section:first-of-type p:first-of-type::first-letter {
     font-size: 2.75rem;
     line-height: 2.75rem;
     font-weight: bold;
@@ -1898,6 +2183,14 @@ section.section:first-of-type p:first-of-type::first-letter {
     @right-top {
         background-color: #ffffff;
     }
+}
+]]></css>
+
+
+<!-- Remove the metadata section from each chapter -->
+    <css variant='no-meta-section'><![CDATA[
+footer {
+    display: none;
 }
 ]]></css>
 

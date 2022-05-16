@@ -1584,3 +1584,4 @@ Changes from 1.02 to 1.03
   prefixed (previously wouldb prefixed by the usual prefixes, like 'UpCall_'.
 * image elements are better supported now and allow multiple images to be
   aligned in a row.
+* indexed content now supports cover and front-matter elements.

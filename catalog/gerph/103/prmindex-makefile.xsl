@@ -122,15 +122,15 @@ all: images indices \&#10;</xsl:text>
 <xsl:if test='//make-indexdata'>
     <xsl:text>&indent;&indexdir;&dirsep;index-data.xml \&#10;</xsl:text>
 </xsl:if>
-<xsl:apply-templates select="//page" mode="targets"/>
+<xsl:apply-templates select="//page|//front-matter[@href != '']|//cover" mode="targets"/>
 <xsl:apply-templates select="//help" mode="targets"/>
 <xsl:apply-templates select="//page" mode="header-targets"/>
-<xsl:apply-templates select="//page" mode="sourcexml-targets"/>
+<xsl:apply-templates select="//page|//front-matter[@href != '']" mode="sourcexml-targets"/>
 <xsl:text>&#10;&#10;</xsl:text>
-<xsl:apply-templates select="//page"/>
+<xsl:apply-templates select="//page|//front-matter[@href != '']|//cover"/>
 <xsl:apply-templates select="//help"/>
 <xsl:apply-templates select="//page" mode="header-build"/>
-<xsl:apply-templates select="//page" mode="sourcexml-build"/>
+<xsl:apply-templates select="//page|//front-matter[@href != '']" mode="sourcexml-build"/>
 <xsl:text>&#10;</xsl:text>
 <xsl:text>&#10;</xsl:text>
 <xsl:text>validate: &#10;</xsl:text>
@@ -143,9 +143,9 @@ all: images indices \&#10;</xsl:text>
 <xsl:text>clean-headers: &#10;</xsl:text>
 <xsl:apply-templates select="//page" mode="header-clean"/>
 <xsl:text>clean-sourcexml: &#10;</xsl:text>
-<xsl:apply-templates select="//page" mode="sourcexml-clean"/>
+<xsl:apply-templates select="//page|//front-matter[@href != '']" mode="sourcexml-clean"/>
 <xsl:text>clean-html: &#10;</xsl:text>
-<xsl:apply-templates select="//page" mode="clean"/>
+<xsl:apply-templates select="//page|//front-matter[@href != '']|//cover" mode="clean"/>
 <xsl:text>&indent;-&remove; &tempdir;&dirsep;index-swis.xml&#10;</xsl:text>
 <xsl:text>&indent;-&remove; &outputdir;&dirsep;index-swis.html&#10;</xsl:text>
 <xsl:text>&indent;-&remove; &outputdir;&dirsep;index-swis-n.html&#10;</xsl:text>
@@ -472,7 +472,7 @@ indices: ${INDEX_XML}
 </xsl:template>
 
 <!-- Source XML generation -->
-<xsl:template match="page" mode="sourcexml-targets">
+<xsl:template match="page|front-matter[@href != '']" mode="sourcexml-targets">
 <xsl:if test="@href != ''">
  <xsl:text>&indent;</xsl:text>
  <xsl:text>&outputdir;&dirsep;</xsl:text>
@@ -483,7 +483,7 @@ indices: ${INDEX_XML}
 </xsl:if>
 </xsl:template>
 
-<xsl:template match="page" mode="sourcexml-clean">
+<xsl:template match="page|front-matter[@href != '']" mode="sourcexml-clean">
 <xsl:if test="@href != ''">
  <xsl:text>&indent;</xsl:text>
  <xsl:text>-@&remove; &outputdir;&dirsep;</xsl:text>
@@ -498,7 +498,7 @@ indices: ${INDEX_XML}
 </xsl:if>
 </xsl:template>
 
-<xsl:template match="page" mode="sourcexml-build">
+<xsl:template match="page|front-matter[@href != '']" mode="sourcexml-build">
 <xsl:if test="@href != ''">
  <xsl:variable name="dir">
   <xsl:apply-templates mode="dir" select=".."/>
@@ -532,7 +532,7 @@ indices: ${INDEX_XML}
 
 
 <!-- PAGE generation -->
-<xsl:template match="page" mode="targets">
+<xsl:template match="page|front-matter[@href != '']" mode="targets">
 <xsl:if test="@href != ''">
  <xsl:text>&indent;</xsl:text>
  <xsl:text>&outputdir;&dirsep;</xsl:text>
@@ -543,7 +543,13 @@ indices: ${INDEX_XML}
 </xsl:if>
 </xsl:template>
 
-<xsl:template match="page" mode="validate">
+<xsl:template match="cover" mode="targets">
+ <xsl:text>&indent;</xsl:text>
+ <xsl:text>&outputdir;&dirsep;_cover_&escaped_extsep;html</xsl:text>
+ <xsl:text> \&#10;</xsl:text>
+</xsl:template>
+
+<xsl:template match="page|front-matter[@href != '']" mode="validate">
 <xsl:if test="@href != ''">
  <xsl:text>&indent;</xsl:text>
  <xsl:text>-xmllint &throwback; --noout --valid &inputdir;/</xsl:text>
@@ -554,7 +560,7 @@ indices: ${INDEX_XML}
 </xsl:if>
 </xsl:template>
 
-<xsl:template match="page" mode="clean">
+<xsl:template match="page|front-matter[@href != '']" mode="clean">
 <xsl:if test="@href != ''">
  <xsl:text>&indent;</xsl:text>
  <xsl:text>-@&remove; &outputdir;&dirsep;</xsl:text>
@@ -565,7 +571,13 @@ indices: ${INDEX_XML}
 </xsl:if>
 </xsl:template>
 
-<xsl:template match="page">
+<xsl:template match="cover" mode="clean">
+ <xsl:text>&indent;</xsl:text>
+ <xsl:text>-@&remove; &outputdir;&dirsep;_cover_&escaped_extsep;html</xsl:text>
+ <xsl:text>&#10;</xsl:text>
+</xsl:template>
+
+<xsl:template match="page|front-matter[@href != '']">
 <xsl:if test="@href != ''">
  <xsl:variable name="dir">
   <xsl:apply-templates mode="dir" select=".."/>
@@ -589,13 +601,44 @@ indices: ${INDEX_XML}
  <xsl:text>&outputdir;&dirsep;</xsl:text>
  <xsl:value-of select="$uri" /><xsl:text>.html</xsl:text>
  <xsl:text> --stringparam css-base '${PAGE_CSS_BASE}'</xsl:text>
- <xsl:text> --stringparam css-variant '${PAGE_CSS_VARIANT}'</xsl:text>
- <xsl:text> --stringparam css-file '${PAGE_CSS_FILE}'</xsl:text>
+
+ <xsl:text> --stringparam css-variant '${PAGE_CSS_VARIANT}</xsl:text>
+ <xsl:if test="@css-variant and @css-variant != ''">
+    <xsl:value-of select="@css-variant"/>
+ </xsl:if>
+ <xsl:text>'</xsl:text>
+
+ <xsl:choose>
+    <xsl:when test="@css-file">
+        <xsl:text> --stringparam css-file '</xsl:text>
+        <xsl:value-of select="@css-file"/>
+        <xsl:text>'</xsl:text>
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:text> --stringparam css-file '${PAGE_CSS_FILE}'</xsl:text>
+    </xsl:otherwise>
+ </xsl:choose>
+
+ <xsl:choose>
+    <xsl:when test="local-name() = 'front-matter'">
+        <xsl:text> --stringparam create-contents 'no'</xsl:text>
+    </xsl:when>
+
+    <xsl:when test="//options/@chapter-contents">
+        <xsl:text> --stringparam create-contents </xsl:text>
+        <xsl:value-of select="//options/@chapter-contents"/>
+    </xsl:when>
+ </xsl:choose>
+ <xsl:if test="local-name() = 'front-matter'">
+    <xsl:text> --stringparam front-matter '</xsl:text>
+    <xsl:value-of select='@type'/>
+    <xsl:text>'</xsl:text>
+ </xsl:if>
  <xsl:apply-templates mode="docgroup-name" select=".."/>
  <xsl:apply-templates mode="docgroup-part" select=".."/>
  <xsl:apply-templates mode="edgeindex-number" select=".."/>
  <xsl:apply-templates mode="edgeindex-max" select="/"/>
- <xsl:if test="//options/@chapter-numbers = 'yes'">
+ <xsl:if test="//options/@chapter-numbers = 'yes' and local-name() != 'front-matter'">
   <xsl:text> --stringparam override-chapter-number '</xsl:text>
   <xsl:value-of select="count(preceding::page) + 1"/>
   <xsl:text>'</xsl:text>
@@ -607,6 +650,60 @@ indices: ${INDEX_XML}
  <xsl:value-of select="$uri" /><xsl:text>.xml</xsl:text>
  <xsl:text>&#10;</xsl:text>
 </xsl:if>
+
+</xsl:template>
+
+
+
+<xsl:template match="cover">
+ <xsl:variable name="uri">
+  <xsl:apply-templates mode="uri" select=".."/>
+  <xsl:value-of select="@src"/>
+ </xsl:variable>
+
+ <!-- build rule -->
+ <xsl:text>&outputdir;&dirsep;_cover_&escaped_extsep;html</xsl:text>
+ <xsl:text>: </xsl:text>
+ <xsl:text>${INDEX_XML} </xsl:text>
+ <xsl:choose>
+    <xsl:when test="@src">
+        <xsl:text>&inputdir;&dirsep;</xsl:text>
+        <xsl:value-of select="@src" />
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:text>&inputdir;&dirsep;</xsl:text>
+        <xsl:value-of select="@html" />
+    </xsl:otherwise>
+ </xsl:choose>
+ <xsl:text>&#10;</xsl:text>
+
+ <xsl:choose>
+    <xsl:when test="@src">
+        <xsl:text>&indent;</xsl:text>
+        <xsl:text>xsltproc -output </xsl:text>
+        <xsl:text>&outputdir;&dirsep;_cover_.html</xsl:text>
+        <xsl:text> --stringparam css-base '${PAGE_CSS_BASE}'</xsl:text>
+
+        <xsl:text> --stringparam css-variant '${PAGE_CSS_VARIANT}</xsl:text>
+        <xsl:if test="@css-variant and @css-variant != ''">
+            <xsl:value-of select="@css-variant"/>
+        </xsl:if>
+        <xsl:text>'</xsl:text>
+
+        <xsl:text> --stringparam css-file '${PAGE_CSS_FILE}'</xsl:text>
+        <xsl:text> </xsl:text>
+        <xsl:text>http://gerph.org/dtd/${CATALOG_VERSION}/prmcover-${PAGE_FORMAT}.xsl</xsl:text>
+        <xsl:text> </xsl:text>
+        <xsl:text>${INDEX_XML}</xsl:text>
+        <xsl:text>&#10;</xsl:text>
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:text>&indent;cp "&inputdir;&dirsep;</xsl:text>
+        <xsl:value-of select="@html" />
+        <xsl:text>" "$@"</xsl:text>
+        <xsl:text>&#10;</xsl:text>
+    </xsl:otherwise>
+ </xsl:choose>
 
 </xsl:template>
 
