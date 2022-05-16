@@ -1503,8 +1503,8 @@ Attributes: src, type, width, height, caption
 Children:   image
 
 src: a relative location of the graphic with any necessary extension
-type: the type of graphic being represented - only `png`, `draw` and `svg`
-      are presently defined.
+type: the type of graphic being represented - only `png`, `gif, `draw`
+      and `svg` are presently defined.
 width: the width of the image when displayed (in pixels)
 height: the height of the image when displayed (in pixels)
 caption: a caption describing the image
@@ -1650,5 +1650,10 @@ Changes from 1.02 to 1.03
 * bit elements which have state and name attributes no longer repeat the attribute
   name if they are identical.
 * alternates element added to allow for alternates which are not optional.
+* reference SWI elements with generated text will be prefixed by 'SWI'.
+* reference elements with explicit text in their body will no longer be
+  prefixed (previously wouldb prefixed by the usual prefixes, like 'UpCall_'.
+* image elements are better supported now and allow multiple images to be
+  aligned in a row.
 * compatibility, version-table and version elements added to provide information
   about the support for given features.

@@ -120,11 +120,20 @@
     path to areas with problems is given, or the
     shorter index-based form.
 </pixparams:param>
+<pixparams:param name="override-docgroup" values="group-name" default="''">
+    Overrides any document group specified in the
+    document. If none was specified in the document,
+    it would default to 'RISC OS Programmers Reference
+    Manuals'.
+    Use '' to use the group specified in the document.
+</pixparams:param>
 
 <xsl:param name="create-contents">yes</xsl:param>
 <xsl:param name="create-body">yes</xsl:param>
 <xsl:param name="create-contents-target"></xsl:param>
 <xsl:param name="position-with-names">yes</xsl:param>
+
+<xsl:param name="override-docgroup"></xsl:param>
 
 <xsl:template match="/">
 <html>
@@ -143,7 +152,10 @@
 <head>
   <meta charset="utf-8"/>
   <title>
-  <xsl:value-of select="../@docgroup"/>
+    <xsl:choose>
+        <xsl:when test="$override-docgroup != ''"><xsl:value-of select="$override-docgroup"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="../@docgroup"/></xsl:otherwise>
+    </xsl:choose>
   <xsl:text> : </xsl:text>
   <xsl:value-of select="@title"/>
  </title>
@@ -2127,7 +2139,9 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>*</xsl:text>
+      <xsl:if test="(not(text()) and count(*) = 0) and @name">
+        <xsl:text>*</xsl:text>
+      </xsl:if>
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -2150,7 +2164,9 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>VDU </xsl:text>
+      <xsl:if test="(not(text()) and count(*) = 0) and @name">
+        <xsl:text>VDU </xsl:text>
+      </xsl:if>
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -2173,7 +2189,9 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>Message_</xsl:text>
+      <xsl:if test="(not(text()) and count(*) = 0) and @name">
+        <xsl:text>Message_</xsl:text>
+      </xsl:if>
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -2193,7 +2211,9 @@
     <xsl:value-of select="//error-definition[@name=$refname]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>Error_</xsl:text>
+      <xsl:if test="(not(text()) and count(*) = 0) and @name">
+        <xsl:text>Error_</xsl:text>
+      </xsl:if>
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -2216,7 +2236,9 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>Service_</xsl:text>
+      <xsl:if test="(not(text()) and count(*) = 0) and @name">
+        <xsl:text>Service_</xsl:text>
+      </xsl:if>
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -2283,7 +2305,9 @@
                              (string(@reason)=$refreason)]/@description" />
    </xsl:when>
    <xsl:otherwise>
-    <xsl:text>UpCall_</xsl:text>
+      <xsl:if test="(not(text()) and count(*) = 0) and @name">
+        <xsl:text>UpCall_</xsl:text>
+      </xsl:if>
     <xsl:value-of select="$link-content" />
    </xsl:otherwise>
   </xsl:choose>
@@ -2660,7 +2684,7 @@
  <p align="center" />
 </xsl:if>
 <xsl:choose>
- <xsl:when test="@type = 'png' or @type = 'svg'">
+ <xsl:when test="@type = 'png' or @type = 'gif' or @type = 'svg'">
   <img align="center">
     <xsl:variable name="style">
      <xsl:if test="@width != ''">
