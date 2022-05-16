@@ -192,6 +192,12 @@
     edge of the page.
 </pixparams:param>
 
+<pixparams:param name="front-matter" values="front-matter-type | 'no'" default="no">
+    Declares a page of front-matter content, which
+    should be styled differently to the chapters of
+    the documents.
+</pixparams:param>
+
 <xsl:param name="create-contents">yes</xsl:param>
 <xsl:param name="create-body">yes</xsl:param>
 <xsl:param name="create-contents-target"></xsl:param>
@@ -207,6 +213,8 @@
 
 <xsl:param name="edgeindex">1</xsl:param>
 <xsl:param name="edgeindex-max">4</xsl:param>
+
+<xsl:param name="front-matter">no</xsl:param>
 
 
 <xsl:template match="/">
@@ -248,13 +256,28 @@
         <xsl:when test="$override-docgroup != ''"><xsl:value-of select="$override-docgroup"/></xsl:when>
         <xsl:otherwise><xsl:value-of select="../@docgroup"/></xsl:otherwise>
     </xsl:choose>
-    <xsl:text> : </xsl:text>
+    <xsl:if test="$override-docgroup != '' or ../@docgroup != ''">
+        <xsl:text> : </xsl:text>
+    </xsl:if>
     <xsl:value-of select="@title"/>
   </title>
   <xsl:call-template name='head-css'/>
 </head>
 
 <body>
+    <xsl:attribute name="class">
+        <xsl:choose>
+            <xsl:when test="$front-matter != 'no'">
+                <xsl:text>front-matter front-matter-</xsl:text>
+                <xsl:value-of select="$front-matter"/>
+            </xsl:when>
+
+            <xsl:otherwise>
+                <xsl:text>chapter</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:attribute>
+
 
 <header>
 <!-- Variables in the span here have no presentation in the document;

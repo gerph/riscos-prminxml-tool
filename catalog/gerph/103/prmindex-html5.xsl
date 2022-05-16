@@ -64,8 +64,7 @@
 </xsl:template>
 
 <!-- hide the footer declaration when producing the index itself -->
-<xsl:template match="footer">
-</xsl:template>
+<xsl:template match="footer"/>
 
 <xsl:template match="make-index">
 <xsl:param name="index-entity" />
@@ -1037,6 +1036,57 @@
 </xsl:choose>
 </xsl:template>
 
+<!-- Front matter documents are shown, but don't have any page numbers -->
+<xsl:template match="front-matter">
+<xsl:param name="index-entity"/>
+
+<xsl:variable name="target">
+ <xsl:apply-templates mode="dir" select=".."/>
+    <xsl:choose>
+        <xsl:when test="@href!=''">
+            <xsl:value-of select="@href"/>
+            <xml:text>.html</xml:text>
+        </xsl:when>
+        <xsl:when test="@html!=''">
+            <xsl:value-of select="@html"/>
+        </xsl:when>
+    </xsl:choose>
+</xsl:variable>
+
+<xsl:if test="@title != ''">
+    <div class='indexed-page front-matter-link'>
+        <a>
+            <xsl:attribute name="href">
+                <xsl:value-of select="$target"/>
+            </xsl:attribute>
+            <xsl:value-of select='@title' />
+            <span class='indexed-link-trailer'/>
+        </a>
+
+        <xsl:choose>
+            <xsl:when test="@href!=''">
+                <xsl:if test="$include-source = 'yes'">
+                    <span class='indexed-xml-link'>
+                        <xsl:text> (</xsl:text>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:value-of select="@href"/>
+                                <xml:text>.xml</xml:text>
+                            </xsl:attribute>
+                            <xsl:text>XML source</xsl:text>
+                            <span class='indexed-link-trailer'/>
+                        </a>
+                        <xsl:text>)</xsl:text>
+                    </span>
+               </xsl:if>
+            </xsl:when>
+        </xsl:choose>
+    </div>
+</xsl:if>
+
+</xsl:template>
+
+
 
 <!-- ********** Indexed document definitions ********** -->
 <xsl:template name="content-definition">
@@ -1115,7 +1165,7 @@
        <xml:text>_</xml:text>
        <xsl:value-of select="translate(@title,$title-to-id-src,$title-to-id-map)" />
       </xsl:attribute>
-      
+
       <xsl:value-of select="@title" />
       <span class='indexed-link-trailer'/>
      </a>
@@ -1142,6 +1192,9 @@
 
 <xsl:template match="make-filelist">
     <xsl:document href="filelist.txt" method="text" indent="no">
+        <xsl:apply-templates select="//cover" mode="filelist"/>
+        <xsl:apply-templates select="//front-matter[@href != '']" mode="filelist"/>
+
         <xsl:text>index.html&#10;</xsl:text>
 
         <!-- Now the actual content referenced -->
@@ -1167,7 +1220,12 @@
     </xsl:document>
 </xsl:template>
 
-<xsl:template match="page" mode="filelist">
+<xsl:template match="cover" mode="filelist">
+  <xsl:apply-templates mode="dir" select=".."/>
+  <xsl:text>_cover_.html&#10;</xsl:text>
+</xsl:template>
+
+<xsl:template match="page|front-matter[@href != '']" mode="filelist">
 <xsl:if test="@href != ''">
   <xsl:apply-templates mode="dir" select=".."/>
   <xsl:value-of select="@href"/>

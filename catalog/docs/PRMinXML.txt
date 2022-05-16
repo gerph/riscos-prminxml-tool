@@ -1657,3 +1657,4 @@ Changes from 1.02 to 1.03
   aligned in a row.
 * compatibility, version-table and version elements added to provide information
   about the support for given features.
+* indexed content now supports cover and front-matter elements.

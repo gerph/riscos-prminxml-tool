@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE riscos-prm PUBLIC "-//Gerph//DTD PRM documentation 1.03//EN"
+                            "http://gerph.org/dtd/103/prm.dtd">
+
+<riscos-prm>
+<chapter title="Dedication">
+    <section title="Dedication">
+        <!-- The dedication body appears in the center of the page by default -->
+        <p>
+            For free people everywhere.
+        </p>
+    </section>
+</chapter>
+</riscos-prm>

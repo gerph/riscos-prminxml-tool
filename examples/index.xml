@@ -13,8 +13,9 @@
     include-sections-depth="1"
     catalog-version="103"
     page-format='html5'
-    page-css-variant=''
+    page-css-variant='no-meta-section'
     index-css-variant='no-edge-index index-reason-linebreak-in-print index-include-indexed-header-label'
+    chapter-contents='no'
     chapter-numbers='yes'
     edgeindex-max='3'
     />
@@ -34,10 +35,28 @@
 
 <make-filelist/>
 
-<footer>
-<p>This is an example of a footer.</p>
-<p>It has two paragraphs in it.</p>
-</footer>
+<!-- The default cover page style; any attribute can be empty -->
+<!-- Can use `html='<page>'` if a dedicated HTML page is being used -->
+<cover src="cover.svg"
+       title="PRM-in-XML examples"
+       subtitle="Testing the PRM-in-XML elements"
+       author="Gerph"
+       publisher="Gerph Publications"/>
+
+<!-- front-matter elements appear before the contents page -->
+
+<!-- Example page names taken from https://en.wikipedia.org/wiki/Book_design#Front_matter -->
+<!-- <front-matter type="half-title" href="frontmatter-half-title" /> -->
+<front-matter type="title" href="frontmatter-title" title="Title"/>
+<front-matter type="copyright" href="frontmatter-copyright" title="Copyright"/>
+<front-matter type="dedication" href="frontmatter-dedication" title="Dedication"/>
+
+<!-- No title is present on the Epigraph, to test the lack of title omits from the contents -->
+<front-matter type="epigraph" href="frontmatter-epigraph"/>
+
+<!-- Front matter chapters are intended to be styled as roman numerals when referenced, but this does not as yet -->
+<!-- Note the 'type' is not currently carried through to the document as chapter-front-matter -->
+<page href="preface" type="front-matter" css-variant='no-edge-index'>Preface</page>
 
 <section title="Structural elements"
          docgroup-name="Structural elements"
@@ -66,6 +85,11 @@
     <page href="fixme">FIXMEs</page>
 </section>
 
+<!-- The footer appears at the bottom of the contents page -->
+<footer>
+<p>This is an example of a footer.</p>
+<p>It has two paragraphs in it.</p>
+</footer>
 
 </index>
 
