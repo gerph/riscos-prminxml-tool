@@ -1882,15 +1882,16 @@ Attributes:
 <xsl:template match="definition-table">
 <xsl:variable name="head-extra">
   <xsl:choose>
-    <xsl:when test="@head-extra != ''"><xsl:value-of select="@head-extra" /></xsl:when>
-    <xsl:when test="count(value/@extra)>0"><xsl:text>Extra</xsl:text></xsl:when>
+    <xsl:when test="@head-extra != '' and count(definition/@extra)>0"><xsl:value-of select="@head-extra" /></xsl:when>
+    <!-- There's no default if you don't provide the extra column's heading name -->
+    <xsl:when test="count(definition/@extra)>0"></xsl:when>
   </xsl:choose>
 </xsl:variable>
 <table class='user-table definition-table'>
  <thead class='table-head'>
   <tr>
    <th class='table-name'><xsl:value-of select="@head-name" /></th>
-   <xsl:if test="$head-extra != ''">
+   <xsl:if test="count(definition/@extra) > 0">
     <th class='table-extra'><xsl:value-of select="$head-extra" /></th>
    </xsl:if>
    <th class='table-value'><xsl:value-of select="@head-value" /></th>
