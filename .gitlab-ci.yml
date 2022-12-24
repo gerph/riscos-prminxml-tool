@@ -151,7 +151,8 @@ export-linux:
   stage: export-cross
   script:
     # Build and upload the binary to Artifactory.
-    - if [ "$CI_COMMIT_BRANCH" = 'master' ] ; then upload=--upload ; else upload= ; fi
+    # We upload both the master branch and the HTML 5 branch.
+    - if [[ "$CI_COMMIT_BRANCH" = 'master' || "$CI_COMMIT_BRANCH" = 'html5-css' ]] ; then upload=--upload ; else upload= ; fi
     - ci/build.sh native install ${upload}
   tags:
     - linux
@@ -160,7 +161,7 @@ export-macos:
   <<: *common-cross
   stage: export-cross
   script:
-    - if [ "$CI_COMMIT_BRANCH" = 'master' ] ; then upload=--upload ; else upload= ; fi
+    - if [[ "$CI_COMMIT_BRANCH" = 'master' || "$CI_COMMIT_BRANCH" = 'html5-css' ]] ; then upload=--upload ; else upload= ; fi
     - ci/build.sh native install ${upload}
   tags:
     - macos
