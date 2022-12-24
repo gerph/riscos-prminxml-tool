@@ -54,8 +54,8 @@ p:ubuntu-18.04:
   tags:
     - linux
 
-p:ubuntu-21.04:
-  image: ubuntu:21.04
+p:ubuntu-20.04:
+  image: ubuntu:20.04
   stage: platforms
   needs: ['test-examples']
   script:
@@ -63,8 +63,8 @@ p:ubuntu-21.04:
   tags:
     - linux
 
-p:ubuntu-20.04:
-  image: ubuntu:20.04
+p:ubuntu-22.04:
+  image: ubuntu:22.04
   stage: platforms
   needs: ['test-examples']
   script:
@@ -121,9 +121,18 @@ p:mint-20:
   tags:
     - linux
 
+p:mint-21:
+  image: linuxmintd/mint20-amd64
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
 # Test by running this on build.riscos.online
 # Note: This only runs some simple tests - it doesn't build the examples.
-p:riscos:
+.p:riscos:
   stage: platforms
 
   script:

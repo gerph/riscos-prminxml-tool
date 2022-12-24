@@ -20,16 +20,16 @@
 # Supported operating systems:
 #
 #   macOS
-#   Ubuntu Linux (18.04, 20.04, 21.04)
+#   Ubuntu Linux (18.04, 20.04, 22.04)
 #   Centos (7 and 8)
 #   Debian (10)
-#   Linux Mint (18 and 20)
+#   Linux Mint (18, 20, 21)
 #
 
 set -e
 set -o pipefail
 
-PRINCE_VERSION=14.2
+PRINCE_VERSION=14.4
 SYSTEM="$(uname -s)"
 
 if [[ "$SYSTEM" = 'Darwin' ]] ; then
@@ -181,7 +181,9 @@ if ! type -p prince >/dev/null 2>&1 && [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 ]] ;
                 PRINCE_DISTRO_RELEASE=""
                 PRINCE_ARCH='x86_64'
             elif [[ "${PRINCE_DISTRO}" = 'ubuntu' ]] ; then
-                if [[ "$DISTRO_RELEASE" =~ 20.10|21.04|21.10 ]] ; then
+                if [[ "$DISTRO_RELEASE" =~ 22.10 ]] ; then
+                    PRINCE_DISTRO_RELEASE=22.04
+                elif [[ "$DISTRO_RELEASE" =~ 20.10|21.04|21.10 ]] ; then
                     PRINCE_DISTRO_RELEASE=20.04
                 elif [[ "$DISTRO_RELEASE" =~ 18.10|19.04|19.10 ]] ; then
                     PRINCE_DISTRO_RELEASE=18.04
@@ -192,6 +194,10 @@ if ! type -p prince >/dev/null 2>&1 && [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 ]] ;
                 PRINCE_ARCH='amd64'
             elif [[ "$PRINCE_DISTRO" = 'centos' ]] ; then
                 PRINCE_ARCH='x86_64'
+                if [[ "$DISTRO_RELEASE" == 8 ]] ; then
+                    # CentOS 8 is old and Prince wasn't updated beyond 14.2
+                    PRINCE_VERSION=14.2
+                fi
             fi
             url="https://www.princexml.com/download/prince-$PRINCE_VERSION-${PRINCE_DISTRO}${PRINCE_DISTRO_RELEASE}-${PRINCE_ARCH}.tar.gz"
             extract_dir="prince-${PRINCE_VERSION}-${PRINCE_DISTRO}${PRINCE_DISTRO_RELEASE}-${PRINCE_ARCH}"
