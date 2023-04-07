@@ -1997,7 +1997,13 @@
     <xsl:when test="$where/@name != ''">
      <xsl:text>[@name='</xsl:text>
      <xsl:value-of select="$where/@name" />
-     <xsl:text>']</xsl:text>
+     <xsl:text>'</xsl:text>
+     <xsl:if test="$where/@reason != ''">
+         <xsl:text>, @reason='</xsl:text>
+         <xsl:value-of select="$where/@reason" />
+         <xsl:text>'</xsl:text>
+     </xsl:if>
+     <xsl:text>]</xsl:text>
     </xsl:when>
     <xsl:otherwise>
      <xsl:variable name="index" select="count($where/preceding-sibling::*) + 1"/>
