@@ -1643,7 +1643,7 @@ Changes from 1.02 to 1.03
 * offset and message now have a state attribute, to allow them to be marked as
   being undefined or reserved.
 * chapter has docgroup and docgroup-part attributes to distinguish the
-  document. In 1.02 the doc-group was documented as being present on the
+  document. In 1.02 the docgroup was documented as being present on the
   riscos-prm element, but had always been an attribute of chapter (as doc-group).
 * references can now be made to chapter, as well as documents, which may make
   the references read more clearly.

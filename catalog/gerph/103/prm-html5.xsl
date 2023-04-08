@@ -254,9 +254,9 @@
   <title>
     <xsl:choose>
         <xsl:when test="$override-docgroup != ''"><xsl:value-of select="$override-docgroup"/></xsl:when>
-        <xsl:otherwise><xsl:value-of select="../@docgroup"/></xsl:otherwise>
+        <xsl:otherwise><xsl:value-of select="@docgroup"/></xsl:otherwise>
     </xsl:choose>
-    <xsl:if test="$override-docgroup != '' or ../@docgroup != ''">
+    <xsl:if test="$override-docgroup != '' or @docgroup != ''">
         <xsl:text> : </xsl:text>
     </xsl:if>
     <xsl:value-of select="@title"/>

@@ -82,14 +82,13 @@
 
 <!-- Some real DTD stuff -->
 <!ELEMENT riscos-prm ((chapter)*, meta)>
-<!ATTLIST riscos-prm
-    doc-group CDATA "RISC OS Programmers Reference Manuals"
-    doc-group-part CDATA ""
->
+<!ATTLIST riscos-prm>
 <!ELEMENT chapter (section | import)*>
 <!ATTLIST chapter
     title CDATA #REQUIRED
     number CDATA ""
+    docgroup CDATA "RISC OS Programmers Reference Manuals"
+    docgroup-part CDATA ""
 >
 <!ATTLIST section
     title CDATA #REQUIRED
