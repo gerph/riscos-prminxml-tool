@@ -18,7 +18,7 @@ on:
 jobs:
   test-examples:
     runs-on: ubuntu-20.04
-    container: ubuntu:18.04
+    container: ubuntu:20.04
     steps:
       - uses: actions/checkout@v3
 
@@ -31,7 +31,7 @@ jobs:
           export PRINCEXML_I_HAVE_A_LICENSE=1
           crosscompile/build-examples.sh
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: Test-Output
           path: test-output
@@ -109,7 +109,7 @@ jobs:
           make cross_install ROTOOL_DIR=../artifacts
           ../artifacts/riscos-prminxml --version
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: Tool-POSIX
           path: artifacts
@@ -141,8 +141,8 @@ jobs:
           version="${CI_BRANCH_VERSION}"
           echo "This is version: $version"
           leafname="PRMinXML-$version.zip"
-          echo "::set-output name=version::$version"
-          echo "::set-output name=leafname::$leafname"
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "leafname=$leafname" >> $GITHUB_OUTPUT
 
       - name: Build through build.riscos.online
         run: |
@@ -150,7 +150,7 @@ jobs:
           eval "$(crosscompile/ci-vars)"
           crosscompile/build-riscos-archive.sh ${{ steps.version.outputs.leafname }}
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: Tool-RISCOS
           path: ${{ steps.version.outputs.leafname }}
@@ -180,66 +180,30 @@ jobs:
           name: Test-Output
 
       # RISC OS version is already archived in a RISC OS archive format.
+      - name: Rename the RISC OS archive
+        run: |
+          mv "Tool-RISCOS/${{ needs.export-riscos.outputs.leafname }}" RISCOS-"${{ needs.export-riscos.outputs.leafname }}"
+
       - name: Archive the contents of the POSIX version
         run: |
           cd Tool-POSIX
           # For some reason, the executable flag has been lost on the tool.
           chmod +x riscos-prminxml
-          tar zcvf ../PRMinXML-${{ needs.export-riscos.outputs.version }}.tar.gz *
+          tar zcvf ../POSIX-PRMinXML-${{ needs.export-riscos.outputs.version }}.tar.gz *
 
       - name: Archive the contents of the Test output
         run: |
           cd Test-Output
           # We use zip here because most people using these tools will be RISC OS users
           # and zip is more friendly to them.
-          zip -9r ../TestOutput-${{ needs.export-riscos.outputs.version }}.zip *
+          zip -9r ../Example-Output-${{ needs.export-riscos.outputs.version }}.zip *
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ needs.export-riscos.outputs.version }}
-          draft: true
           prerelease: false
-
-      - name: Upload Release Asset (RISC OS)
-        id: upload-release-asset-riscos
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`.
-          # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: Tool-RISCOS/${{ needs.export-riscos.outputs.leafname }}
-          asset_name: RISCOS-${{ needs.export-riscos.outputs.leafname }}
-          asset_content_type: application/zip
-
-      - name: Upload Release Asset (POSIX)
-        id: upload-release-asset-posix
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`.
-          # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: PRMinXML-${{ needs.export-riscos.outputs.version }}.tar.gz
-          asset_name: POSIX-PRMinXML-${{ needs.export-riscos.outputs.version }}.tar.gz
-          asset_content_type: application/gzip
-
-      - name: Upload Release Asset (Test output)
-        id: upload-release-asset-test-output
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`.
-          # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: TestOutput-${{ needs.export-riscos.outputs.version }}.zip
-          asset_name: Example-Output-${{ needs.export-riscos.outputs.version }}.zip
-          asset_content_type: application/zip
+          draft: true
+          name: Release ${{ needs.export-riscos.outputs.version }}
+          artifacts: "RISCOS-${{ needs.export-riscos.outputs.leafname }},POSIX-PRMinXML-${{ needs.export-riscos.outputs.version }}.tar.gz,Example-Output-${{ needs.export-riscos.outputs.version }}.zip"
+          artifactContentType: application/zip
