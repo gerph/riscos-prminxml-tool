@@ -154,7 +154,10 @@
 
     <xsl:for-each select="$document///ref">
         <!-- <xsl:sort select="@section" order="ascending" data-type="text" case-order="upper-first" /> -->
-        <xsl:sort select="@name" order="ascending" data-type="text" case-order="upper-first" />
+        <xsl:sort select="@offset-base" order="ascending" data-type="text" case-order="upper-first" />
+        <xsl:sort select="@label" order="ascending" data-type="text" case-order="upper-first" />
+        <xsl:sort select="@offset-base" order="ascending" data-type="text" case-order="upper-first" />
+        <xsl:sort select="@reason" order="ascending" data-type="number" />
         <xsl:call-template name='ref'>
             <xsl:with-param name="key-field" select="'name'"/>
             <xsl:with-param name="use-numbers">
@@ -353,8 +356,17 @@
             </xsl:if>
         </xsl:attribute>
         <!-- FIXME: We should really use the localdb to retrieve this, like in html5 -->
-        <xsl:text>&amp;</xsl:text>
-        <xsl:value-of select="@number-hex" />
+        <xsl:choose>
+            <xsl:when test="@number != ''">
+                <xsl:text>&amp;</xsl:text>
+                <xsl:value-of select="@number-hex" />
+            </xsl:when>
+            <xsl:when test="@offset != ''">
+                <xsl:value-of select="@offset-base" />
+                <xsl:text>+</xsl:text>
+                <xsl:value-of select="@offset" />
+            </xsl:when>
+        </xsl:choose>
     </td>
 </xsl:if>
 
@@ -488,6 +500,17 @@
      <xsl:attribute name="reasonname">
       <xsl:value-of select="@reasonname" />
      </xsl:attribute>
+   </xsl:if>
+
+   <xsl:if test="@offset != ''">
+    <xsl:attribute name="offset">
+     <xsl:value-of select="@offset" />
+    </xsl:attribute>
+   </xsl:if>
+   <xsl:if test="@offset-base != ''">
+    <xsl:attribute name="offset-base">
+     <xsl:value-of select="@offset-base" />
+    </xsl:attribute>
    </xsl:if>
 
    <xsl:attribute name="section">
