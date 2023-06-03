@@ -287,6 +287,9 @@ body.chapter section.category h5 {
 }
 .definition-reason {
 }
+.definition-reason-name {
+    display: block;
+}
 .definition-subtitle {
   display: block;
   font-family: sans-serif;

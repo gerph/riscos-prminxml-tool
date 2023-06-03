@@ -26,8 +26,8 @@
      'Name' is used when describing what the definition is (but capitalised)
   -->
 <localdb:definition-titles type="swi"          prefix-definition=""         prefix-name="SWI "     prefix-number="SWI "     number-base="&amp;" name="SWI"              Name="SWI"                />
-<localdb:definition-titles type="vdu"          prefix-definition="VDU "     prefix-name="VDU "     prefix-number=""         number-base=""      name="VDU code"         Name="VDU code"           separator=","/>
-<localdb:definition-titles type="vector"       prefix-definition="Vector "  prefix-name=""         prefix-number="Vector "  number-base=""      name="vector"           Name="Vector"             />
+<localdb:definition-titles type="vdu"          prefix-definition="VDU "     prefix-name="VDU "     prefix-number=""         number-base=""      name="VDU code"         Name="VDU code"           separator=", "/>
+<localdb:definition-titles type="vector"       prefix-definition="Vector "  prefix-name=""         prefix-number="Vector "  number-base="&amp;" name="vector"           Name="Vector"             />
 <localdb:definition-titles type="command"      prefix-definition="*"        prefix-name="*"        prefix-number=""         number-base=""      name="* command"        Name="* command"          />
 <localdb:definition-titles type="entry"        prefix-definition=""         prefix-name=""         prefix-number=""         number-base=""      name="entry point "     Name="Entry point "       />
 <localdb:definition-titles type="sysvar"       prefix-definition=""         prefix-name=""         prefix-number=""         number-base=""      name="system variable " Name="System variable "   />
@@ -1362,6 +1362,9 @@ Attributes:
     <xsl:if test="@reason != ''">
      <xsl:text> </xsl:text>
      <span class='definition-reason'><xsl:value-of select="@reason"/></span>
+    </xsl:if>
+    <xsl:if test="(@reason != '') and (@reasonname != '')">
+     <span class='definition-reason-name'><xsl:value-of select="@reasonname"/></span>
     </xsl:if>
    </span>
    <xsl:if test="(@offset != '') or (@number != '')">
