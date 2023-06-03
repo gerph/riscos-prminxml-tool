@@ -2058,18 +2058,18 @@ body.chapter article section.subsection section.subsubsection section.category h
   -->
     <css variant='body-novarese'><![CDATA[
 body {
-  font-family: "ITC Novarese Std", "ITC Novarese", monospace; /* Fall back to monospace to show we're failing */
+  font-family: "ITC Novarese Std", "ITC Novarese", serif; /* Fall back to serif so we don't look terrible */
   font-feature-settings: 'ss01' 1;
   font-variant: prince-opentype(ss01(1));
 }
 
 table.history h5 {
-  font-family: "ITC Novarese Std", "ITC Novarese", monospace;
+  font-family: "ITC Novarese Std", "ITC Novarese", serif;
 }
 @media print {
     /* Special changes for the generated index text */
     nav.indexed-bar-bottom ul {
-      font-family: "ITC Novarese Std", "ITC Novarese", monospace !important;
+      font-family: "ITC Novarese Std", "ITC Novarese", serif !important;
     }
 }
 ]]></css>
@@ -2090,20 +2090,20 @@ table.history h5 {
 ]]></css>
     <css variant='body-fraunces'><![CDATA[
 body {
-  font-family: "Fraunces 28pt", "Fraunces", monospace;
+  font-family: "Fraunces 28pt", "Fraunces", serif;
 }
 body.indexed th {
   font-weight: bold;
 }
 table.history h5 {
   font-weight: normal;
-  font-family: "Fraunces 28pt", "Fraunces", monospace;
+  font-family: "Fraunces 28pt", "Fraunces", serif;
 }
 
 @media print {
     /* Special changes for the generated index text */
     nav.indexed-bar-bottom ul {
-      font-family: "Fraunces 28pt", "Fraunces", monospace !important;
+      font-family: "Fraunces 28pt", "Fraunces", serif !important;
     }
 }
 ]]></css>
@@ -2118,23 +2118,23 @@ table.history h5 {
 ]]></css>
     <css variant='heading-raleway'><![CDATA[
 h1, h2, h3, h4, h5 {
-  font-family: "Raleway", monospace;
+  font-family: "Raleway", sans-serif;
   font-variant-numeric: lining-nums;
   font-variant: prince-opentype(lnum(1));
 }
 .definition-title, .definition-subtitle {
-  font-family: "Raleway", monospace;
+  font-family: "Raleway", sans-serif;
   font-variant-numeric: lining-nums;
   font-variant: prince-opentype(lnum(1));
 }
 section.definition::before {
-  font-family: "Raleway", monospace;
+  font-family: "Raleway", sans-serif;
   font-variant-numeric: lining-nums;
   font-variant: prince-opentype(lnum(1));
 }
 @media screen {
     .indexed-bar {
-      font-family: "Raleway", monospace;
+      font-family: "Raleway", sans-serif;
       font-variant-numeric: lining-nums;
       font-variant: prince-opentype(lnum(1));
     }
@@ -2144,19 +2144,19 @@ section.definition::before {
 @page:left {
 
     @top-left {
-        font-family: "Raleway", monospace;
+        font-family: "Raleway", sans-serif;
     }
 
     @bottom-left {
-        font-family: "Raleway", monospace;
+        font-family: "Raleway", sans-serif;
     }
 
     @top-right {
-        font-family: "Raleway", monospace;
+        font-family: "Raleway", sans-serif;
     }
 
     @bottom-right {
-        font-family: "Raleway", monospace;
+        font-family: "Raleway", sans-serif;
     }
 }
 
@@ -2164,30 +2164,30 @@ section.definition::before {
     margin-right: 2cm;
 
     @top-left {
-        font-family: "Raleway", monospace;
+        font-family: "Raleway", sans-serif;
     }
 
     @bottom-left {
-        font-family: "Raleway", monospace;
+        font-family: "Raleway", sans-serif;
     }
 
     @top-right {
-        font-family: "Raleway", monospace;
+        font-family: "Raleway", sans-serif;
     }
 
     @bottom-right {
-        font-family: "Raleway", monospace;
+        font-family: "Raleway", sans-serif;
     }
 
     @right-top {
-        font-family: "Raleway", monospace;
+        font-family: "Raleway", sans-serif;
     }
 }
 
 @media print {
     /* Special changes for the generated index text */
     nav.indexed-bar-bottom ul:before {
-        font-family: "Raleway", monospace;
+        font-family: "Raleway", sans-serif;
     }
 }
 
