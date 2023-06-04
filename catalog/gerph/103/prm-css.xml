@@ -726,6 +726,7 @@ span.mouse-action:after {
 
 footer {
   padding-bottom: 1em;
+  padding-top: 1em;
   border-bottom: 2px solid black;
 }
 section.meta > * {
@@ -826,6 +827,7 @@ section.indexed-root {
     margin-left: 3rem;
     margin-right: 3rem;
     margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 section.indexed-section {
