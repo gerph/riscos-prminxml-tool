@@ -176,6 +176,7 @@ _kernel_oserror *Module_SWIName(int reason, int *return_value);
 
 <entry>
  <register-use number="1">Register details</register-use>
+ <register-use number="2">&hex;5441534B (magic word)</register-use>
 </entry>
 <exit>
  <register-use number="0">Possible return values:
