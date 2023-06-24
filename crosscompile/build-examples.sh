@@ -13,7 +13,7 @@
 #
 # For example running this script with:
 #
-#   PRINCEXML_I_HAVE_A_LICENSE=1 ./build.sh
+#   PRINCEXML_I_HAVE_A_LICENSE=1 ./build-examples.sh
 #
 # Consult the PrinceXML documentation for license details.
 #
@@ -29,7 +29,7 @@
 set -e
 set -o pipefail
 
-PRINCE_VERSION=14.4
+PRINCE_VERSION=15.1
 SYSTEM="$(uname -s)"
 
 if [[ "$SYSTEM" = 'Darwin' ]] ; then
@@ -243,6 +243,18 @@ if ! type -p prince >/dev/null 2>&1 && [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 ]] ;
                 install_package liblcms2-2
                 install_package libcurl4
                 install_package libfontconfig1
+
+                # Version 15 requires some other libraries as well
+                if [[ "${PRINCE_VERSION%.*}" -ge "15" ]] ; then
+                    if [[ "${DISTRO}" != 'centos' || "$DISTRO_RELEASE" != 7 ]] ; then
+                        install_package libwebpdemux2
+                    fi
+                    if [[ "${DISTRO}" = 'ubuntu' ]] ; then
+                        if [[ "$DISTRO_RELEASE" =~ 22 ]] ; then
+                            install_package libavif13
+                        fi
+                    fi
+                fi
             fi
         fi
     fi
