@@ -812,6 +812,7 @@ span.index-bar-selected {
 
 footer.indexed-footer p {
     margin-bottom: 0em;
+    margin-top: 0em;
 }
 
 footer.indexed-footer p + p {
@@ -2214,6 +2215,106 @@ section.definition::before {
 ]]></css>
 
 
+
+<!-- Noto Sans is a freely available font which is a clean sans-serif font which
+     is very readable.
+     See: https://fonts.google.com/noto/specimen/Noto+Sans
+  -->
+    <css variant='webfont-notosans'><![CDATA[
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=block');
+]]></css>
+    <css variant='body-notosans'><![CDATA[
+body {
+  font-family: "Noto Sans", sans-serif;
+}
+body.indexed th {
+  font-weight: bold;
+}
+table.history h5 {
+  font-weight: normal;
+  font-family: "Noto Sans", sans-serif;
+}
+
+nav.indexed-bar-bottom ul {
+  font-family: "Noto Sans", sans-serif;
+}
+
+@media print {
+    /* Special changes for the generated index text */
+    nav.indexed-bar-bottom ul {
+      font-family: "Noto Sans", sans-serif !important;
+    }
+}
+]]></css>
+    <css variant='heading-notosans'><![CDATA[
+h1, h2, h3, h4, h5 {
+  font-family: "Noto Sans", sans-serif;
+}
+.definition-title, .definition-subtitle {
+  font-family: "Noto Sans", sans-serif;
+}
+section.definition::before {
+  font-family: "Noto Sans", sans-serif;
+}
+@media screen {
+    .indexed-bar {
+      font-family: "Noto Sans", sans-serif;
+    }
+}
+
+/* Need to override the headers and footers if present */
+@page:left {
+
+    @top-left {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @bottom-left {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @top-right {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @bottom-right {
+        font-family: "Noto Sans", sans-serif;
+    }
+}
+
+@page:right {
+    margin-right: 2cm;
+
+    @top-left {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @bottom-left {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @top-right {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @bottom-right {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @right-top {
+        font-family: "Noto Sans", sans-serif;
+    }
+}
+
+@media print {
+    /* Special changes for the generated index text */
+    nav.indexed-bar-bottom ul:before {
+        font-family: "Noto Sans", sans-serif;
+    }
+}
+]]></css>
+
+
 <!-- Increase the size of the bullets -->
     <css variant='large-bullets'><![CDATA[
 ul > li::marker {
@@ -2369,6 +2470,209 @@ span.mouse-action-drag {
     text-align: center;
     margin-right: 0.125em;
 }
+]]></css>
+
+
+
+<!-- A style using as modern style term -->
+<css variant='prm-modern'><![CDATA[
+body.chapter header h1 .chapter-number:before {
+    content: "Chapter ";
+    text-transform: uppercase;
+}
+body.chapter header h1 .chapter-number {
+    position: static;
+    text-align: right;
+    display: block;
+    width: auto;
+}
+body.chapter header h1 .chapter-name {
+    position: static;
+    text-align: right;
+    display: block;
+}
+body.chapter header h1,
+body.indexed header h1 {
+    display: block;
+    position: static;
+    text-align: right;
+    border-top: none;
+    text-transform: uppercase;
+    padding-top: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.1875rem solid black;
+    line-height: 1em;
+}
+body.chapter section.section {
+    border-bottom: 0.1875rem solid black;
+}
+body.chapter h1,
+body.indexed h1 {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #039228;
+}
+body.chapter h2 {
+    font-weight: bold;
+    font-size: 1.35rem;
+    color: #039228;
+    margin-bottom: 0;
+}
+body.chapter h3 {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #039228;
+    margin-bottom: 0;
+}
+body.chapter h4 {
+    font-weight: bold;
+    font-size: 1.125rem;
+    color: #039228;
+    margin-bottom: 0;
+}
+body.chapter h5 {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #039228;
+    margin-bottom: 0;
+}
+
+body.chapter section.section {
+    padding-left: 0;
+    border-bottom: 0;
+}
+
+body.chapter section.section h2 {
+    margin-left: 0;
+    text-transform: uppercase;
+}
+body.chapter section.subsection h3 {
+    margin-left: 0;
+}
+body.chapter section.subsubsection h4 {
+    margin-left: 0;
+}
+nav {
+    border-bottom: 0.1875rem solid black;
+}
+nav.indexed-bar-bottom {
+    border-top: 0.1875rem solid black;
+}
+
+footer {
+    border-bottom: 0.1875rem solid black;
+}
+
+section.indexed-section h2 {
+    color: #039228;
+}
+section.indexed-root .indexed-page {
+    padding-left: 1rem;
+}
+section.indexed-root .indexed-document-section {
+    padding-left: 2rem;
+}
+
+nav.indexed-bar-bottom ul:before {
+    color: #039228;
+    font-weight: bold;
+    font-size: 1.35rem;
+}
+nav.indexed-bar-bottom ul li {
+    padding-left: 1rem;
+}
+
+.front-matter-title {
+    color: #039228;
+}
+
+.user-table {
+    border: 0.09375rem solid grey;
+    border-collapse: collapse;
+}
+.user-table td, .user-table th {
+    padding: 2px 4px;
+    border: 0.09375rem solid grey;
+}
+
+.indexed-table th {
+    color: #039228;
+}
+
+article ul > li {
+    margin-left: 0;
+    padding-left: 0.5em;
+}
+
+.definition-header {
+    color: #039228;
+}
+.definition-header .definition-title,
+.definition-header .definition-subtitle {
+    line-height: 1em;
+}
+
+/* Links are not in italic */
+article a:link, article a:visited, article a:hover, article a:active {
+    font-style: normal;
+}
+
+section.definition:before {
+    margin-left: 0;
+    color: #039228;
+}
+
+.definition-name { string-set: definition-name content() }
+.definition-description {
+    string-set: definition-description content(),
+                definition-footer string(definition-name) "\2009\2014\2009" content();
+}
+section {
+    string-set: definition-name "",
+                definition-description "",
+                definition-footer "";
+}
+
+
+@page:left {
+    @top-left {
+        font-style: normal;
+        text-transform: uppercase;
+        color: #039228;
+        border-bottom: none;
+    }
+
+    @bottom-right {
+        content: string(definition-footer);
+        font-family: sans-serif;
+        vertical-align: top;
+        padding-top: 0.25rem;
+        margin-top: 1em;
+        text-align: right;
+        max-width: 50vw;
+        overflow: hidden;
+    }
+}
+
+@page:right {
+    @top-right {
+        font-style: normal;
+        text-transform: uppercase;
+        color: #039228;
+        border-bottom: none;
+    }
+
+    @bottom-left {
+        content: string(definition-footer);
+        font-family: sans-serif;
+        vertical-align: top;
+        padding-top: 0.25rem;
+        margin-top: 1em;
+        max-width: 50vw;
+        overflow: hidden;
+    }
+}
+
 ]]></css>
 
 
