@@ -905,6 +905,10 @@ table .indexed-table-reason:before {
         string-set: chapter-name content()
     }
 
+    body.chapter h1 .chapter-name {
+        prince-bookmark-label: string(chapter-number-prefixed) " " content();
+    }
+
     /* The cover has no bookmarks */
     body.cover h2 {
         prince-bookmark-level: none;
@@ -1161,7 +1165,18 @@ footer {
 .chapter-docgroup-name { string-set: docgroup-name content() }
 .chapter-docgroup-part { string-set: docgroup-part content() }
 .chapter-name { string-set: chapter-name content() }
-.chapter-number { string-set: chapter-number content() }
+.chapter-number {
+    string-set: chapter-number content(),
+                chapter-number-prefixed "Chapter " content() " ";
+}
+/* If the chapter-number wasn't given, then we make 'chapter-number-prefixed'
+ * an empty string. This means that it can be used as the PDF bookmark label
+ * with a prefix (eg 'Chapter 5 ') which makes it easier to look through the
+ * TOC to find the right chapter.
+ */
+.chapter-number:empty {
+    string-set: chapter-number-prefixed "";
+}
 .chapter-page-prefix { string-set: chapter-page-prefix content() }
 section.section h2,
 section.meta h2 {
