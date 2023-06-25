@@ -904,7 +904,14 @@
 
 <xsl:choose>
  <xsl:when test="@href!=''">
-  <div class='indexed-page'>
+  <div>
+   <xsl:attribute name="class">
+    <xsl:text>indexed-page</xsl:text>
+    <xsl:if test="@type = 'front-matter'">
+     <xsl:text> front-matter-link</xsl:text>
+    </xsl:if>
+   </xsl:attribute>
+
     <a>
      <xsl:attribute name="href"><xsl:value-of select="$href"/>
                                 <xml:text>.html</xml:text>
@@ -1040,6 +1047,7 @@
         <xsl:with-param name="document" select="document(concat($base-dir, '/', $input-dir, '/', $href,'.xml'))//chapter/section" />
         <xsl:with-param name="href" select="$href" />
         <xsl:with-param name="depth" select="1" />
+        <xsl:with-param name="document-type" select="@type" />
        </xsl:call-template>
       </xsl:when>
      </xsl:choose>
@@ -1168,6 +1176,7 @@
 <!-- ********** Indexed document sections ********** -->
 <xsl:template name="index-sections" mode="index">
 <xsl:param name="document" />
+<xsl:param name="document-type" />
 <xsl:param name="depth"/>
 <xsl:param name="href" />
 <xsl:if test="count($document) > 0">
@@ -1175,6 +1184,9 @@
   <xsl:attribute name='class'>
    <xsl:text>indexed-document-section indexed-document-section-</xsl:text>
    <xsl:value-of select='$depth'/>
+   <xsl:if test="$document-type = 'front-matter'">
+    <xsl:text> indexed-document-front-matter</xsl:text>
+   </xsl:if>
   </xsl:attribute>
 
   <xsl:for-each select="$document">

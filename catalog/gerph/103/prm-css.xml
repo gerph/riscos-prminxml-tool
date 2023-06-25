@@ -878,6 +878,9 @@ table.indexed-table {
 table.indexed-table th {
     text-align: left;
 }
+table.indexed-table th.indexed-table-heading-page {
+    text-align: right;
+}
 tr.indexed-table-headings th {
     padding-bottom: 0.75em;
 }
@@ -2480,6 +2483,9 @@ body.chapter header h1 .chapter-number:before {
     content: "Chapter ";
     text-transform: uppercase;
 }
+body.chapter header h1 .chapter-number:empty {
+    display: none;
+}
 body.chapter header h1 .chapter-number {
     position: static;
     text-align: right;
@@ -2612,6 +2618,14 @@ article ul > li {
     line-height: 1em;
 }
 
+div.meta > table > tbody > tr > th {
+    color: #039228;
+}
+div.meta h5 {
+    color: black;
+}
+
+
 /* Links are not in italic */
 article a:link, article a:visited, article a:hover, article a:active {
     font-style: normal;
@@ -2632,6 +2646,72 @@ section {
                 definition-description "",
                 definition-footer "";
 }
+
+section.indexed-root .indexed-page {
+    padding-left: 0;
+}
+section.indexed-root .indexed-link-trailer {
+    content: leader(". ");
+}
+section.indexed-section {
+    padding-left: 0;
+}
+section.indexed-section section.indexed-section {
+    padding-left: 1rem;
+}
+
+
+/* Styling specific to the print */
+@media print {
+    /* Hide the frontmatter on the contents page when printed (as otherwise there's no way
+     * to reach these pages.
+     */
+    .front-matter-link {
+        display: none;
+    }
+    .indexed-document-front-matter {
+        display: none;
+    }
+
+    /* The links on the bottom can be magiced into becoming a set of indexed links
+     * There's quite a bit of magic here, but it appears to work
+     */
+    nav.indexed-bar-bottom {
+        border-bottom: none !important;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 3rem;
+        margin-right: 3rem;
+    }
+    nav.indexed-bar-bottom ul {
+        line-height: inheric;
+    }
+    nav.indexed-bar-bottom ul li {
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    nav.indexed-bar-bottom ul li span {
+        margin-bottom: 0;
+        margin-top: 0;
+    }
+    nav.indexed-bar-bottom li.index-bar-index span.index-bar-index-number {
+        padding-left: 2rem;
+    }
+    nav.indexed-bar-bottom li.index-bar-index span.index-bar-index-number a:before {
+        content: "by\a0";
+    }
+
+    table.indexed-table {
+        width: 100%;
+    }
+
+    body.indexed-contents nav.indexed-bar-bottom a[href]::after {
+        content: leader(". ") target-counter(attr(href), page);
+    }
+}
+
 
 
 @page:left {
