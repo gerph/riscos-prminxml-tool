@@ -2318,6 +2318,172 @@ section.definition::before {
 ]]></css>
 
 
+
+<!-- Oswald is a freely available font which is a clean sans-serif font which
+     is has a few dinstinctive features:
+     * It is a quite condensed font, with a tall aspect ratio.
+     * It has very legible text in both bold and normal presentation.
+     * It has rounded numbers, and no tall stems on the tops of p and bottom
+       of d.
+     * It is a little too bold for large amounts of text when used in headings.
+     It isn't useful as a body font, but for headings it is distinctive.
+     See: https://fonts.google.com/specimen/Oswald
+  -->
+    <css variant='webfont-oswald'><![CDATA[
+@import url('https://fonts.googleapis.com/css2?family=Oswald&display=block');
+]]></css>
+    <css variant='heading-oswald'><![CDATA[
+h1, h2, h3, h4, h5 {
+  font-family: "Oswald", sans-serif;
+}
+.definition-title, .definition-subtitle {
+  font-family: "Oswald", sans-serif;
+}
+section.definition::before {
+  font-family: "Oswald", sans-serif;
+}
+@media screen {
+    .indexed-bar {
+      font-family: "Oswald", sans-serif;
+    }
+}
+
+/* Need to override the headers and footers if present */
+@page:left {
+
+    @top-left {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @bottom-left {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @top-right {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @bottom-right {
+        font-family: "Oswald", sans-serif;
+    }
+}
+
+@page:right {
+    margin-right: 2cm;
+
+    @top-left {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @bottom-left {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @top-right {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @bottom-right {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @right-top {
+        font-family: "Oswald", sans-serif;
+    }
+}
+
+@media print {
+    /* Special changes for the generated index text */
+    nav.indexed-bar-bottom ul:before {
+        font-family: "Oswald", sans-serif;
+    }
+}
+]]></css>
+
+
+
+<!-- Saira is a freely available font which is a clean sans-serif font which
+     is has a few dinstinctive features:
+     * It is a squarish fot.
+     * It has very legible text in both bold and normal presentation.
+     * It has rounded numbers, and no tall stems on the tops of p and bottom
+       of d.
+     * c has very little curl on it.
+     It isn't useful as a body font, but for headings it is distinctive.
+     See: https://fonts.google.com/specimen/Oswald
+  -->
+    <css variant='webfont-saira'><![CDATA[
+@import url('https://fonts.googleapis.com/css2?family=Saira&display=block');
+]]></css>
+    <css variant='heading-saira'><![CDATA[
+h1, h2, h3, h4, h5 {
+  font-family: "Saira", sans-serif;
+}
+.definition-title, .definition-subtitle {
+  font-family: "Saira", sans-serif;
+}
+section.definition::before {
+  font-family: "Saira", sans-serif;
+}
+@media screen {
+    .indexed-bar {
+      font-family: "Saira", sans-serif;
+    }
+}
+
+/* Need to override the headers and footers if present */
+@page:left {
+
+    @top-left {
+        font-family: "Saira", sans-serif;
+    }
+
+    @bottom-left {
+        font-family: "Saira", sans-serif;
+    }
+
+    @top-right {
+        font-family: "Saira", sans-serif;
+    }
+
+    @bottom-right {
+        font-family: "Saira", sans-serif;
+    }
+}
+
+@page:right {
+    margin-right: 2cm;
+
+    @top-left {
+        font-family: "Saira", sans-serif;
+    }
+
+    @bottom-left {
+        font-family: "Saira", sans-serif;
+    }
+
+    @top-right {
+        font-family: "Saira", sans-serif;
+    }
+
+    @bottom-right {
+        font-family: "Saira", sans-serif;
+    }
+
+    @right-top {
+        font-family: "Saira", sans-serif;
+    }
+}
+
+@media print {
+    /* Special changes for the generated index text */
+    nav.indexed-bar-bottom ul:before {
+        font-family: "Saira", sans-serif;
+    }
+}
+]]></css>
+
+
 <!-- Increase the size of the bullets -->
     <css variant='large-bullets'><![CDATA[
 ul > li::marker {
