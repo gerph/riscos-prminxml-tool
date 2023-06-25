@@ -140,6 +140,7 @@
 
 <section class='indexed-table'>
 <table class='indexed-table'>
+<thead>
 <tr class='indexed-table-headings'>
     <xsl:if test="document('')//localdb:sections[(@type=$type) and
                                                  (@number='yes')]">
@@ -151,6 +152,7 @@
     <th class='indexed-table-heading-section'>Section</th>
     <th class='indexed-table-heading-page'>Page</th>
 </tr>
+</thead>
 
     <xsl:for-each select="$document///ref">
         <!-- <xsl:sort select="@section" order="ascending" data-type="text" case-order="upper-first" /> -->
@@ -222,6 +224,7 @@
 
 <section class='indexed-table'>
 <table class='indexed-table'>
+<thead>
 <tr class='indexed-table-headings'>
     <xsl:if test="document('')//localdb:sections[(@type=$type) and
                                                  (@number='yes')]">
@@ -233,6 +236,8 @@
     <th class='indexed-table-heading-section'>Section</th>
     <th class='indexed-table-heading-page'>Page</th>
 </tr>
+</thead>
+
   <xsl:choose>
    <xsl:when test="$type = 'tboxmethod'">
     <xsl:for-each select="$document///ref">
