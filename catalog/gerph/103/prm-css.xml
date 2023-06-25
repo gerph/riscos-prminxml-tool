@@ -2766,6 +2766,16 @@ nav.indexed-bar-bottom ul li {
     padding: 2px 4px;
     border: 0.09375rem solid grey;
 }
+/* Tables nested within tables lose their borders (as it looks a bit odd) */
+.user-table .user-table {
+    border: none;
+}
+.user-table .user-table td,
+.user-table .user-table th {
+    border: none;
+}
+
+
 
 .indexed-table th {
     color: #039228;
