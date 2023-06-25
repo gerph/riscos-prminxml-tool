@@ -79,12 +79,15 @@ jobs:
           crosscompile/setup-riscos-tests.sh
 
           # Zip up the source to send to robuild
+          echo Zip up our sources
           zip -q9r /tmp/source-archive.zip riscos-bits ROTest,feb .robuild.yaml
 
           # Fetch the build client
+          echo Fetch the build client
           curl -s -L -o riscos-build-online https://github.com/gerph/robuild-client/releases/download/v0.05/riscos-build-online && chmod +x riscos-build-online
 
           # Send the archive file to build service (with explicit timeout)
+          echo Run the build
           timeout 660 ./riscos-build-online -i /tmp/source-archive.zip -a off -t 600 -o /tmp/built
 
           # If it didn't report an error, the test was successful.
