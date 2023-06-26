@@ -593,6 +593,7 @@
 </dd>
 
 <xsl:apply-templates select="use" />
+<xsl:apply-templates select="compatibility" />
 
 <xsl:choose>
  <xsl:when test="count(example) > 0">

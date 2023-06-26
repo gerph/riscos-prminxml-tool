@@ -590,7 +590,8 @@
   <xsl:call-template name="definition-syntax"/>
   <xsl:call-template name="definition-parameters"/>
 
-<xsl:apply-templates select="use" />
+  <xsl:apply-templates select="use" />
+  <xsl:apply-templates select='compatibility'/>
 
   <xsl:call-template name="examples-block">
    <xsl:with-param name="where" select="." />
@@ -612,7 +613,8 @@
   <xsl:call-template name="definition-syntax"/>
   <xsl:call-template name="definition-parameters"/>
 
-<xsl:apply-templates select="use" />
+  <xsl:apply-templates select="use" />
+  <xsl:apply-templates select='compatibility'/>
 
 <xsl:call-template name="examples-block">
  <xsl:with-param name="where" select="." />
@@ -990,7 +992,6 @@ Attributes:
   <xsl:call-template name='definition-reentrancy'/>
 
   <xsl:apply-templates select="use" />
-
   <xsl:apply-templates select='compatibility'/>
 
   <xsl:call-template name="examples-block">
@@ -1035,6 +1036,7 @@ Attributes:
   <xsl:call-template name='definition-reentrancy'/>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select='compatibility'/>
 
   <xsl:call-template name="examples-block">
    <xsl:with-param name="where" select="." />
@@ -1149,6 +1151,7 @@ Attributes:
   </xsl:if>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select='compatibility'/>
 
   <xsl:apply-templates select="declaration" />
 
@@ -1176,6 +1179,7 @@ Attributes:
  <xsl:otherwise>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select='compatibility'/>
 
   <xsl:call-template name="examples-block">
    <xsl:with-param name="where" select="." />
@@ -1208,6 +1212,7 @@ Attributes:
  <xsl:otherwise>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select='compatibility'/>
 
   <xsl:apply-templates select="related" />
 
@@ -1240,6 +1245,7 @@ Attributes:
   <xsl:call-template name='definition-exit'/>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select='compatibility'/>
 
   <xsl:call-template name="examples-block">
    <xsl:with-param name="where" select="." />
@@ -1278,6 +1284,7 @@ Attributes:
   <xsl:call-template name='definition-exit'/>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select='compatibility'/>
 
   <xsl:call-template name="examples-block">
    <xsl:with-param name="where" select="." />
@@ -1315,6 +1322,7 @@ Attributes:
   <xsl:call-template name='definition-exit'/>
 
   <xsl:apply-templates select="use" />
+  <xsl:apply-templates select='compatibility'/>
 
   <xsl:apply-templates select="declaration" />
 

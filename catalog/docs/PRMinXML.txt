@@ -1203,7 +1203,7 @@ section to provide links.
 Element:    vector-definition
 Attributes: name, number, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, declaration?, (example)*, related?)
+Children:   (entry?, exit?, use, compatibility?, declaration?, (example)*, related?)
 
 name: the full name of this vector; for example 'ColourV'
 number: the number of this vector in hex
@@ -1232,7 +1232,7 @@ is used to describe the standard RISC OS vectors.
 Element:    entry-definition
 Attributes: name, number, reason, reasonname,
             description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, declaration?, (example)*, related)
+Children:   (entry?, exit?, use, compatibility?, declaration?, (example)*, related)
 
 name: the full name of this code; for example 'FileEntry_MiscOp'
 number: the number of this entry, if applicable, in hex
@@ -1260,7 +1260,7 @@ such as callbacks.
 Element:    service-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, declaration?, (example)*, related)
+Children:   (entry, exit, use, compatibility?, declaration?, (example)*, related)
 
 name: the name of this service; for example 'ShutDown'
 number: the number of this entry, if applicable, in hex
@@ -1283,7 +1283,7 @@ prefixed by 'Service_' to indicate its lineage.
 Element:    upcall-definition
 Attributes: name, number, reason, reasonname,
             description, internal
-Children:   (entry, exit, use, declaration?, (example)*, related)
+Children:   (entry, exit, use, compatibility?, declaration?, (example)*, related)
 
 name: the name of this UpCall; for example 'FileModified'
 number: the number of this entry, if applicable, in hex
@@ -1305,7 +1305,7 @@ to indicate its lineage.
 
 Element:    sysvar-definition
 Attributes: name, description
-Children:   (use, example?, related)
+Children:   (use, compatibility?, example?, related)
 
 name: the full name of this system variable; for example 'System$Path'
 description: one sentence description of the function provided by this
@@ -1317,7 +1317,7 @@ and related elements are as provided by upcall-definition.
 
 Element:    error-definition
 Attributes: number, name, description
-Children:   (use, related)
+Children:   (use, compatibility?, related)
 
 number: the number of this error in hex
 name: the symbolic name of this error for example 'BadPathVariable'
@@ -1331,7 +1331,7 @@ errors that may be returned from a call.
 Element:    message-definition
 Attributes: name, number, description, source, destination,
             recorded, broadcast
-Children:   (message-table, use, declaration?, related)
+Children:   (message-table, use, compatibility?, declaration?, related)
 
 name: the name of this message; for example 'DataOpen'
 description: one sentence description of the function provided by this
@@ -1361,7 +1361,7 @@ element is described in the Data structures section.
 
 Element:    tboxmessage-definition
 Attributes: name, number, description
-Children:   (message-table, use, declaration?, related)
+Children:   (message-table, use, compatibility?, declaration?, related)
 
 name: the name of this message; for example 'ColourMenu_HasBeenHidden'
 description: one sentence description of the function provided by this
@@ -1392,7 +1392,7 @@ The tboxmethod-definition is very similar to the service-definition.
 
 Element:    command-definition
 Attributes: name, description
-Children:   ((syntax)*, (parameter)*, use, (example)*, related)
+Children:   ((syntax)*, (parameter)*, use, compatibility?, (example)*, related)
 
 name: the name of this command; for example 'DataOpen'
 description: one sentence description of the function provided by this
@@ -1406,7 +1406,7 @@ name will always have a * prefix added to it.
 
 Element:    vdu-definition
 Attributes: name, number, description
-Children:   ((syntax)*, (parameter)*, use, (example)*, related)
+Children:   ((syntax)*, (parameter)*, use, compatibility?, (example)*, related)
 
 name: the name of this command; for example DataOpen
 description: one sentence description of the function provided by this
