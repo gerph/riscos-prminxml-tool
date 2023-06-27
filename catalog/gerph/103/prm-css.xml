@@ -267,6 +267,21 @@ body.chapter section.subsubsection h4 {
 body.chapter section.category h5 {
 }
 
+/* Try to keep together the headings */
+body.chapter section.section h2 + p,
+body.chapter section.subsection h3 + p,
+body.chapter section.subsubsection h4 + p,
+body.chapter section.category h5 + p {
+    break-before: avoid;
+}
+body.chapter section.section h2 + table,
+body.chapter section.subsection h3 + table,
+body.chapter section.subsubsection h4 + table,
+body.chapter section.category h5 + table {
+    break-before: avoid;
+}
+
+
 .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
   border-top: 2px solid black;
 }
@@ -447,6 +462,8 @@ table {
 
 .user-table {
     border: 0;
+    /* In all our tables we try to avoid breaking the tables up */
+    break-inside: avoid;
 }
 .user-table td, .user-table th {
     padding-left: 0.5em;
