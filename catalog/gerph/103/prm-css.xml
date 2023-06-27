@@ -1654,7 +1654,7 @@ article .definition-related a:active {
 }
 
 pre {
-    font-size: 0.66rem;
+    font-size: 0.825rem;
     white-space: pre-wrap !important;
 }
 
@@ -2828,6 +2828,9 @@ nav.indexed-bar-bottom ul li {
 }
 
 
+pre {
+    font-size: 1rem;
+}
 
 .indexed-table th {
     color: #039228;
