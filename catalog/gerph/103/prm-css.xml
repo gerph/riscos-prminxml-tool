@@ -267,6 +267,21 @@ body.chapter section.subsubsection h4 {
 body.chapter section.category h5 {
 }
 
+/* Try to keep together the headings */
+body.chapter section.section h2 + p,
+body.chapter section.subsection h3 + p,
+body.chapter section.subsubsection h4 + p,
+body.chapter section.category h5 + p {
+    break-before: avoid;
+}
+body.chapter section.section h2 + table,
+body.chapter section.subsection h3 + table,
+body.chapter section.subsubsection h4 + table,
+body.chapter section.category h5 + table {
+    break-before: avoid;
+}
+
+
 .service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
   border-top: 2px solid black;
 }
@@ -447,6 +462,8 @@ table {
 
 .user-table {
     border: 0;
+    /* In all our tables we try to avoid breaking the tables up */
+    break-inside: avoid;
 }
 .user-table td, .user-table th {
     padding-left: 0.5em;
@@ -812,6 +829,7 @@ span.index-bar-selected {
 
 footer.indexed-footer p {
     margin-bottom: 0em;
+    margin-top: 0em;
 }
 
 footer.indexed-footer p + p {
@@ -876,6 +894,9 @@ table.indexed-table {
 }
 table.indexed-table th {
     text-align: left;
+}
+table.indexed-table th.indexed-table-heading-page {
+    text-align: right;
 }
 tr.indexed-table-headings th {
     padding-bottom: 0.75em;
@@ -1633,7 +1654,7 @@ article .definition-related a:active {
 }
 
 pre {
-    font-size: 0.66rem;
+    font-size: 0.825rem;
     white-space: pre-wrap !important;
 }
 
@@ -2214,6 +2235,272 @@ section.definition::before {
 ]]></css>
 
 
+
+<!-- Noto Sans is a freely available font which is a clean sans-serif font which
+     is very readable.
+     See: https://fonts.google.com/noto/specimen/Noto+Sans
+  -->
+    <css variant='webfont-notosans'><![CDATA[
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=block');
+]]></css>
+    <css variant='body-notosans'><![CDATA[
+body {
+  font-family: "Noto Sans", sans-serif;
+}
+body.indexed th {
+  font-weight: bold;
+}
+table.history h5 {
+  font-weight: normal;
+  font-family: "Noto Sans", sans-serif;
+}
+
+nav.indexed-bar-bottom ul {
+  font-family: "Noto Sans", sans-serif;
+}
+
+@media print {
+    /* Special changes for the generated index text */
+    nav.indexed-bar-bottom ul {
+      font-family: "Noto Sans", sans-serif !important;
+    }
+}
+]]></css>
+    <css variant='heading-notosans'><![CDATA[
+h1, h2, h3, h4, h5 {
+  font-family: "Noto Sans", sans-serif;
+}
+.definition-title, .definition-subtitle {
+  font-family: "Noto Sans", sans-serif;
+}
+section.definition::before {
+  font-family: "Noto Sans", sans-serif;
+}
+@media screen {
+    .indexed-bar {
+      font-family: "Noto Sans", sans-serif;
+    }
+}
+
+/* Need to override the headers and footers if present */
+@page:left {
+
+    @top-left {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @bottom-left {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @top-right {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @bottom-right {
+        font-family: "Noto Sans", sans-serif;
+    }
+}
+
+@page:right {
+    margin-right: 2cm;
+
+    @top-left {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @bottom-left {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @top-right {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @bottom-right {
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    @right-top {
+        font-family: "Noto Sans", sans-serif;
+    }
+}
+
+@media print {
+    /* Special changes for the generated index text */
+    nav.indexed-bar-bottom ul:before {
+        font-family: "Noto Sans", sans-serif;
+    }
+}
+]]></css>
+
+
+
+<!-- Oswald is a freely available font which is a clean sans-serif font which
+     is has a few dinstinctive features:
+     * It is a quite condensed font, with a tall aspect ratio.
+     * It has very legible text in both bold and normal presentation.
+     * It has rounded numbers, and no tall stems on the tops of p and bottom
+       of d.
+     * It is a little too bold for large amounts of text when used in headings.
+     It isn't useful as a body font, but for headings it is distinctive.
+     See: https://fonts.google.com/specimen/Oswald
+  -->
+    <css variant='webfont-oswald'><![CDATA[
+@import url('https://fonts.googleapis.com/css2?family=Oswald&display=block');
+]]></css>
+    <css variant='heading-oswald'><![CDATA[
+h1, h2, h3, h4, h5 {
+  font-family: "Oswald", sans-serif;
+}
+.definition-title, .definition-subtitle {
+  font-family: "Oswald", sans-serif;
+}
+section.definition::before {
+  font-family: "Oswald", sans-serif;
+}
+@media screen {
+    .indexed-bar {
+      font-family: "Oswald", sans-serif;
+    }
+}
+
+/* Need to override the headers and footers if present */
+@page:left {
+
+    @top-left {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @bottom-left {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @top-right {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @bottom-right {
+        font-family: "Oswald", sans-serif;
+    }
+}
+
+@page:right {
+    margin-right: 2cm;
+
+    @top-left {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @bottom-left {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @top-right {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @bottom-right {
+        font-family: "Oswald", sans-serif;
+    }
+
+    @right-top {
+        font-family: "Oswald", sans-serif;
+    }
+}
+
+@media print {
+    /* Special changes for the generated index text */
+    nav.indexed-bar-bottom ul:before {
+        font-family: "Oswald", sans-serif;
+    }
+}
+]]></css>
+
+
+
+<!-- Saira is a freely available font which is a clean sans-serif font which
+     is has a few dinstinctive features:
+     * It is a squarish fot.
+     * It has very legible text in both bold and normal presentation.
+     * It has rounded numbers, and no tall stems on the tops of p and bottom
+       of d.
+     * c has very little curl on it.
+     It isn't useful as a body font, but for headings it is distinctive.
+     See: https://fonts.google.com/specimen/Oswald
+  -->
+    <css variant='webfont-saira'><![CDATA[
+@import url('https://fonts.googleapis.com/css2?family=Saira&display=block');
+]]></css>
+    <css variant='heading-saira'><![CDATA[
+h1, h2, h3, h4, h5 {
+  font-family: "Saira", sans-serif;
+}
+.definition-title, .definition-subtitle {
+  font-family: "Saira", sans-serif;
+}
+section.definition::before {
+  font-family: "Saira", sans-serif;
+}
+@media screen {
+    .indexed-bar {
+      font-family: "Saira", sans-serif;
+    }
+}
+
+/* Need to override the headers and footers if present */
+@page:left {
+
+    @top-left {
+        font-family: "Saira", sans-serif;
+    }
+
+    @bottom-left {
+        font-family: "Saira", sans-serif;
+    }
+
+    @top-right {
+        font-family: "Saira", sans-serif;
+    }
+
+    @bottom-right {
+        font-family: "Saira", sans-serif;
+    }
+}
+
+@page:right {
+    margin-right: 2cm;
+
+    @top-left {
+        font-family: "Saira", sans-serif;
+    }
+
+    @bottom-left {
+        font-family: "Saira", sans-serif;
+    }
+
+    @top-right {
+        font-family: "Saira", sans-serif;
+    }
+
+    @bottom-right {
+        font-family: "Saira", sans-serif;
+    }
+
+    @right-top {
+        font-family: "Saira", sans-serif;
+    }
+}
+
+@media print {
+    /* Special changes for the generated index text */
+    nav.indexed-bar-bottom ul:before {
+        font-family: "Saira", sans-serif;
+    }
+}
+]]></css>
+
+
 <!-- Increase the size of the bullets -->
     <css variant='large-bullets'><![CDATA[
 ul > li::marker {
@@ -2369,6 +2656,334 @@ span.mouse-action-drag {
     text-align: center;
     margin-right: 0.125em;
 }
+]]></css>
+
+
+<!-- Re-lay out the definition fields to pack them more at the top of the definition page. -->
+<css variant='packed-definitions'><![CDATA[
+section.definition-entry {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+}
+section.definition-exit {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+}
+section.definition-interrupts,
+section.definition-processor,
+section.definition-reentrancy {
+    display: inline-block;
+    width: 33%;
+    vertical-align: top;
+}
+
+section.definition-message-source,
+section.definition-message-destination,
+section.definition-message-delivery {
+    display: inline-block;
+    width: 33%;
+    vertical-align: top;
+}
+
+
+]]></css>
+
+
+<!-- A style using as modern style term -->
+<css variant='prm-modern'><![CDATA[
+body.chapter header h1 .chapter-number:before {
+    content: "Chapter ";
+    text-transform: uppercase;
+}
+body.chapter header h1 .chapter-number:empty {
+    display: none;
+}
+body.chapter header h1 .chapter-number {
+    position: static;
+    text-align: right;
+    display: block;
+    width: auto;
+}
+body.chapter header h1 .chapter-name {
+    position: static;
+    text-align: right;
+    display: block;
+}
+body.chapter header h1,
+body.indexed header h1 {
+    display: block;
+    position: static;
+    text-align: right;
+    border-top: none;
+    text-transform: uppercase;
+    padding-top: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.1875rem solid black;
+    line-height: 1em;
+}
+body.chapter section.section {
+    border-bottom: 0.1875rem solid black;
+}
+body.chapter h1,
+body.indexed h1 {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #039228;
+}
+body.chapter h2 {
+    font-weight: bold;
+    font-size: 1.35rem;
+    color: #039228;
+    margin-bottom: 0;
+}
+body.chapter h3 {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #039228;
+    margin-bottom: 0;
+}
+body.chapter h4 {
+    font-weight: bold;
+    font-size: 1.125rem;
+    color: #039228;
+    margin-bottom: 0;
+}
+body.chapter h5 {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #039228;
+    margin-bottom: 0;
+}
+
+body.chapter section.section {
+    padding-left: 0;
+    border-bottom: 0;
+}
+
+body.chapter section.section h2 {
+    margin-left: 0;
+    text-transform: uppercase;
+}
+body.chapter section.subsection h3 {
+    margin-left: 0;
+}
+body.chapter section.subsubsection h4 {
+    margin-left: 0;
+}
+nav {
+    border-bottom: 0.1875rem solid black;
+}
+nav.indexed-bar-bottom {
+    border-top: 0.1875rem solid black;
+}
+
+.service-definition, .swi-definition, .vector-definition, .upcall-definition, .command-definition, .vdu-definition, .error-definition, .sysvar-definition, .message-definition, .tboxmessage-definition, .tboxmethod-definition, .entry-definition {
+    border-top: none;
+}
+
+footer {
+    border-bottom: 0.1875rem solid black;
+}
+
+section.indexed-section h2 {
+    color: #039228;
+}
+section.indexed-root .indexed-page {
+    padding-left: 1rem;
+}
+section.indexed-root .indexed-document-section {
+    padding-left: 2rem;
+}
+
+nav.indexed-bar-bottom ul:before {
+    color: #039228;
+    font-weight: bold;
+    font-size: 1.35rem;
+}
+nav.indexed-bar-bottom ul li {
+    padding-left: 1rem;
+}
+
+.front-matter-title {
+    color: #039228;
+}
+
+.user-table {
+    border: 0.09375rem solid grey;
+    border-collapse: collapse;
+}
+.user-table td, .user-table th {
+    padding: 2px 4px;
+    border: 0.09375rem solid grey;
+}
+/* Tables nested within tables lose their borders (as it looks a bit odd) */
+.user-table .user-table {
+    border: none;
+}
+.user-table .user-table td,
+.user-table .user-table th {
+    border: none;
+}
+
+
+pre {
+    font-size: 1rem;
+}
+
+.indexed-table th {
+    color: #039228;
+}
+
+article ul > li {
+    margin-left: 0;
+    padding-left: 0.5em;
+}
+
+.definition-header {
+    color: #039228;
+}
+.definition-header .definition-title,
+.definition-header .definition-subtitle {
+    line-height: 1em;
+}
+
+div.meta > table > tbody > tr > th {
+    color: #039228;
+}
+div.meta h5 {
+    color: black;
+}
+
+
+/* Links are not in italic */
+article a:link, article a:visited, article a:hover, article a:active {
+    font-style: normal;
+}
+
+section.definition:before {
+    margin-left: 0;
+    color: #039228;
+}
+
+.definition-name { string-set: definition-name content() }
+.definition-description {
+    string-set: definition-description content(),
+                definition-footer string(definition-name) "\2009\2014\2009" content();
+}
+section {
+    string-set: definition-name "",
+                definition-description "",
+                definition-footer "";
+}
+
+section.indexed-root .indexed-page {
+    padding-left: 0;
+}
+section.indexed-root .indexed-link-trailer {
+    content: leader(". ");
+}
+section.indexed-section {
+    padding-left: 0;
+}
+section.indexed-section section.indexed-section {
+    padding-left: 1rem;
+}
+
+
+/* Styling specific to the print */
+@media print {
+    /* Hide the frontmatter on the contents page when printed (as otherwise there's no way
+     * to reach these pages.
+     */
+    .front-matter-link {
+        display: none;
+    }
+    .indexed-document-front-matter {
+        display: none;
+    }
+
+    /* The links on the bottom can be magiced into becoming a set of indexed links
+     * There's quite a bit of magic here, but it appears to work
+     */
+    nav.indexed-bar-bottom {
+        border-bottom: none !important;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 3rem;
+        margin-right: 3rem;
+    }
+    nav.indexed-bar-bottom ul {
+        line-height: inheric;
+    }
+    nav.indexed-bar-bottom ul li {
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    nav.indexed-bar-bottom ul li span {
+        margin-bottom: 0;
+        margin-top: 0;
+    }
+    nav.indexed-bar-bottom li.index-bar-index span.index-bar-index-number {
+        padding-left: 2rem;
+    }
+    nav.indexed-bar-bottom li.index-bar-index span.index-bar-index-number a:before {
+        content: "by\a0";
+    }
+
+    table.indexed-table {
+        width: 100%;
+    }
+
+    body.indexed-contents nav.indexed-bar-bottom a[href]::after {
+        content: leader(". ") target-counter(attr(href), page);
+    }
+}
+
+
+
+@page:left {
+    @top-left {
+        font-style: normal;
+        text-transform: uppercase;
+        color: #039228;
+        border-bottom: none;
+    }
+
+    @bottom-right {
+        content: string(definition-footer);
+        font-family: sans-serif;
+        vertical-align: top;
+        padding-top: 0.25rem;
+        margin-top: 1em;
+        text-align: right;
+        max-width: 50vw;
+        overflow: hidden;
+    }
+}
+
+@page:right {
+    @top-right {
+        font-style: normal;
+        text-transform: uppercase;
+        color: #039228;
+        border-bottom: none;
+    }
+
+    @bottom-left {
+        content: string(definition-footer);
+        font-family: sans-serif;
+        vertical-align: top;
+        padding-top: 0.25rem;
+        margin-top: 1em;
+        max-width: 50vw;
+        overflow: hidden;
+    }
+}
+
 ]]></css>
 
 

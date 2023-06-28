@@ -2200,6 +2200,9 @@ Attributes:
             <xsl:apply-templates />
         </div>
     </xsl:when>
+    <xsl:when test="count(value-table|offset-table|bitfield-table|message-table|definition-table) = count(*) and  normalize-space(text()) = ''">
+        <xsl:apply-templates select="value-table|offset-table|bitfield-table|message-table|definition-table"/>
+    </xsl:when>
     <xsl:otherwise>
         <p><xsl:apply-templates /></p>
     </xsl:otherwise>

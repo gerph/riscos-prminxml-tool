@@ -638,9 +638,9 @@ indices: ${INDEX_XML}
  <xsl:apply-templates mode="docgroup-part" select=".."/>
  <xsl:apply-templates mode="edgeindex-number" select=".."/>
  <xsl:apply-templates mode="edgeindex-max" select="/"/>
- <xsl:if test="//options/@chapter-numbers = 'yes' and local-name() != 'front-matter'">
+ <xsl:if test="//options/@chapter-numbers = 'yes' and local-name() != 'front-matter' and (not(@type) or @type != 'front-matter')">
   <xsl:text> --stringparam override-chapter-number '</xsl:text>
-  <xsl:value-of select="count(preceding::page) + 1"/>
+  <xsl:value-of select="count(preceding::page[not(@type = 'front-matter')]) + 1"/>
   <xsl:text>'</xsl:text>
  </xsl:if>
  <xsl:text> </xsl:text>

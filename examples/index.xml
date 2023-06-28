@@ -13,7 +13,7 @@
     include-sections-depth="1"
     catalog-version="103"
     page-format='html5'
-    page-css-variant='no-meta-section'
+    page-css-variant=''
     index-css-variant='no-edge-index index-reason-linebreak-in-print index-include-indexed-header-label'
     chapter-contents='no'
     chapter-numbers='yes'
@@ -62,9 +62,14 @@
          docgroup-name="Structural elements"
          edgeindex='1'>
     <page href="sections">Sections</page>
-    <page href="tables">Tables</page>
-    <page href="lists">Lists</page>
-    <page href="definitions">Definitions</page>
+
+    <!-- Demonstrate the effect of having a section in the contents -->
+    <section title="Structured data">
+        <page href="tables">Tables</page>
+        <page href="lists">Lists</page>
+        <page href="definitions">Definitions</page>
+    </section>
+
     <page href="input">Input</page>
     <page href="compatibility">Compatibility</page>
 </section>
