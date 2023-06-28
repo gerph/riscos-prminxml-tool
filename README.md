@@ -23,6 +23,29 @@ The release archives contain the tool ready to be installed into your `PATH` (on
 systems) or on `Run$Path` (on RISC OS systems). The tool requires Perl 5 on later to
 function.
 
+## Requirements
+
+* Perl 5
+* The `xsltproc` tool
+* The `xmllint` tool
+
+For installation on RISC OS you will require:
+
+* A copy of `perl5`
+* `xsltproc`: https://github.com/gerph/libxslt/releases
+* `xmllint`: https://github.com/gerph/libxml2/releases
+
+For installation on Ubuntu Linux you will require:
+
+* `sudo apt-get install perl xsltproc libxml2`
+
+Other Linux distributions will need different tools.
+
+For installation on macOS:
+
+* `perl`, `xsltproc` and `xmllint` are supplied with the operating system.
+
+
 ## Usage
 
 The tool contains help on the its usage. However, the most common usage of the tool
