@@ -928,42 +928,42 @@ Options:
 The 'skeleton' format outputs a skeleton document containing examples of some
 of the structures used in the PRM-in-XML format:
 
-    $tool -f skeleton -o skel.xml
+    $toolname -f skeleton -o skel.xml
 
 The 'html' format is the most common. Usually you would use a command like
 (the '-f html' is actually the default, but is used for completeness):
 
-    $tool -f html -O outputdir mydocs.xml
+    $toolname -f html -O outputdir mydocs.xml
 
 The 'html+xml' format is exactly the same but copies the XML file alongside
 the HTML:
 
-    $tool -f html+xml -O outputdir mydocs.xml
+    $toolname -f html+xml -O outputdir mydocs.xml
 
 The 'html5' format is similar to the 'html' format, but uses HTML 5 semantic
 elements and CSS to render documents:
 
-    $tool -f html5 -O outputdir mydocs.xml
+    $toolname -f html5 -O outputdir mydocs.xml
 
 The 'header' format outputs a C header file for the constants from the file:
 
-    $tool -f header -O outputdir mydocs.xml
+    $toolname -f header -O outputdir mydocs.xml
 
 The 'command' format outputs a command line help file suitable for passing
 through VTranslate:
 
-    $tool -f command -O outputdir mydocs.xml
+    $toolname -f command -O outputdir mydocs.xml
 
 The 'stronghelp' format outputs a skeleton StrongHelp directory structure:
 
-    $tool -f stronghelp -O outputdir mydocs.xml
+    $toolname -f stronghelp -O outputdir mydocs.xml
 
 The 'lint' format just checks that the files supplied follow the DTD defined for
 the files. Whilst the HTML might be generated adequately, it is very useful
 to stick to the intended definition of the format to ensure that it will
 work with future iterations of the conversion.
 
-    $tool -f lint mydocs.xml
+    $toolname -f lint mydocs.xml
 
 Linting can be used as a check in addition to any of the other formatting
 operations by specifying the --lint option.
@@ -971,12 +971,12 @@ operations by specifying the --lint option.
 The 'index' format is more complex; it can take a 'index.xml' file which
 describes many documents to be included in the structured output documentation:
 
-    $tool -f index index.xml
+    $toolname -f index index.xml
 
 Use the --help-indexed option for more information on indexed documents.
 
 Information about the PRM-in-XML format can be found in the directory:
-    $resourcedir/gerph
+    $resourcedir/docs
 EOM
 }
 
