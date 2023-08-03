@@ -48,7 +48,6 @@ if [[ ! -f "${download_xml2}" ]] ; then
     download "${download_xml2}" "${LIBXML2_URL}"
 fi
 
-eval "$("${scriptdir}/ci-vars")"
 source "${scriptdir}/setup-venv.sh"
 
 # Extract them

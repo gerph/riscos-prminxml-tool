@@ -23,6 +23,8 @@ mkdir -p "${tmpdir}/download"
 release_files=()
 release_files+=("$tmpdir/tool/LICENSES")
 
+eval "$(${scriptdir}/ci-vars)"
+
 # Build the tool in our temporary directory
 "${scriptdir}/build-riscos-tool.sh" "$tmpdir/tool/Tools/XML"
 
@@ -51,7 +53,6 @@ if [[ -f "$rootdir/README.md" ]] ; then
     release_files+=("$tmpdir/tool/README-prminxml.md")
 fi
 
-eval "$(${scriptdir}/ci-vars)"
 source "${scriptdir}/setup-venv.sh"
 
 riscos-zip --chdir "$tmpdir/tool" "${archive}" "${release_files[@]}"

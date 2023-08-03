@@ -26,6 +26,7 @@ fi
 rm -rf "${downloaddir}/Lib"
 
 # Put our tool in the top level
+eval "$(${scriptdir}/ci-vars)"
 "${scriptdir}/build-riscos-tool.sh" "${downloaddir}"
 
 # Put the examples in there
