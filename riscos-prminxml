@@ -53,7 +53,7 @@ if (!-d $resourcedir)
     $resourcedir = "$scriptdir${dirsep}catalog";
 }
 
-my $toolname = $riscos ? 'prminxml' : 'riscos-prminxml';
+my $toolname = 'riscos-prminxml';
 my $version = 'VERSION';
 my $debug = 0;
 my $lint = 0;
@@ -69,7 +69,24 @@ my $logfile = undef;
 my $index = undef;
 my $params = {};
 
-my $tempbase = $riscos ? "<Wimp\$ScrapDir>.prmlxml-$$" : "/tmp/prmxml-$$";
+my $unique = $$ || time();
+my $tempbase;
+if ($riscos)
+{
+    if (defined $ENV{'Wimp$ScrapDir'})
+    {
+        $tempbase = "<Wimp\$ScrapDir>.prmxml-$unique";
+    }
+    else
+    {
+        $tempbase = "\$.prmxml-$unique";
+    }
+}
+else
+{
+    $tempbase = "/tmp/prminxml-$unique";
+}
+
 
 # Extensions to use for each format
 my %extensions = (
@@ -239,7 +256,12 @@ if ($format eq 'skeleton')
     print "Created $outputfile\n";
     print "To create HTML from this, use:\n";
     my $newfile = replaceext($outputfile, "html");
-    print "    $0 -f html5 -o $newfile $outputfile\n";
+    print "    $toolname -f html5 -o $newfile $outputfile\n";
+    if ($riscos)
+    {
+        # Ensure that the skeleton XML file is given an appropriate type.
+        system "Settype $outputfile F80";
+    }
     exit 0;
 }
 
@@ -280,12 +302,12 @@ if ($format eq 'index')
     # described in it and give it a common structure.
     if (scalar(@inputs) != 1)
     {
-        die "For 'index' format, only a single file, the index.xml file, should be supplied\n";
+        die "For 'index' format, only a single file, the index${extsep}xml file, should be supplied\n";
     }
 
     if (defined $outputdir)
     {
-        die "For 'index' format, the output directory should be supplied in the index.xml file\n";
+        die "For 'index' format, the output directory should be supplied in the index${extsep}xml file\n";
     }
 
     if (!defined $logdir)
@@ -417,7 +439,8 @@ else
         if ($lint)
         {
             # They requested linting first; so we need to check the file
-            $cmd = "$toollint --noout --valid \"$input\"";
+            my $native = $riscos ? '--native' : '';
+            $cmd = "$toollint $native --noout --valid \"$input\"";
             if ($riscos)
             {
                 $cmd .= " > $tempbase";
@@ -481,6 +504,7 @@ else
         {
             # Any type of failure means that we'll return a failure.
             $rc = 1;
+            print "Failed to process document\n";
         }
         else
         {
@@ -906,7 +930,8 @@ Options:
     --help, -h      This help message
     --help-indexed  Help on creating indexed collections of documents
     --help-params   Help on parameters for stylesheets
-    --help-tag <tag>    Print help for a specific tag (or list the supported tags)
+    --help-tag [<tag>]
+                    Print help for a specific tag (or list the supported tags)
     --version, -V   Show version of this tool
     --catalog <version>, -C <version>
                     Select the version of the transforms to use (default $catalog_version)
@@ -928,50 +953,50 @@ Options:
 The 'skeleton' format outputs a skeleton document containing examples of some
 of the structures used in the PRM-in-XML format:
 
-    $toolname -f skeleton -o skel.xml
+    $toolname -f skeleton -o skel${extsep}xml
 
 The 'html' format is the most common. Usually you would use a command like
 (the '-f html' is actually the default, but is used for completeness):
 
-    $toolname -f html -O outputdir mydocs.xml
+    $toolname -f html -O outputdir mydocs${extsep}xml
 
 The 'html+xml' format is exactly the same but copies the XML file alongside
 the HTML:
 
-    $toolname -f html+xml -O outputdir mydocs.xml
+    $toolname -f html+xml -O outputdir mydocs${extsep}xml
 
 The 'html5' format is similar to the 'html' format, but uses HTML 5 semantic
 elements and CSS to render documents:
 
-    $toolname -f html5 -O outputdir mydocs.xml
+    $toolname -f html5 -O outputdir mydocs${extsep}xml
 
 The 'header' format outputs a C header file for the constants from the file:
 
-    $toolname -f header -O outputdir mydocs.xml
+    $toolname -f header -O outputdir mydocs${extsep}xml
 
 The 'command' format outputs a command line help file suitable for passing
 through VTranslate:
 
-    $toolname -f command -O outputdir mydocs.xml
+    $toolname -f command -O outputdir mydocs${extsep}xml
 
 The 'stronghelp' format outputs a skeleton StrongHelp directory structure:
 
-    $toolname -f stronghelp -O outputdir mydocs.xml
+    $toolname -f stronghelp -O outputdir mydocs${extsep}xml
 
 The 'lint' format just checks that the files supplied follow the DTD defined for
 the files. Whilst the HTML might be generated adequately, it is very useful
 to stick to the intended definition of the format to ensure that it will
 work with future iterations of the conversion.
 
-    $toolname -f lint mydocs.xml
+    $toolname -f lint mydocs${extsep}xml
 
 Linting can be used as a check in addition to any of the other formatting
 operations by specifying the --lint option.
 
-The 'index' format is more complex; it can take a 'index.xml' file which
+The 'index' format is more complex; it can take a 'index${extsep}xml' file which
 describes many documents to be included in the structured output documentation:
 
-    $toolname -f index index.xml
+    $toolname -f index index${extsep}xml
 
 Use the --help-indexed option for more information on indexed documents.
 
@@ -987,7 +1012,7 @@ sub help_indexed
 {
     # FIXME: This could still be improved to give better examples.
     print <<EOM;
-The 'index.xml' file has the following format:
+The 'index${extsep}xml' file has the following format:
 
 ----
 <?xml version="1.0"?>
@@ -1128,12 +1153,12 @@ be included in the output.
 
 The 'make-filelist' element indicates that a list of the generated
 HTML files is required. This will be placed in the HTML output
-directory with the name 'filelist.txt'.
+directory with the name 'filelist${extsep}txt'.
 
 The 'make-indexdata' element indicates that an XML file containing
 the details of all the sections and definitions which are referencable
 within the generated documentation. This will be placed in the
-index directory with the name 'index-data.xml'.
+index directory with the name 'index-data${extsep}xml'.
 
 The 'footer' element can contain text to place at the bottom of the
 contents and index pages (individual pages may have their own
@@ -1223,11 +1248,11 @@ the output, even if they are not referenced.
 
 To convert all the files, use a command like:
 
-    $tool -f index -L logs index.xml
+    $toolname -f index -L logs index${extsep}xml
 
 To convert all the files and validate them, use a command like:
 
-    $tool --lint -f index -L logs index.xml
+    $toolname --lint -f index -L logs index${extsep}xml
 EOM
 }
 
