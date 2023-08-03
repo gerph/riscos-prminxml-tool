@@ -4,7 +4,7 @@
 #
 
 # How we configured the virtualenv
-version_venv=1
+version_venv=2
 
 scriptdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 rootdir="$(cd "$scriptdir/.." && pwd -P)"
@@ -19,7 +19,7 @@ if [[ "${venv_key_actual}" != "${venv_key_expect}" ]] ; then
 
     virtualenv -p python2 "${venvdir}"
     source "${venvdir}/bin/activate"
-    pip install rozipinfo
+    pip install 'rozipinfo>=1.0.43'
     echo "$venv_key_expect" > "$venvdir/key"
     deactivate
 fi
@@ -28,7 +28,7 @@ fi
 source "${venvdir}/bin/activate"
 
 function riscos-zip() {
-    python -m rozipfile --create "$@"
+    python -m rozipfile --create -T FFF "$@"
 }
 function riscos-unzip() {
     python -m rozipfile --extract "$@"
