@@ -34,6 +34,7 @@ fi
 sed "s/VERSION/$version/" "${rootdir}/riscos-prminxml" > "${install_dir}/riscos-prminxml/riscos-prminxml.pl,102"
 cp -R "${rootdir}/catalog" "${install_dir}/riscos-prminxml/catalog"
 cp -R "${rootdir}/Resources/!Run,feb" "${install_dir}/riscos-prminxml/!Run,feb"
+cp -R "${rootdir}/Resources/perl,ff8" "${install_dir}/riscos-prminxml/perl,ff8"
 
 find "${install_dir}" -name '*.xml' -exec mv '{}' '{},f80' \;
 find "${install_dir}" -name '*.dtd' -exec mv '{}' '{},f7f' \;
