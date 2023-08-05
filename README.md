@@ -14,14 +14,24 @@ This repository contains the PRM-in-XML tool and the transformations necessary t
 convert the format into HTML and other formats. The primary transformation is HTML 2 with
 tables, with a HTML 5/CSS transformation coming in later versions.
 
-The tool, `riscos-prminxml`, is a Perl script intended to be used to process
-XML files into other formats without installation.
+The tool, `riscos-prminxml`, is intended to be used to process XML files into other
+formats.
 
-## Installation on RISC OS
+## Installation on POSIX systems
 
 The release archives contain the tool ready to be installed into your `PATH` (on POSIX
-systems) or on `Run$Path` (on RISC OS systems). The tool requires Perl 5 on later to
-function.
+systems). Copy the `riscos-prminxml` file and `riscos-prminxml-resources` directory
+to a location where they can be executed from, such as `/usr/local/bin` or `~/bin`.
+
+## Installation on RISC OS systems
+
+The RISC OS archive contains a set of tools to place somewhere that they can be executed,
+such as within your library. A common installation would be to copy all the files and
+directories from `Tools.XML` to your library.
+
+The distribution for RISC OS includes the `perl`, `xsltproc` and `xmllint` binaries.
+The version of perl supplied is suitable for use with the tool only.
+
 
 ## Requirements
 
@@ -29,9 +39,9 @@ function.
 * The `xsltproc` tool
 * The `xmllint` tool
 
-For installation on RISC OS you will require:
+For RISC OS, these components are all supplied with the distribution. Updated versions
+of the XSLTProc and XMLLint if needed can be found at:
 
-* A copy of `perl5`
 * `xsltproc`: https://github.com/gerph/libxslt/releases
 * `xmllint`: https://github.com/gerph/libxml2/releases
 
@@ -55,8 +65,7 @@ The tool contains help on the its usage. However, the most common usage of the t
 
 which will generate a file `myfile.html`, after transforming the content.
 
-On RISC OS, the tool would be placed into the library, and filenames will be in
-RISC OS format, for example:
+On RISC OS the filenames will be in RISC OS format, for example:
 
     riscos-prminxml myfile/xml
 
