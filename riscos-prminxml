@@ -640,7 +640,7 @@ sub native_filename
         }
         if ($rof =~ m!/xml$!)
         {
-            # It ends in .xml so it could have been given a filetype.
+            # It ends in /xml so it could have been given a filetype.
             if (($type eq 'f' && -f "$rof,f80") ||
                 ($type eq 'd' && -d "$rof,f80"))
             {
@@ -1001,7 +1001,7 @@ describes many documents to be included in the structured output documentation:
 Use the --help-indexed option for more information on indexed documents.
 
 Information about the PRM-in-XML format can be found in the directory:
-    $resourcedir/docs
+    $resourcedir${dirsep}docs
 EOM
 }
 
