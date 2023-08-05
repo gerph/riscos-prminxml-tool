@@ -25,12 +25,13 @@ to a location where they can be executed from, such as `/usr/local/bin` or `~/bi
 
 ## Installation on RISC OS systems
 
-The RISC OS archive contains a set of tools to place somewhere that they can be executed,
-such as within your library. A common installation would be to copy all the files and
-directories from `Tools.XML` to your library.
+The RISC OS archive contains a set of tools to place somewhere that they can be
+executed, such as within your library. A common installation would be to copy all
+the files and directories from `Tools.XML` into your library, eg `!Boot.Library`.
 
 The distribution for RISC OS includes the `perl`, `xsltproc` and `xmllint` binaries.
-The version of perl supplied is suitable for use with the tool only.
+The version of perl supplied is suitable for use with the tool only. These must be
+available on the path.
 
 
 ## Requirements
