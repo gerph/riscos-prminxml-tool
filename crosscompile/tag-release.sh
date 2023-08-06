@@ -29,7 +29,7 @@ if [[ "$CI_BRANCH_VERSION" =~ /-dirty$/ ]] ; then
     exit 1
 fi
 
-sed "${sed_inline_args[@]}" 's!(https://github.com/gerph/riscos-prminxml-tool/releases/download)/[^/]*/(POSIX-PRMinXML|RISCOS-PRMinXML|Example-Output)-.*(\.zip|\.tar\.gz)!\1/GITTAG/\2-GITTAG\3!g' "README.md"
+sed "${sed_inline_args[@]}" 's!(https://github.com/gerph/riscos-prminxml-tool/releases/download)/[^/]*/(POSIX-PRMinXML|RISCOS-PRMinXML|Example-Output)-.*(\.zip|\.tar\.gz)!\1/GITTAG/\2-GITVERSION\3!g' "README.md"
 git commit -m "Update README.md links for release" README.md
 
 
@@ -39,6 +39,7 @@ TAG="v$CI_BRANCH_VERSION"
 echo "New tag will be: $TAG"
 
 sed "${sed_inline_args[@]}" "s!GITTAG!$TAG!g" README.md
+sed "${sed_inline_args[@]}" "s!GITVERSION!$CI_BRANCH_VERSION!g" README.md
 git commit -m "Update README.md links for release $TAG" --amend README.md
 git tag -f "$TAG"
 
