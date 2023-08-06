@@ -1,8 +1,8 @@
 # PRM-in-XML tool and transforms
 
-[![Download: RISC OS](https://img.shields.io/badge/Download-RISC_OS-blue)](https://github.com/gerph/riscos-prminxml-tool/releases/download/v1.03.65.html5-css.263/RISCOS-PRMinXML-v1.03.65.html5-css.263.zip)
-[![Download: POSIX](https://img.shields.io/badge/Download-POSIX-blue)](https://github.com/gerph/riscos-prminxml-tool/releases/download/v1.03.65.html5-css.263/POSIX-PRMinXML-v1.03.65.html5-css.263.tar.gz)
-[![Download: Examples](https://img.shields.io/badge/Download-Example_Documents-blue)](https://github.com/gerph/riscos-prminxml-tool/releases/download/v1.03.65.html5-css.263/Example-Output-v1.03.65.html5-css.263.zip)
+[![Download: RISC OS](https://img.shields.io/badge/Download-RISC_OS-blue)](https://github.com/gerph/riscos-prminxml-tool/releases/download/v1.03.65.html5-css.265/RISCOS-PRMinXML-1.03.65.html5-css.265.zip)
+[![Download: POSIX](https://img.shields.io/badge/Download-POSIX-blue)](https://github.com/gerph/riscos-prminxml-tool/releases/download/v1.03.65.html5-css.265/POSIX-PRMinXML-1.03.65.html5-css.265.tar.gz)
+[![Download: Examples](https://img.shields.io/badge/Download-Example_Documents-blue)](https://github.com/gerph/riscos-prminxml-tool/releases/download/v1.03.65.html5-css.265/Example-Output-1.03.65.html5-css.265.zip)
 [![Documentation: Usage](https://img.shields.io/badge/Documentation-Usage-yellow)](catalog/docs/HowTo.md)
 [![Documentation: File format](https://img.shields.io/badge/Documentation-File_Format-yellow)](catalog/docs/PRMinXML.txt)
 
