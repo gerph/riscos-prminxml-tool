@@ -2099,18 +2099,18 @@ body.chapter article section.subsection section.subsubsection section.category h
   -->
     <css variant='body-novarese'><![CDATA[
 body {
-  font-family: "ITC Novarese Std", "ITC Novarese", serif; /* Fall back to serif so we don't look terrible */
+  font-family: "ITC Novarese", "ITC Novarese Std", serif; /* Fall back to serif so we don't look terrible */
   font-feature-settings: 'ss01' 1;
   font-variant: prince-opentype(ss01(1));
 }
 
 table.history h5 {
-  font-family: "ITC Novarese Std", "ITC Novarese", serif;
+  font-family: "ITC Novarese", "ITC Novarese Std", serif;
 }
 @media print {
     /* Special changes for the generated index text */
     nav.indexed-bar-bottom ul {
-      font-family: "ITC Novarese Std", "ITC Novarese", serif !important;
+      font-family: "ITC Novarese", "ITC Novarese Std", serif !important;
     }
 }
 ]]></css>
@@ -2149,7 +2149,7 @@ table.history h5 {
 }
 ]]></css>
 
-<!-- Raleway is a freely available font which provides a good style gainst the serif body font.
+<!-- Raleway is a freely available font which provides a good style against the serif body font.
      However:
        - has variants of the numbers which make them smaller, and this makes hex digits look odd.
      See: https://fonts.google.com/specimen/Raleway
@@ -2337,7 +2337,7 @@ section.definition::before {
 
 
 <!-- Oswald is a freely available font which is a clean sans-serif font which
-     is has a few dinstinctive features:
+     is has a few distinctive features:
      * It is a quite condensed font, with a tall aspect ratio.
      * It has very legible text in both bold and normal presentation.
      * It has rounded numbers, and no tall stems on the tops of p and bottom
@@ -2420,7 +2420,7 @@ section.definition::before {
 
 
 <!-- Saira is a freely available font which is a clean sans-serif font which
-     is has a few dinstinctive features:
+     is has a few distinctive features:
      * It is a squarish fot.
      * It has very legible text in both bold and normal presentation.
      * It has rounded numbers, and no tall stems on the tops of p and bottom
@@ -2691,7 +2691,7 @@ section.definition-message-delivery {
 ]]></css>
 
 
-<!-- A style using as modern style term -->
+<!-- A style to make the documents a little more modern than the older printed manuals -->
 <css variant='prm-modern'><![CDATA[
 body.chapter header h1 .chapter-number:before {
     content: "Chapter ";

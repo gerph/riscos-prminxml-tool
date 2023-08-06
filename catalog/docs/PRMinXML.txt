@@ -25,13 +25,15 @@ of elements.
 HTML transformation
 -------------------
 There are two major HTML transformations present in this release of the
-PRM-in-XML stylesheets - the HTML 3.2 transformation ('prm-html') and
-the HTML 5/CSS transformation ('prm-html5').
+PRM-in-XML stylesheets - the HTML 3.2 transformation (called `prm-html`
+in the stylesheet and `html` in the riscos-prminxml tool) and
+the HTML 5/CSS transformation (called `prm-html5` in the stylesheet, and
+`html5` in the riscos-prminxml tool).
 
 The transformation provided by the HTML stylesheets is intended to be as close
 to that of the PRMs themselves. The HTML 3.2 is intended for use on legacy
-browsers where stylesheets are not available. The HTML 5 layout, however, is
-able to be used with modern browsers and takes advantage of many CSS features
+browsers where stylesheets are not available. The HTML 5 layout, however,
+can be used with modern browsers and takes advantage of many CSS features
 as part of its layout. As such it is much more flexible than the original
 transformation.
 
@@ -59,7 +61,7 @@ itself on the document content. Where a problem is encountered, a message
 will be displayed to indicate the issue which has been identified. Some
 issues may not be a problem for the author - for example a reference to
 an external document whose name has not been given (href="?...") which is
-purely a place holder until the document exists. Some messages will indicate
+purely a placeholder until the document exists. Some messages will indicate
 more serious problems. Authors should read the messages that are presented
 to ensure they understand any issues that the transformation has raised.
 
@@ -73,7 +75,7 @@ Message definition for Window_Info not found at
 
 This form indicates the relative position of elements within the document,
 whilst retaining the names of the elements and is quite compact. The
-alternate, and default form of describing the position is more verbose :
+alternate, and default, form of describing the position is more verbose :
 
 Message definition for Window_Info not found at
    /
@@ -91,14 +93,14 @@ Message definition for Window_Info not found at
 This form splits across multiple lines for clarity, but provides a more
 human-readable description of the location of the fault.
 
-For further information on fault finding, see the section on 'Finding
+For further information on fault-finding, see the section on 'Finding
 mistakes'.
 
 
 Entities
 --------
 The DTD describes a number of entities which should be used within the PRM
-documentation. The DTD will contain the most up to date examples of entities
+documentation. The DTD will contain the most up-to-date examples of entities
 that are required. It is expected that the list of entities expected in this
 file be expanded with time, and as they are found to be necessary.
 
@@ -118,16 +120,16 @@ Some of the entities that can be used are :
              as this ties the output to RISC OS. Changing the definition
              of &hex; should be all that is required to change the indicator
              of a hex constant from & to 0x, or 16_ or some similar prefix.
-             This preclude the use of H suffixed, but we'll just suffer
+             This precludes the use of H suffixed, but we'll just suffer
              that.
    &lsl;     logical shift left (bitwise)
    &lsr;     logical shift right (bitwise)
    &asr;     arithmetic shift right (bitwise, sign extending)
 
-If you require some other entities, please contact me and I'll decide
-whether it might be better to represent things with a different form
-or to accept the entity. Most of the time text is sufficient, but for
-certain applications this will be impossible.
+If you require some other entities, please contact me at gerph@gerph.org
+and I'll decide whether it might be better to represent things with a
+different form or to accept the entity. Most of the time text is
+sufficient, but for certain applications this will be impossible.
 
 
 Structural elements
@@ -156,7 +158,7 @@ Structurally, the document consists of :
   <meta>
    <maintainer>
     <email name="someone" address="a@b.c" />
-   </mainatiner>
+   </maintainer>
    <disclaimer>
     <p />
    </disclaimer>
@@ -190,7 +192,7 @@ in a single file, it is expected that usually only a single chapter will be
 held in the file at any one time.
 
 The 'docgroup' may be set to some prefix that declares the category of
-the documentation. By default this is set to "RISC OS Programmers
+the documentation. By default, this is set to "RISC OS Programmers
 Reference Manuals". Because of the diversity of the documentation that may
 be produced, this value can be modified to suit the class being documented.
 Examples of documentation groups might be :
@@ -201,7 +203,7 @@ Examples of documentation groups might be :
 
 The 'docgroup-part' is used to separate groups of documentation, such as
 by volumes. For example this might be set to 'III' for the 3rd volume of
-the documentation. By default this is an empty string, which removes any
+the documentation. By default, this is an empty string, which removes any
 sequence number.
 
 
@@ -340,21 +342,21 @@ Attributes: <none>
 Children:   (maintainer | history | disclaimer | related)*
 
 The meta element describes meta-information about the document itself.
-Meta data must be included at the end of the document, and should provide
+Metadata must be included at the end of the document, and should provide
 sufficient detail about the document to describe what it's for and its
 lineage. It must also describe who to contact about the document.
 
 
-Document meta data
-------------------
+Document metadata
+-----------------
 
-Document meta data, held within the 'meta' element must be present within
+Document metadata, held within the 'meta' element must be present within
 the document to provide general information about the document itself.
 It is very important that this section be kept up to date, particularly
 with reference to the history of the document and the maintainers contact
 details.
 
-Meta data will usually be presented by the stylesheet at the bottom of the
+Metadata will usually be presented by the stylesheet at the bottom of the
 document (or on a separate page, if the stylesheet allows this). This
 ensures that is it easily accessible, without distracting from the content
 of the document.
@@ -427,9 +429,9 @@ Element:    disclaimer
 Attributes: <none>
 Children:   (<many>)*
 
-The disclaimer element provides an region of text where copyright
-information, trademark acknowledgements, and statements of IPR may be made.
-You should ensure that all relevant information is included here.
+The disclaimer element provides a block of text where copyright
+information, trademark acknowledgements, and statements of rights may
+be made. You should ensure that all relevant information is included here.
 
 
 References
@@ -624,7 +626,7 @@ The filename is usually represented in the PRMs by typewriter text. This
 element describes a filename which should be, or can be, supplied to the
 system. Because filenames may be transferred from different systems, and
 some filenames may need to be given in alternative formats, the type should
-be used to differentate the semantics of the filename.
+be used to differentiate the semantics of the filename.
 
 
 Element:    variable
@@ -664,7 +666,7 @@ type: the type of the code which is described, which may be one of :
           basic - BASIC code
           asm - assembler code
           format - a file format
-          pseudo - pseudo code in no particular language
+          pseudo - pseudocode in no particular language
 
 The code element is usually represented in the PRMs by typewriter text.
 This element describes a section of code which can be used to provide
@@ -682,7 +684,7 @@ type: the type of the code which is described, which may be one of :
           basic - BASIC code
           asm - assembler code
           format - a file format
-          pseudo - pseudo code in no particular language
+          pseudo - pseudocode in no particular language
 
 The extended-example element is usually represented in the PRMs by a block
 of typewriter text which may be a code fragment.
@@ -994,7 +996,7 @@ riscos-ge: (optional) The documentation details versions of the OS after the
 supplier: (optional) Qualifies the supplier of the component (RISC OS/module).
             For example, to discuss RISC OS Ltd versions, RISC OS Open versions,
             RISC OS Direct versions (for the OS), or the supplier of a module
-            as might be the case for different hardwar manufacturers of some
+            as might be the case for different hardware manufacturers of some
             modules (like Joystick).
 hardware: (optional) Qualifies the behaviour on specific hardware.
 architecture: (optional) Describes the processor architectures to which it
@@ -1460,7 +1462,7 @@ Children:   (optional | switch | userreplace | text)*
 
 The alternates element indicates that the elements within it are mutually
 exclusive. This element can be used in a similar way to the
-<optional alternates='true'> element, but one of the alternats must be
+<optional alternates='true'> element, but one of the alternates must be
 specified.
 
 
@@ -1477,7 +1479,7 @@ label: (optional) label name associated with this parameter
 The parameter element provides an explanation of the use of a particular
 parameter to a command. A parameter element should be given for each of the
 parameters to a command. Whereas switches are preceded by a '-' character,
-labels are not. Labels are discouraged but certain commands may require the
+labels are not. Labels are discouraged, but certain commands may require the
 use of labels rather than switches (for example, IFConfig).
 
 
@@ -1603,7 +1605,7 @@ useful :
    fails this check and there are a sequence of mismatches,
 
 2. Check that there are no <s nested within existing tags. This would
-   indicate that there is a missing bracket, ie.
+   indicate that there is a missing bracket, i.e.
    <prm-xml <section title="etc">
 
 3. Check that there are an even number of "s in a tag bracket.
@@ -1652,7 +1654,7 @@ Changes from 1.02 to 1.03
 * alternates element added to allow for alternates which are not optional.
 * reference SWI elements with generated text will be prefixed by 'SWI'.
 * reference elements with explicit text in their body will no longer be
-  prefixed (previously wouldb prefixed by the usual prefixes, like 'UpCall_'.
+  prefixed (previously would be prefixed by the usual prefixes, like 'UpCall_'.
 * image elements are better supported now and allow multiple images to be
   aligned in a row.
 * compatibility, version-table and version elements added to provide information

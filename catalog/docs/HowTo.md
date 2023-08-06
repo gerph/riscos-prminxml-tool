@@ -8,7 +8,7 @@ This document is a short 'how-to' guide for how to create documentation in PRM-i
 
 The first step in creating PRM-in-XML documentation is to have a clear idea what it is that you're documenting. Usually what is being documented is a module, command or resource. You should know what the component being documented does, how it is used, and how it interacts with the rest of the system. It is also very useful to know what other interfaces might be used with it, so that the 'related' sections can be documented.
 
-With this in mind, you can start out with a skeleton of the chapter you are creating. The PRM-in-XML skeleton contains some examples and placeholder text to provide a structure into which you can fill in the content. In this documentation I assume that you will hold the PRM-in-XML documentation in the `prminxml` directory of your project. For examples, we use a component called `Dice Roller`. Although any example text given for the component in this document may be short, this is for illustrutive purposes; your own documentation should be as long as you need it to be.
+With this in mind, you can start out with a skeleton of the chapter you are creating. The PRM-in-XML skeleton contains some examples and placeholder text to provide a structure into which you can fill in the content. In this documentation I assume that you will hold the PRM-in-XML documentation in the `prminxml` directory of your project. For examples, we use a component called `Dice Roller`. Although any example text given for the component in this document may be short, this is for illustrative purposes; your own documentation should be as long as you need it to be.
 
 The skeleton for the project can be created with the command:
 
@@ -16,11 +16,11 @@ The skeleton for the project can be created with the command:
 
 This will build a new file which is a complete PRM-in-XML document, with text in each section to help guide you.
 
-## Building a HTML file
+## Building HTML files
 
-Having created a skeleton document, this can be converted to a HTML document. Even in this skeleton form, it will convert to a HTML file, which will allow you to see how the content will appear when converted. Remember the purpose of the PRM-in-XML format is to structure the content in a way that follows the PRM's general style and is referencable.
+Having created a skeleton document, this can be converted to an HTML document. Even in this skeleton form, it will convert to an HTML file, which will allow you to see how the content will appear when converted. Remember the purpose of the PRM-in-XML format is to structure the content in a way that follows the PRM's general style and is able to be easily referenced.
 
-You can create a HTML document with the command:
+You can create an HTML document with the command:
 
     riscos-prminxml -f html -o prminxml/diceroller.html prminxml/diceroller.xml
 
@@ -74,7 +74,7 @@ Although these sections have example text in a paragraph in the skeleton, the PR
 
 A good starting point when creating your new documentation from the skeleton is to remove all the sections for definitions which are not relevant to the component. This will keep the initial skeleton size down and remove clutter. If you find you need a section you had deleted, you can always create a new copy of the skeleton and copy the relevant sections to your new document for editing.
 
-I find that updating the SWI and service definitions documentation first is easier than trying to provide a complete 'Technical details' section.
+I find that updating the SWI and service definition documentation first is easier than trying to provide a complete 'Technical details' section.
 
 It is very useful to reference the subsections of the 'Technical Details' when concepts are mentioned. References can be included with links like:
 
@@ -92,13 +92,13 @@ All `-definition` blocks have a `related` element, into which you should include
 
 ### Examples sections
 
-At the end of the chapter, an 'Examples' section exists. This sometimes includes explanatory text, but almost always includes 'extended-example' elements which provide example code, or pseudo-code, to show how the component might be used.
+At the end of the chapter, an 'Examples' section exists. This sometimes includes explanatory text, but almost always includes 'extended-example' elements which provide example code, or pseudocode, to show how the component might be used.
 
 ### Metadata
 
-After the end of the main chapter is an element containing metadata for the chapter. This is not a feature within the PRM, but is necessary within the more dynamic distribution that modern documentation gets. In particular it includes the name of the maintainer(s), and a disclaimer for the document. This should be updated to be a useful contact point that the reader may use for communication about the document (not necessarily about the component, although these are usually the same).
+After the end of the main chapter is an element containing metadata for the chapter. This is not a feature within the PRM, but is necessary within the more dynamic distribution that modern documentation gets. In particular, it includes the name of the maintainer(s), and a disclaimer for the document. This should be updated to be a useful contact point that the reader may use for communication about the document (not necessarily about the component, although these are usually the same).
 
-The 'history' element should be updated with each major revision of the document, which generally should stay in step with the component being documented. There may be multiple revisions of the document corresponding to a given version fo the component.
+The 'history' element should be updated with each major revision of the document, which generally should stay in step with the component being documented. There may be multiple revisions of the document corresponding to a given version of the component.
 
 It may be easiest to update the Metadata when you first create the document, and then get into the
 habit of updating it with details of the changes when the document is released. Or you may wish to update the metadata on each change. How you use it is up to you, but to be the most use to your readers, it should convey pertinent change information which helps them to understand how those changes affect them.
@@ -119,6 +119,6 @@ The formatting of the document as HTML may work just fine for many documents whi
 
 There is a lint process that can be invoked from the PRM-in-XML tool which will check against this DTD.
 
-    riscos-prminxml -f lint prminxml/diceroller.xml
+    ßriscos-prminxml -f lint prminxml/diceroller.xml
 
 This will show any structural issues with the document.
