@@ -485,7 +485,9 @@
 
 <!-- metadata content entry -->
 <xsl:template match="meta" mode="contents">
-<li><a href="#metadata">Document information</a></li>
+<xsl:if test="$front-matter = 'no'">
+  <li><a href="#metadata">Document information</a></li>
+</xsl:if>
 </xsl:template>
 
 <!-- import directive -->
@@ -2520,6 +2522,7 @@ Attributes:
 
 <!-- Meta Data section -->
 <xsl:template match="meta" mode="tail">
+<xsl:if test="$front-matter = 'no'">
 <footer>
  <section class='meta'>
   <h2 id="metadata">Document information</h2>
@@ -2555,6 +2558,7 @@ Attributes:
   </div>
  </section>
 </footer>
+</xsl:if>
 </xsl:template>
 
 <xsl:template match="history">

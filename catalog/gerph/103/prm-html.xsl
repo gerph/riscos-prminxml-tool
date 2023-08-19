@@ -135,6 +135,8 @@
 
 <xsl:param name="override-docgroup"></xsl:param>
 
+<xsl:param name="front-matter">no</xsl:param>
+
 <xsl:template match="/">
 <html>
 <xsl:comment>
@@ -298,7 +300,9 @@
 
 <!-- metadata content entry -->
 <xsl:template match="meta" mode="contents">
+<xsl:if test="$front-matter = 'no'">
 <li><a href="#metadata">Document information</a></li>
+</xsl:if>
 </xsl:template>
 
 <!-- import directive -->
@@ -2740,6 +2744,7 @@
 
 <!-- Meta Data section -->
 <xsl:template match="meta" mode="tail">
+<xsl:if test="$front-matter = 'no'">
 <dl>
  <dt><h2><a name="metadata">Document information</a></h2></dt>
  <dd>
@@ -2774,6 +2779,7 @@
  </dd>
 </dl>
 <hr />
+</xsl:if>
 </xsl:template>
 
 <xsl:template match="history">

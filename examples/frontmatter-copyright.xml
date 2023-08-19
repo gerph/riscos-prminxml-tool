@@ -11,7 +11,7 @@
 
     <!-- The second section appears at the bottom of the page -->
     <section title="Statement">
-        <p>Copyright &copy; 2022, Gerph</p>
+        <p>Copyright &copy; 2022-23, Gerph</p>
         <p>Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -36,4 +36,5 @@ SOFTWARE.
     </section>
 
 </chapter>
+<meta/>
 </riscos-prm>

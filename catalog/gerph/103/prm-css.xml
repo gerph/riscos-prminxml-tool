@@ -152,6 +152,9 @@ body.front-matter {
     /* Generally omits headers and footers, and styles differently */
     page: front-matter;
 }
+body.front-matter footer {
+    display: none;
+}
 body.indexed-contents {
     /* Resets the page counter to 1, uses roman page numbers */
     page: contents;
