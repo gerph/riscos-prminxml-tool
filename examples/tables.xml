@@ -376,7 +376,7 @@
 
 <category title="Headers">
 <p>
-<definition-table head-name="Meta name" name-value="Meta meaning">
+<definition-table head-name="Meta name" head-value="Meta meaning">
  <definition name="Foo">Some important definition</definition>
  <definition name="Bar">Another definition</definition>
 </definition-table>
