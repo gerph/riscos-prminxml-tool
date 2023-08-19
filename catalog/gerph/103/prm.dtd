@@ -289,10 +289,11 @@
 <!ELEMENT syntax ANY>
 <!ELEMENT switch (userreplace | optional | text)*>
 <!ELEMENT userreplace (#PCDATA)>
-<!ELEMENT optional (optional | switch | userreplace | text)*>
+<!ELEMENT optional (optional | alternates | switch | userreplace | text)*>
 <!ATTLIST optional
     alternates (true | false) "false"
 >
+<!ELEMENT alternates (optional | switch | userreplace | text)*>
 <!ATTLIST switch
     name  CDATA #REQUIRED
     alias CDATA #IMPLIED
