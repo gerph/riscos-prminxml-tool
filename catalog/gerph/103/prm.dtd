@@ -74,7 +74,7 @@
 <!ENTITY print "&#9113;">
 
 <!ENTITY % tables "offset-table | bitfield-table | value-table | message-table | definition-table | version-table">
-<!ENTITY % parameters "userinput | menuoption | systemoutput | command | function | variable | userreplace | optional | sysvar | filename | switch | input">
+<!ENTITY % parameters "userinput | menuoption | systemoutput | command | function | variable | userreplace | optional | sysvar | filename | switch | input | actionbutton">
 <!ENTITY % style "strong | em | sub | sup">
 <!ENTITY % link "reference | email">
 <!ENTITY % inline "br | image | bnf | list | extended-example | fixme | code  | %style;">
