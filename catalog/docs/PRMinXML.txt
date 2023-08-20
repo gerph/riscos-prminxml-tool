@@ -1457,7 +1457,6 @@ they can be omitted from the command.
 
 
 Element:    alternates
-Attributes: alternates
 Children:   (optional | switch | userreplace | text)*
 
 The alternates element indicates that the elements within it are mutually
