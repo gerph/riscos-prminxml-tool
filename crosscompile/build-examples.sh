@@ -288,17 +288,20 @@ function generate_documents() {
     local css=$3
     local html=${4:-html5}
     local catalog=${5:-103}
+    local extraflags=${6:-}
     echo "- Building documents in ${OUTPUTDIR}/$name"
     sed -e "s!artifacts/output/!${OUTPUTDIR}/$name/!g ; s!css-variant='!css-variant='$css !g ; s!page-format='.*'!page-format='$html'!" "$srcindex" > "${TMPINDEX}"
     mkdir -p "${OUTPUTDIR}/logs-$name"
-    riscos-prminxml --catalog "$catalog" -f index -L "${OUTPUTDIR}/logs-$name" "${TMPINDEX}"
+    riscos-prminxml --catalog "$catalog" ${extraflags} -f index -L "${OUTPUTDIR}/logs-$name" "${TMPINDEX}"
     if [[ "$PRINCEXML_I_HAVE_A_LICENSE" = 1 && -f "${OUTPUTDIR}/$name/html/filelist.txt" ]] ; then
         ( cd "${OUTPUTDIR}/$name/html" &&
           prince --verbose -o "..//examples.pdf" -l filelist.txt )
     fi
 }
 
-generate_documents "examples/index.xml" examples-regular ""
+# The first of the generated document sets also performs a lint, so that we know
+# that we're not violating the current DTD.
+generate_documents "examples/index.xml" examples-regular "" "" "" "--lint"
 generate_documents "examples/index.xml" examples-html "" "html"
 generate_documents "examples/index.xml" examples-102 "" "html" "102"
 generate_documents "examples/index.xml" examples-prm "prm body-fraunces heading-raleway webfont-fraunces webfont-raleway"

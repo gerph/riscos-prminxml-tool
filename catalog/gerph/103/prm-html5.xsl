@@ -1632,15 +1632,19 @@ Attributes:
 <tr>
 <xsl:choose>
  <xsl:when test="@state='content'">
-  <td class='processor-flag-name'><xsl:value-of select="@name"/></td>
-  <td class='processor-flag-value' colspan="2"><xsl:apply-templates/></td>
+  <td class='register-use-flag'><span class='processor-flag-name'><xsl:value-of select="@name"/></span> flag</td>
+  <td class='register-use-divider'>&#160;</td>
+  <td class='register-use-value'><xsl:apply-templates/></td>
  </xsl:when>
+
  <xsl:otherwise>
-  <td class='processor-flag-name'><xsl:value-of select="@name"/></td>
-  <td class='processor-flag-state processor-flag-{@state}' colspan="2">
-   <xsl:value-of select="@state"/>
-   <xsl:text> </xsl:text>
-   <xsl:apply-templates/>
+  <td class='register-use-flag'><span class='processor-flag-name'><xsl:value-of select="@name"/></span> flag</td>
+  <td class='register-use-state' colspan="2">
+    <span class='processor-flag-state processor-flag-{@state}'>
+     <xsl:value-of select="@state"/>
+    </span>
+    <xsl:text> </xsl:text>
+    <xsl:apply-templates/>
   </td>
  </xsl:otherwise>
 </xsl:choose>

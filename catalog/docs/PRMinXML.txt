@@ -1106,7 +1106,7 @@ references to each of the reasons with a 'use-description' reference.
 
 Element:    entry
 Attributes: <none>
-Children:   (register-use)*
+Children:   (register-use | processor-flag)*
 
 The entry element is a headed element containing descriptions of the content
 of registers on entry to the call it exists in.
@@ -1659,3 +1659,5 @@ Changes from 1.02 to 1.03
 * compatibility, version-table and version elements added to provide information
   about the support for given features.
 * indexed content now supports cover and front-matter elements.
+* processor-flag is now allowed in entry, but this is only for the legacy
+  BBC interfaces; it probably shouldn't be used in other interfaces.

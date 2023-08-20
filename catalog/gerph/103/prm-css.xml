@@ -427,13 +427,13 @@ section.definition::before {
 .definition-related-vdus::before {
   content: 'Related VDU codes';
 }
-.register-use-register {
+.register-use-register, .register-use-flag {
   text-align: right;
+}
+.register-use-divider {
+  max-width: 2em;
 }
 .register-name {
-}
-.processor-flag-name {
-  text-align: right;
 }
 .definition-syntax-line {
   font-family: monospace;

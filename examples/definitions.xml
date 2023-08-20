@@ -138,6 +138,7 @@ Send a linefeed to the printer stream, if enabled
 
 <entry>
  <register-use number="1">Register details</register-use>
+ <processor-flag name="C">C flag must be clear (note: only legacy BBC interfaces should use the flags on entry)</processor-flag>
 </entry>
 <exit>
  <register-use number="0">Possible return values:
@@ -146,6 +147,7 @@ Send a linefeed to the printer stream, if enabled
    <value number="1">Another value</value>
   </value-table>
  </register-use>
+ <processor-flag name="C">The C flag will be clear on exit.</processor-flag>
 </exit>
 
 <use>

@@ -366,7 +366,7 @@
     label        CDATA #IMPLIED
 >
 <!-- Parameters on entry or to (something) -->
-<!ELEMENT entry (register-use)*>
+<!ELEMENT entry (register-use | processor-flag)*>
 <!ELEMENT exit (register-use | processor-flag)*>
 <!-- Register use for entry/exit -->
 <!ELEMENT register-use ANY>
