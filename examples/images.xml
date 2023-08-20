@@ -27,26 +27,26 @@
 
 <section title="Image sizes">
     <subsection title="SVG">
-        <category title="SVG: no width">
+        <category title="SVG: no width and height">
             <p><image src="cog.svg" type='svg'/></p>
         </category>
-        <category title="SVG: width set">
-            <p><image src="cog.svg" type='svg' width="128"/></p>
+        <category title="SVG: width set to 64 pixels">
+            <p><image src="cog.svg" type='svg' width="64"/></p>
         </category>
-        <category title="SVG: height set">
-            <p><image src="cog.svg" type='svg' height="128"/></p>
+        <category title="SVG: height set to 64 pixels">
+            <p><image src="cog.svg" type='svg' height="64"/></p>
         </category>
     </subsection>
 
     <subsection title="PNG">
-        <category title="PNG: no width">
+        <category title="PNG: no width or height">
             <p><image src="cog.png" type='png'/></p>
         </category>
-        <category title="PNG: width set">
-            <p><image src="cog.png" type='png' width="128"/></p>
+        <category title="PNG: width set to 64 pixels">
+            <p><image src="cog.png" type='png' width="64"/></p>
         </category>
-        <category title="PNG: height set">
-            <p><image src="cog.png" type='png' height="128"/></p>
+        <category title="PNG: height set to 64 pixels">
+            <p><image src="cog.png" type='png' height="64"/></p>
         </category>
     </subsection>
 </section>
@@ -58,7 +58,7 @@
     <category title="Long caption text">
         <p><image src="cog.png" type='png' width="128" caption="Another image but with a longer caption"/></p>
     </category>
-    <category title="Long captions">
+    <category title="Very long caption text">
         <p><image src="cog.png" type='png' width="128" caption="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum lorem sed risus ultricies tristique. Malesuada fames ac turpis egestas integer eget aliquet nibh."/></p>
     </category>
 </section>
@@ -97,6 +97,9 @@
  <history>
   <revision number="1" author="Gerph" date="15 May 2022" title="Initial version">
     <change>Some examples of image elements.</change>
+  </revision>
+    <revision number="2" author="Alan Robertson" date="20 Aug 2023" title="Small changes">
+    <change>Changed a couple of the image sizes to 64 pixels.</change>
   </revision>
  </history>
 </meta>
