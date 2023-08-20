@@ -134,7 +134,7 @@ all: images indices \&#10;</xsl:text>
 <xsl:text>&#10;</xsl:text>
 <xsl:text>&#10;</xsl:text>
 <xsl:text>validate: &#10;</xsl:text>
-<xsl:apply-templates select="//page" mode="validate"/>
+<xsl:apply-templates select="//page|//front-matter[@href != '']" mode="validate"/>
 <xsl:text>&#10;</xsl:text>
 <xsl:text>&#10;</xsl:text>
 <xsl:text>clean: clean-headers clean-html clean-sourcexml clean-help clean-images&#10;</xsl:text>
