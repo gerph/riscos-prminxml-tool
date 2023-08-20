@@ -6,17 +6,16 @@
 <chapter title="References">
 <section title="Purpose">
 
-<p>The purpose of this demonstrate and test references.</p>
+<p>The purpose of this document is to demonstrate and test references.</p>
 
-<p>In the section entitled 'The references', there are a set of sentences that contain exactly one reference to different part of this file and/or another file.</p>
+<p>In the section entitled <reference type="section" name="The references" />, there are a set of sentences that contain exactly one reference to different part of this file and/or another file.</p>
 
-<p>Clicking on each link should take you to the exact specified reference anchor.</p>
+<p>Clicking on each reference link should take you to the exact specified reference anchor.</p>
 
 <p>Note: Clicking on a link within an external file will first display the external file (if found) and then try to take you to the specified reference anchor.</p>
 
 </section>
 <section title="Lorem section">
-
 
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin tempus urna ac maximus volutpat. Mauris id facilisis magna, eu molestie enim. Pellentesque cursus massa a augue rutrum, pulvinar rutrum justo condimentum. Vestibulum nec ipsum sed risus hendrerit mollis a venenatis leo. Nullam feugiat egestas rhoncus. Nulla ut leo in metus venenatis consequat nec tristique dui. Vestibulum tincidunt augue vel mi imperdiet molestie. Sed et quam nunc. Praesent dapibus sapien vulputate lacinia posuere. Vivamus non tempus libero. Suspendisse a quam vel sem imperdiet varius a vitae dui. Suspendisse nec diam vitae nisl aliquet eleifend. Fusce at nunc in ex pretium sodales sed vitae orci.</p>
 
@@ -52,7 +51,7 @@
 
 <subsection title="References within this file">
 
-<p>This is a reference to the <strong>chapter</strong> entitled <reference type="chapter" name="Testing references" />.</p>
+<p>This is a reference to the <strong>chapter</strong> entitled <reference type="chapter" name="References" />.</p>
 
 <p>This is a reference to the <strong>section</strong> entitled <reference type="section" name="Lorem section" />.</p>
 
@@ -99,6 +98,10 @@
 <history>
 <revision number="1" author="Alan Robertson" date="22 Sep 2021" title="Initial version">
 <change>Includes internal links, external links and external links to an additional chapter.</change>
+</revision>
+
+<revision number="2" author="Alan Robertson" date="20 Aug 2023" title="Fix">
+<change>Fixed a reference that was pointing to an incorrent reference anchor.</change>
 </revision>
 </history>
 </meta>
