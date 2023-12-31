@@ -291,6 +291,8 @@ body.chapter section.category h5 + table {
 .definition-header {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
+  -prince-bookmark-level: 3;
+  -prince-bookmark-label: attr(data-label);
 }
 .definition-title {
   display: block;

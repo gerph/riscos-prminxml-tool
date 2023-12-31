@@ -1359,6 +1359,21 @@ Attributes:
   <xsl:variable name="defnumberbase" select="document('')//localdb:definition-titles[@type=$deftype]/@number-base" />
 
   <div class='definition-header'>
+    <xsl:attribute name="data-label">
+        <xsl:if test="$defprefixname != ''">
+            <xsl:value-of select="$defprefixname"/>
+        </xsl:if>
+        <xsl:value-of select="@name"/>
+        <xsl:if test="@reason != ''">
+         <xsl:text> </xsl:text>
+         <xsl:value-of select="@reason"/>
+        </xsl:if>
+        <xsl:if test="(@reason != '') and (@reasonname != '')">
+         <xsl:text> (</xsl:text>
+         <xsl:value-of select="@reasonname"/>
+         <xsl:text>)</xsl:text>
+        </xsl:if>
+    </xsl:attribute>
    <span class='definition-title'>
     <xsl:if test="$defprefixname != ''">
      <span class='definition-name-prefix'><xsl:value-of select="$defprefixname"/></span>
