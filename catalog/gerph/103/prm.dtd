@@ -188,7 +188,7 @@
     description CDATA #REQUIRED
 >
 <!-- Error definition is similarly simple -->
-<!ELEMENT error-definition (use, related?)>
+<!ELEMENT error-definition (use, compatibility?, related?)>
 <!ATTLIST error-definition
     name CDATA #REQUIRED
     number CDATA #REQUIRED
