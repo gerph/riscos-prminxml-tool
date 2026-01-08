@@ -17,7 +17,7 @@ on:
 
 jobs:
   test-examples:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     container: ubuntu:20.04
     steps:
       - uses: actions/checkout@v3
@@ -31,22 +31,23 @@ jobs:
           export PRINCEXML_I_HAVE_A_LICENSE=1
           crosscompile/build-examples.sh
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: Test-Output
           path: test-output
 
   # Tests for different platforms
   test-platforms:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     strategy:
+      fail-fast: false
       matrix:
-        os: ["ubuntu:18.04", "ubuntu:20.04", "ubuntu:22.04", "centos:7", "centos:8", "debian:10", "linuxmintd/mint18-amd64", "linuxmintd/mint20-amd64"]
+        os: ["ubuntu:20.04", "ubuntu:22.04", "ubuntu:24.04", "centos:8", "debian:12", "linuxmintd/mint20-amd64", "linuxmintd/mint22-amd64"]
         #os: ["ubuntu:18.04"]
     container: ${{ matrix.os }}
     needs: test-examples #  always run after the baseline tests
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Prerequisites for CentOS 8
         if: matrix.os == 'centos:8'
@@ -55,23 +56,31 @@ jobs:
           for i in /etc/yum.repos.d/* ; do sed -i 's/mirrorlist/#mirrorlist/' $i ; done
           for i in /etc/yum.repos.d/* ; do sed -i 's!#baseurl=http://mirror.!baseurl=http://vault.!' $i ; done
 
+      - name: Prerequisites for CentOS 7
+        if: matrix.os == 'centos:7'
+        run: |
+          sed -i 's/mirror\.centos\.org/vault.centos.org/g' /etc/yum.repos.d/CentOS-*.repo
+          sed -i 's/^#.*baseurl=http/baseurl=http/g' /etc/yum.repos.d/CentOS-*.repo
+          sed -i 's/^mirrorlist=http/#mirrorlist=http/g' /etc/yum.repos.d/CentOS-*.repo
+
       - name: Build examples
         run: |
+          export PRINCEXML_I_HAVE_A_LICENSE=1
           crosscompile/build-examples.sh
 
   test-riscos:
     # The type of runner that the job will run on
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: test-examples #  always run after the baseline tests
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install required packages
         run: |
-          sudo apt-get install -y python2 virtualenv
+          sudo apt-get install -y python3 virtualenv
 
       - name: Test through build.riscos.online
         run: |
@@ -93,10 +102,10 @@ jobs:
           # If it didn't report an error, the test was successful.
 
   export-posix:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: ["test-riscos", "test-platforms"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -112,14 +121,14 @@ jobs:
           make cross_install ROTOOL_DIR=../artifacts
           ../artifacts/riscos-prminxml --version
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: Tool-POSIX
           path: artifacts
 
   export-riscos:
     # The type of runner that the job will run on
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: ["test-riscos", "test-platforms"]
 
     outputs:
@@ -129,13 +138,13 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Install required packages
         run: |
-          sudo apt-get install -y python2 virtualenv
+          sudo apt-get install -y python3 virtualenv
 
       - name: Give the output a versioned name
         id: version
@@ -153,7 +162,7 @@ jobs:
           eval "$(crosscompile/ci-vars)"
           crosscompile/build-riscos-archive.sh ${{ steps.version.outputs.leafname }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: Tool-RISCOS
           path: ${{ steps.version.outputs.leafname }}
@@ -168,7 +177,7 @@ jobs:
 
     steps:
       - name: Download built binary (RISC OS)
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4
         with:
           name: Tool-RISCOS
 
