@@ -17,7 +17,7 @@ venv_key_actual="$([ -f "$venvdir/key" ] && cat "$venvdir/key" || true)"
 if [[ "${venv_key_actual}" != "${venv_key_expect}" ]] ; then
     echo rm -rf "${venvdir}"
 
-    virtualenv -p python2 "${venvdir}"
+    virtualenv -p python3 "${venvdir}"
     source "${venvdir}/bin/activate"
     pip install 'rozipinfo>=1.0.43'
     echo "$venv_key_expect" > "$venvdir/key"

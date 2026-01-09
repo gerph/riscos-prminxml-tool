@@ -39,26 +39,21 @@ test-examples:
   stage: test
   script:
     # Build the examples first, as if it fails we'll then not upload the results.
+    - apt-get update
+    - export PRINCEXML_I_HAVE_A_LICENSE=1
     - crosscompile/build-examples.sh
   tags:
     - linux
 
 
 # A collection of tests for different platforms
-p:ubuntu-18.04:
-  image: ubuntu:18.04
-  stage: platforms
-  needs: ['test-examples']
-  script:
-    - crosscompile/build-examples.sh
-  tags:
-    - linux
-
 p:ubuntu-20.04:
   image: ubuntu:20.04
   stage: platforms
   needs: ['test-examples']
   script:
+    - apt-get update
+    - export PRINCEXML_I_HAVE_A_LICENSE=1
     - crosscompile/build-examples.sh
   tags:
     - linux
@@ -68,6 +63,19 @@ p:ubuntu-22.04:
   stage: platforms
   needs: ['test-examples']
   script:
+    - apt-get update
+    - export PRINCEXML_I_HAVE_A_LICENSE=1
+    - crosscompile/build-examples.sh
+  tags:
+    - linux
+
+p:ubuntu-24.04:
+  image: ubuntu:24.04
+  stage: platforms
+  needs: ['test-examples']
+  script:
+    - apt-get update
+    - export PRINCEXML_I_HAVE_A_LICENSE=1
     - crosscompile/build-examples.sh
   tags:
     - linux
@@ -77,6 +85,10 @@ p:centos-7:
   stage: platforms
   needs: ['test-examples']
   script:
+    - sed -i 's/mirror\.centos\.org/vault.centos.org/g' /etc/yum.repos.d/CentOS-*.repo
+    - sed -i 's/^#.*baseurl=http/baseurl=http/g' /etc/yum.repos.d/CentOS-*.repo
+    - sed -i 's/^mirrorlist=http/#mirrorlist=http/g' /etc/yum.repos.d/CentOS-*.repo
+    - export PRINCEXML_I_HAVE_A_LICENSE=1
     - crosscompile/build-examples.sh
   tags:
     - linux
@@ -90,24 +102,18 @@ p:centos-8:
     - for i in /etc/yum.repos.d/* ; do sed -i 's/mirrorlist/#mirrorlist/' $i ; done
     - for i in /etc/yum.repos.d/* ; do sed -i 's!#baseurl=http://mirror.!baseurl=http://vault.!' $i ; done
     - echo "Now building"
+    - export PRINCEXML_I_HAVE_A_LICENSE=1
     - crosscompile/build-examples.sh
   tags:
     - linux
 
-p:debian-10:
-  image: debian:10
+p:debian-12:
+  image: debian:12
   stage: platforms
   needs: ['test-examples']
   script:
-    - crosscompile/build-examples.sh
-  tags:
-    - linux
-
-p:mint-18:
-  image: linuxmintd/mint18-amd64
-  stage: platforms
-  needs: ['test-examples']
-  script:
+    - apt-get update
+    - export PRINCEXML_I_HAVE_A_LICENSE=1
     - crosscompile/build-examples.sh
   tags:
     - linux
@@ -117,15 +123,17 @@ p:mint-20:
   stage: platforms
   needs: ['test-examples']
   script:
+    - export PRINCEXML_I_HAVE_A_LICENSE=1
     - crosscompile/build-examples.sh
   tags:
     - linux
 
-p:mint-21:
-  image: linuxmintd/mint20-amd64
+p:mint-22:
+  image: linuxmintd/mint22-amd64
   stage: platforms
   needs: ['test-examples']
   script:
+    - export PRINCEXML_I_HAVE_A_LICENSE=1
     - crosscompile/build-examples.sh
   tags:
     - linux
