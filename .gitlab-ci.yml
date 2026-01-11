@@ -81,7 +81,7 @@ p:ubuntu-24.04:
     - linux
 
 p:centos-7:
-  image: centos:7
+  image: centos:8
   stage: platforms
   needs: ['test-examples']
   script:
