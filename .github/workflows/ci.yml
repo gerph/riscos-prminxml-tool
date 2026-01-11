@@ -19,7 +19,7 @@ on:
 jobs:
   test-examples:
     runs-on: ubuntu-24.04
-    container: ubuntu:20.04
+    container: ubuntu:24.04
     steps:
       - uses: actions/checkout@v3
 

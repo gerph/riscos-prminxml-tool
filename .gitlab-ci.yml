@@ -48,7 +48,7 @@ test-examples:
 
 # A collection of tests for different platforms
 p:ubuntu-20.04:
-  image: ubuntu:20.04
+  image: ubuntu:24.04
   stage: platforms
   needs: ['test-examples']
   script:
@@ -59,7 +59,7 @@ p:ubuntu-20.04:
     - linux
 
 p:ubuntu-22.04:
-  image: ubuntu:22.04
+  image: ubuntu:24.04
   stage: platforms
   needs: ['test-examples']
   script:
