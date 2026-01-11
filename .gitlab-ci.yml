@@ -108,7 +108,7 @@ p:centos-8:
     - linux
 
 p:debian-12:
-  image: debian:12
+  image: debian:13
   stage: platforms
   needs: ['test-examples']
   script:
