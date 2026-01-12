@@ -31,7 +31,7 @@ if [[ -f "${rootdir}/process.pl" ]] ; then
 else
     tool_file="${rootdir}/riscos-prminxml"
 fi
-sed "s/VERSION/$version/" "${rootdir}/riscos-prminxml" > "${install_dir}/riscos-prminxml/riscos-prminxml.pl,102"
+sed "s!VERSION!$version!" "${rootdir}/riscos-prminxml" > "${install_dir}/riscos-prminxml/riscos-prminxml.pl,102"
 cp -R "${rootdir}/catalog" "${install_dir}/riscos-prminxml/catalog"
 cp -R "${rootdir}/Resources/!Run,feb" "${install_dir}/riscos-prminxml/!Run,feb"
 cp -R "${rootdir}/Resources/perl,ff8" "${install_dir}/riscos-prminxml/perl,ff8"

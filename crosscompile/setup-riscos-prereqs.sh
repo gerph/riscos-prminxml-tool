@@ -51,7 +51,7 @@ fi
 source "${scriptdir}/setup-venv.sh"
 
 # Extract them
-source "${venvdir}/bin/activate"
+echo +++ Extracting xml/xslt tools for RISC OS
 riscos-unzip --chdir "${install_dir}" "${download_xml2}"
 mv "${install_dir}/README.md" "${install_dir}/README-libxml2.md"
 mv "${install_dir}/COPYING" "${install_dir}/COPYING-libxml2"

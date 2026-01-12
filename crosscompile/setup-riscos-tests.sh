@@ -20,6 +20,7 @@ if [[ -f "${perlbin}" ]] ; then
 fi
 
 # Obtain XSLTProc and LibXML2
+echo +++ Setting up prerequisites
 "${scriptdir}/setup-riscos-prereqs.sh" "${downloaddir}"
 
 # We don't need the libraries
@@ -27,6 +28,7 @@ rm -rf "${downloaddir}/Lib"
 
 # Put our tool in the top level
 eval "$(${scriptdir}/ci-vars)"
+echo +++ Building RISC OS Tool
 "${scriptdir}/build-riscos-tool.sh" "${downloaddir}"
 
 # Put the examples in there
