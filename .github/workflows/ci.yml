@@ -184,17 +184,17 @@ jobs:
 
     steps:
       - name: Download built binary (RISC OS)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: Tool-RISCOS
 
       - name: Download built binary (POSIX)
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v7
         with:
           name: Tool-POSIX
 
       - name: Download built binary (tests)
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v7
         with:
           name: Test-Output
 
