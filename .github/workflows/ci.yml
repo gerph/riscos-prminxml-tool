@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-24.04
     container: ubuntu:20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
       - name: Build examples
         run: |
@@ -48,7 +48,7 @@ jobs:
     container: ${{ matrix.os }}
     needs: test-examples #  always run after the baseline tests
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Prerequisites for CentOS 8
         if: matrix.os == 'centos:8'
@@ -80,7 +80,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install required packages
         run: |
@@ -109,7 +109,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: ["test-riscos", "test-platforms"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -145,7 +145,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
