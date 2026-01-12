@@ -32,7 +32,7 @@ jobs:
           export PRINCEXML_I_HAVE_A_LICENSE=1
           crosscompile/build-examples.sh
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: Test-Output
           path: test-output
@@ -125,7 +125,7 @@ jobs:
           make cross_install ROTOOL_DIR=../artifacts
           ../artifacts/riscos-prminxml --version
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: Tool-POSIX
           path: artifacts
@@ -169,7 +169,7 @@ jobs:
           eval "$(crosscompile/ci-vars)"
           crosscompile/build-riscos-archive.sh ${{ steps.version.outputs.leafname }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: Tool-RISCOS
           path: ${{ steps.version.outputs.leafname }}
