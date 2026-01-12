@@ -26,7 +26,7 @@ catalog: dirs
 	cp -R "${CATALOG_SRC}"/* "${RESOURCES}"
 
 ${TOOL}: ../riscos-prminxml dirs catalog
-	sed "s/VERSION/$${CI_BRANCH_VERSION:-VERSION}/" ../riscos-prminxml > $@
+	sed "s!VERSION!$${CI_BRANCH_VERSION:-VERSION}!" ../riscos-prminxml > $@
 	chmod 755 $@
 
 clean:
