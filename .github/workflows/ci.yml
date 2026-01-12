@@ -157,7 +157,7 @@ jobs:
         id: version
         run: |
           eval "$(crosscompile/ci-vars)"
-          version="${CI_BRANCH_VERSION}"
+          version="${CI_BRANCH_VERSION//\//-}"
           echo "This is version: $version"
           leafname="PRMinXML-$version.zip"
           echo "version=$version" >> $GITHUB_OUTPUT
