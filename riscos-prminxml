@@ -276,20 +276,20 @@ if (scalar(@inputs) > 1 && defined($outputfile))
 
 if (defined $logdir)
 {
-    my $nlogdir = native_filename($logdir, 'd');
+    my $nlogdir = native_directory($logdir);
     if (!$nlogdir)
     {
-        die "Log directory '$logdir' does not exist\n";
+        die "Log directory '$logdir' could not be created\n";
     }
     $logdir = $nlogdir;
 }
 
 if (defined $outputdir)
 {
-    my $noutput = native_filename($outputdir, 'd');
+    my $noutput = native_directory($outputdir);
     if (!$noutput)
     {
-        die "Output directory '$outputdir' does not exist\n";
+        die "Output directory '$outputdir' could not be created\n";
     }
     $outputdir = $noutput;
 }
@@ -317,6 +317,23 @@ if ($format eq 'index')
 
     my $indexxml = $inputs[0];
     my $step = 1;
+
+    # The directories that the index describes must exist before we build into them.
+    open(INDEX, "< $indexxml") || die "Cannot read index file '$indexxml': $!\n";
+    my $indextext = join('', <INDEX>);
+    close(INDEX);
+    if ($indextext =~ /<dirs\b([^>]*)>/)
+    {
+        my $dirsattrs = $1;
+        foreach my $attr ('output', 'index', 'help', 'header', 'temp')
+        {
+            if ($dirsattrs =~ /\b$attr\s*=\s*"([^"]*)"/ && $1 ne '')
+            {
+                my $dir = $1;
+                native_directory($dir) || die "Directory '$dir' (from '$attr' in '$indexxml') could not be created\n";
+            }
+        }
+    }
 
     # Build the makefile
     print "Building makefile\n";
@@ -659,6 +676,53 @@ sub native_filename
 
 
 ##
+# Create a directory (and any missing parents), if it does not exist.
+#
+# @param $dir   Directory to create, in the native form for the system
+#
+# @return 1 if the directory exists after the call, 0 if not
+sub make_directory
+{
+    my ($dir) = @_;
+
+    return 1 if (-d $dir);
+    if ($riscos)
+    {
+        system "CDir $dir";
+        return (-d $dir) ? 1 : 0;
+    }
+
+    # Create each of the parent directories in turn.
+    my $path = '';
+    foreach my $part (split(/\//, $dir))
+    {
+        $path .= "$part/";
+        next if ($part eq '' || -d $path);
+        mkdir($path, 0777) || return 0;
+    }
+    return (-d $dir) ? 1 : 0;
+}
+
+
+##
+# Convert a directory into a native name, creating it if it does not exist.
+#
+# @param $dir   Directory name supplied by the user
+#
+# @return native directory name, or undef if it could not be created
+sub native_directory
+{
+    my ($dir) = @_;
+    my $native = native_filename($dir, 'd');
+    return $native if ($native);
+
+    # It does not exist, so we create it as given (with any variables expanded).
+    $dir =~ s/<([A-Za-z0-9_\$]+)>/expand_variable($1)/ge if (!$riscos);
+    return make_directory($dir) ? $dir : undef;
+}
+
+
+##
 # Run a command and return the return code (in perl format)
 sub runcommand
 {
@@ -942,11 +1006,11 @@ Options:
     --logfile <file>, -l <file>
                     Log file to write to
     --logdir <dir>, -L <dir>
-                    Log directory (for writing multiple files)
+                    Log directory (for writing multiple files); created if missing
     --output <file>, -o <file>
                     Output file (or directory) to write to
     --outputdir <dir>, -O <dir>
-                    Output directory to use
+                    Output directory to use; created if missing
     --param <name>=<value>, -p <name>=<value>
                     Supply parameters to the stylesheet for the render format.
 
@@ -1092,6 +1156,8 @@ The 'dirs' element describes where content should be read and written to:
     header: where the C header output should be put
     input:  the base directory for source XML files
     temp:   a temporary directory which can be used during build
+
+All of these directories are created if they do not already exist.
 
 The 'options' element describes some settings for the index build:
 
