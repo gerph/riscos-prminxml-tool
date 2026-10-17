@@ -1,0 +1,209 @@
+#!/usr/bin/perl
+##
+# Check that the element reference in the documentation agrees with the DTD.
+#
+# The documentation files catalog/docs/PRMinXML.txt and catalog/docs/BNF.txt
+# have to remain readable without the tool, so the 'Attributes:' and 'Children:'
+# (or 'Contents:') lines for each element are written by hand. This check
+# makes sure that they stay in step with the DTD that the tool reports through
+# 'riscos-prminxml --help-tag --json'.
+#
+# Usage:
+#   check-element-docs [<path to riscos-prminxml>]
+#
+# Exits with a non-zero return code if any disagreement is found.
+#
+# The Children: line must match the DTD's content model, ignoring whitespace,
+# with the following conventions from the documentation:
+#
+#   <text>      stands for #PCDATA
+#   <none>      stands for EMPTY
+#   <any>       stands for ANY
+#   %name;      a parameter entity from the DTD, which is expanded
+#   (name)      the brackets around a single name are redundant, so (x)* is x*
+#
+# The Attributes: line must list exactly the attributes that the DTD declares,
+# in any order, with:
+#
+#   <none>                        stands for no attributes
+#   <repetition attributes>       stands for repeat, repeat-min, repeat-max
+#
+# Every element in the DTD must be documented, and every documented element
+# must exist in the DTD. Each attribute that has a description in the text must
+# be one the element has.
+
+use strict;
+use warnings;
+use JSON::PP;
+use FindBin;
+
+my $root = "$FindBin::Bin/..";
+my $tool = $ARGV[0] || "$root/riscos-prminxml";
+my @docs = ("$root/catalog/docs/PRMinXML.txt", "$root/catalog/docs/BNF.txt");
+
+my $json = `perl "$tool" --help-tag --json`;
+die "Unable to run '$tool --help-tag --json'\n" if ($? != 0 || !$json);
+my $schema = decode_json($json);
+my $elements = $schema->{'elements'};
+my $entities = $schema->{'entities'};
+
+my @errors;
+my %documented;
+
+
+##
+# Normalise a content model for comparison.
+sub normalise_model
+{
+    my ($model) = @_;
+    my $count;
+    for ($count = 0; $count < 10 && $model =~ /%[A-Za-z0-9_.\-]+;/; $count++)
+    {
+        $model =~ s/%([A-Za-z0-9_.\-]+);/exists $entities->{$1} ? "($entities->{$1})" : "%$1;"/ge;
+    }
+    $model =~ s/<text>/#PCDATA/g;
+    $model =~ s/<none>/EMPTY/g;
+    $model =~ s/<any>/ANY/g;
+    $model =~ s/\s+//g;
+
+    # Brackets around a single name are redundant; so are doubled brackets.
+    my $previous = '';
+    while ($previous ne $model)
+    {
+        $previous = $model;
+        $model =~ s/\(([A-Za-z0-9_.:#\-]+)\)/$1/g;
+        $model =~ s/\(\(([^()]*)\)\)/($1)/g;
+    }
+    # The entities are expanded in brackets, and are always inside a list anyway.
+    $model =~ s/\(([A-Za-z0-9_.:#\-|]+)\)(?=[|)])/$1/g;
+    $model =~ s/(?<=[|(])\(([A-Za-z0-9_.:#\-|]+)\)/$1/g;
+    return $model;
+}
+
+
+##
+# Check one element's documentation.
+sub check_element
+{
+    my ($file, $name, $attributes, $children, $described) = @_;
+
+    my $element = $elements->{$name};
+    if (!$element)
+    {
+        push @errors, "$file: '$name' is documented but not in the DTD";
+        return;
+    }
+    $documented{$name} = 1;
+
+    if (!defined $children)
+    {
+        push @errors, "$file: '$name' has no Children: line";
+    }
+    elsif (normalise_model($children) ne normalise_model($element->{'model'}))
+    {
+        push @errors, "$file: '$name' Children: '$children' does not match the DTD '$element->{'model'}'";
+    }
+
+    if (!defined $attributes)
+    {
+        push @errors, "$file: '$name' has no Attributes: line";
+        return;
+    }
+    my @documented = grep { $_ ne '' && $_ ne '<none>' } split(/\s*,\s*/, $attributes);
+    @documented = map { $_ eq '<repetition attributes>' ? ('repeat', 'repeat-min', 'repeat-max') : $_ } @documented;
+    my %declared = map { $_->{'name'} => 1 } @{ $element->{'attributes'} };
+    my %listed = map { $_ => 1 } @documented;
+    foreach my $attr (sort keys %declared)
+    {
+        push @errors, "$file: '$name' does not document attribute '$attr'" if (!$listed{$attr});
+    }
+    foreach my $attr (sort keys %listed)
+    {
+        push @errors, "$file: '$name' documents attribute '$attr' which the DTD does not declare" if (!$declared{$attr});
+    }
+    foreach my $attr (sort keys %$described)
+    {
+        push @errors, "$file: '$name' describes attribute '$attr' which the DTD does not declare" if (!$declared{$attr});
+    }
+}
+
+
+foreach my $file (@docs)
+{
+    open(my $fh, '<', $file) || die "Cannot read '$file': $!\n";
+    my ($name, $attributes, $children, $described);
+    my @first;
+    my $para = 0;
+    my $last = "\n";
+    my $finish = sub {
+        if (defined $name)
+        {
+            # It is only a list of attributes if every line is an entry or its continuation.
+            my %names;
+            my $ok = (scalar(@first) > 0);
+            foreach my $text (@first)
+            {
+                if ($text =~ /^([A-Za-z][A-Za-z0-9\-]*): /)
+                {
+                    $names{$1} = 1;
+                }
+                elsif ($text !~ /^\s+\S/)
+                {
+                    $ok = 0;
+                }
+            }
+            $described = $ok ? \%names : {};
+        }
+        @first = ();
+        check_element($file, $name, $attributes, $children, $described) if (defined $name);
+        $name = $attributes = $children = $described = undef;
+    };
+    while (my $line = <$fh>)
+    {
+        if ($last eq "\n" && $line eq "\n")
+        {
+            # Two blank lines end the element.
+            $finish->();
+        }
+        elsif ($line =~ /^Element: +(\S+)/)
+        {
+            $finish->();
+            $name = $1;
+            $para = 0;
+        }
+        elsif (defined $name && $line =~ /^Attributes: *(.*)$/)
+        {
+            $attributes = $1;
+        }
+        elsif (defined $name && $line =~ /^(?:Children|Contents): *(.*)$/)
+        {
+            $children = $1;
+        }
+        elsif (defined $name && $para == 1 && $line ne "\n")
+        {
+            # The first paragraph after the header may list attribute descriptions.
+            push @first, $line;
+        }
+        elsif ($line eq "\n")
+        {
+            $para++;
+        }
+        $last = $line;
+    }
+    $finish->();
+    close($fh);
+}
+
+foreach my $name (sort keys %$elements)
+{
+    push @errors, "'$name' is in the DTD but is not documented" if (!$documented{$name});
+}
+
+if (@errors)
+{
+    print "$_\n" foreach (@errors);
+    print scalar(@errors), " disagreement(s) between the element documentation and the DTD\n";
+    exit 1;
+}
+print "Element documentation agrees with the DTD (", scalar(keys %$elements), " elements)\n";
+exit 0;

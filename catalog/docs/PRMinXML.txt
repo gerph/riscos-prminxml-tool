@@ -132,6 +132,36 @@ different form or to accept the entity. Most of the time text is
 sufficient, but for certain applications this will be impossible.
 
 
+Element descriptions
+--------------------
+Each element is described below with the attributes that it takes and the
+elements that it may contain. These agree with the DTD, which is regarded as
+correct if they differ. The 'Attributes:' line lists the attributes in the
+order that the DTD declares them. The 'Children:' line gives the content
+model in the notation of the DTD, with some conventions to make it easier
+to read :
+
+   <text>      character data (#PCDATA in the DTD).
+   <none>      the element has no attributes, or no content (EMPTY).
+   <any>       the element may contain anything (ANY).
+   %name;      a group of elements which the DTD names, as follows.
+
+The groups of elements that are named are :
+
+   %tables;       the tables (offset-table, bitfield-table, value-table,
+                  message-table, definition-table and version-table).
+   %parameters;   the technical elements for text, such as userinput,
+                  command, filename, sysvar and userreplace.
+   %style;        the text styles (strong, em, sub and sup).
+   %link;         references to other things (reference and email).
+   %inline;       elements that can be used within a line of text, such as
+                  br, image, list and code, as well as the %style; elements.
+   %definitions;  the definitions of the interfaces (swi-definition,
+                  service-definition, command-definition, etc).
+
+The DTD gives the exact elements in each group.
+
+
 Structural elements
 -------------------
 The PRMs have a number of structural elements which provide the basic
@@ -174,16 +204,16 @@ Structurally, the document consists of :
  </riscos-prm>
 
 Element:    riscos-prm
-Attributes: (none)
-Children:   (chapter*), meta
+Attributes: <none>
+Children:   ((chapter)*, meta)
 
 The riscos-prm element is the top level element, within which other PRM
 elements are contained.
 
 
 Element:    chapter
-Attributes: title, docgroup, docgroup-part
-Children:   section*
+Attributes: title, number, docgroup, docgroup-part
+Children:   (section | import)*
 
 The chapter equates to a chapter in the PRMs. The 'title' attribute should
 be set to the title of the chapter. This is usually the component name, for
@@ -209,7 +239,7 @@ sequence number.
 
 Element:    section
 Attributes: title
-Children:   (p | subsection | category | %apis;)*
+Children:   (p | subsection | subsubsection | category | %definitions; | extended-example | import)*
 
 The section equates to the 'new page and large heading' in the PRMs. The
 'title' attribute should be set to the title of the section. Usually
@@ -294,7 +324,7 @@ but is a helpful convention to follow.
 
 Element:    subsection
 Attributes: title
-Children:   (p | subsubsection | category)*
+Children:   (p | subsubsection | category | import)*
 
 The subsection equates to the 'left of the page heading' in the PRMs. The
 'title' attribute should be set to the title of the subsection. A subsection
@@ -305,7 +335,7 @@ might be 'Implementation', 'Interaction with xxx', 'Data formats', etc.
 
 Element:    subsubsection
 Attributes: title
-Children:   (p | category)*
+Children:   (p | category | import)*
 
 The subsubsection equates to the 'half indented headings' in the PRMs. Like
 the subsection within a section, these describe something within a
@@ -316,7 +346,7 @@ subsection.
 
 Element:    category
 Attributes: title
-Children:   (p)*
+Children:   (p | import)*
 
 The category equates to the 'text level heading' in the PRMs. A category
 does not truly equate to a subsubsubsection, but is intended to be used to
@@ -330,7 +360,7 @@ found more easily via the contents page.
 
 Element:    p
 Attributes: <none>
-Children:   (<many>)*
+Children:   (<text> | %tables; | %parameters; | %inline; | %link; | compatibility | import)*
 
 The p equates to a paragraph in the PRMs. It is used as the primary
 descriptive block. In some cases it is also used as the holder for alternate
@@ -408,7 +438,7 @@ the changes between those revisions.
 
 Element:    change
 Attributes: <none>
-Children:   <text>
+Children:   (<text> | p | list)*
 
 The change element describes an individual change of the document. Multiple
 changes will usually apply to a single revision. It is expected that a
@@ -427,7 +457,7 @@ is vital.
 
 Element:    disclaimer
 Attributes: <none>
-Children:   (<many>)*
+Children:   (p | %inline; | import)*
 
 The disclaimer element provides a block of text where copyright
 information, trademark acknowledgements, and statements of rights may
@@ -448,7 +478,7 @@ consistency.
 
 Element:    reference
 Attributes: type, href, name, reason, use-description
-Children:   <text>?
+Children:   <text>
 
 type: may be one of :
        link - an external link, given by 'href', with its description
@@ -551,7 +581,7 @@ reference.
 
 Element:    email
 Attributes: name, address
-Children:   <none>
+Children:   <text>
 
 name: optional (but recommended) name of the recipient.
 address: email address to send to.
@@ -569,7 +599,7 @@ file names, replaceable text, and system variables.
 
 Element:    userinput
 Attributes: <none>
-Children:   (<text> | userreplace)*
+Children:   (<text> | %parameters;)*
 
 User input is something that the user might give, by way of a short example
 which is not a fully formed example.
@@ -587,7 +617,7 @@ Example: <userreplace>FileSystem</userreplace>_DiscOp
 
 Element:    systemoutput
 Attributes: <none>
-Children:   (<text> | userreplace)*
+Children:   (<text> | %inline; | %link; | %parameters;)*
 
 The systemoutput is represented in the PRMs by typewriter text. This element
 describes the output from the system, usually in response to *Commands or
@@ -596,7 +626,7 @@ other command-like user interaction.
 
 Element:    menuoption
 Attributes: <none>
-Children:   (<text> | userreplace)*
+Children:   <text>
 
 The menuoption is not represented in the PRMs. This element describes a
 menu option. Its representation in a transformation is undefined; it may be
@@ -605,7 +635,7 @@ used only as an indexing entry.
 
 Element:    actionbutton
 Attributes: <none>
-Children:   (<text>)*
+Children:   <text>
 
 The actionbutton is not represented in the PRMs. This element describes a
 button in the interface. Its representation in a transformation is undefined;
@@ -614,7 +644,7 @@ it may be used only as an indexing entry.
 
 Element:    filename
 Attributes: type
-Children:   (<text> | userreplace)*
+Children:   (<text> | %parameters;)*
 
 type: (optional) type of filename represented:
           riscos - a RISC OS filename (default)
@@ -631,7 +661,7 @@ be used to differentiate the semantics of the filename.
 
 Element:    variable
 Attributes: <none>
-Children:   (<text> | userreplace)*
+Children:   <text>
 
 The variable is usually represented in the PRMs by typewriter text. This
 element describes a variable which should be, or can be, supplied to the
@@ -640,7 +670,7 @@ system.
 
 Element:    command
 Attributes: <none>
-Children:   (<text> | userreplace)*
+Children:   (<text> | %parameters; | %inline; | %link;)*
 
 The command is usually represented in the PRMs by typewriter text. This
 element describes a command that might be issued by the user, or programmer.
@@ -648,7 +678,7 @@ element describes a command that might be issued by the user, or programmer.
 
 Element:    function
 Attributes: <none>
-Children:   (<text> | userreplace)*
+Children:   (<text> | %parameters; | %inline; | %link;)*
 
 The function is usually represented in the PRMs by typewriter text. This
 element describes a command that might be issued by a programmer in a
@@ -677,7 +707,7 @@ for single-line or simple examples.
 
 Element:    extended-example
 Attributes: type
-Children:   <text>*
+Children:   (<text> | %parameters; | %inline; | %link;)*
 
 type: the type of the code which is described, which may be one of :
           c - C code
@@ -696,7 +726,7 @@ for multi-line examples, where pre-formatted text is expected.
 
 Element:    sysvar
 Attributes: <none>
-Children:   (<text> | userreplace)*
+Children:   (<text> | %parameters;)*
 
 The sysvar is usually represented in the PRMs by typewriter text. This
 element describes a system variable. Where the system variable can be
@@ -810,7 +840,7 @@ table have 'state' elements then the 'Meaning if set' title changes to
 
 Element:    bit
 Attributes: number, name, state
-Children:   <text>
+Children:   <any>
 
 number: the number of the bits, or a range of bits separated by a hyphen.
 name: (optional) a name to assign to this bit (or range of bits).
@@ -849,7 +879,7 @@ these headings, this should only be done with care.
 
 Element:    value
 Attributes: number, name
-Children:   <text>
+Children:   <any>
 
 number: the value, or a range of values separated by a hyphen.
 name: (optional) a name to assign to this value (or range of values).
@@ -881,7 +911,7 @@ these headings, this should only be done with care.
 
 Element:    offset
 Attributes: number, data-size, name, state
-Children:   <text>
+Children:   <any>
 
 number: the offset, or a range of offsets separated by a hyphen.
 name: (optional) a name to assign to this offset (or range of offsets).
@@ -913,7 +943,7 @@ offsets into a message block and their meanings. The table is headed by
 
 Element:    message
 Attributes: offset, data-size, name, state
-Children:   <text>
+Children:   <any>
 
 offset: the offset, or a range of offsets separated by a hyphen.
 name: (optional) a name to assign to this offset (or range of offsets).
@@ -937,10 +967,10 @@ Wimp_SendMessage/Wimp_Poll[Idle])
 
 Element:    definition-table
 Attributes: head-name, head-extra, head-value
-Children:   (value)*
+Children:   (definition)*
 
 head-name: (optional) a heading for the number field
-head-exra: (optional, but recommended) a heading for the extra field
+head-extra: (optional, but recommended) a heading for the extra field
 head-value: (optional) a heading for the value field (the body of the
             element)
 
@@ -954,7 +984,7 @@ describe terms and labels, whilst the value-table is intended for numbers.
 
 Element:    definition
 Attributes: name, extra
-Children:   <text>
+Children:   <any>
 
 name: the textual string being defined
 extra: (optional) an additional field if required in the table
@@ -976,10 +1006,8 @@ layout) presented as tabular data, but as an indented list.
 
 
 Element:    version
-Attributes: module-name, module-lt, module-eq, module-ge,
-            riscos-lt, riscos-eq, riscos-ge,
-            supplier, hardware, architecture,
-            state
+Attributes: module-name, module-lt, module-eq, module-ge, riscos-lt, riscos-eq, riscos-ge, supplier, hardware, architecture, state
+Children:   (<text> | p)*
 
 module-name: (optional) The name of a module within which this version applies
             (defaults to not saying the module, assumed to be the one
@@ -1048,9 +1076,8 @@ the PRMs provide.
 
 
 Element:    swi-definition
-Attributes: name, number, offset, offset-base, reason, reasonname,
-            description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, (example)*, declaration?, related?)
+Attributes: name, number, offset, offset-base, description, internal, irqs, fiqs, processor-mode, re-entrant, reason, reasonname
+Children:   ((entry?, exit?, use, compatibility?, (example)*, declaration?, related?)?)
 
 name: the full name of this SWI; for example 'OS_Module'
 number: (optional) the number of this SWI in hex
@@ -1122,7 +1149,7 @@ of registers on exit from the call it exists in.
 
 Element:    register-use
 Attributes: number, state
-Children:   <text>
+Children:   <any>
 
 number: register number being described
 state: (optional) describes the state of the register, for exit contexts
@@ -1138,7 +1165,7 @@ Details section.
 
 Element:    processor-flag
 Attributes: name, state
-Children:   <text>
+Children:   <any>
 
 name: the processor flag (N, C, V or Z) being described
 state: (optional) describes the state of the register, for exit contexts
@@ -1153,7 +1180,7 @@ corruption of flags on return.
 
 Element:    use
 Attributes: <none>
-Children:   <text>
+Children:   (p | category | fixme)*
 
 The use element describes how the definition functions, its effect and any
 other details relevant to its use which are not part of the overall component
@@ -1162,7 +1189,7 @@ structure as described in the Technical details.
 
 Element:    compatibility
 Attributes: <none>
-Children:   <version>*
+Children:   (version)*
 
 The compatibility element describes the support of the definition within
 different versions. It is equivalent to the version-table element, but as
@@ -1203,9 +1230,8 @@ section to provide links.
 
 
 Element:    vector-definition
-Attributes: name, number, reason, reasonname,
-            description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, compatibility?, declaration?, (example)*, related?)
+Attributes: name, number, description, internal, irqs, fiqs, processor-mode, re-entrant, reason, reasonname
+Children:   ((entry?, exit?, use, compatibility?, (example)*, related)?)
 
 name: the full name of this vector; for example 'ColourV'
 number: the number of this vector in hex
@@ -1232,9 +1258,8 @@ is used to describe the standard RISC OS vectors.
 
 
 Element:    entry-definition
-Attributes: name, number, reason, reasonname,
-            description, internal, irqs, fiqs, processor-mode, re-entrant
-Children:   (entry?, exit?, use, compatibility?, declaration?, (example)*, related)
+Attributes: name, number, description, internal, irqs, fiqs, processor-mode, re-entrant, reason, reasonname
+Children:   ((entry?, exit?, use, compatibility?, (example)*, declaration?, related)?)
 
 name: the full name of this code; for example 'FileEntry_MiscOp'
 number: the number of this entry, if applicable, in hex
@@ -1260,9 +1285,8 @@ such as callbacks.
 
 
 Element:    service-definition
-Attributes: name, number, reason, reasonname,
-            description, internal
-Children:   (entry, exit, use, compatibility?, declaration?, (example)*, related)
+Attributes: name, number, description, internal, reason, reasonname
+Children:   (entry, exit, use, compatibility?, (example)*, declaration?, related)
 
 name: the name of this service; for example 'ShutDown'
 number: the number of this entry, if applicable, in hex
@@ -1283,9 +1307,8 @@ prefixed by 'Service_' to indicate its lineage.
 
 
 Element:    upcall-definition
-Attributes: name, number, reason, reasonname,
-            description, internal
-Children:   (entry, exit, use, compatibility?, declaration?, (example)*, related)
+Attributes: name, number, description, reason, reasonname
+Children:   (entry, exit, use, compatibility?, (example)*, declaration?, related)
 
 name: the name of this UpCall; for example 'FileModified'
 number: the number of this entry, if applicable, in hex
@@ -1296,8 +1319,6 @@ reasonname: (optional) the name of this reason code as a capitalised name
             without spaces; for example 'Renaming'
 description: one sentence description of the function provided by this
              upcall
-internal: 'yes' if this is an internal upcall (all other content will be
-          ignored)
 
 The upcall-definition is nearly identical to the service-definition. entry,
 exit, use and related elements are exactly as provided by
@@ -1307,7 +1328,7 @@ to indicate its lineage.
 
 Element:    sysvar-definition
 Attributes: name, description
-Children:   (use, compatibility?, example?, related)
+Children:   (use, compatibility?, example?, related?)
 
 name: the full name of this system variable; for example 'System$Path'
 description: one sentence description of the function provided by this
@@ -1319,7 +1340,7 @@ and related elements are as provided by upcall-definition.
 
 Element:    error-definition
 Attributes: number, name, description
-Children:   (use, compatibility?, related)
+Children:   (use, compatibility?, related?)
 
 number: the number of this error in hex
 name: the symbolic name of this error for example 'BadPathVariable'
@@ -1331,9 +1352,8 @@ errors that may be returned from a call.
 
 
 Element:    message-definition
-Attributes: name, number, description, source, destination,
-            recorded, broadcast
-Children:   (message-table, use, compatibility?, declaration?, related)
+Attributes: name, number, description, source, destination, reason, reasonname, broadcast, recorded
+Children:   ((message-table | value-table)?, use, compatibility?, declaration?, related?)
 
 name: the name of this message; for example 'DataOpen'
 description: one sentence description of the function provided by this
@@ -1362,8 +1382,8 @@ element is described in the Data structures section.
 
 
 Element:    tboxmessage-definition
-Attributes: name, number, description
-Children:   (message-table, use, compatibility?, declaration?, related)
+Attributes: name, number, description, reason, reasonname, internal
+Children:   ((message-table | value-table | offset-table)?, use, compatibility?, declaration?, related?)
 
 name: the name of this message; for example 'ColourMenu_HasBeenHidden'
 description: one sentence description of the function provided by this
@@ -1375,9 +1395,8 @@ is always the Toolbox and the destination is always your task.
 
 
 Element:    tboxmethod-definition
-Attributes: name, number, reason, reasonname,
-            description, internal
-Children:   (entry, exit, use, declaration?, (example)*, related)
+Attributes: name, number, description, reason, reasonname, internal
+Children:   (entry?, exit?, use, compatibility?, (example)*, declaration?, related?)
 
 name: the name of this service; for example 'ColourMenu_SetTitle'
 number: the number of this entry, if applicable, in hex
@@ -1394,7 +1413,7 @@ The tboxmethod-definition is very similar to the service-definition.
 
 Element:    command-definition
 Attributes: name, description
-Children:   ((syntax)*, (parameter)*, use, compatibility?, (example)*, related)
+Children:   ((syntax)*, (parameter)*, use, compatibility?, (example)*, related?)
 
 name: the name of this command; for example 'DataOpen'
 description: one sentence description of the function provided by this
@@ -1407,8 +1426,8 @@ name will always have a * prefix added to it.
 
 
 Element:    vdu-definition
-Attributes: name, number, description
-Children:   ((syntax)*, (parameter)*, use, compatibility?, (example)*, related)
+Attributes: name, description
+Children:   ((syntax)*, (parameter)*, use, compatibility?, (example)*, related?)
 
 name: the name of this command; for example DataOpen
 description: one sentence description of the function provided by this
@@ -1421,7 +1440,7 @@ prefix added to it.
 
 Element:    syntax
 Attributes: <none>
-Children:   (switch | optional | alternates | text | userreplace)*
+Children:   <any>
 
 The syntax element describes the syntax of the *Command, giving a breakdown
 of the syntax. If the syntax cannot be described in a single example,
@@ -1432,8 +1451,8 @@ In 1.03, the syntax for vdu-definitions only documents the additional parameters
 
 
 Element:    switch
-Attributes: name
-Children:   (userreplace)*
+Attributes: name, alias
+Children:   (userreplace | optional | text)*
 
 name: name of the switch
 
@@ -1447,7 +1466,7 @@ Note: Aliases for switches are given in the 'parameter' element.
 
 Element:    optional
 Attributes: alternates
-Children:   (alternates | switch | userreplace | text)*
+Children:   (optional | alternates | switch | userreplace | text)*
 
 alternates: (optional) 'true' if the content of this element are mutually
             exclusive alternates.
@@ -1457,6 +1476,7 @@ they can be omitted from the command.
 
 
 Element:    alternates
+Attributes: <none>
 Children:   (optional | switch | userreplace | text)*
 
 The alternates element indicates that the elements within it are mutually
@@ -1467,7 +1487,7 @@ specified.
 
 Element:    parameter
 Attributes: name, switch, switch-alias, label
-Children:   <text>
+Children:   <any>
 
 name: (optional) parameter name that we are describing
 switch: (optional) switch name associated with this parameter
@@ -1501,7 +1521,7 @@ which is not strictly part of an ordered list, but needs to be separated.
 
 Element:    image
 Attributes: src, type, width, height, caption
-Children:   image
+Children:   (image?)
 
 src: a relative location of the graphic with any necessary extension
 type: the type of graphic being represented - only `png`, `gif, `draw`
@@ -1518,8 +1538,8 @@ represent the same information.
 
 
 Element:    bnf (namespace: http://gerph.org/dtd/bnf/100/bnf.dtd)
-Attributes: caption
-Children:   <bnf-elements>
+Attributes: xmlns, caption
+Children:   (rule-def | comment)*
 
 caption: a caption describing the bnf
 
@@ -1547,12 +1567,28 @@ The strong element provides a strong emphasis. Its use is not defined and
 should be avoided where possible.
 
 
-Element:    sup & sub
+Element:    em
 Attributes: <none>
 Children:   <text>
 
-The sub and sup element provides a means if indicating super- and
-sub-script. Be careful when using them.
+The em element provides emphasis. The strong element provides a stronger
+emphasis.
+
+
+Element:    sup
+Attributes: <none>
+Children:   <text>
+
+The sup element provides a means of indicating super-script. Be careful when
+using it.
+
+
+Element:    sub
+Attributes: <none>
+Children:   <text>
+
+The sub element provides a means of indicating sub-script. Be careful when
+using it.
 
 
 Element:    list
@@ -1567,14 +1603,14 @@ of paragraphs.
 
 Element:    item
 Attributes: <none>
-Children:   (p)*
+Children:   (<text> | %inline; | %link; | p)*
 
 The item element allows you to include bulleted entries within a list.
 
 
 Element:    text
 Attributes: <none>
-Children:   <none>
+Children:   (<text> | userreplace)*
 
 The text element has no meaning. It is merely useful to provide a context
 around which an alternation may be performed using the optional element on
@@ -1583,7 +1619,7 @@ text values.
 
 Element:    fixme
 Attributes: <none>
-Children:   <text>?
+Children:   <text>
 
 The fixme element indicates a fault in the documentation that needs
 resolving. It may have content describing the fix necessary, or may be

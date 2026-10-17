@@ -69,7 +69,7 @@ Structurally, the document consists of :
 
 
 Element:    bnf
-Attributes: caption
+Attributes: xmlns, caption
 Contents:   (rule-def | comment)*
 
 caption: gives a description to display with the BNF grammar
@@ -79,9 +79,17 @@ are contained. 'caption' should be set to some description of the format
 which the BNF defines. This may be used in indexing in the future.
 
 
+Element:    comment
+Attributes: <none>
+Children:   <text>
+
+The comment element holds a note about the grammar. It is not part of any
+rule, and is shown in the translated output as a line starting with ';'.
+
+
 Element:    rule-def
-Attributes: name
-Contents:   (rule-use | group | literal | character)*
+Attributes: continue, name
+Children:   (group | rule-use | literal | character)*
 
 name: names the rule which is being defined
 
@@ -134,7 +142,7 @@ be specified. Where a single value is required, only 'value' is required.
 
 Element:    group
 Attributes: alternates, optional, <repetition attributes>
-Contents:   (rule-use | group | literal | character)*
+Children:   (group | rule-use | literal | character)*
 
 optional: may be 'true' or 'false' to indicate that the entire group
           is optional (equivalent to "repeat-min='0' repeat-max='1'").

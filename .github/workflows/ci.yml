@@ -37,6 +37,16 @@ jobs:
           name: Test-Output
           path: test-output
 
+  # The element reference in the documentation is written by hand, so check
+  # that it still agrees with the DTD.
+  check-element-docs:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check the element documentation agrees with the DTD
+        run: crosscompile/check-element-docs
+
   # Tests for different platforms
   test-platforms:
     runs-on: ubuntu-24.04
