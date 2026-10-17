@@ -68,6 +68,10 @@ my $logdir = undef;
 my $logfile = undef;
 my $index = undef;
 my $params = {};
+my $json = 0;
+my $helptag = undef;
+my $helptag_requested = 0;
+my $docs_catalog_version = '103';   # The catalog version that PRMinXML.txt describes
 
 my $unique = $$ || time();
 my $tempbase;
@@ -161,9 +165,18 @@ while ($arg = shift)
             }
             elsif ($arg eq 'help-tag')
             {
-                $helptag = shift;
-                help_tag($helptag);
-                exit(0);
+                # The tag is optional, so we only take it if it is not another option.
+                if (scalar(@ARGV) && $ARGV[0] !~ /^-/)
+                {
+                    $helptag = shift;
+                }
+                # We act on this after the options have been read, so that --json
+                # and --catalog can be given in either order.
+                $helptag_requested = 1;
+            }
+            elsif ($arg eq 'json')
+            {
+                $json = 1;
             }
             elsif ($arg eq 'lint')
             {
@@ -223,6 +236,19 @@ while ($arg = shift)
     }
 }
 
+
+if ($helptag_requested)
+{
+    if ($json)
+    {
+        help_tag_json($helptag);
+    }
+    else
+    {
+        help_tag($helptag);
+    }
+    exit(0);
+}
 
 # See if we can read what the input files are.
 my @inputs = ();
@@ -880,6 +906,355 @@ sub version
 
 
 ##
+# Read a DTD and describe the elements that it declares.
+#
+# Parameter entities are expanded, so that the content models and attributes
+# are the exact ones that the DTD declares.
+#
+# @param $file  DTD file to read
+#
+# @return hash reference of element name to a description of that element:
+#           content:    'empty', 'any', 'text', 'mixed' or 'elements'
+#           model:      the content model, with parameter entities expanded
+#           text:       true if the element may contain text
+#           children:   array of the names of the elements which may be contained
+#           attributes: array of attribute descriptions, in declaration order, each:
+#                           name, type ('CDATA', 'ID', ... or 'enum'),
+#                           values (for 'enum'), required, default
+sub parse_dtd
+{
+    my ($file) = @_;
+
+    open(DTD, "< $file") || die "Cannot read DTD file '$file': $!\n";
+    my $text = join('', <DTD>);
+    close(DTD);
+
+    $text =~ s/<!--.*?-->//gs;
+
+    my %entities;
+    while ($text =~ /<!ENTITY\s+%\s+([A-Za-z0-9_.\-]+)\s+"([^"]*)"\s*>/g)
+    {
+        $entities{$1} = $2;
+    }
+
+    my $expand = sub {
+        my ($value) = @_;
+        my $count;
+        # Entities can be defined in terms of other entities, so keep going until stable.
+        for ($count = 0; $count < 10 && $value =~ /%[A-Za-z0-9_.\-]+;/; $count++)
+        {
+            $value =~ s/%([A-Za-z0-9_.\-]+);/exists $entities{$1} ? $entities{$1} : "\0$1;"/ge;
+        }
+        $value =~ s/\0/%/g;
+        return $value;
+    };
+
+    my %elements;
+    my @order;
+
+    while ($text =~ /<!ELEMENT\s+(\S+)\s+([^>]*)>/g)
+    {
+        my ($name, $model) = ($1, $expand->($2));
+        $model =~ s/\s+/ /g;
+        $model =~ s/^ //;
+        $model =~ s/ $//;
+
+        my $has_text = 0;
+        my @children = ();
+        my $content;
+        if ($model eq 'EMPTY')
+        {
+            $content = 'empty';
+        }
+        elsif ($model eq 'ANY')
+        {
+            $content = 'any';
+            $has_text = 1;
+        }
+        else
+        {
+            my $names = $model;
+            $has_text = 1 if ($names =~ s/#PCDATA//);
+            my %seen;
+            while ($names =~ /([A-Za-z_][A-Za-z0-9_.:\-]*)/g)
+            {
+                push @children, $1 if (!$seen{$1}++);
+            }
+            if ($has_text)
+            {
+                $content = @children ? 'mixed' : 'text';
+            }
+            else
+            {
+                $content = 'elements';
+            }
+        }
+        $elements{$name} = {
+                'content' => $content,
+                'model' => $model,
+                'text' => $has_text ? \1 : \0,
+                'children' => [@children],
+                'attributes' => [],
+            };
+        push @order, $name;
+    }
+
+    while ($text =~ /<!ATTLIST\s+(\S+)\s+((?:"[^"]*"|'[^']*'|[^>"'])*)>/g)
+    {
+        my ($name, $defs) = ($1, $expand->($2));
+        my $element = $elements{$name};
+        next if (!$element);
+        my %known = map { $_->{'name'} => 1 } @{ $element->{'attributes'} };
+
+        while ($defs =~ s/^\s*(\S+)\s+(\([^)]*\)|\S+)\s+(#REQUIRED|#IMPLIED|(?:#FIXED\s+)?(?:"[^"]*"|'[^']*'))//)
+        {
+            my ($attr, $type, $default) = ($1, $2, $3);
+            my $values = undef;
+            my $required = ($default eq '#REQUIRED') ? \1 : \0;
+            if ($type =~ /^\((.*)\)$/)
+            {
+                $values = [split(/\s*\|\s*/, $1)];
+                $values = [map { s/^\s+//; s/\s+$//; $_ } @$values];
+                $type = 'enum';
+            }
+            if ($default =~ /^#/ && $default !~ /^#FIXED/)
+            {
+                $default = undef;
+            }
+            else
+            {
+                $default =~ s/^#FIXED\s+//;
+                $default =~ s/^["']//;
+                $default =~ s/["']$//;
+            }
+            next if ($known{$attr}++);
+            my $description = {
+                    'name' => $attr,
+                    'type' => $type,
+                    'required' => $required,
+                    'default' => $default,
+                };
+            $description->{'values'} = $values if ($values);
+            push @{ $element->{'attributes'} }, $description;
+        }
+    }
+    return \%elements;
+}
+
+
+##
+# Read the element descriptions from the PRMinXML.txt documentation.
+#
+# @param $file  Documentation file to read
+#
+# @return hash reference of element name to:
+#           description: the descriptive text for the element
+#           attributes:  hash reference of attribute name to its description
+sub parse_element_docs
+{
+    my ($file) = @_;
+
+    open(DOC, "< $file") || die "Cannot find documentation file '$file': $!\n";
+    my %docs;
+    my $current = undef;
+    my @lines;
+    my $last = "\n";
+    my $flush = sub {
+        if ($current)
+        {
+            my $attributes = {};
+            my @paragraphs;
+
+            # Drop the Attributes: and Children: header lines.
+            shift @lines while (@lines && $lines[0] =~ /^(Attributes|Children):/);
+            my $text = join('', @lines);
+            $text =~ s/^\n+//;
+            @paragraphs = split(/\n\n+/, $text);
+
+            # If the first paragraph is a list of 'name: description' entries, those are
+            # the attributes.
+            if (@paragraphs && $paragraphs[0] =~ /^[A-Za-z][A-Za-z0-9\-]*: /)
+            {
+                my $ok = 1;
+                my @entries = ();
+                foreach my $line (split(/\n/, $paragraphs[0]))
+                {
+                    if ($line =~ /^([A-Za-z][A-Za-z0-9\-]*): +(.*)$/)
+                    {
+                        push @entries, [$1, $2];
+                    }
+                    elsif ($line =~ /^\s+(\S.*)$/ && @entries)
+                    {
+                        $entries[$#entries]->[1] .= " $1";
+                    }
+                    else
+                    {
+                        $ok = 0;
+                    }
+                }
+                if ($ok)
+                {
+                    foreach my $entry (@entries)
+                    {
+                        $attributes->{$entry->[0]} = $entry->[1];
+                    }
+                    shift @paragraphs;
+                }
+            }
+            my $description = join("\n\n", @paragraphs);
+            $description =~ s/\s+$//;
+            $docs{$current} = {
+                    'description' => ($description ne '' ? $description : undef),
+                    'attributes' => $attributes,
+                };
+        }
+        $current = undef;
+        @lines = ();
+    };
+
+    while (<DOC>)
+    {
+        my $line = $_;
+        if ($last eq "\n" && $line eq "\n")
+        {
+            # Two blank lines end the element's description.
+            $flush->();
+        }
+        elsif ($line =~ /^Element: +(\S+)/)
+        {
+            $flush->();
+            $current = $1;
+        }
+        elsif ($current)
+        {
+            push @lines, $line;
+        }
+        $last = $line;
+    }
+    $flush->();
+    close(DOC);
+    return \%docs;
+}
+
+
+##
+# Convert a data structure to JSON text.
+#
+# Hash references become objects (with their keys sorted), array references become
+# arrays, references to 1 and 0 become true and false, undef becomes null, and
+# anything else is a string.
+sub to_json
+{
+    my ($value, $indent) = @_;
+    $indent = 0 if (!defined $indent);
+    my $pad = '  ' x ($indent + 1);
+    my $endpad = '  ' x $indent;
+
+    if (!defined $value)
+    {
+        return 'null';
+    }
+    elsif (ref($value) eq 'SCALAR')
+    {
+        return $$value ? 'true' : 'false';
+    }
+    elsif (ref($value) eq 'ARRAY')
+    {
+        return '[]' if (!@$value);
+        return "[\n" . join(",\n", map { $pad . to_json($_, $indent + 1) } @$value) . "\n$endpad]";
+    }
+    elsif (ref($value) eq 'HASH')
+    {
+        return '{}' if (!%$value);
+        return "{\n" . join(",\n", map { $pad . to_json("$_") . ': ' . to_json($value->{$_}, $indent + 1) }
+                                       sort keys %$value) . "\n$endpad}";
+    }
+
+    my %escapes = ("\\" => '\\\\', '"' => '\\"', "\n" => '\\n', "\r" => '\\r', "\t" => '\\t');
+    $value =~ s/([\\"\n\r\t])/$escapes{$1}/g;
+    $value =~ s/([\x00-\x1f])/sprintf("\\u%04x", ord($1))/ge;
+    return "\"$value\"";
+}
+
+
+##
+# Print the description of the elements as JSON.
+#
+# The structure comes from the DTD for the selected catalog version. For the
+# catalog version that PRMinXML.txt describes, each element and attribute is also
+# annotated with its description.
+#
+# @param $tag   Name of the element to describe, or undef to describe all of them
+sub help_tag_json
+{
+    my ($tag) = @_;
+
+    if ($catalog_version !~ /^[A-Za-z0-9_\-]+$/)
+    {
+        die "Invalid catalog version '$catalog_version'\n";
+    }
+    my $dtd;
+    my $dtddir = "$resourcedir${dirsep}gerph${dirsep}$catalog_version";
+    foreach my $leaf ('prm', 'prmtest')
+    {
+        if (-f "$dtddir${dirsep}$leaf${extsep}dtd")
+        {
+            $dtd = "$dtddir${dirsep}$leaf${extsep}dtd";
+            last;
+        }
+    }
+    if (!$dtd)
+    {
+        die "No DTD found for catalog version '$catalog_version'\n";
+    }
+
+    my $elements = parse_dtd($dtd);
+
+    my $has_descriptions = ($catalog_version eq $docs_catalog_version);
+    if ($has_descriptions)
+    {
+        my $docs = parse_element_docs("$resourcedir${dirsep}docs${dirsep}PRMinXML${extsep}txt");
+        foreach my $name (keys %$elements)
+        {
+            my $element = $elements->{$name};
+            my $doc = $docs->{$name};
+            $element->{'description'} = $doc ? $doc->{'description'} : undef;
+            foreach my $attr (@{ $element->{'attributes'} })
+            {
+                $attr->{'description'} = $doc ? $doc->{'attributes'}->{$attr->{'name'}} : undef;
+            }
+        }
+    }
+    else
+    {
+        foreach my $name (keys %$elements)
+        {
+            $elements->{$name}->{'description'} = undef;
+            foreach my $attr (@{ $elements->{$name}->{'attributes'} })
+            {
+                $attr->{'description'} = undef;
+            }
+        }
+    }
+
+    if (defined $tag)
+    {
+        if (!$elements->{$tag})
+        {
+            die "Unknown element '$tag' in catalog version '$catalog_version'\n";
+        }
+        $elements = { $tag => $elements->{$tag} };
+    }
+
+    print to_json({
+            'catalog' => $catalog_version,
+            'descriptions' => $has_descriptions ? \1 : \0,
+            'elements' => $elements,
+        }), "\n";
+}
+
+
+##
 # Print help message for a specific tag (or which ones are supported).
 sub help_tag
 {
@@ -996,6 +1371,11 @@ Options:
     --help-params   Help on parameters for stylesheets
     --help-tag [<tag>]
                     Print help for a specific tag (or list the supported tags)
+    --json          With --help-tag, print the element definitions as JSON:
+                    content model, children, and attributes (type or values,
+                    default, required) from the DTD for the selected --catalog
+                    version. Descriptions are included for the version that the
+                    documentation describes (otherwise they are null).
     --version, -V   Show version of this tool
     --catalog <version>, -C <version>
                     Select the version of the transforms to use (default $catalog_version)
