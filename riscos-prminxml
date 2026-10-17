@@ -906,22 +906,8 @@ sub version
 
 
 ##
-# Read a DTD and describe the elements that it declares.
-#
-# Parameter entities are expanded, so that the content models and attributes
-# are the exact ones that the DTD declares.
-#
-# @param $file  DTD file to read
-#
-# @return hash reference of element name to a description of that element:
-#           content:    'empty', 'any', 'text', 'mixed' or 'elements'
-#           model:      the content model, with parameter entities expanded
-#           text:       true if the element may contain text
-#           children:   array of the names of the elements which may be contained
-#           attributes: array of attribute descriptions, in declaration order, each:
-#                           name, type ('CDATA', 'ID', ... or 'enum'),
-#                           values (for 'enum'), required, default
-sub parse_dtd
+# Read a DTD file and remove its comments.
+sub read_dtd_text
 {
     my ($file) = @_;
 
@@ -930,11 +916,60 @@ sub parse_dtd
     close(DTD);
 
     $text =~ s/<!--.*?-->//gs;
+    return $text;
+}
+
+
+##
+# Read a DTD and describe the elements that it declares.
+#
+# Parameter entities are expanded, so that the content models and attributes
+# are the exact ones that the DTD declares. DTDs which are included through
+# an external parameter entity are read from the resources, and their elements
+# are given the namespace of that DTD.
+#
+# @param $file  DTD file to read
+#
+# @return list of: hash reference of element name to a description of that element:
+#           content:    'empty', 'any', 'text', 'mixed' or 'elements'
+#           model:      the content model, with parameter entities expanded
+#           text:       true if the element may contain text
+#           children:   array of the names of the elements which may be contained
+#           namespace:  (only if not in the main DTD) the namespace of the element
+#           attributes: array of attribute descriptions, in declaration order, each:
+#                           name, type ('CDATA', 'ID', ... or 'enum'),
+#                           values (for 'enum'), required, default
+#       and a hash reference of the parameter entity names to their values.
+sub parse_dtd
+{
+    my ($file) = @_;
+
+    my $text = read_dtd_text($file);
+    my @chunks = ([$text, undef]);
 
     my %entities;
     while ($text =~ /<!ENTITY\s+%\s+([A-Za-z0-9_.\-]+)\s+"([^"]*)"\s*>/g)
     {
         $entities{$1} = $2;
+    }
+
+    # External DTDs, which we find in our resources.
+    while ($text =~ /<!ENTITY\s+%\s+([A-Za-z0-9_.\-]+)\s+PUBLIC\s+"[^"]*"\s+"([^"]*)"\s*>/g)
+    {
+        my ($name, $url) = ($1, $2);
+        next if ($text !~ /%$name;/);
+        my @parts = split(/\//, $url);
+        shift @parts while (@parts && $parts[0] ne 'dtd');
+        shift @parts;
+        my $leaf = pop @parts;
+        $leaf =~ s/\.([^.]*)$/${extsep}$1/;
+        my $path = join($dirsep, $resourcedir, 'gerph', @parts, $leaf);
+        my $exttext = read_dtd_text($path);
+        while ($exttext =~ /<!ENTITY\s+%\s+([A-Za-z0-9_.\-]+)\s+"([^"]*)"\s*>/g)
+        {
+            $entities{$1} = $2;
+        }
+        push @chunks, [$exttext, $url];
     }
 
     my $expand = sub {
@@ -950,95 +985,112 @@ sub parse_dtd
     };
 
     my %elements;
-    my @order;
 
-    while ($text =~ /<!ELEMENT\s+(\S+)\s+([^>]*)>/g)
+    foreach my $chunk (@chunks)
     {
-        my ($name, $model) = ($1, $expand->($2));
-        $model =~ s/\s+/ /g;
-        $model =~ s/^ //;
-        $model =~ s/ $//;
+        my ($chunktext, $namespace) = @$chunk;
 
-        my $has_text = 0;
-        my @children = ();
-        my $content;
-        if ($model eq 'EMPTY')
+        while ($chunktext =~ /<!ELEMENT\s+(\S+)\s+([^>]*)>/g)
         {
-            $content = 'empty';
-        }
-        elsif ($model eq 'ANY')
-        {
-            $content = 'any';
-            $has_text = 1;
-        }
-        else
-        {
-            my $names = $model;
-            $has_text = 1 if ($names =~ s/#PCDATA//);
-            my %seen;
-            while ($names =~ /([A-Za-z_][A-Za-z0-9_.:\-]*)/g)
+            my ($name, $model) = ($1, $expand->($2));
+            $model =~ s/\s+/ /g;
+            $model =~ s/^ //;
+            $model =~ s/ $//;
+
+            my $has_text = 0;
+            my @children = ();
+            my $content;
+            if ($model eq 'EMPTY')
             {
-                push @children, $1 if (!$seen{$1}++);
+                $content = 'empty';
             }
-            if ($has_text)
+            elsif ($model eq 'ANY')
             {
-                $content = @children ? 'mixed' : 'text';
+                $content = 'any';
+                $has_text = 1;
             }
             else
             {
-                $content = 'elements';
+                my $names = $model;
+                $has_text = 1 if ($names =~ s/#PCDATA//);
+                my %seen;
+                while ($names =~ /([A-Za-z_][A-Za-z0-9_.:\-]*)/g)
+                {
+                    push @children, $1 if (!$seen{$1}++);
+                }
+                if ($has_text)
+                {
+                    $content = @children ? 'mixed' : 'text';
+                }
+                else
+                {
+                    $content = 'elements';
+                }
             }
-        }
-        $elements{$name} = {
-                'content' => $content,
-                'model' => $model,
-                'text' => $has_text ? \1 : \0,
-                'children' => [@children],
-                'attributes' => [],
-            };
-        push @order, $name;
-    }
-
-    while ($text =~ /<!ATTLIST\s+(\S+)\s+((?:"[^"]*"|'[^']*'|[^>"'])*)>/g)
-    {
-        my ($name, $defs) = ($1, $expand->($2));
-        my $element = $elements{$name};
-        next if (!$element);
-        my %known = map { $_->{'name'} => 1 } @{ $element->{'attributes'} };
-
-        while ($defs =~ s/^\s*(\S+)\s+(\([^)]*\)|\S+)\s+(#REQUIRED|#IMPLIED|(?:#FIXED\s+)?(?:"[^"]*"|'[^']*'))//)
-        {
-            my ($attr, $type, $default) = ($1, $2, $3);
-            my $values = undef;
-            my $required = ($default eq '#REQUIRED') ? \1 : \0;
-            if ($type =~ /^\((.*)\)$/)
-            {
-                $values = [split(/\s*\|\s*/, $1)];
-                $values = [map { s/^\s+//; s/\s+$//; $_ } @$values];
-                $type = 'enum';
-            }
-            if ($default =~ /^#/ && $default !~ /^#FIXED/)
-            {
-                $default = undef;
-            }
-            else
-            {
-                $default =~ s/^#FIXED\s+//;
-                $default =~ s/^["']//;
-                $default =~ s/["']$//;
-            }
-            next if ($known{$attr}++);
-            my $description = {
-                    'name' => $attr,
-                    'type' => $type,
-                    'required' => $required,
-                    'default' => $default,
+            $elements{$name} = {
+                    'content' => $content,
+                    'model' => $model,
+                    'text' => $has_text ? \1 : \0,
+                    'children' => [@children],
+                    'attributes' => [],
                 };
-            $description->{'values'} = $values if ($values);
-            push @{ $element->{'attributes'} }, $description;
+            $elements{$name}->{'namespace'} = $namespace if (defined $namespace);
         }
     }
-    return \%elements;
+
+    foreach my $chunk (@chunks)
+    {
+        my $chunktext = $chunk->[0];
+
+        while ($chunktext =~ /<!ATTLIST\s+(\S+)\s+((?:"[^"]*"|'[^']*'|[^>"'])*)>/g)
+        {
+            my ($name, $defs) = ($1, $expand->($2));
+            my $element = $elements{$name};
+            next if (!$element);
+            my %known = map { $_->{'name'} => 1 } @{ $element->{'attributes'} };
+
+            while ($defs =~ s/^\s*(\S+)\s+(\([^)]*\)|\S+)\s+(#REQUIRED|#IMPLIED|(?:#FIXED\s+)?(?:"[^"]*"|'[^']*'))//)
+            {
+                my ($attr, $type, $default) = ($1, $2, $3);
+                my $values = undef;
+                my $required = ($default eq '#REQUIRED') ? \1 : \0;
+                if ($type =~ /^\((.*)\)$/)
+                {
+                    $values = [split(/\s*\|\s*/, $1)];
+                    $values = [map { s/^\s+//; s/\s+$//; $_ } @$values];
+                    $type = 'enum';
+                }
+                if ($default =~ /^#/ && $default !~ /^#FIXED/)
+                {
+                    $default = undef;
+                }
+                else
+                {
+                    $default =~ s/^#FIXED\s+//;
+                    $default =~ s/^["']//;
+                    $default =~ s/["']$//;
+                }
+                next if ($known{$attr}++);
+                my $description = {
+                        'name' => $attr,
+                        'type' => $type,
+                        'required' => $required,
+                        'default' => $default,
+                    };
+                $description->{'values'} = $values if ($values);
+                push @{ $element->{'attributes'} }, $description;
+            }
+        }
+    }
+
+    my %outentities;
+    foreach my $name (keys %entities)
+    {
+        my $value = $entities{$name};
+        $value =~ s/\s+/ /g;
+        $outentities{$name} = $value;
+    }
+    return (\%elements, \%outentities);
 }
 
 
@@ -1046,13 +1098,15 @@ sub parse_dtd
 # Read the element descriptions from the PRMinXML.txt documentation.
 #
 # @param $file  Documentation file to read
+# @param $docs  Hash reference of descriptions to add to; elements already described are kept
 #
-# @return hash reference of element name to:
+# @return the hash reference of element name to:
 #           description: the descriptive text for the element
 #           attributes:  hash reference of attribute name to its description
 sub parse_element_docs
 {
-    my ($file) = @_;
+    my ($file, $docs) = @_;
+    $docs = {} if (!$docs);
 
     open(DOC, "< $file") || die "Cannot find documentation file '$file': $!\n";
     my %docs;
@@ -1066,7 +1120,7 @@ sub parse_element_docs
             my @paragraphs;
 
             # Drop the Attributes: and Children: header lines.
-            shift @lines while (@lines && $lines[0] =~ /^(Attributes|Children):/);
+            shift @lines while (@lines && $lines[0] =~ /^(Attributes|Children|Contents):/);
             my $text = join('', @lines);
             $text =~ s/^\n+//;
             @paragraphs = split(/\n\n+/, $text);
@@ -1133,7 +1187,11 @@ sub parse_element_docs
     }
     $flush->();
     close(DOC);
-    return \%docs;
+    foreach my $name (keys %docs)
+    {
+        $docs->{$name} = $docs{$name} if (!exists $docs->{$name});
+    }
+    return $docs;
 }
 
 
@@ -1208,12 +1266,13 @@ sub help_tag_json
         die "No DTD found for catalog version '$catalog_version'\n";
     }
 
-    my $elements = parse_dtd($dtd);
+    my ($elements, $entities) = parse_dtd($dtd);
 
     my $has_descriptions = ($catalog_version eq $docs_catalog_version);
     if ($has_descriptions)
     {
         my $docs = parse_element_docs("$resourcedir${dirsep}docs${dirsep}PRMinXML${extsep}txt");
+        parse_element_docs("$resourcedir${dirsep}docs${dirsep}BNF${extsep}txt", $docs);
         foreach my $name (keys %$elements)
         {
             my $element = $elements->{$name};
@@ -1249,6 +1308,7 @@ sub help_tag_json
     print to_json({
             'catalog' => $catalog_version,
             'descriptions' => $has_descriptions ? \1 : \0,
+            'entities' => $entities,
             'elements' => $elements,
         }), "\n";
 }
@@ -1259,15 +1319,28 @@ sub help_tag_json
 sub help_tag
 {
     my ($helptag) = @_;
-    my $dochelp;
-    $dochelp = "$resourcedir${dirsep}docs${dirsep}PRMinXML${extsep}txt";
-
-    open(IN, "< $dochelp") || die "Cannot find documentation file '$dochelp': $!\n";
 
     if (!$helptag)
     {
         print("Supported tags (with attributes, and child elements):\n");
     }
+
+    # An element described in more than one file is only shown from the first.
+    my %seen;
+    foreach my $leaf ('PRMinXML', 'BNF')
+    {
+        help_tag_file("$resourcedir${dirsep}docs${dirsep}$leaf${extsep}txt", $helptag, \%seen);
+    }
+}
+
+
+##
+# Print help for a specific tag (or which ones are supported) from one documentation file.
+sub help_tag_file
+{
+    my ($dochelp, $helptag, $seen) = @_;
+
+    open(IN, "< $dochelp") || die "Cannot find documentation file '$dochelp': $!\n";
 
     my $show_element = 0;
     my $current_tag = undef;
@@ -1290,14 +1363,22 @@ sub help_tag
             {
                 $namespace = $1;
             }
-            if ($tag eq $helptag)
+            if ($seen->{$tag})
             {
+                # Already described by an earlier file.
+                $show_element = 0;
+                $current_tag = undef;
+            }
+            elsif ($tag eq $helptag)
+            {
+                $seen->{$tag} = 1;
                 $show_element = 1;
                 print;
             }
             elsif (!$helptag)
             {
                 # We're showing all elements
+                $seen->{$tag} = 1;
                 $current_tag = $tag;
                 $current_attributes = '<none>';
                 $current_children = '<none>';
@@ -1313,7 +1394,7 @@ sub help_tag
                 $current_attributes = $1;
             }
         }
-        elsif (/^Children: +(.*)\n/)
+        elsif (/^(?:Children|Contents): +(.*)\n/)
         {
             if ($show_element) {
                 print;
