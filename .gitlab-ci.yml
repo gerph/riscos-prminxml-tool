@@ -46,6 +46,20 @@ test-examples:
     - linux
 
 
+#### Check the element documentation
+# The element reference in the documentation is written by hand, so check
+# that it still agrees with the DTD.
+check-element-docs:
+  <<: *common
+  stage: test
+  script:
+    - apt-get update
+    - apt-get install -y perl
+    - crosscompile/check-element-docs
+  tags:
+    - linux
+
+
 # A collection of tests for different platforms
 p:ubuntu-20.04:
   image: ubuntu:20.04
