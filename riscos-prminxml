@@ -351,7 +351,8 @@ if ($format eq 'index')
     if ($indextext =~ /<dirs\b([^>]*)>/)
     {
         my $dirsattrs = $1;
-        foreach my $attr ('output', 'index', 'help', 'header', 'temp')
+        my $attr;
+        foreach $attr ('output', 'index', 'help', 'header', 'temp')
         {
             if ($dirsattrs =~ /\b$attr\s*=\s*"([^"]*)"/ && $1 ne '')
             {
@@ -720,7 +721,8 @@ sub make_directory
 
     # Create each of the parent directories in turn.
     my $path = '';
-    foreach my $part (split(/\//, $dir))
+    my $part;
+    foreach $part (split(/\//, $dir))
     {
         $path .= "$part/";
         next if ($part eq '' || -d $path);
@@ -986,13 +988,14 @@ sub parse_dtd
 
     my %elements;
 
-    foreach my $chunk (@chunks)
+    my $chunk;
+    foreach $chunk (@chunks)
     {
         my ($chunktext, $namespace) = @$chunk;
 
         while ($chunktext =~ /<!ELEMENT\s+(\S+)\s+([^>]*)>/g)
         {
-            my ($name, $model) = ($1, $expand->($2));
+            my ($name, $model) = ($1, &$expand($2));
             $model =~ s/\s+/ /g;
             $model =~ s/^ //;
             $model =~ s/ $//;
@@ -1038,13 +1041,13 @@ sub parse_dtd
         }
     }
 
-    foreach my $chunk (@chunks)
+    foreach $chunk (@chunks)
     {
         my $chunktext = $chunk->[0];
 
         while ($chunktext =~ /<!ATTLIST\s+(\S+)\s+((?:"[^"]*"|'[^']*'|[^>"'])*)>/g)
         {
-            my ($name, $defs) = ($1, $expand->($2));
+            my ($name, $defs) = ($1, &$expand($2));
             my $element = $elements{$name};
             next if (!$element);
             my %known = map { $_->{'name'} => 1 } @{ $element->{'attributes'} };
@@ -1084,7 +1087,8 @@ sub parse_dtd
     }
 
     my %outentities;
-    foreach my $name (keys %entities)
+    my $name;
+    foreach $name (keys %entities)
     {
         my $value = $entities{$name};
         $value =~ s/\s+/ /g;
@@ -1131,7 +1135,8 @@ sub parse_element_docs
             {
                 my $ok = 1;
                 my @entries = ();
-                foreach my $line (split(/\n/, $paragraphs[0]))
+                my $line;
+                foreach $line (split(/\n/, $paragraphs[0]))
                 {
                     if ($line =~ /^([A-Za-z][A-Za-z0-9\-]*): +(.*)$/)
                     {
@@ -1148,7 +1153,8 @@ sub parse_element_docs
                 }
                 if ($ok)
                 {
-                    foreach my $entry (@entries)
+                    my $entry;
+                    foreach $entry (@entries)
                     {
                         $attributes->{$entry->[0]} = $entry->[1];
                     }
@@ -1172,11 +1178,11 @@ sub parse_element_docs
         if ($last eq "\n" && $line eq "\n")
         {
             # Two blank lines end the element's description.
-            $flush->();
+            &$flush();
         }
         elsif ($line =~ /^Element: +(\S+)/)
         {
-            $flush->();
+            &$flush();
             $current = $1;
         }
         elsif ($current)
@@ -1185,9 +1191,10 @@ sub parse_element_docs
         }
         $last = $line;
     }
-    $flush->();
+    &$flush();
     close(DOC);
-    foreach my $name (keys %docs)
+    my $name;
+    foreach $name (keys %docs)
     {
         $docs->{$name} = $docs{$name} if (!exists $docs->{$name});
     }
@@ -1253,7 +1260,8 @@ sub help_tag_json
     }
     my $dtd;
     my $dtddir = "$resourcedir${dirsep}gerph${dirsep}$catalog_version";
-    foreach my $leaf ('prm', 'prmtest')
+    my $leaf;
+    foreach $leaf ('prm', 'prmtest')
     {
         if (-f "$dtddir${dirsep}$leaf${extsep}dtd")
         {
@@ -1273,12 +1281,14 @@ sub help_tag_json
     {
         my $docs = parse_element_docs("$resourcedir${dirsep}docs${dirsep}PRMinXML${extsep}txt");
         parse_element_docs("$resourcedir${dirsep}docs${dirsep}BNF${extsep}txt", $docs);
-        foreach my $name (keys %$elements)
+        my $name;
+        foreach $name (keys %$elements)
         {
             my $element = $elements->{$name};
             my $doc = $docs->{$name};
             $element->{'description'} = $doc ? $doc->{'description'} : undef;
-            foreach my $attr (@{ $element->{'attributes'} })
+            my $attr;
+            foreach $attr (@{ $element->{'attributes'} })
             {
                 $attr->{'description'} = $doc ? $doc->{'attributes'}->{$attr->{'name'}} : undef;
             }
@@ -1286,10 +1296,12 @@ sub help_tag_json
     }
     else
     {
-        foreach my $name (keys %$elements)
+        my $name;
+        foreach $name (keys %$elements)
         {
             $elements->{$name}->{'description'} = undef;
-            foreach my $attr (@{ $elements->{$name}->{'attributes'} })
+            my $attr;
+            foreach $attr (@{ $elements->{$name}->{'attributes'} })
             {
                 $attr->{'description'} = undef;
             }
@@ -1327,7 +1339,8 @@ sub help_tag
 
     # An element described in more than one file is only shown from the first.
     my %seen;
-    foreach my $leaf ('PRMinXML', 'BNF')
+    my $leaf;
+    foreach $leaf ('PRMinXML', 'BNF')
     {
         help_tag_file("$resourcedir${dirsep}docs${dirsep}$leaf${extsep}txt", $helptag, \%seen);
     }
